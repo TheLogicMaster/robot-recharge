@@ -148,6 +148,6 @@ jobs:
           serviceAccountJsonPlainText: ${{ secrets.SERVICE_ACCOUNT_JSON }}
           packageName: com.thelogicmaster.robot_recharge
           releaseFile: ${{steps.sign_bundle.outputs.signedReleaseFile}}
-          track: production
+          track: alpha
           whatsNewDirectory: ./android/whatsnew
           # mappingFile: app/build/outputs/mapping/release/mapping.txt # Use if minifying code
