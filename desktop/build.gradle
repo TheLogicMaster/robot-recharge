@@ -1,0 +1,103 @@
+import io.github.fvarrui.javapackager.gradle.PackageTask
+
+sourceCompatibility = 1.7
+sourceSets.main.java.srcDirs = [ "src/" ]
+sourceSets.main.resources.srcDirs = ["../android/assets"]
+
+project.ext.mainClassName = "com.thelogicmaster.robot_recharge.desktop.DesktopLauncher"
+project.ext.assetsDir = new File("../android/assets")
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+}
+
+task run(dependsOn: classes, type: JavaExec) {
+    main = project.mainClassName
+    classpath = sourceSets.main.runtimeClasspath
+    standardInput = System.in
+    workingDir = project.assetsDir
+    ignoreExitValue = true
+}
+
+task debug(dependsOn: classes, type: JavaExec) {
+    main = project.mainClassName
+    classpath = sourceSets.main.runtimeClasspath
+    standardInput = System.in
+    workingDir = project.assetsDir
+    ignoreExitValue = true
+    debug = true
+}
+
+task dist(type: Jar) {
+    manifest {
+        attributes 'Main-Class': project.mainClassName
+    }
+    dependsOn configurations.runtimeClasspath
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+    with jar
+}
+
+task distBlocks(type: Jar) {
+    manifest {
+        attributes 'Main-Class': "com.thelogicmaster.robot_recharge.desktop.JCEFDesktopLauncher"
+    }
+    dependsOn configurations.runtimeClasspath
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+    with jar
+}
+
+javapackager {
+    mainClass = "com.thelogicmaster.robot_recharge.desktop.JCEFDesktopLauncher"
+    name = 'RobotRecharge'
+    bundleJre = true
+    generateInstaller = false
+    administratorRequired = false
+    vmArgs = ['-Djava.library.path=./jcef']
+
+    linuxConfig {
+        pngFile = new File(project.rootDir.path + '/android/assets/icon32.png')
+    }
+
+    winConfig {
+        icoFile = new File(project.projectDir.path + '/icon.ico')
+        companyName = 'TheLogicMaster'
+    }
+}
+
+task packageWindowsGHActions(type: PackageTask, dependsOn: build) {
+    jrePath = new File(System.getProperty("user.dir") + '/jre_windows')
+    platform = 'windows'
+}
+
+task packageWindows(type: PackageTask, dependsOn: build) {
+    jrePath = new File(project.rootDir.path + '/Libraries/jre/win64')
+    platform = 'windows'
+    doLast {
+        project.exec {
+            commandLine('cp', '-r', project.rootDir.path + '/Libraries/jcef/win64/', project.buildDir.path + '/RobotGame/jcef')
+        }
+    }
+}
+
+task packageLinuxGHActions(type: PackageTask, dependsOn: build) {
+    jrePath = new File(System.getProperty("user.dir") + '/jre_linux')
+    platform = 'linux'
+}
+
+task packageLinux(type: PackageTask, dependsOn: build) {
+    jrePath = new File('/opt/jdk1.8.0_251/jre/')
+    platform = 'linux'
+    doLast {
+        project.exec {
+            commandLine('cp', '-r', project.rootDir.path + '/Libraries/jcef/linux64/', project.buildDir.path + '/RobotGame/jcef')
+        }
+    }
+}
+
+dist.dependsOn classes
+
+eclipse.project.name = appName + "-desktop"

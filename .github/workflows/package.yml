@@ -1,0 +1,153 @@
+on:
+  push:
+    tags:
+    - 'v*'
+
+name: Upload Release Assets
+
+jobs:
+  build-linux:
+    name: Upload Linux Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        
+      - name: Get Version
+        id: get_version
+        run: echo ::set-output name=VERSION::${GITHUB_REF#refs/tags/}
+
+      - name: Download Linux JCEF
+        id: get_jcef_linux
+        uses: suisei-cn/actions-download-file@v1
+        with:
+          url: 'https://github.com/jcefbuild/jcefbuild/releases/download/v1.0.10-84.3.8%2Bgc8a556f%2Bchromium-84.0.4147.105/linux64.zip'
+          target: .
+    
+      - name: Download Windows JCEF
+        id: get_jcef_windows
+        uses: suisei-cn/actions-download-file@v1
+        with:
+          url: 'https://github.com/jcefbuild/jcefbuild/releases/download/v1.0.10-84.3.8%2Bgc8a556f%2Bchromium-84.0.4147.105/win64.zip'
+          target: .
+          
+      - name: Download Linux JRE
+        id: get_jre_linux
+        uses: suisei-cn/actions-download-file@v1
+        with:
+          url: 'http://static.azul.com/zulu/bin/zulu11.29.3-ca-fx-jre11.0.2-linux_x64.tar.gz'
+          target: .
+        
+      - name: Download Windows JRE
+        id: get_jre_windows
+        uses: suisei-cn/actions-download-file@v1
+        with:
+          url: 'http://static.azul.com/zulu/bin/zulu11.29.3-ca-fx-jre11.0.2-win_x64.zip'
+          target: .
+      
+      - name: Extract Linux JCEF
+        uses: montudor/action-zip@v0.1.1
+        with:
+          args: unzip -qq ${{ steps.get_jcef_linux.outputs.filename }} -d jcef_linux
+        
+          
+      - name: Extract Windows JCEF
+        uses: montudor/action-zip@v0.1.1
+        with:
+          args: unzip -qq ${{ steps.get_jcef_windows.outputs.filename }} -d jcef_windows
+      
+      - name: Extract Linux JRE
+        run: |
+          mkdir ./jre_linux
+          tar xvzf ${{ steps.get_jre_linux.outputs.filename }} -C ./jre_linux --strip-components=1
+      
+      - name: Extract Windows JRE
+        uses: montudor/action-zip@v0.1.1
+        with:
+          args: unzip -qq ${{ steps.get_jre_windows.outputs.filename }} -d jre_windows
+           
+      - name: Move zip root directories
+        run: |
+          sudo mv ./jcef_linux/*/* ./jcef_linux
+          sudo mv ./jre_windows/*/* ./jre_windows
+          sudo mv ./jcef_windows/*/* ./jcef_windows
+           
+      - name: Package Linux release
+        run: |
+          ls ./jre_linux
+          ./gradlew packageLinuxGHActions
+        
+      - name: Copy Linux native libraries
+        run: |
+          mkdir ./desktop/build/RobotRecharge/jcef
+          cp -r ./jcef_linux/bin/lib/linux64/* ./desktop/build/RobotRecharge/jcef
+          mv ./desktop/build/RobotRecharge .
+        
+      - name: Zip Linux Release
+        uses: montudor/action-zip@v0.1.1
+        with:
+          args: zip -qq -r linux64-${{ steps.get_version.outputs.VERSION }}.zip ./RobotRecharge/
+          
+      - name: Package Windows release
+        run: ./gradlew packageWindowsGHActions
+        
+      - name: Copy Windows native libraries
+        run: |
+          rm -rf ./RobotRecharge
+          mkdir ./desktop/build/RobotRecharge/jcef
+          cp -r ./jcef_windows/bin/lib/win64/* ./desktop/build/RobotRecharge/jcef
+          mv ./desktop/build/RobotRecharge .
+          
+      - name: Zip Windows Release
+        uses: montudor/action-zip@v0.1.1
+        with:
+          args: zip -qq -r win64-${{ steps.get_version.outputs.VERSION }}.zip ./RobotRecharge/
+        
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v2
+        
+      - name: Build Android Release
+        run: |
+          ./gradlew packageReleaseUniversalApk
+          ./gradlew bundleRelease
+          mv ./android/build/outputs/universal_apk/android-release-universal-unsigned.apk ./android-${{ steps.get_version.outputs.VERSION }}.apk
+        
+      - name: Create Release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          draft: false
+          prerelease: false
+      
+      - name: Upload Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          hub release edit -a ./linux64-${{ steps.get_version.outputs.VERSION }}.zip -m "" ${{ steps.get_version.outputs.VERSION }}
+          hub release edit -a ./win64-${{ steps.get_version.outputs.VERSION }}.zip -m "" ${{ steps.get_version.outputs.VERSION }}
+          hub release edit -a ./android-${{ steps.get_version.outputs.VERSION }}.apk -m "" ${{ steps.get_version.outputs.VERSION }}
+      
+      - name: Sign Android bundle
+        uses: r0adkll/sign-android-release@v1
+        id: sign_bundle
+        with:
+          releaseDirectory: ./android/build/outputs/bundle/release
+          signingKeyBase64: ${{ secrets.SIGNING_KEY }}
+          alias: ${{ secrets.ALIAS }}
+          keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
+          keyPassword: ${{ secrets.KEY_PASSWORD }}
+        env:
+          BUILD_TOOLS_VERSION: "29.0.2"
+          
+      - name: Upload to Google Play
+        uses: r0adkll/upload-google-play@v1
+        with:
+          serviceAccountJsonPlainText: ${{ SERVICE_ACCOUNT_JSON }}
+          packageName: com.thelogicmaster.robot_recharge
+          releaseFile: ${{steps.sign_bundle.outputs.signedReleaseFile}}
+          track: production
+          whatsNewDirectory: ./android/whatsnew
+          # mappingFile: app/build/outputs/mapping/release/mapping.txt # Use if minifying code
