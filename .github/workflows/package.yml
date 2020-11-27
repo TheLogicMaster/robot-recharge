@@ -145,7 +145,7 @@ jobs:
       - name: Upload to Google Play
         uses: r0adkll/upload-google-play@v1
         with:
-          serviceAccountJsonPlainText: ${{ SERVICE_ACCOUNT_JSON }}
+          serviceAccountJsonPlainText: ${{ secrets.SERVICE_ACCOUNT_JSON }}
           packageName: com.thelogicmaster.robot_recharge
           releaseFile: ${{steps.sign_bundle.outputs.signedReleaseFile}}
           track: production
