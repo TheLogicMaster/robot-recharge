@@ -110,7 +110,7 @@ jobs:
         run: |
           ./gradlew packageReleaseUniversalApk
           ./gradlew bundleRelease
-          mv ./android/build/outputs/universal_apk/android-release-universal-unsigned.apk ./android-${{ steps.get_version.outputs.VERSION }}.apk
+          mv ./android/build/outputs/universal_apk/release/android-release-universal-unsigned.apk ./android-${{ steps.get_version.outputs.VERSION }}.apk
         
       - name: Create Release
         uses: actions/create-release@v1
