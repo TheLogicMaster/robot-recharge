@@ -29,6 +29,7 @@ allprojects {
         box2DLightsVersion = '1.5'
         ashleyVersion = '1.7.3'
         aiVersion = '1.8.2'
+        gltfVersion = 'master-SNAPSHOT'
     }
 
     repositories {
@@ -133,5 +134,6 @@ project(":core") {
         api "de.golfgl.gdxgamesvcs:gdx-gamesvcs-core:1.0.2"
         implementation "com.strongjoshua:libgdx-inGameConsole:1.0.0"
         implementation 'com.github.raeleus.TenPatch:tenpatch:5.0.0'
+        api "com.github.mgsx-dev.gdx-gltf:gltf:$gltfVersion"
     }
 }

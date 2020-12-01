@@ -23,9 +23,8 @@ public class Robot implements IRobot, ExecutionListener {
     private volatile Quaternion rotation;
     private final Vector3 tempVec3;
 
-    private final float speed = 2;
-    private final float rotationSpeed = 180;
-    private final Vector3 offset = new Vector3(0.5f, 0.5f, 0.5f);
+    private static final float speed = 2;
+    private static final float rotationSpeed = 180;
 
     public Robot(ModelInstance model, RobotListener listener) {
         this.model = model;
@@ -61,19 +60,23 @@ public class Robot implements IRobot, ExecutionListener {
         if (running)
             animator.update(fastForward ? 2 * delta : delta);
         rotation.nor();
-        model.transform.set(tempVec3.set(position).add(offset), rotation, Constants.modelScale);
+        model.transform.set(tempVec3.set(position).add(Constants.blockOffset), rotation);
         batch.render(model, environment);
     }
 
     public void reset(Vector3 position, Quaternion rotation) {
         this.position = position;
         this.rotation = rotation;
+        stop();
+        running = false;
+        animator.setAnimation(null);
+    }
+
+    public void stop() {
         if (thread != null) {
             thread.interrupt();
             thread = null;
         }
-        running = false;
-        animator.setAnimation(null);
     }
 
     public void start() {
@@ -83,7 +86,7 @@ public class Robot implements IRobot, ExecutionListener {
                 lock.notify();
             }
         } else
-            thread = RobotGame.javaScriptEngine.run(this, code, this);
+            thread = RobotRecharge.javaScriptEngine.run(this, code, this);
     }
 
     public void pause() {

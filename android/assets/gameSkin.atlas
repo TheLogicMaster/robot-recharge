@@ -1,89 +1,110 @@
 
 gameSkin.png
-size: 1024,1024
+size: 2048,2048
 format: RGBA8888
 filter: Linear,Linear
 repeat: none
 back
   rotate: false
-  xy: 1, 1
+  xy: 1, 651
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: -1
 download
   rotate: false
-  xy: 391, 521
+  xy: 1, 521
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: -1
-fast-forward
+editorSidebar
   rotate: false
-  xy: 1, 261
+  xy: 1, 781
+  size: 128, 1080
+  orig: 128, 1080
+  offset: 0, 0
+  index: -1
+fastForward
+  rotate: false
+  xy: 416, 1915
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: -1
-fast-forward-checked
+fastForwardChecked
   rotate: false
-  xy: 1, 131
+  xy: 676, 1915
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: -1
 pause
   rotate: false
-  xy: 1, 391
+  xy: 156, 1915
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: -1
-pause-disabled
+pauseDisabled
   rotate: false
-  xy: 261, 391
+  xy: 1, 261
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: -1
 play
   rotate: false
-  xy: 1, 521
+  xy: 1, 1
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: -1
-play-disabled
+playDisabled
   rotate: false
-  xy: 131, 261
+  xy: 1, 391
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: -1
 programming
   rotate: false
-  xy: 261, 521
+  xy: 1, 131
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: -1
-programming-disabled
+programmingDisabled
   rotate: false
-  xy: 131, 131
+  xy: 1, 1863
   size: 128, 128
   orig: 128, 128
+  offset: 0, 0
+  index: -1
+progressBack
+  rotate: false
+  xy: 806, 1993
+  size: 81, 50
+  orig: 81, 50
+  offset: 0, 0
+  index: -1
+progressBar
+  rotate: false
+  xy: 1, 1993
+  size: 153, 50
+  orig: 153, 50
   offset: 0, 0
   index: -1
 rewind
   rotate: false
-  xy: 131, 521
+  xy: 286, 1915
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: -1
 settings
   rotate: false
-  xy: 131, 391
+  xy: 546, 1915
   size: 128, 128
   orig: 128, 128
   offset: 0, 0

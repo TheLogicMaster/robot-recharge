@@ -80,8 +80,7 @@ public class JCEFBlocklyEditor implements IBlocklyEditor, ActionListener {
                         return false;
                     blocksCallback.accept(message.substring(7));
                     blocksCallback = null;
-                }
-                else
+                } else
                     return false;
                 return true;
             }
@@ -110,7 +109,7 @@ public class JCEFBlocklyEditor implements IBlocklyEditor, ActionListener {
     public void resize(int x, int width, int height) {
         this.x = x;
         this.width = width;
-        browser.getUIComponent().setBounds((int)(progress * width) + x, 0, width, height);
+        browser.getUIComponent().setBounds((int) (progress * width) + x, 0, width, height);
     }
 
     @Override
@@ -120,7 +119,7 @@ public class JCEFBlocklyEditor implements IBlocklyEditor, ActionListener {
             return;
         }
         progress += shown ? -.25f : .25f;
-        browser.getUIComponent().setBounds((int)(progress * width) + x, 0, width, browser.getUIComponent().getHeight());
+        browser.getUIComponent().setBounds((int) (progress * width) + x, 0, width, browser.getUIComponent().getHeight());
     }
 
     @Override
@@ -144,7 +143,7 @@ public class JCEFBlocklyEditor implements IBlocklyEditor, ActionListener {
     public void load(String data) {
         browser.executeJavaScript(
                 "workspace.clear();" +
-                "Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom('" + data + "'), workspace);", "", 0);
+                        "Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom('" + data + "'), workspace);", "", 0);
     }
 
     @Override

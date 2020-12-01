@@ -4,17 +4,18 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.github.czyzby.kiwi.util.tuple.immutable.Pair;
 import com.thelogicmaster.robot_recharge.Helpers;
-import com.thelogicmaster.robot_recharge.RobotGame;
+import com.thelogicmaster.robot_recharge.RobotRecharge;
 
 import java.util.ArrayList;
 
@@ -26,17 +27,21 @@ public abstract class RobotScreen implements Screen {
     protected final Viewport uiViewport;
     protected final SpriteBatch spriteBatch;
     protected final AssetManager assetManager;
+    protected final Skin menuSkin;
     private final Array<Pair<String, Object>> debugValues;
     private final ArrayList<Disposable> disposables;
     private final GlyphLayout debugLayout;
     private boolean loaded;
+    private Texture background;
 
     public RobotScreen() {
-        assetManager = new AssetManager();
+        menuSkin = new Skin(Gdx.files.internal("menuSkin.json"));
+        assetManager = Helpers.createAssetManager();
         spriteBatch = new SpriteBatch();
         inputMultiplexer = new InputMultiplexer();
         uiCamera = new OrthographicCamera();
         uiViewport = Helpers.createViewport(uiCamera);
+        uiViewport.update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         stage = new Stage(uiViewport);
         inputMultiplexer.addProcessor(stage);
         debugValues = new Array<>(true, 0);
@@ -53,14 +58,33 @@ public abstract class RobotScreen implements Screen {
         debugValues.add(new Pair<>(label, value));
     }
 
-    protected abstract void doneLoading();
+    protected final void setBackground(Texture background) {
+        this.background = background;
+        addDisposable(background);
+    }
 
-    protected abstract void draw(float delta);
+    protected void doneLoading() {
+
+    }
+
+    protected void draw(float delta) {
+        stage.act(delta);
+        stage.draw();
+
+        if (debugValues.size > 0) {
+            spriteBatch.begin();
+            for (int i = 0; i < debugValues.size; i++) {
+                debugLayout.setText(RobotRecharge.fontNormal, debugValues.get(i).getFirst());
+                RobotRecharge.fontNormal.draw(spriteBatch, debugValues.get(i).getFirst() + ":", 0, 30 + (5 + RobotRecharge.fontNormal.getLineHeight()) * i);
+                String text = debugValues.get(i).getSecond() == null ? "null" : debugValues.get(i).getSecond().toString();
+                RobotRecharge.fontNormal.draw(spriteBatch, text, 10 + debugLayout.width, 30 + (5 + RobotRecharge.fontNormal.getLineHeight()) * i);
+            }
+            debugValues.clear();
+            spriteBatch.end();
+        }
+    }
 
     protected void drawLoading(float delta) {
-        spriteBatch.begin();
-        RobotGame.fontLarge.draw(spriteBatch, "Loading...", 600, 400);
-        spriteBatch.end();
     }
 
     protected boolean isDoneLoading() {
@@ -69,36 +93,22 @@ public abstract class RobotScreen implements Screen {
 
     @Override
     public void render(float delta) {
-        Gdx.gl.glClearColor(0, 0, 0, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
-
         if (!loaded) {
             if (isDoneLoading()) {
                 loaded = true;
                 doneLoading();
-            }
-            else {
+            } else {
                 drawLoading(delta);
                 return;
             }
         }
 
-        draw(delta);
-
-        stage.act(delta);
-        stage.draw();
-
-        if (debugValues.size > 0) {
+        if (background != null) {
             spriteBatch.begin();
-            for (int i = 0; i < debugValues.size; i++) {
-                debugLayout.setText(RobotGame.fontNormal, debugValues.get(i).getFirst());
-                RobotGame.fontNormal.draw(spriteBatch, debugValues.get(i).getFirst() + ":", 0, 30 + (5 + RobotGame.fontNormal.getLineHeight()) * i);
-                String text = debugValues.get(i).getSecond() == null ? "null" : debugValues.get(i).getSecond().toString();
-                RobotGame.fontNormal.draw(spriteBatch, text, 10 + debugLayout.width, 30 + (5 + RobotGame.fontNormal.getLineHeight()) * i);
-            }
-            debugValues.clear();
+            spriteBatch.draw(background, 0, 0, uiViewport.getWorldWidth(), uiViewport.getWorldHeight());
             spriteBatch.end();
         }
+        draw(delta);
     }
 
     @Override
@@ -109,28 +119,27 @@ public abstract class RobotScreen implements Screen {
 
     @Override
     public void pause() {
-
     }
 
     @Override
     public void resume() {
-
     }
 
     @Override
     public void hide() {
-
     }
 
-    protected final void addDisposable(Disposable disposable) {
+    protected final <T extends Disposable> T addDisposable(T disposable) {
         disposables.add(disposable);
+        return disposable;
     }
 
     @Override
     public void dispose() {
-        for (Disposable disposable: disposables)
+        for (Disposable disposable : disposables)
             disposable.dispose();
         assetManager.dispose();
         stage.dispose();
+        spriteBatch.dispose();
     }
 }

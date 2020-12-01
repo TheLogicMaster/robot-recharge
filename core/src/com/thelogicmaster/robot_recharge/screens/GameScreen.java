@@ -1,60 +1,82 @@
 package com.thelogicmaster.robot_recharge.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g3d.*;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
+import com.badlogic.gdx.graphics.g3d.environment.BaseLight;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
+import com.badlogic.gdx.graphics.g3d.environment.SpotLight;
+import com.badlogic.gdx.graphics.g3d.model.Animation;
+import com.badlogic.gdx.graphics.g3d.model.Node;
 import com.badlogic.gdx.graphics.g3d.utils.MeshPartBuilder;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.math.Quaternion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.scenes.scene2d.*;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
-import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import com.badlogic.gdx.utils.Align;
+import com.badlogic.gdx.utils.*;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.kotcrab.vis.ui.util.dialog.Dialogs;
+import com.kotcrab.vis.ui.widget.VisDialog;
+import com.ray3k.tenpatch.TenPatchDrawable;
 import com.thelogicmaster.robot_recharge.*;
+import net.mgsx.gltf.scene3d.attributes.PBRCubemapAttribute;
+import net.mgsx.gltf.scene3d.attributes.PBRTextureAttribute;
+import net.mgsx.gltf.scene3d.lights.PointLightEx;
+import net.mgsx.gltf.scene3d.lights.SpotLightEx;
+import net.mgsx.gltf.scene3d.scene.*;
+import net.mgsx.gltf.scene3d.shaders.PBRShader;
+import net.mgsx.gltf.scene3d.shaders.PBRShaderProvider;
+import net.mgsx.gltf.scene3d.utils.EnvironmentUtil;
+
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 
 public class GameScreen extends RobotScreen implements RobotListener {
 
     private final int editorSidebarWidth = 128;
 
-    private ModelBatch modelBatch;
+    private final ModelBatch modelBatch;
     private Texture background;
     private Texture hud;
-    private Model robotModel;
-    private Model levelModel;
-    private ImageButton pauseButton, playButton, programButton;
-    private Table editorSidebar, controlPanel;
-    private ModelInstance level, grid;
+    private final ImageButton pauseButton, playButton, programButton;
+    private final Table editorSidebar, controlPanel;
+    private ModelInstance levelInstance;
+    private final ModelInstance gridInstance;
     private Robot robot;
-    private PerspectiveCamera cam;
-    private Environment environment;
-    private CameraController controller;
-    private Viewport viewport;
-    private IterativeStack playPause;
-    private boolean useBlocks;
-    private String blocks;
+    private final PerspectiveCamera cam;
+    private final CameraController controller;
+    private final Viewport viewport;
+    private final IterativeStack playPause;
+    private final LevelData levelData;
+    private VisDialog settingsMenu;
+    private final Environment environment;
+    private final ProgressBar loadingBar;
 
-    @Override
-    public void show() {
-        super.show();
+    public GameScreen(final LevelData levelData) {
+        this.levelData = levelData;
 
-        modelBatch = new ModelBatch();
+        // Load assets
         assetManager.load("level.g3db", Model.class);
         assetManager.load("robot.g3db", Model.class);
         assetManager.load("background.jpg", Texture.class);
         assetManager.load("hud.png", Texture.class);
-        assetManager.load("editorSidebar.png", Texture.class);
 
+        // Create grid model
         ModelBuilder modelBuilder = new ModelBuilder();
         modelBuilder.begin();
-        MeshPartBuilder builder = modelBuilder.part("grid", GL20.GL_LINES, VertexAttributes.Usage.Position | VertexAttributes.Usage.ColorUnpacked, new Material());
+        MeshPartBuilder builder = modelBuilder.part("grid", GL20.GL_LINES, VertexAttributes.Usage.Position
+                | VertexAttributes.Usage.ColorUnpacked, new Material());
         builder.setColor(Color.BLACK);
         for (float t = 0; t <= 30; t += 1) {
             builder.line(t, 0.01f, 0, t, 0.01f, 30);
@@ -62,11 +84,13 @@ public class GameScreen extends RobotScreen implements RobotListener {
         }
         Model gridModel = modelBuilder.end();
         addDisposable(gridModel);
-        grid = new ModelInstance(gridModel);
+        gridInstance = new ModelInstance(gridModel);
 
+        // Setup camera and environment
+        modelBatch = new ModelBatch();
         environment = new Environment();
         environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.4f, 0.4f, 0.4f, 1f));
-        environment.add(new DirectionalLight().set(0.8f, 0.8f, 0.8f, -1f, -0.8f, -0.2f));
+        environment.add(new DirectionalLight().set(0.8f, 0.8f, 0.8f, 0f, -1f, 0f));
         cam = new PerspectiveCamera();
         viewport = Helpers.createViewport(cam);
         cam.position.x = 15;
@@ -80,35 +104,15 @@ public class GameScreen extends RobotScreen implements RobotListener {
         cam.update();
         inputMultiplexer.addProcessor(controller);
 
-        useBlocks = true;
-
-        blocks = "<xml xmlns=\"https://developers.google.com/blockly/xml\"><block type=\"controls_whileUntil\" id=\")a]s" +
-                "GO7-T5IP%$HIvB2L\" x=\"134\" y=\"84\"><field name=\"MODE\">UNTIL</field><statement name=\"DO\"><block " +
-                "type=\"robot_move\" id=\"S75yeoZ`/e5Rv%F}%SX1\"><value name=\"distance\"><block type=\"math_number\" id" +
-                "=\"-r+,j4?5V]f0%z.QD^p{\"><field name=\"NUM\">1</field></block></value><next><block type=\"robot_sleep" +
-                "\" id=\"Gj4[f%K@Z2!%wgnk2M`X\"><value name=\"duration\"><block type=\"math_number\" id=\"TwlZ]Yvqp=If;5" +
-                "BO{bPE\"><field name=\"NUM\">1</field></block></value><next><block type=\"robot_turn\" id=\"K)AbVjj1gr)" +
-                "OR6r*q[th\"><value name=\"distance\"><block type=\"math_number\" id=\"jo)d*8|gyjwC0p:baO#5\"><field nam" +
-                "e=\"NUM\">1</field></block></value></block></next></block></next></block></statement></block></xml>";
-    }
-
-    @Override
-    protected void doneLoading() {
-        levelModel = assetManager.get("level.g3db");
-        robotModel = assetManager.get("robot.g3db");
-        background = assetManager.get("background.jpg");
-        hud = assetManager.get("hud.png");
-
-        Helpers.cleanModel(levelModel);
-        Helpers.cleanModel(robotModel);
-        level = new ModelInstance(levelModel);
-        level.transform.set(new Vector3(15, -30, 15), new Quaternion(), new Vector3(0.01f, 0.01f, 0.01f));
-        ModelInstance modelInstance = new ModelInstance(robotModel);
-        robot = new Robot(modelInstance, this);
-
-        controlPanel = new Table();
-        controlPanel.setBounds(20, viewport.getWorldHeight() - 148, viewport.getWorldWidth() - 40, 128);
         Skin skin = new Skin(Gdx.files.internal("gameSkin.json"));
+
+        // Create laoding bar
+        loadingBar = new ProgressBar(0f, 100f, 1f, false, skin, "loadingBar");
+        loadingBar.setBounds(uiViewport.getWorldWidth() / 2 - 500, uiViewport.getWorldHeight() / 2 - 200, 1000, 50);
+
+        // Create main control panel
+        controlPanel = new Table();
+        controlPanel.setBounds(20, uiViewport.getWorldHeight() - 148, uiViewport.getWorldWidth() - 40, 128);
         programButton = new ImageButton(skin, "programming");
         controlPanel.add(programButton).padRight(10);
         playButton = new ImageButton(skin, "play");
@@ -116,30 +120,29 @@ public class GameScreen extends RobotScreen implements RobotListener {
         playPause = new IterativeStack(playButton, pauseButton);
         controlPanel.add(playPause).padRight(10);
         ImageButton resetButton = new ImageButton(skin, "reset");
-        controlPanel.add(resetButton).padRight(viewport.getWorldWidth() - 5 * 128 - 20 - 20 - 30);
+        controlPanel.add(resetButton).padRight(uiViewport.getWorldWidth() - 5 * 128 - 20 - 20 - 30);
         ImageButton fastforwardButton = new ImageButton(skin, "fastforward");
         controlPanel.add(fastforwardButton);
         ImageButton settingsButton = new ImageButton(skin, "settings");
         controlPanel.add(settingsButton).padLeft(10);
         controlPanel.align(Align.top);
-        //table.debug(Table.Debug.all);
         stage.addActor(controlPanel);
 
-        editorSidebar = new Table();
+        // Create editor sidebar
+        editorSidebar = new Table(skin);
         editorSidebar.setBounds(-editorSidebarWidth, 0, editorSidebarWidth, viewport.getWorldHeight());
-        Texture editorSidebarTexture = assetManager.get("editorSidebar.png");
-        addDisposable(editorSidebarTexture);
-        editorSidebar.setBackground(new TextureRegionDrawable(editorSidebarTexture));
-        ImageButton closeEditorButton = new ImageButton(skin, "close_editor");
+        editorSidebar.setBackground("editorSidebar");
+        ImageButton closeEditorButton = new ImageButton(skin, "closeEditor");
         editorSidebar.add(closeEditorButton).padBottom(128);
         editorSidebar.row();
-        ImageButton saveEditorButton = new ImageButton(skin, "save_editor");
+        ImageButton saveEditorButton = new ImageButton(skin, "saveEditor");
         editorSidebar.add(saveEditorButton).padBottom(128);
         editorSidebar.row();
-        ImageButton revertEditorButton = new ImageButton(skin, "revert_editor");
+        ImageButton revertEditorButton = new ImageButton(skin, "revertEditor");
         editorSidebar.add(revertEditorButton);
         stage.addActor(editorSidebar);
 
+        // Setup UI listeners
         programButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -189,59 +192,67 @@ public class GameScreen extends RobotScreen implements RobotListener {
         revertEditorButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                if (useBlocks && RobotGame.blocksEditor != null)
-                    RobotGame.blocksEditor.load(blocks);
+                if (levelData.usingBlocks() && RobotRecharge.blocksEditor != null)
+                    RobotRecharge.blocksEditor.load(levelData.getCode());
             }
         });
         saveEditorButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                if (useBlocks && RobotGame.blocksEditor != null) {
-                    RobotGame.blocksEditor.save(new Consumer<String>() {
+                if (levelData.usingBlocks() && RobotRecharge.blocksEditor != null) {
+                    RobotRecharge.blocksEditor.save(new Consumer<String>() {
                         @Override
                         public void accept(String blocks) {
-                            GameScreen.this.blocks = blocks;
+                            if (levelData.usingBlocks())
+                                levelData.setCode(blocks);
                         }
                     });
-                    RobotGame.blocksEditor.generateCode(new Consumer<String>() {
+                    RobotRecharge.blocksEditor.generateCode(new Consumer<String>() {
                         @Override
                         public void accept(String code) {
                             robot.setCode(code);
+                            if (!levelData.usingBlocks())
+                                levelData.setCode(code);
+                            saveLevel();
                         }
                     });
                 }
             }
         });
+    }
 
-        if (useBlocks && RobotGame.blocksEditor != null) {
-            RobotGame.blocksEditor.load(blocks);
-            RobotGame.blocksEditor.generateCode(new Consumer<String>() {
+    @Override
+    protected void doneLoading() {
+        // Get assets
+        levelInstance = new ModelInstance(Helpers.cleanModel(assetManager.<Model>get("level.g3db")));
+        background = assetManager.get("background.jpg");
+        hud = assetManager.get("hud.png");
+
+        // Setup level
+        levelInstance.transform.setTranslation(15, -30, 15);
+        robot = new Robot(new ModelInstance(Helpers.cleanModel(assetManager.<Model>get("robot.g3db"))), this);
+        if (!levelData.usingBlocks())
+            robot.setCode(levelData.getCode());
+        else if (RobotRecharge.blocksEditor != null) {
+            RobotRecharge.blocksEditor.load(levelData.getCode());
+            RobotRecharge.blocksEditor.generateCode(new Consumer<String>() {
                 @Override
                 public void accept(String code) {
                     robot.setCode(code);
                 }
             });
         }
-
-        robot.setCode("Robot.move(3);\nRobot.turn(1);\nRobot.sleep(1);\n"); //"while(true) {\nRobot.move(3);\nRobot.turn(1);\nRobot.sleep(1);\n}"
-
         resetLevel();
     }
 
     @Override
-    public void draw(float delta) {
-        controller.update();
-        cam.update();
+    protected void drawLoading(float delta) {
         spriteBatch.begin();
-        spriteBatch.draw(background, 0, 0, viewport.getWorldWidth(), viewport.getWorldHeight());
-        spriteBatch.end();
-        modelBatch.begin(cam);
-        modelBatch.render(level, environment);
-        modelBatch.render(grid);
-        robot.render(modelBatch, environment, delta);
-        modelBatch.end();
-        spriteBatch.begin();
-        spriteBatch.draw(hud, 0, 0, viewport.getWorldWidth(), viewport.getWorldHeight());
+        RobotRecharge.fontLarge.draw(spriteBatch, "Loading...", uiViewport.getWorldWidth() / 2 - 300,
+                uiViewport.getWorldHeight() / 2 + 100);
+        loadingBar.setValue(assetManager.getProgress() * 100);
+        loadingBar.act(delta);
+        loadingBar.draw(spriteBatch, 1);
         spriteBatch.end();
     }
 
@@ -250,13 +261,49 @@ public class GameScreen extends RobotScreen implements RobotListener {
         return super.isDoneLoading() && isEditorLoaded();
     }
 
+    @Override
+    public void draw(float delta) {
+        controller.update();
+        cam.update();
+
+        // Draw background
+        spriteBatch.begin();
+        spriteBatch.draw(background, 0, 0, viewport.getWorldWidth(), viewport.getWorldHeight());
+        spriteBatch.end();
+
+        // Draw level
+        modelBatch.begin(cam);
+        modelBatch.render(levelInstance, environment);
+        modelBatch.render(gridInstance, environment);
+        robot.render(modelBatch, environment, delta);
+        modelBatch.end();
+
+        // Draw HUD background
+        spriteBatch.begin();
+        spriteBatch.draw(hud, 0, 0, viewport.getWorldWidth(), viewport.getWorldHeight());
+        spriteBatch.end();
+
+        // Draw UI
+        super.draw(delta);
+    }
+
+    private void saveLevel() {
+        try (JsonWriter writer = new JsonWriter(new OutputStreamWriter(Gdx.files.local("save/" + levelData.getLevel() + ".txt").write(false)))) {
+            Json json = new Json();
+            json.toJson(levelData, writer);
+        } catch (IOException e) {
+            Gdx.app.error("Save Level", "Failed to save level", e);
+            Dialogs.showErrorDialog(stage, "Failed to save level", e.getMessage());
+        }
+    }
+
     private void resetLevel() {
         robot.reset(new Vector3(), new Quaternion());
     }
 
     private boolean isEditorLoaded() {
-        if (useBlocks && RobotGame.blocksEditor != null)
-            return RobotGame.blocksEditor.isLoaded();
+        if (levelData.usingBlocks() && RobotRecharge.blocksEditor != null)
+            return RobotRecharge.blocksEditor.isLoaded();
         else
             return true;
     }
@@ -265,21 +312,21 @@ public class GameScreen extends RobotScreen implements RobotListener {
         controlPanel.setTouchable(Touchable.disabled);
         controller.setDisabled(true);
         editorSidebar.addAction(Actions.moveTo(0, 0, 0.25f));
-        if (useBlocks && RobotGame.blocksEditor != null)
-            RobotGame.blocksEditor.show();
+        if (levelData.usingBlocks() && RobotRecharge.blocksEditor != null)
+            RobotRecharge.blocksEditor.show();
     }
 
     private void hideEditor() {
         controlPanel.setTouchable(Touchable.childrenOnly);
         controller.setDisabled(false);
         editorSidebar.addAction(Actions.moveTo(-editorSidebarWidth, 0, 0.25f));
-        if (useBlocks && RobotGame.blocksEditor != null)
-            RobotGame.blocksEditor.hide();
+        if (levelData.usingBlocks() && RobotRecharge.blocksEditor != null)
+            RobotRecharge.blocksEditor.hide();
     }
 
     private boolean isEditorShown() {
-        if (useBlocks && RobotGame.blocksEditor != null)
-            return RobotGame.blocksEditor.isShown();
+        if (levelData.usingBlocks() && RobotRecharge.blocksEditor != null)
+            return RobotRecharge.blocksEditor.isShown();
         else
             return false;
     }
@@ -313,17 +360,15 @@ public class GameScreen extends RobotScreen implements RobotListener {
     public void resize(int width, int height) {
         super.resize(width, height);
         viewport.update(width, height);
-        if (RobotGame.blocksEditor != null) {
+        if (RobotRecharge.blocksEditor != null) {
             int projected = (int) uiViewport.project(new Vector2(editorSidebarWidth, 0)).x;
-            RobotGame.blocksEditor.resize(projected, Gdx.graphics.getWidth() - projected, Gdx.graphics.getHeight());
+            RobotRecharge.blocksEditor.resize(projected, Gdx.graphics.getWidth() - projected, Gdx.graphics.getHeight());
         }
     }
 
     @Override
     public void dispose() {
-        spriteBatch.dispose();
-        robotModel.dispose();
-        levelModel.dispose();
+        robot.stop();
         super.dispose();
     }
 }

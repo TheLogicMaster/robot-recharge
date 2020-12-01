@@ -1,4 +1,52 @@
 {
+"com.badlogic.gdx.graphics.Color": {
+	"RGBA_255_255_255_255": {
+		"r": 1,
+		"g": 1,
+		"b": 1,
+		"a": 1
+	}
+},
+"com.ray3k.tenpatch.TenPatchDrawable": {
+	"progressBackTen": {
+		"region": "progressBack",
+		"horizontalStretchAreas": [ 39, 40 ],
+		"verticalStretchAreas": [ 0, 49 ],
+		"tiling": false,
+		"minWidth": 81,
+		"minHeight": 50,
+		"rightWidth": 1,
+		"leftWidth": 1,
+		"bottomHeight": 1,
+		"topHeight": 1,
+		"offsetX": 0,
+		"offsetY": 0,
+		"offsetXspeed": 0,
+		"offsetYspeed": 0,
+		"frameDuration": 0.03,
+		"regions": [],
+		"playMode": 2
+	},
+	"progressBarTen": {
+		"region": "progressBar",
+		"horizontalStretchAreas": [ 40, 120 ],
+		"verticalStretchAreas": [ 0, 49 ],
+		"tiling": true,
+		"minWidth": 0,
+		"minHeight": 50,
+		"rightWidth": 0,
+		"leftWidth": 0,
+		"bottomHeight": 0,
+		"topHeight": 0,
+		"offsetX": 0,
+		"offsetY": 0,
+		"offsetXspeed": 0,
+		"offsetYspeed": 0,
+		"frameDuration": 0.03,
+		"regions": [],
+		"playMode": 2
+	}
+},
 "com.kotcrab.vis.ui.Sizes": {
 	"default": {
 		"scaleFactor": 1,
@@ -39,12 +87,11 @@
 "com.badlogic.gdx.scenes.scene2d.ui.ImageButton$ImageButtonStyle": {
 	"play": {
 		"imageUp": "play",
-		"imageDisabled": "play-disabled",
 		"pressedOffsetY": 2
 	},
 	"pause": {
 		"imageUp": "pause",
-		"imageDisabled": "pause-disabled",
+		"imageDisabled": "pauseDisabled",
 		"pressedOffsetY": 2
 	},
 	"reset": {
@@ -52,8 +99,8 @@
 		"pressedOffsetY": 2
 	},
 	"fastforward": {
-		"imageUp": "fast-forward",
-		"imageChecked": "fast-forward-checked",
+		"imageUp": "fastForward",
+		"imageChecked": "fastForwardChecked",
 		"pressedOffsetY": 2
 	},
 	"settings": {
@@ -62,24 +109,26 @@
 	},
 	"programming": {
 		"imageUp": "programming",
-		"imageDisabled": "programming-disabled",
+		"imageDisabled": "programmingDisabled",
 		"pressedOffsetY": 2
 	},
-	"download": {
-		"imageUp": "download",
-		"pressedOffsetY": 2
-	},
-	"close_editor": {
+	"closeEditor": {
 		"imageUp": "back",
 		"pressedOffsetY": 2
 	},
-	"save_editor": {
+	"saveEditor": {
 		"imageUp": "download",
 		"pressedOffsetY": 2
 	},
-	"revert_editor": {
+	"revertEditor": {
 		"imageUp": "rewind",
 		"pressedOffsetY": 2
+	}
+},
+"com.badlogic.gdx.scenes.scene2d.ui.ProgressBar$ProgressBarStyle": {
+	"loadingBar": {
+		"background": "progressBackTen",
+		"knobBefore": "progressBarTen"
 	}
 }
 }
