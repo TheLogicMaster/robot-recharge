@@ -127,7 +127,7 @@ jobs:
         with:
           args: zip -qq -r win64-${{ steps.get_version.outputs.VERSION }}.zip ./RobotRecharge/
           
-       name: Package Mac release
+      - name: Package Mac release
         run: ./gradlew packageMacGHActions
 
       - name: Copy Mac native libraries
