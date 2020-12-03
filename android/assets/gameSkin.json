@@ -1,6 +1,12 @@
 {
 "com.badlogic.gdx.graphics.Color": {
-	"RGBA_255_255_255_255": {
+	"Black": {
+		"r": 0,
+		"g": 0,
+		"b": 0,
+		"a": 1
+	},
+	"White": {
 		"r": 1,
 		"g": 1,
 		"b": 1,
@@ -8,17 +14,17 @@
 	}
 },
 "com.ray3k.tenpatch.TenPatchDrawable": {
-	"progressBackTen": {
-		"region": "progressBack",
-		"horizontalStretchAreas": [ 39, 40 ],
+	"progressBarTen": {
+		"region": "progressBar",
+		"horizontalStretchAreas": [ 40, 120 ],
 		"verticalStretchAreas": [ 0, 49 ],
-		"tiling": false,
-		"minWidth": 81,
+		"tiling": true,
+		"minWidth": 0,
 		"minHeight": 50,
-		"rightWidth": 1,
-		"leftWidth": 1,
-		"bottomHeight": 1,
-		"topHeight": 1,
+		"rightWidth": 0,
+		"leftWidth": 0,
+		"bottomHeight": 0,
+		"topHeight": 0,
 		"offsetX": 0,
 		"offsetY": 0,
 		"offsetXspeed": 0,
@@ -27,12 +33,12 @@
 		"regions": [],
 		"playMode": 2
 	},
-	"progressBarTen": {
-		"region": "progressBar",
-		"horizontalStretchAreas": [ 40, 120 ],
+	"progressBackTen": {
+		"region": "progressBack",
+		"horizontalStretchAreas": [ 39, 40 ],
 		"verticalStretchAreas": [ 0, 49 ],
-		"tiling": true,
-		"minWidth": 0,
+		"tiling": false,
+		"minWidth": 81,
 		"minHeight": 50,
 		"rightWidth": 0,
 		"leftWidth": 0,
@@ -85,50 +91,63 @@
 	}
 },
 "com.badlogic.gdx.scenes.scene2d.ui.ImageButton$ImageButtonStyle": {
+	"programming": {
+		"imageUp": "programming",
+		"imageDisabled": "programmingDisabled",
+		"pressedOffsetY": 3
+	},
 	"play": {
 		"imageUp": "play",
-		"pressedOffsetY": 2
+		"imageDisabled": "playDisabled",
+		"pressedOffsetY": 3
 	},
 	"pause": {
 		"imageUp": "pause",
 		"imageDisabled": "pauseDisabled",
-		"pressedOffsetY": 2
+		"pressedOffsetY": 3
 	},
 	"reset": {
 		"imageUp": "rewind",
-		"pressedOffsetY": 2
+		"pressedOffsetY": 3
 	},
-	"fastforward": {
+	"fastForward": {
 		"imageUp": "fastForward",
 		"imageChecked": "fastForwardChecked",
-		"pressedOffsetY": 2
-	},
-	"settings": {
-		"imageUp": "settings",
-		"pressedOffsetY": 2
-	},
-	"programming": {
-		"imageUp": "programming",
-		"imageDisabled": "programmingDisabled",
-		"pressedOffsetY": 2
-	},
-	"closeEditor": {
-		"imageUp": "back",
-		"pressedOffsetY": 2
+		"pressedOffsetX": 3
 	},
 	"saveEditor": {
 		"imageUp": "download",
-		"pressedOffsetY": 2
+		"pressedOffsetY": -3
 	},
 	"revertEditor": {
 		"imageUp": "rewind",
-		"pressedOffsetY": 2
+		"pressedOffsetY": 3
+	},
+	"closeEditor": {
+		"imageUp": "back",
+		"pressedOffsetX": -3
+	},
+	"settings": {
+		"imageUp": "settings",
+		"pressedOffsetY": 3
 	}
 },
 "com.badlogic.gdx.scenes.scene2d.ui.ProgressBar$ProgressBarStyle": {
 	"loadingBar": {
 		"background": "progressBackTen",
 		"knobBefore": "progressBarTen"
+	}
+},
+"com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle": {
+	"default": {
+		"font": "menuFont",
+		"fontColor": "Black"
+	}
+},
+"com.badlogic.gdx.scenes.scene2d.ui.Window$WindowStyle": {
+	"settingsMenu": {
+		"titleFont": "menuFont",
+		"titleFontColor": "Black"
 	}
 }
 }

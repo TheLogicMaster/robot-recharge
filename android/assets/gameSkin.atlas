@@ -6,106 +6,120 @@ filter: Linear,Linear
 repeat: none
 back
   rotate: false
-  xy: 1, 651
+  xy: 933, 1355
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: -1
 download
   rotate: false
-  xy: 1, 521
+  xy: 1, 261
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: -1
 editorSidebar
   rotate: false
-  xy: 1, 781
+  xy: 803, 273
   size: 128, 1080
   orig: 128, 1080
   offset: 0, 0
   index: -1
 fastForward
   rotate: false
-  xy: 416, 1915
+  xy: 933, 965
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: -1
 fastForwardChecked
   rotate: false
-  xy: 676, 1915
+  xy: 1, 131
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: -1
+gameTextButton
+  rotate: false
+  xy: 1193, 1253
+  size: 100, 100
+  orig: 100, 100
+  offset: 0, 0
+  index: -1
 pause
   rotate: false
-  xy: 156, 1915
+  xy: 1193, 1355
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: -1
 pauseDisabled
   rotate: false
-  xy: 1, 261
+  xy: 1063, 1355
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: -1
 play
   rotate: false
-  xy: 1, 1
+  xy: 1063, 1225
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: -1
 playDisabled
   rotate: false
-  xy: 1, 391
+  xy: 933, 1225
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: -1
 programming
   rotate: false
-  xy: 1, 131
+  xy: 933, 1095
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: -1
 programmingDisabled
   rotate: false
-  xy: 1, 1863
+  xy: 803, 1355
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: -1
 progressBack
   rotate: false
-  xy: 806, 1993
+  xy: 156, 391
   size: 81, 50
   orig: 81, 50
   offset: 0, 0
   index: -1
 progressBar
   rotate: false
-  xy: 1, 1993
+  xy: 1, 391
   size: 153, 50
   orig: 153, 50
   offset: 0, 0
   index: -1
 rewind
   rotate: false
-  xy: 286, 1915
+  xy: 1, 1
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: -1
 settings
   rotate: false
-  xy: 546, 1915
+  xy: 1063, 1095
   size: 128, 128
   orig: 128, 128
+  offset: 0, 0
+  index: -1
+titleMenu
+  rotate: false
+  xy: 1, 443
+  size: 800, 1040
+  orig: 800, 1040
   offset: 0, 0
   index: -1

@@ -66,6 +66,32 @@ javapackager {
         icoFile = new File(project.projectDir.path + '/icon.ico')
         companyName = 'TheLogicMaster'
     }
+
+    macConfig {
+
+    }
+}
+
+task packageMacGHActions(type: PackageTask, dependsOn: build) {
+    jrePath = new File(System.getProperty("user.dir") + '/jre_mac')
+    platform = 'mac'
+}
+
+// Put Mac JCEF app Contents directory contents into <project>/Libraries/jcef
+task packageMac(type: PackageTask, dependsOn: build) {
+    platform = 'mac'
+    doLast {
+        // Ensure app manifest file isn't overwritten
+        delete {
+            delete project.rootDir.path + '/Libraries/jcef/Info.plist'
+        }
+
+        // Inject JCEF dependencies
+        copy {
+            from project.rootDir.path + '/Libraries/jcef'
+            into project.buildDir.path + '/RobotRecharge/RobotRecharge.app/Contents'
+        }
+    }
 }
 
 task packageWindowsGHActions(type: PackageTask, dependsOn: build) {

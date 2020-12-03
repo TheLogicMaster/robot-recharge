@@ -31,6 +31,13 @@ jobs:
           url: 'https://github.com/jcefbuild/jcefbuild/releases/download/v1.0.10-84.3.8%2Bgc8a556f%2Bchromium-84.0.4147.105/win64.zip'
           target: .
 
+      - name: Download Mac JCEF
+        id: get_jcef_mac
+        uses: suisei-cn/actions-download-file@v1
+        with:
+          url: 'https://github.com/jcefbuild/jcefbuild/releases/download/v1.0.10-84.3.8%2Bgc8a556f%2Bchromium-84.0.4147.105/macosx64.zip'
+          target: .
+          
       - name: Download Linux JRE
         id: get_jre_linux
         uses: suisei-cn/actions-download-file@v1
@@ -44,6 +51,13 @@ jobs:
         with:
           url: 'http://static.azul.com/zulu/bin/zulu11.29.3-ca-fx-jre11.0.2-win_x64.zip'
           target: .
+          
+      - name: Download Mac JRE
+        id: get_jre_mac
+        uses: suisei-cn/actions-download-file@v1
+        with:
+          url: 'https://static.azul.com/zulu/bin/zulu11.29.11-ca-jdk11.0.2-macosx_x64.zip'
+          target: .
 
       - name: Extract Linux JCEF
         uses: montudor/action-zip@v0.1.1
@@ -55,6 +69,11 @@ jobs:
         uses: montudor/action-zip@v0.1.1
         with:
           args: unzip -qq ${{ steps.get_jcef_windows.outputs.filename }} -d jcef_windows
+          
+      - name: Extract Mac JCEF
+        uses: montudor/action-zip@v0.1.1
+        with:
+          args: unzip -qq ${{ steps.get_jcef_mac.outputs.filename }} -d jcef_mac
 
       - name: Extract Linux JRE
         run: |
@@ -65,12 +84,19 @@ jobs:
         uses: montudor/action-zip@v0.1.1
         with:
           args: unzip -qq ${{ steps.get_jre_windows.outputs.filename }} -d jre_windows
+          
+      - name: Extract Mac JRE
+        uses: montudor/action-zip@v0.1.1
+        with:
+          args: unzip -qq ${{ steps.get_jre_mac.outputs.filename }} -d jre_mac
 
       - name: Move zip root directories
         run: |
           sudo mv ./jcef_linux/*/* ./jcef_linux
           sudo mv ./jre_windows/*/* ./jre_windows
+          sudo mv ./jre_mac/*/* ./jre_mac
           sudo mv ./jcef_windows/*/* ./jcef_windows
+          sudo mv ./jcef_mac/*/* ./jcef_mac
 
       - name: Package Linux release
         run: ./gradlew packageLinuxGHActions
@@ -100,6 +126,20 @@ jobs:
         uses: montudor/action-zip@v0.1.1
         with:
           args: zip -qq -r win64-${{ steps.get_version.outputs.VERSION }}.zip ./RobotRecharge/
+          
+       name: Package Mac release
+        run: ./gradlew packageMacGHActions
+
+      - name: Copy Mac native libraries
+        run: |
+          rm -rf ./RobotRecharge
+          cp -r ./jcef_mac/bin/jcef_app.app/Contents/* ./desktop/build/RobotRecharge/RobotRecharge.app/Contents
+          mv ./desktop/build/RobotRecharge .
+
+      - name: Zip Mac Release
+        uses: montudor/action-zip@v0.1.1
+        with:
+          args: zip -qq -r mac64-${{ steps.get_version.outputs.VERSION }}.zip ./RobotRecharge/
 
       - name: Setup Android SDK
         uses: android-actions/setup-android@v2
@@ -126,26 +166,26 @@ jobs:
         run: |
           hub release edit -a ./linux64-${{ steps.get_version.outputs.VERSION }}.zip -m "" ${{ steps.get_version.outputs.VERSION }}
           hub release edit -a ./win64-${{ steps.get_version.outputs.VERSION }}.zip -m "" ${{ steps.get_version.outputs.VERSION }}
+          hub release edit -a ./mac64-${{ steps.get_version.outputs.VERSION }}.zip -m "" ${{ steps.get_version.outputs.VERSION }}
           hub release edit -a ./android-${{ steps.get_version.outputs.VERSION }}.apk -m "" ${{ steps.get_version.outputs.VERSION }}
 
-      - name: Sign Android bundle
-        uses: r0adkll/sign-android-release@v1
-        id: sign_bundle
-        with:
-          releaseDirectory: ./android/build/outputs/bundle/release
-          signingKeyBase64: ${{ secrets.SIGNING_KEY }}
-          alias: ${{ secrets.ALIAS }}
-          keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
-          keyPassword: ${{ secrets.KEY_PASSWORD }}
-        env:
-          BUILD_TOOLS_VERSION: "29.0.2"
+      #- name: Sign Android bundle
+        #uses: r0adkll/sign-android-release@v1
+        #id: sign_bundle
+        #with:
+          #releaseDirectory: ./android/build/outputs/bundle/release
+          #signingKeyBase64: ${{ secrets.SIGNING_KEY }}
+          #alias: ${{ secrets.ALIAS }}
+          #keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
+          #keyPassword: ${{ secrets.KEY_PASSWORD }}
+        #env:
+          #BUILD_TOOLS_VERSION: "29.0.2"
 
-      - name: Upload to Google Play
-        uses: r0adkll/upload-google-play@v1
-        with:
-          serviceAccountJsonPlainText: ${{ secrets.SERVICE_ACCOUNT_JSON }}
-          packageName: com.thelogicmaster.robot_recharge
-          releaseFiles: ${{steps.sign_bundle.outputs.signedReleaseFile}}
-          track: alpha
-          whatsNewDirectory: ./android/whatsnew
-          # mappingFile: app/build/outputs/mapping/release/mapping.txt # Use if minifying code
+      #- name: Upload to Google Play
+        #uses: r0adkll/upload-google-play@v1
+        #with:
+          #serviceAccountJsonPlainText: ${{ secrets.SERVICE_ACCOUNT_JSON }}
+          #packageName: com.thelogicmaster.robot_recharge
+          #releaseFiles: ${{steps.sign_bundle.outputs.signedReleaseFile}}
+          #track: alpha
+          #whatsNewDirectory: ./android/whatsnew

@@ -4,7 +4,7 @@ sourceCompatibility = '1.7'
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 
 ext {
-    mainClassName = "com.thelogicmaster.robot_game.IOSLauncher"
+    mainClassName = "com.thelogicmaster.robot_recharge.IOSLauncher"
 }
 
 launchIPhoneSimulator.dependsOn build

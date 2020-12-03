@@ -135,5 +135,6 @@ project(":core") {
         implementation "com.strongjoshua:libgdx-inGameConsole:1.0.0"
         implementation 'com.github.raeleus.TenPatch:tenpatch:5.0.0'
         api "com.github.mgsx-dev.gdx-gltf:gltf:$gltfVersion"
+        implementation 'com.github.raeleus:stripe:master-SNAPSHOT'
     }
 }

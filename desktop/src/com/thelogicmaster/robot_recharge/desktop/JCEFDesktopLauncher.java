@@ -2,6 +2,7 @@ package com.thelogicmaster.robot_recharge.desktop;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.lwjgl.LwjglAWTCanvas;
+import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.thelogicmaster.robot_recharge.RobotRecharge;
 import org.cef.CefApp;
 import org.cef.handler.CefAppHandlerAdapter;
@@ -29,7 +30,9 @@ public class JCEFDesktopLauncher extends JFrame {
         });
 
         final JCEFBlocklyEditor blocklyEditor = new JCEFBlocklyEditor();
-        final LwjglAWTCanvas canvas = new LwjglAWTCanvas(new RobotRecharge(new DesktopJavaScriptEngine(), blocklyEditor));
+        LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
+        config.allowSoftwareMode = true;
+        final LwjglAWTCanvas canvas = new LwjglAWTCanvas(new RobotRecharge(new DesktopJavaScriptEngine(), blocklyEditor), config);
         blocklyEditor.setup();
 
         setSize(800, 480);

@@ -19,6 +19,8 @@
         </resource>
     </resources>
     <forceLinkClasses>
+        <pattern>com.ray3k.stripe.*</pattern>
+        <pattern>com.ray3k.tenpatch.TenPatchDrawable</pattern>
         <pattern>com.badlogic.gdx.scenes.scene2d.ui.*</pattern>
         <pattern>com.badlogic.gdx.graphics.g3d.particles.**</pattern>
         <pattern>com.android.okhttp.HttpHandler</pattern>

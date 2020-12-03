@@ -8,6 +8,7 @@ import com.thelogicmaster.robot_recharge.RobotRecharge;
 public class DesktopLauncher {
     public static void main(String[] arg) throws InterruptedException {
         LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
+        config.allowSoftwareMode = true;
         config.addIcon("icon128.png", Files.FileType.Internal);
         config.addIcon("icon32.png", Files.FileType.Internal);
         config.addIcon("icon16.png", Files.FileType.Internal);

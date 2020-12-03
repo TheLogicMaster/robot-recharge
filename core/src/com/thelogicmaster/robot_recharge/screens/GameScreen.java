@@ -3,6 +3,7 @@ package com.thelogicmaster.robot_recharge.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.graphics.*;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g3d.*;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.BaseLight;
@@ -18,10 +19,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
-import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.*;
@@ -59,7 +57,7 @@ public class GameScreen extends RobotScreen implements RobotListener {
     private final Viewport viewport;
     private final IterativeStack playPause;
     private final LevelData levelData;
-    private VisDialog settingsMenu;
+    private final Dialog settingsMenu;
     private final Environment environment;
     private final ProgressBar loadingBar;
 
@@ -104,11 +102,23 @@ public class GameScreen extends RobotScreen implements RobotListener {
         cam.update();
         inputMultiplexer.addProcessor(controller);
 
-        Skin skin = new Skin(Gdx.files.internal("gameSkin.json"));
+        // Load UI skin
+        Skin skin = new Skin();
+        skin.add("menuFont", RobotRecharge.fontNormal);
+        skin.addRegions(new TextureAtlas("gameSkin.atlas"));
+        skin.load(Gdx.files.internal("gameSkin.json"));
 
-        // Create laoding bar
-        loadingBar = new ProgressBar(0f, 100f, 1f, false, skin, "loadingBar");
+        // Create loading bar
+        loadingBar = new ProgressBar(-20f, 100f, 1f, false, skin, "loadingBar");
         loadingBar.setBounds(uiViewport.getWorldWidth() / 2 - 500, uiViewport.getWorldHeight() / 2 - 200, 1000, 50);
+
+        // Create settings menu
+        settingsMenu = new Dialog("Settings", skin, "settingsMenu");
+        settingsMenu.setMovable(false);
+        settingsMenu.button("Close");
+        //settingsMenu.getBackground()
+        //settingsMenu.setSize(400, 400);
+        //settingsMenu.getContentTable().setBounds(uiViewport.getWorldWidth() / 2 - 700, uiViewport.getWorldHeight() / 2 - 400, 1400, 800);
 
         // Create main control panel
         controlPanel = new Table();
@@ -121,8 +131,8 @@ public class GameScreen extends RobotScreen implements RobotListener {
         controlPanel.add(playPause).padRight(10);
         ImageButton resetButton = new ImageButton(skin, "reset");
         controlPanel.add(resetButton).padRight(uiViewport.getWorldWidth() - 5 * 128 - 20 - 20 - 30);
-        ImageButton fastforwardButton = new ImageButton(skin, "fastforward");
-        controlPanel.add(fastforwardButton);
+        ImageButton fastForwardButton = new ImageButton(skin, "fastForward");
+        controlPanel.add(fastForwardButton);
         ImageButton settingsButton = new ImageButton(skin, "settings");
         controlPanel.add(settingsButton).padLeft(10);
         controlPanel.align(Align.top);
@@ -171,7 +181,7 @@ public class GameScreen extends RobotScreen implements RobotListener {
                 programButton.setDisabled(false);
             }
         });
-        fastforwardButton.addListener(new ChangeListener() {
+        fastForwardButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 robot.setFastForward(!robot.isFastForward());
@@ -180,7 +190,8 @@ public class GameScreen extends RobotScreen implements RobotListener {
         settingsButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-
+                settingsMenu.show(stage);
+                robot.pause();
             }
         });
         closeEditorButton.addListener(new ChangeListener() {
