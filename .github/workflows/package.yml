@@ -141,6 +141,11 @@ jobs:
         with:
           args: zip -qq -r mac64-${{ steps.get_version.outputs.VERSION }}.zip ./RobotRecharge/
 
+      - name: Rename Release JAR
+        run: |
+          ./gradlew dist
+          mv ./desktop/build/libs/*.jar ./RobotRecharge-${{ steps.get_version.outputs.VERSION }}.jar
+          
       - name: Setup Android SDK
         uses: android-actions/setup-android@v2
 
@@ -164,6 +169,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          hub release edit -a ./RobotRecharge-${{ steps.get_version.outputs.VERSION }}.jar -m "" ${{ steps.get_version.outputs.VERSION }}
           hub release edit -a ./linux64-${{ steps.get_version.outputs.VERSION }}.zip -m "" ${{ steps.get_version.outputs.VERSION }}
           hub release edit -a ./win64-${{ steps.get_version.outputs.VERSION }}.zip -m "" ${{ steps.get_version.outputs.VERSION }}
           hub release edit -a ./mac64-${{ steps.get_version.outputs.VERSION }}.zip -m "" ${{ steps.get_version.outputs.VERSION }}

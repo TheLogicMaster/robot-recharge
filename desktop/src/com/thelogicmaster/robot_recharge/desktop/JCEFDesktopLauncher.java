@@ -36,7 +36,7 @@ public class JCEFDesktopLauncher extends JFrame {
         blocklyEditor.setup();
 
         setSize(800, 480);
-        setTitle("Robot Game");
+        setTitle("Robot Recharge");
         try {
             ArrayList<Image> icons = new ArrayList<>();
             icons.add(new ImageIcon(Gdx.files.internal("icon128.png").file().toURI().toURL()).getImage());
