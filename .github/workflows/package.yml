@@ -132,6 +132,7 @@ jobs:
       - name: Copy Mac native libraries
         run: |
           rm -rf ./RobotRecharge
+          rm ./jcef_mac/bin/jcef_app.app/Contents/Info.plist
           cp -r ./jcef_mac/bin/jcef_app.app/Contents/* ./desktop/build/RobotRecharge/RobotRecharge.app/Contents
           mv ./desktop/build/RobotRecharge .
 
