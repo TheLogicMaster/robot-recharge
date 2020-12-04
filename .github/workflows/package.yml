@@ -56,7 +56,7 @@ jobs:
         id: get_jre_mac
         uses: suisei-cn/actions-download-file@v1
         with:
-          url: 'https://static.azul.com/zulu/bin/zulu11.29.11-ca-jdk11.0.2-macosx_x64.zip'
+          url: 'https://download.java.net/java/GA/jdk15.0.1/51f4f36ad4ef43e39d0dfdbaf6549e32/9/GPL/openjdk-15.0.1_osx-x64_bin.tar.gz'
           target: .
 
       - name: Extract Linux JCEF
@@ -86,15 +86,14 @@ jobs:
           args: unzip -qq ${{ steps.get_jre_windows.outputs.filename }} -d jre_windows
           
       - name: Extract Mac JRE
-        uses: montudor/action-zip@v0.1.1
-        with:
-          args: unzip -qq ${{ steps.get_jre_mac.outputs.filename }} -d jre_mac
+        run: |
+          mkdir ./jre_mac
+          tar xvzf ${{ steps.get_jre_mac.outputs.filename }} -C ./jre_mac --strip-components=2
 
       - name: Move zip root directories
         run: |
           sudo mv ./jcef_linux/*/* ./jcef_linux
           sudo mv ./jre_windows/*/* ./jre_windows
-          sudo mv ./jre_mac/*/* ./jre_mac
           sudo mv ./jcef_windows/*/* ./jcef_windows
           sudo mv ./jcef_mac/*/* ./jcef_mac
 

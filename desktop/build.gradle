@@ -68,7 +68,7 @@ javapackager {
     }
 
     macConfig {
-
+        vmArgs = ['-Djava.library.path=../Java']
     }
 }
 
@@ -77,7 +77,7 @@ task packageMacGHActions(type: PackageTask, dependsOn: build) {
     platform = 'mac'
 }
 
-// Put Mac JCEF app Contents directory contents into <project>/Libraries/jcef
+// Put Mac JCEF app Contents directory contents into <project>/Libraries/mac64/jcef
 task packageMac(type: PackageTask, dependsOn: build) {
     platform = 'mac'
     doLast {
@@ -88,7 +88,7 @@ task packageMac(type: PackageTask, dependsOn: build) {
 
         // Inject JCEF dependencies
         copy {
-            from project.rootDir.path + '/Libraries/jcef'
+            from project.rootDir.path + '/Libraries/jcef/mac64'
             into project.buildDir.path + '/RobotRecharge/RobotRecharge.app/Contents'
         }
     }
