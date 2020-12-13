@@ -13,7 +13,11 @@ public class IOSLauncher extends IOSApplication.Delegate {
     @Override
     protected IOSApplication createApplication() {
         IOSApplicationConfiguration config = new IOSApplicationConfiguration();
-        return new IOSApplication(new RobotRecharge(new HashMap<Language, ICodeEngine>(), null), config);
+        return new IOSApplication(new RobotRecharge(new HashMap<Language, ICodeEngine>(), null, new IPlatformUtils() {
+            @Override
+            public void setWindowMode(WindowMode windowMode) {
+            }
+        }), config);
     }
 
     public static void main(String[] argv) {

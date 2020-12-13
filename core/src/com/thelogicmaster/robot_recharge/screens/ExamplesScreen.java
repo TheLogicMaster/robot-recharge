@@ -20,7 +20,7 @@ public class ExamplesScreen extends MenuScreen {
         // Examples list
         Table examplesTable = new Table(skin);
         examplesTable.setBackground("windowTen");
-        examplesTable.setBounds(100, 100, 200, 400);
+        examplesTable.setBounds(100, 300, 300, 400);
         Array<Example> examples = Helpers.json.fromJson(Array.class, Example.class, Gdx.files.internal("examples.json"));
         final List<Example> list = new List<>(skin);
         list.setItems(examples);
@@ -30,7 +30,7 @@ public class ExamplesScreen extends MenuScreen {
         // Example description and load
         Table descriptionTable = new Table(skin);
         descriptionTable.setBackground("windowTen");
-        descriptionTable.setBounds(500, 100, 800, 400);
+        descriptionTable.setBounds(500, 300, 800, 400);
         final IterativeStack stack = new IterativeStack();
         for (Example example: new Array.ArrayIterator<>(examples))
             stack.add(new Label(example.getDescription(), skin));

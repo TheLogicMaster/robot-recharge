@@ -1,8 +1,13 @@
 package com.thelogicmaster.robot_recharge.desktop;
 
 import com.badlogic.gdx.Files;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Graphics;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
+import com.thelogicmaster.robot_recharge.Helpers;
+import com.thelogicmaster.robot_recharge.IPlatformUtils;
+import com.thelogicmaster.robot_recharge.WindowMode;
 import com.thelogicmaster.robot_recharge.code.ICodeEngine;
 import com.thelogicmaster.robot_recharge.code.Language;
 import com.thelogicmaster.robot_recharge.RobotRecharge;
@@ -19,6 +24,24 @@ public class DesktopLauncher {
         HashMap<Language, ICodeEngine> engines = new HashMap<>();
         engines.put(Language.JavaScript, new DesktopJavaScriptEngine());
         engines.put(Language.Python, new DesktopPythonEngine());
-        new LwjglApplication(new RobotRecharge(engines, null), config);
+        new LwjglApplication(new RobotRecharge(engines, null, new IPlatformUtils() {
+            @Override
+            public void setWindowMode(WindowMode windowMode) {
+                switch (windowMode) {
+                    case Windowed:
+                        Gdx.graphics.setUndecorated(false);
+                        Gdx.graphics.setWindowedMode(960, 540);
+                        break;
+                    case Fullscreen:
+                        Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode());
+                        break;
+                    case WindowedFullscreen:
+                        Gdx.graphics.setUndecorated(true);
+                        Graphics.DisplayMode mode = Gdx.graphics.getDisplayMode();
+                        Gdx.graphics.setWindowedMode(mode.width, mode.height);
+                        break;
+                }
+            }
+        }), config);
     }
 }

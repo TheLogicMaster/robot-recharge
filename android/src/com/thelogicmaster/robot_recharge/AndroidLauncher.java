@@ -20,7 +20,11 @@ public class AndroidLauncher extends AndroidApplication {
         HashMap<Language, ICodeEngine> engines = new HashMap<>();
         engines.put(Language.JavaScript, new AndroidJavaScriptEngine());
         engines.put(Language.Python, new AndroidPythonEngine(this));
-        initialize(new RobotRecharge(engines, editor), config);
+        initialize(new RobotRecharge(engines, editor, new IPlatformUtils() {
+            @Override
+            public void setWindowMode(WindowMode windowMode) {
+            }
+        }), config);
         addContentView(editor, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
     }
 }

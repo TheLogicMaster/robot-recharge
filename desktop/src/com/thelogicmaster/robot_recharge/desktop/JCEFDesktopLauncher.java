@@ -1,13 +1,18 @@
 package com.thelogicmaster.robot_recharge.desktop;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Graphics;
 import com.badlogic.gdx.backends.lwjgl.LwjglAWTCanvas;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
+import com.badlogic.gdx.backends.lwjgl.LwjglGraphics;
+import com.thelogicmaster.robot_recharge.IPlatformUtils;
+import com.thelogicmaster.robot_recharge.WindowMode;
 import com.thelogicmaster.robot_recharge.code.ICodeEngine;
 import com.thelogicmaster.robot_recharge.code.Language;
 import com.thelogicmaster.robot_recharge.RobotRecharge;
 import org.cef.CefApp;
 import org.cef.handler.CefAppHandlerAdapter;
+import org.python.modules._imp;
 
 import javax.swing.*;
 import java.awt.*;
@@ -19,11 +24,13 @@ import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class JCEFDesktopLauncher extends JFrame {
+public class JCEFDesktopLauncher implements IPlatformUtils {
+
+    private final JFrame jFrame;
+    private final LwjglAWTCanvas lwjglAWTCanvas;
+    private final JCEFBlocklyEditor blocklyEditor;
 
     private JCEFDesktopLauncher() {
-        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-
         CefApp.addAppHandler(new CefAppHandlerAdapter(null) {
             @Override
             public void stateHasChanged(CefApp.CefAppState state) {
@@ -32,13 +39,13 @@ public class JCEFDesktopLauncher extends JFrame {
             }
         });
 
-        final JCEFBlocklyEditor blocklyEditor = new JCEFBlocklyEditor();
+        blocklyEditor = new JCEFBlocklyEditor();
         LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
         config.allowSoftwareMode = true;
         HashMap<Language, ICodeEngine> engines = new HashMap<>();
         engines.put(Language.JavaScript, new DesktopJavaScriptEngine());
         engines.put(Language.Python, new DesktopPythonEngine());
-        final LwjglAWTCanvas canvas = new LwjglAWTCanvas(new RobotRecharge(engines, blocklyEditor), config) {
+        lwjglAWTCanvas = new LwjglAWTCanvas(new RobotRecharge(engines, blocklyEditor, this), config) {
             // Graceful exit
             @Override
             public void exit () {
@@ -59,26 +66,33 @@ public class JCEFDesktopLauncher extends JFrame {
         };
         blocklyEditor.setup();
 
-        setSize(800, 480);
-        setTitle("Robot Recharge");
+        jFrame = createFrame();
+        jFrame.getContentPane().setPreferredSize(new Dimension(960, 540));
+        jFrame.add(blocklyEditor.getEditor());
+        jFrame.add(lwjglAWTCanvas.getCanvas());
+        jFrame.pack();
+        jFrame.setVisible(true);
+    }
+
+    private JFrame createFrame() {
+        final JFrame frame = new JFrame();
+        frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+
+        frame.setTitle("Robot Recharge");
         try {
             ArrayList<Image> icons = new ArrayList<>();
             icons.add(new ImageIcon(Gdx.files.internal("icon128.png").file().toURI().toURL()).getImage());
             icons.add(new ImageIcon(Gdx.files.internal("icon32.png").file().toURI().toURL()).getImage());
             icons.add(new ImageIcon(Gdx.files.internal("icon16.png").file().toURI().toURL()).getImage());
-            setIconImages(icons);
+            frame.setIconImages(icons);
         } catch (MalformedURLException e) {
             Gdx.app.error("JCEF Launcher", "Failed to set icon");
         }
 
-        setMinimumSize(new Dimension(100, 100));
-        setLayout(null);
-        add(blocklyEditor.getEditor());
-        add(canvas.getCanvas());
+        frame.setMinimumSize(new Dimension(160, 90));
+        frame.setLayout(null);
 
-        setVisible(true);
-
-        addWindowListener(new WindowAdapter() {
+        frame.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
                 if (Gdx.app != null)
@@ -86,13 +100,29 @@ public class JCEFDesktopLauncher extends JFrame {
             }
         });
 
-        addComponentListener(new ComponentAdapter() {
+        frame.addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent componentEvent) {
-                Dimension size = getSize();
-                canvas.getCanvas().setSize(size.width, size.height - 37); // Fix for bottom getting cut off
+                Dimension size = frame.getSize();
+                lwjglAWTCanvas.getCanvas().setSize(size.width, size.height - 37); // Fix for bottom getting cut off
             }
         });
+        return frame;
+    }
+
+    @Override
+    public void setWindowMode(WindowMode windowMode) {
+        GraphicsDevice device = jFrame.getGraphicsConfiguration().getDevice();
+        switch (windowMode) {
+            case Fullscreen:
+                device.setFullScreenWindow(jFrame);
+                break;
+            case WindowedFullscreen:
+            case Windowed:
+                device.setFullScreenWindow(null);
+                jFrame.setResizable(true);
+                break;
+        }
     }
 
     public static void main(String[] args) {

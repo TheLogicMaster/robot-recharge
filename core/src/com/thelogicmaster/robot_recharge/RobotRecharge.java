@@ -17,13 +17,15 @@ public class RobotRecharge extends Game {
     public static RobotRecharge instance;
     public static RobotAssets assets;
     public static Map<Language, ICodeEngine> codeEngines = new HashMap<>();
+    public static IPlatformUtils platformUtils;
 
     private TitleScreen titleScreen;
 
-    public RobotRecharge(Map<Language, ICodeEngine> engines, IBlocklyEditor blocksEditor) {
+    public RobotRecharge(Map<Language, ICodeEngine> engines, IBlocklyEditor blocksEditor, IPlatformUtils platformUtils) {
         RobotRecharge.blocksEditor = blocksEditor;
         instance = this;
         codeEngines = engines;
+        RobotRecharge.platformUtils = platformUtils;
     }
 
     @Override

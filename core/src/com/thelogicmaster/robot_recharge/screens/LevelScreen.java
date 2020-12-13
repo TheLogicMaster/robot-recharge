@@ -36,7 +36,7 @@ public class LevelScreen extends MenuScreen {
         // Controls
         Table controlsTable = new Table(skin);
         controlsTable.setBackground("buttonTen");
-        controlsTable.setBounds(uiViewport.getWorldWidth() - 700, uiViewport.getWorldHeight() - 500, 600, 400);
+        controlsTable.setBounds(uiViewport.getWorldWidth() - 1000, uiViewport.getWorldHeight() - 590, 800, 350);
         final SelectBox<Language> languageSelect = new SelectBox<>(skin);
         Array<Language> languages = new Array<>();
         for (Language language: Language.values())
