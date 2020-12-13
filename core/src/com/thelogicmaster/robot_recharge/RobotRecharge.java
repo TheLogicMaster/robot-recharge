@@ -29,9 +29,6 @@ public class RobotRecharge extends Game {
 
     @Override
     public void create() {
-        if (!VisUI.isLoaded())
-            VisUI.load(VisUI.SkinScale.X2);
-
         assets = new RobotAssets();
 
         codeEngines.put(Language.Lua, new LuaEngine());

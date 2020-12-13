@@ -3,9 +3,11 @@ package com.thelogicmaster.robot_recharge;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Disposable;
+import com.kotcrab.vis.ui.VisUI;
 
 public class RobotAssets implements Disposable {
 
@@ -26,7 +28,13 @@ public class RobotAssets implements Disposable {
         fontLarge = generator.generateFont(parameter);
         generator.dispose();
 
+        if (!VisUI.isLoaded())
+            VisUI.load(VisUI.SkinScale.X2);
+
         skin = new Skin();
+        skin.add("menuFont", fontNormal);
+        skin.addRegions(new TextureAtlas("skin.atlas"));
+        skin.load(Gdx.files.internal("skin.json"));
     }
 
     @Override

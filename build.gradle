@@ -135,7 +135,6 @@ project(":core") {
         api "net.dermetfan.libgdx-utils:libgdx-utils:0.13.4"
         api "com.github.czyzby:gdx-kiwi:1.9.1.9.6"
         api "de.golfgl.gdxgamesvcs:gdx-gamesvcs-core:1.0.2"
-        implementation "com.strongjoshua:libgdx-inGameConsole:1.0.0"
         implementation 'com.github.raeleus.TenPatch:tenpatch:5.0.0'
         api "com.github.mgsx-dev.gdx-gltf:gltf:$gltfVersion"
         implementation 'com.github.raeleus:stripe:master-SNAPSHOT'

@@ -19,9 +19,9 @@ public class LevelScreen extends MenuScreen {
         // Level description
         final IterativeStack stack = new IterativeStack();
         for (LevelInfo level: new Array.ArrayIterator<>(levels)) {
-            Table table = new Table(menuSkin);
+            Table table = new Table(skin);
             table.setBackground("buttonTen");
-            Label levelInfo = new Label("", menuSkin);
+            Label levelInfo = new Label("", skin);
             levelInfo.setWrap(true);
             levelInfo.setText(level.getDescription());
             table.pad(10);
@@ -33,24 +33,24 @@ public class LevelScreen extends MenuScreen {
         stage.addActor(stack);
 
         // Controls
-        Table controlsTable = new Table(menuSkin);
+        Table controlsTable = new Table(skin);
         controlsTable.setBackground("buttonTen");
         controlsTable.setBounds(uiViewport.getWorldWidth() - 700, uiViewport.getWorldHeight() - 500, 600, 400);
-        final SelectBox<Language> languageSelect = new SelectBox<Language>(menuSkin);
+        final SelectBox<Language> languageSelect = new SelectBox<Language>(skin);
         languageSelect.setItems(Language.values());
         controlsTable.add(languageSelect).row();
-        final CheckBox blocksCheckbox = new CheckBox("Use Blocks", menuSkin);
+        final CheckBox blocksCheckbox = new CheckBox("Use Blocks", skin);
         controlsTable.add(blocksCheckbox).row();
-        TextButton playButton = new TextButton("New Game", menuSkin);
+        TextButton playButton = new TextButton("New Game", skin);
         controlsTable.add(playButton).row();
-        final TextButton resumeButton = new TextButton("Resume Game", menuSkin);
+        final TextButton resumeButton = new TextButton("Resume Game", skin);
         controlsTable.add(resumeButton);
         stage.addActor(controlsTable);
 
         // Level select
-        final List<LevelInfo> list = new List<>(menuSkin);
+        final List<LevelInfo> list = new List<>(skin);
         list.setItems(levels);
-        ScrollPane levelPane = new ScrollPane(list, menuSkin);
+        ScrollPane levelPane = new ScrollPane(list, skin);
         levelPane.setBounds(200, 50, 600, 800);
         stage.addActor(levelPane);
         list.addListener(new ChangeListener() {

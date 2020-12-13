@@ -28,7 +28,7 @@ public abstract class RobotScreen implements Screen {
     protected final Viewport uiViewport;
     protected final SpriteBatch spriteBatch;
     protected final AssetManager assetManager;
-    protected final Skin menuSkin;
+    protected final Skin skin;
     private final Array<Pair<String, Object>> debugValues;
     private final ArrayList<Disposable> disposables;
     private final GlyphLayout debugLayout;
@@ -36,10 +36,7 @@ public abstract class RobotScreen implements Screen {
     private Texture background;
 
     public RobotScreen() {
-        menuSkin = new Skin();
-        menuSkin.add("menuFont", RobotRecharge.assets.fontNormal);
-        menuSkin.addRegions(new TextureAtlas("menuSkin.atlas"));
-        menuSkin.load(Gdx.files.internal("menuSkin.json"));
+        skin = RobotRecharge.assets.skin;
         assetManager = Helpers.createAssetManager();
         spriteBatch = new SpriteBatch();
         inputMultiplexer = new InputMultiplexer();

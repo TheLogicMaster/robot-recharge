@@ -18,6 +18,7 @@ public class DesktopLauncher {
         config.addIcon("icon16.png", Files.FileType.Internal);
         HashMap<Language, ICodeEngine> engines = new HashMap<>();
         engines.put(Language.JavaScript, new DesktopJavaScriptEngine());
+        engines.put(Language.Python, new DesktopPythonEngine());
         new LwjglApplication(new RobotRecharge(engines, null), config);
     }
 }

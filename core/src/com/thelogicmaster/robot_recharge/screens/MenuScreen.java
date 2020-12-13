@@ -15,8 +15,8 @@ public abstract class MenuScreen extends RobotScreen {
     }
 
     protected void createBackButton() {
-        ImageButton backButton = new ImageButton(menuSkin, "backButton");
-        backButton.setBounds(20, 20, 100, 100);
+        ImageButton backButton = new ImageButton(skin, "backButton");
+        backButton.setBounds(20, uiViewport.getWorldHeight() - 120, 100, 100);
         stage.addActor(backButton);
 
         backButton.addListener(new ChangeListener() {

@@ -93,14 +93,8 @@ public class GameScreen extends RobotScreen implements RobotListener {
         cam.update();
         inputMultiplexer.addProcessor(controller);
 
-        // Load UI skin
-        Skin skin = new Skin();
-        skin.add("menuFont", RobotRecharge.assets.fontNormal);
-        skin.addRegions(new TextureAtlas("gameSkin.atlas"));
-        skin.load(Gdx.files.internal("gameSkin.json"));
-
         // Create loading bar
-        loadingBar = new ProgressBar(-20f, 100f, 1f, false, skin, "loadingBar");
+        loadingBar = new ProgressBar(-20f, 100f, 1f, false, skin);
         loadingBar.setBounds(uiViewport.getWorldWidth() / 2 - 500, uiViewport.getWorldHeight() / 2 - 200, 1000, 50);
 
         // Create settings menu
@@ -133,17 +127,17 @@ public class GameScreen extends RobotScreen implements RobotListener {
         // Create main control panel
         controlPanel = new Table();
         controlPanel.setBounds(20, uiViewport.getWorldHeight() - 148, uiViewport.getWorldWidth() - 40, 128);
-        programButton = new ImageButton(skin, "programming");
+        programButton = new ImageButton(skin, "programmingGame");
         controlPanel.add(programButton).padRight(10);
-        playButton = new ImageButton(skin, "play");
-        pauseButton = new ImageButton(skin, "pause");
+        playButton = new ImageButton(skin, "playGame");
+        pauseButton = new ImageButton(skin, "pauseGame");
         playPause = new IterativeStack(playButton, pauseButton);
         controlPanel.add(playPause).padRight(10);
-        ImageButton resetButton = new ImageButton(skin, "reset");
+        ImageButton resetButton = new ImageButton(skin, "resetGame");
         controlPanel.add(resetButton).padRight(uiViewport.getWorldWidth() - 5 * 128 - 20 - 20 - 30);
-        ImageButton fastForwardButton = new ImageButton(skin, "fastForward");
+        ImageButton fastForwardButton = new ImageButton(skin, "fastForwardGame");
         controlPanel.add(fastForwardButton);
-        ImageButton settingsButton = new ImageButton(skin, "settings");
+            ImageButton settingsButton = new ImageButton(skin, "settingsGame");
         controlPanel.add(settingsButton).padLeft(10);
         controlPanel.align(Align.top);
         stage.addActor(controlPanel);
@@ -246,16 +240,16 @@ public class GameScreen extends RobotScreen implements RobotListener {
         // Todo: Move to dedicated Table subclass
         // Create code editor window
         codeEditor = new Table(skin);
-        codeEditor.setBackground("codeEditorTen");
+        codeEditor.setBackground("windowTen");
         codeEditor.setBounds(editorSidebarWidth, 0, uiViewport.getWorldWidth() - editorSidebarWidth,
                 uiViewport.getWorldHeight());
-        final ImageButton catalogButton = new ImageButton(skin, "catalog");
+        final ImageButton catalogButton = new ImageButton(skin, "programmingCatalog");
         codeEditor.add(catalogButton).padLeft(10).padTop(10).left().row();
         final Table codeTable = new Table();
         final TextArea lineNumbers = new TextArea("", skin);
         lineNumbers.setDisabled(true);
         codeTable.add(lineNumbers).width(70).fillY();
-        codeArea = new CodeArea(skin, "code");
+        codeArea = new CodeArea(skin);
         codeArea.getStyle().background.setLeftWidth(10);
         codeArea.getStyle().background.setTopHeight(10);
         codeArea.getStyle().background.setRightWidth(10);
@@ -300,7 +294,7 @@ public class GameScreen extends RobotScreen implements RobotListener {
         });
 
         // Code editor command catalog
-        catalog = new Window("Command Catalog", skin, "catalog");
+        catalog = new Window("Command Catalog", skin);
         catalog.padTop(50).padLeft(20);
         catalog.setSize(900, 300);
         final List<String> commandList = new List<>(skin);

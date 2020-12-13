@@ -17,15 +17,15 @@ public class TitleScreen extends RobotScreen {
         levelScreen = new LevelScreen(this);
         settingsScreen = new SettingsScreen(this);
 
-        Table table = new Table(menuSkin);
+        Table table = new Table(skin);
         table.setBounds(uiViewport.getWorldWidth() / 2 - 400, 20, 800, uiViewport.getWorldHeight() - 40);
         table.debug(Table.Debug.all);
         table.setBackground("titleMenu");
-        TextButton playButton = new TextButton("Play Game", menuSkin);
+        TextButton playButton = new TextButton("Play Game", skin);
         table.add(playButton).row();
-        TextButton settingsButton = new TextButton("Settings", menuSkin);
+        TextButton settingsButton = new TextButton("Settings", skin);
         table.add(settingsButton).row();
-        TextButton exitButton = new TextButton("Quit Game", menuSkin);
+        TextButton exitButton = new TextButton("Quit Game", skin);
         table.add(exitButton).row();
         stage.addActor(table);
         setBackground(new Texture("titleBackground.png"));

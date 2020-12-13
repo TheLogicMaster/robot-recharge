@@ -6,65 +6,27 @@
 		"b": 0,
 		"a": 1
 	},
-	"darkGreen": {
-		"r": 0.10944456,
-		"g": 0.6566669,
-		"b": 0.18280278,
-		"a": 1
-	},
 	"White": {
 		"r": 1,
 		"g": 1,
 		"b": 1,
 		"a": 1
+	},
+	"Yellow": {
+		"r": 0.7401113,
+		"g": 1,
+		"b": 0.43,
+		"a": 1
 	}
 },
 "com.ray3k.tenpatch.TenPatchDrawable": {
-	"progressBarTen": {
-		"region": "progressBar",
-		"horizontalStretchAreas": [ 40, 120 ],
-		"verticalStretchAreas": [ 0, 49 ],
-		"tiling": true,
-		"minWidth": 0,
-		"minHeight": 50,
-		"rightWidth": 0,
-		"leftWidth": 0,
-		"bottomHeight": 0,
-		"topHeight": 0,
-		"offsetX": 0,
-		"offsetY": 0,
-		"offsetXspeed": 0,
-		"offsetYspeed": 0,
-		"frameDuration": 0.03,
-		"regions": [],
-		"playMode": 2
-	},
-	"progressBackTen": {
-		"region": "progressBack",
-		"horizontalStretchAreas": [ 39, 40 ],
-		"verticalStretchAreas": [ 0, 49 ],
-		"tiling": false,
-		"minWidth": 81,
-		"minHeight": 50,
-		"rightWidth": 0,
-		"leftWidth": 0,
-		"bottomHeight": 0,
-		"topHeight": 0,
-		"offsetX": 0,
-		"offsetY": 0,
-		"offsetXspeed": 0,
-		"offsetYspeed": 0,
-		"frameDuration": 0.03,
-		"regions": [],
-		"playMode": 2
-	},
 	"windowTen": {
 		"region": "window",
 		"horizontalStretchAreas": [ 9, 90 ],
 		"verticalStretchAreas": [ 9, 90 ],
 		"tiling": false,
-		"minWidth": 20,
-		"minHeight": 20,
+		"minWidth": 18,
+		"minHeight": 18,
 		"rightWidth": 0,
 		"leftWidth": 0,
 		"bottomHeight": 0,
@@ -96,9 +58,8 @@
 		"regions": [],
 		"playMode": 2
 	},
-	"buttonDownTen": {
-		"region": "button",
-		"color": "darkGreen",
+	"buttonPressedTen": {
+		"region": "buttonPressed",
 		"horizontalStretchAreas": [ 15, 84 ],
 		"verticalStretchAreas": [ 15, 84 ],
 		"tiling": false,
@@ -116,13 +77,51 @@
 		"regions": [],
 		"playMode": 2
 	},
-	"codeEditorTen": {
-		"region": "codeEditor",
-		"horizontalStretchAreas": [ 9, 90 ],
-		"verticalStretchAreas": [ 9, 90 ],
+	"buttonDisabledTen": {
+		"region": "buttonDisabled",
+		"horizontalStretchAreas": [ 15, 84 ],
+		"verticalStretchAreas": [ 15, 84 ],
 		"tiling": false,
-		"minWidth": 100,
-		"minHeight": 100,
+		"minWidth": 30,
+		"minHeight": 30,
+		"rightWidth": 0,
+		"leftWidth": 0,
+		"bottomHeight": 0,
+		"topHeight": 0,
+		"offsetX": 0,
+		"offsetY": 0,
+		"offsetXspeed": 0,
+		"offsetYspeed": 0,
+		"frameDuration": 0.03,
+		"regions": [],
+		"playMode": 2
+	},
+	"progressBarTen": {
+		"region": "progressBar",
+		"horizontalStretchAreas": [ 40, 120 ],
+		"verticalStretchAreas": [ 0, 49 ],
+		"tiling": true,
+		"minWidth": 40,
+		"minHeight": 50,
+		"rightWidth": 0,
+		"leftWidth": 0,
+		"bottomHeight": 0,
+		"topHeight": 0,
+		"offsetX": 0,
+		"offsetY": 0,
+		"offsetXspeed": 0,
+		"offsetYspeed": 0,
+		"frameDuration": 0.03,
+		"regions": [],
+		"playMode": 2
+	},
+	"progressBackTen": {
+		"region": "progressBack",
+		"horizontalStretchAreas": [ 39, 39 ],
+		"verticalStretchAreas": [ 0, 49 ],
+		"tiling": false,
+		"minWidth": 81,
+		"minHeight": 50,
 		"rightWidth": 0,
 		"leftWidth": 0,
 		"bottomHeight": 0,
@@ -173,57 +172,79 @@
 		"segmentOverflow": 10
 	}
 },
+"com.badlogic.gdx.scenes.scene2d.ui.Button$ButtonStyle": {
+	"default": {
+		"up": "buttonTen",
+		"down": "buttonPressedTen",
+		"disabled": "buttonDisabledTen"
+	}
+},
+"com.badlogic.gdx.scenes.scene2d.ui.CheckBox$CheckBoxStyle": {
+	"default": {
+		"checkboxOn": "checkedBox",
+		"checkboxOff": "uncheckedBox",
+		"font": "menuFont"
+	}
+},
 "com.badlogic.gdx.scenes.scene2d.ui.ImageButton$ImageButtonStyle": {
-	"programming": {
-		"imageUp": "programming",
-		"imageDisabled": "programmingDisabled",
+	"default": {
+		"up": "buttonTen",
+		"down": "buttonPressedTen",
+		"disabled": "buttonDisabledTen"
+	},
+	"backButton": {
+		"parent": "default",
+		"imageUp": "backIcon",
+		"pressedOffsetX": -3
+	},
+	"programmingGame": {
+		"imageUp": "programmingIcon",
+		"imageDisabled": "programmingDisabledIcon",
 		"pressedOffsetY": 3
 	},
-	"play": {
-		"imageUp": "play",
-		"imageDisabled": "playDisabled",
+	"playGame": {
+		"imageUp": "playIcon",
+		"imageDisabled": "playDisabledIcon",
 		"pressedOffsetY": 3
 	},
-	"pause": {
-		"imageUp": "pause",
-		"imageDisabled": "pauseDisabled",
+	"pauseGame": {
+		"imageUp": "pauseIcon",
+		"imageDisabled": "pauseDisabledIcon",
 		"pressedOffsetY": 3
 	},
-	"reset": {
-		"imageUp": "rewind",
+	"resetGame": {
+		"imageUp": "rewindIcon",
 		"pressedOffsetY": 3
 	},
-	"fastForward": {
-		"imageUp": "fastForward",
-		"imageChecked": "fastForwardChecked",
+	"fastForwardGame": {
+		"imageUp": "fastForwardIcon",
+		"imageChecked": "fastForwardCheckedIcon",
 		"pressedOffsetX": 3
 	},
-	"saveEditor": {
-		"imageUp": "download",
-		"pressedOffsetY": -3
-	},
-	"revertEditor": {
-		"imageUp": "rewind",
+	"settingsGame": {
+		"imageUp": "settingsIcon",
 		"pressedOffsetY": 3
 	},
 	"closeEditor": {
-		"imageUp": "back",
+		"imageUp": "backIcon",
 		"pressedOffsetX": -3
 	},
-	"settings": {
-		"imageUp": "settings",
+	"saveEditor": {
+		"imageUp": "downloadIcon",
+		"pressedOffsetY": -3
+	},
+	"revertEditor": {
+		"imageUp": "rewindIcon",
 		"pressedOffsetY": 3
 	},
-	"catalog": {
+	"programmingCatalog": {
 		"imageUp": "catalog",
-		"up": "buttonTen",
-		"pressedOffsetY": 2
+		"pressedOffsetY": 3
 	}
 },
 "com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle": {
 	"default": {
-		"font": "menuFont",
-		"fontColor": "Black"
+		"font": "menuFont"
 	}
 },
 "com.badlogic.gdx.scenes.scene2d.ui.List$ListStyle": {
@@ -231,12 +252,12 @@
 		"font": "menuFont",
 		"fontColorSelected": "Black",
 		"fontColorUnselected": "Black",
-		"selection": "textSelection",
+		"selection": "selection",
 		"background": "windowTen"
 	}
 },
 "com.badlogic.gdx.scenes.scene2d.ui.ProgressBar$ProgressBarStyle": {
-	"loadingBar": {
+	"default-horizontal": {
 		"background": "progressBackTen",
 		"knobBefore": "progressBarTen"
 	}
@@ -244,23 +265,26 @@
 "com.badlogic.gdx.scenes.scene2d.ui.ScrollPane$ScrollPaneStyle": {
 	"default": {
 		"background": "windowTen",
+		"hScroll": "windowTen",
+		"hScrollKnob": "buttonTen",
 		"vScroll": "windowTen",
-		"vScrollKnob": "buttonDownTen"
+		"vScrollKnob": "buttonPressedTen"
+	}
+},
+"com.badlogic.gdx.scenes.scene2d.ui.SelectBox$SelectBoxStyle": {
+	"default": {
+		"font": "menuFont",
+		"fontColor": "Black",
+		"scrollStyle": "default",
+		"listStyle": "default"
 	}
 },
 "com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle": {
 	"default": {
 		"font": "menuFont",
-		"fontColor": "Black",
 		"up": "buttonTen",
-		"down": "buttonDownTen",
-		"pressedOffsetY": 1
-	},
-	"command": {
-		"font": "menuFont",
-		"fontColor": "Black",
-		"up": "buttonTen",
-		"checked": "buttonDownTen"
+		"down": "buttonPressedTen",
+		"disabled": "buttonDisabledTen"
 	}
 },
 "com.badlogic.gdx.scenes.scene2d.ui.TextField$TextFieldStyle": {
@@ -268,15 +292,7 @@
 		"font": "menuFont",
 		"fontColor": "Black",
 		"background": "windowTen",
-		"cursor": "cursor",
-		"selection": "textSelection"
-	},
-	"code": {
-		"font": "menuFont",
-		"fontColor": "Black",
-		"background": "windowTen",
-		"cursor": "cursor",
-		"selection": "textSelection"
+		"selection": "selection"
 	}
 },
 "com.badlogic.gdx.scenes.scene2d.ui.TextTooltip$TextTooltipStyle": {
@@ -286,10 +302,6 @@
 },
 "com.badlogic.gdx.scenes.scene2d.ui.Window$WindowStyle": {
 	"default": {
-		"background": "windowTen",
-		"titleFont": "menuFont"
-	},
-	"catalog": {
 		"background": "windowTen",
 		"titleFont": "menuFont"
 	}

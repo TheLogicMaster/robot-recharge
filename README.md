@@ -5,8 +5,8 @@ control the robot.
 
 ## Screenshots
 
-<img src="media/screenshot1.png?raw=true" height="1007" width="1795">
-<img src="media/screenshot2.png?raw=true" height="1007" width="1795">
+<img src="media/screenshot1.png?raw=true" height="336" width="598">
+<img src="media/screenshot2.png?raw=true" height="336" width="598">
 
 ## Technical Info
 ### Utilized libraries
