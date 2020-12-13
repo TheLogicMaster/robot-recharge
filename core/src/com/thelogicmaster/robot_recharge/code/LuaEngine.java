@@ -1,6 +1,7 @@
-package com.thelogicmaster.robot_recharge;
+package com.thelogicmaster.robot_recharge.code;
 
 import com.badlogic.gdx.Gdx;
+import com.thelogicmaster.robot_recharge.IRobot;
 import org.luaj.vm2.Globals;
 import org.luaj.vm2.LuaError;
 import org.luaj.vm2.LuaValue;

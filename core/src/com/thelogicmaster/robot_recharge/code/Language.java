@@ -1,4 +1,4 @@
-package com.thelogicmaster.robot_recharge;
+package com.thelogicmaster.robot_recharge.code;
 
 public enum Language {
     JavaScript,

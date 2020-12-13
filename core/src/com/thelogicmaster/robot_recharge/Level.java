@@ -16,6 +16,7 @@ public class Level implements Disposable, IModelRenderable {
     private transient Block[][][] blocks;
     private transient final Array<INeighborListener> neighborListeners = new Array<>();
     private transient final Array<Block> realBlocks = new Array<>();
+    private transient Robot robot;
     private transient boolean setup; // If setup is in progress
 
     public Level(int xSize, int ySize, int zSize) {
@@ -26,6 +27,14 @@ public class Level implements Disposable, IModelRenderable {
 
     public Level() {
 
+    }
+
+    public void setRobot(Robot robot) {
+        this.robot = robot;
+    }
+
+    public Robot getRobot() {
+        return robot;
     }
 
     public void addStructure(IStructure structure) {

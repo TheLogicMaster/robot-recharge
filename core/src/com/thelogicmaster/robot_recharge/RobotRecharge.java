@@ -4,8 +4,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
-import com.caucho.quercus.QuercusEngine;
-import com.kotcrab.vis.ui.VisUI;
+import com.thelogicmaster.robot_recharge.code.*;
 import com.thelogicmaster.robot_recharge.screens.GameScreen;
 import com.thelogicmaster.robot_recharge.screens.TitleScreen;
 
@@ -37,9 +36,7 @@ public class RobotRecharge extends Game {
         Gdx.files.local("save/").mkdirs();
 
         LevelSave levelData = new LevelSave("test", false,
-                "while true do\n  Robot:sleep(1);\n  Robot:move(1);\n  Robot:turn(1);\n  end", Language.Lua);
-        levelData = new LevelSave("test", false,
-                "while True:\n  Robot.sleep(1)\n  Robot.move(1)\n  Robot.turn(1)\n", Language.Python);
+                "while true do\n  Robot:sleep(1);\n  Robot:move(2);\n  Robot:turn(1);\n  end", Language.Lua);
         FileHandle save = Gdx.files.internal("save/test.txt");
         if (save.exists())
             levelData = Helpers.json.fromJson(LevelSave.class, save);

@@ -3,12 +3,11 @@ package com.thelogicmaster.robot_recharge.desktop;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.lwjgl.LwjglAWTCanvas;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
-import com.thelogicmaster.robot_recharge.ICodeEngine;
-import com.thelogicmaster.robot_recharge.Language;
+import com.thelogicmaster.robot_recharge.code.ICodeEngine;
+import com.thelogicmaster.robot_recharge.code.Language;
 import com.thelogicmaster.robot_recharge.RobotRecharge;
 import org.cef.CefApp;
 import org.cef.handler.CefAppHandlerAdapter;
-import org.lwjgl.Sys;
 
 import javax.swing.*;
 import java.awt.*;

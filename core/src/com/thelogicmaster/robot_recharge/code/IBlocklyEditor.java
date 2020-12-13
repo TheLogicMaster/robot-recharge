@@ -1,4 +1,6 @@
-package com.thelogicmaster.robot_recharge;
+package com.thelogicmaster.robot_recharge.code;
+
+import com.thelogicmaster.robot_recharge.Consumer;
 
 public interface IBlocklyEditor {
 

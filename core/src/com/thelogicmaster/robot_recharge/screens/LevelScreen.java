@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 import com.thelogicmaster.robot_recharge.*;
+import com.thelogicmaster.robot_recharge.code.Language;
 
 public class LevelScreen extends MenuScreen {
 
@@ -36,15 +37,20 @@ public class LevelScreen extends MenuScreen {
         Table controlsTable = new Table(skin);
         controlsTable.setBackground("buttonTen");
         controlsTable.setBounds(uiViewport.getWorldWidth() - 700, uiViewport.getWorldHeight() - 500, 600, 400);
-        final SelectBox<Language> languageSelect = new SelectBox<Language>(skin);
-        languageSelect.setItems(Language.values());
-        controlsTable.add(languageSelect).row();
+        final SelectBox<Language> languageSelect = new SelectBox<>(skin);
+        Array<Language> languages = new Array<>();
+        for (Language language: Language.values())
+            if (RobotRecharge.codeEngines.containsKey(language))
+                languages.add(language);
+        languageSelect.setItems(languages);
+        controlsTable.add(languageSelect).fillX().padBottom(10).row();
         final CheckBox blocksCheckbox = new CheckBox("Use Blocks", skin);
-        controlsTable.add(blocksCheckbox).row();
+        blocksCheckbox.setDisabled(RobotRecharge.blocksEditor == null);
+        controlsTable.add(blocksCheckbox).fillX().padBottom(10).row();
         TextButton playButton = new TextButton("New Game", skin);
-        controlsTable.add(playButton).row();
+        controlsTable.add(playButton).fillX().padBottom(10).row();
         final TextButton resumeButton = new TextButton("Resume Game", skin);
-        controlsTable.add(resumeButton);
+        controlsTable.add(resumeButton).fillX();
         stage.addActor(controlsTable);
 
         // Level select

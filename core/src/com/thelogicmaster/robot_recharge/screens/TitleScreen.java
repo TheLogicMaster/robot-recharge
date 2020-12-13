@@ -12,21 +12,25 @@ public class TitleScreen extends RobotScreen {
 
     private final LevelScreen levelScreen;
     private final SettingsScreen settingsScreen;
+    private final ExamplesScreen examplesScreen;
 
     public TitleScreen() {
         levelScreen = new LevelScreen(this);
         settingsScreen = new SettingsScreen(this);
+        examplesScreen = new ExamplesScreen(this);
 
         Table table = new Table(skin);
         table.setBounds(uiViewport.getWorldWidth() / 2 - 400, 20, 800, uiViewport.getWorldHeight() - 40);
-        table.debug(Table.Debug.all);
+        //table.debug(Table.Debug.all);
         table.setBackground("titleMenu");
-        TextButton playButton = new TextButton("Play Game", skin);
-        table.add(playButton).row();
-        TextButton settingsButton = new TextButton("Settings", skin);
-        table.add(settingsButton).row();
-        TextButton exitButton = new TextButton("Quit Game", skin);
-        table.add(exitButton).row();
+        TextButton playButton = new TextButton("Play Game", skin, "large");
+        table.add(playButton).padBottom(20).fillX().row();
+        TextButton examplesButton = new TextButton("Examples", skin, "large");
+        table.add(examplesButton).padBottom(20).fillX().row();
+        TextButton settingsButton = new TextButton("Settings", skin, "large");
+        table.add(settingsButton).padBottom(20).fillX().row();
+        TextButton exitButton = new TextButton("Quit Game", skin, "large");
+        table.add(exitButton);
         stage.addActor(table);
         setBackground(new Texture("titleBackground.png"));
 
@@ -40,6 +44,12 @@ public class TitleScreen extends RobotScreen {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 RobotRecharge.instance.setScreen(levelScreen);
+            }
+        });
+        examplesButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                RobotRecharge.instance.setScreen(examplesScreen);
             }
         });
         exitButton.addListener(new ChangeListener() {

@@ -8,6 +8,8 @@ import com.badlogic.gdx.graphics.g3d.utils.AnimationController;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Quaternion;
 import com.badlogic.gdx.math.Vector3;
+import com.thelogicmaster.robot_recharge.code.ExecutionListener;
+import com.thelogicmaster.robot_recharge.code.ICodeEngine;
 
 public class Robot implements IRobot, ExecutionListener {
 
@@ -23,6 +25,7 @@ public class Robot implements IRobot, ExecutionListener {
     private volatile Quaternion rotation;
     private final Vector3 tempVec3;
     private final ICodeEngine engine;
+    private Level level;
 
     private static final float speed = 2;
     private static final float rotationSpeed = 180;
@@ -36,6 +39,10 @@ public class Robot implements IRobot, ExecutionListener {
         tempVec3 = new Vector3();
         position = new Vector3();
         rotation = new Quaternion();
+    }
+
+    public void setLevel(Level level) {
+        this.level = level;
     }
 
     public void setCode(String code) {

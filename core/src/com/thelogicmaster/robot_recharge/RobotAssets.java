@@ -11,28 +11,31 @@ import com.kotcrab.vis.ui.VisUI;
 
 public class RobotAssets implements Disposable {
 
-    public final BitmapFont fontNormal, fontLarge;
+    public final BitmapFont fontSmall, fontNormal, fontLarge, fontHuge;
     public final Skin skin;
 
     public RobotAssets() {
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("monog.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        parameter.size = 30;
+        parameter.color = Color.BLACK;
+        parameter.borderColor = Color.BLACK;
         parameter.borderWidth = 1;
-        parameter.color = Color.YELLOW;
-        //parameter.shadowOffsetX = 3;
-        //parameter.shadowOffsetY = 3;
-        parameter.shadowColor = new Color(0, 0.5f, 0, 0.75f);
+        parameter.size = 30;
+        fontSmall = generator.generateFont(parameter);
+        parameter.size = 50;
         fontNormal = generator.generateFont(parameter);
-        parameter.size = 160;
+        parameter.size = 90;
         fontLarge = generator.generateFont(parameter);
+        parameter.size = 160;
+        fontHuge = generator.generateFont(parameter);
         generator.dispose();
 
         if (!VisUI.isLoaded())
             VisUI.load(VisUI.SkinScale.X2);
 
         skin = new Skin();
-        skin.add("menuFont", fontNormal);
+        skin.add("menuFont", fontSmall);
+        skin.add("titleFont", fontLarge);
         skin.addRegions(new TextureAtlas("skin.atlas"));
         skin.load(Gdx.files.internal("skin.json"));
     }

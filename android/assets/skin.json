@@ -240,11 +240,19 @@
 	"programmingCatalog": {
 		"imageUp": "catalog",
 		"pressedOffsetY": 3
+	},
+	"close": {
+		"imageUp": "closeIcon",
+		"pressedOffsetY": 3
 	}
 },
 "com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle": {
 	"default": {
 		"font": "menuFont"
+	},
+	"large": {
+		"parent": "default",
+		"font": "titleFont"
 	}
 },
 "com.badlogic.gdx.scenes.scene2d.ui.List$ListStyle": {
@@ -275,6 +283,7 @@
 	"default": {
 		"font": "menuFont",
 		"fontColor": "Black",
+		"background": "buttonTen",
 		"scrollStyle": "default",
 		"listStyle": "default"
 	}
@@ -285,6 +294,10 @@
 		"up": "buttonTen",
 		"down": "buttonPressedTen",
 		"disabled": "buttonDisabledTen"
+	},
+	"large": {
+		"parent": "default",
+		"font": "titleFont"
 	}
 },
 "com.badlogic.gdx.scenes.scene2d.ui.TextField$TextFieldStyle": {
@@ -303,7 +316,8 @@
 "com.badlogic.gdx.scenes.scene2d.ui.Window$WindowStyle": {
 	"default": {
 		"background": "windowTen",
-		"titleFont": "menuFont"
+		"titleFont": "titleFont",
+		"titleFontColor": "Black"
 	}
 }
 }

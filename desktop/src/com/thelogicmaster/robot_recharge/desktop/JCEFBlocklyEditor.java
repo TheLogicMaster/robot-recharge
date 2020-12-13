@@ -2,8 +2,8 @@ package com.thelogicmaster.robot_recharge.desktop;
 
 import com.badlogic.gdx.Gdx;
 import com.thelogicmaster.robot_recharge.Consumer;
-import com.thelogicmaster.robot_recharge.IBlocklyEditor;
-import com.thelogicmaster.robot_recharge.Language;
+import com.thelogicmaster.robot_recharge.code.IBlocklyEditor;
+import com.thelogicmaster.robot_recharge.code.Language;
 import org.cef.CefApp;
 import org.cef.CefClient;
 import org.cef.CefSettings;

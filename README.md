@@ -9,7 +9,7 @@ control the robot.
 <img src="media/screenshot2.png?raw=true" height="336" width="598">
 
 ## Technical Info
-### Utilized libraries
+### Utilized Libraries
 - LibGDX (Game framework)
 - Blockly (Graphical programming)
 - Jython (Desktop Python)
@@ -21,3 +21,4 @@ control the robot.
 
 ## Todo
 - Debug/step through mode
+- Tab to double space functionality in editor

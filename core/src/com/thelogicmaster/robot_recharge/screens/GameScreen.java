@@ -2,7 +2,6 @@ package com.thelogicmaster.robot_recharge.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.*;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g3d.*;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
@@ -22,6 +21,7 @@ import com.badlogic.gdx.utils.JsonWriter;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.kotcrab.vis.ui.util.dialog.Dialogs;
 import com.thelogicmaster.robot_recharge.*;
+import com.thelogicmaster.robot_recharge.code.Command;
 
 import java.io.IOException;
 import java.io.OutputStreamWriter;
@@ -100,7 +100,7 @@ public class GameScreen extends RobotScreen implements RobotListener {
         // Create settings menu
         // Todo: Switch to a Window, maybe? Needs input blocking still for rest of screen.
         settingsMenu = new Dialog("Settings", skin);
-        settingsMenu.padTop(50);
+        settingsMenu.padTop(90);
         settingsMenu.setMovable(false);
         settingsMenu.getContentTable().pad(50, 50, 0, 50);
         TextButton closeButton = new TextButton("Close", skin);
@@ -244,7 +244,8 @@ public class GameScreen extends RobotScreen implements RobotListener {
         codeEditor.setBounds(editorSidebarWidth, 0, uiViewport.getWorldWidth() - editorSidebarWidth,
                 uiViewport.getWorldHeight());
         final ImageButton catalogButton = new ImageButton(skin, "programmingCatalog");
-        codeEditor.add(catalogButton).padLeft(10).padTop(10).left().row();
+        codeEditor.add(catalogButton).padLeft(10).padTop(10).padRight(100).left();
+        codeEditor.add(new Label(levelData.getLanguage().name() + " Editor", skin, "large")).left().expandX().row();
         final Table codeTable = new Table();
         final TextArea lineNumbers = new TextArea("", skin);
         lineNumbers.setDisabled(true);
@@ -261,7 +262,7 @@ public class GameScreen extends RobotScreen implements RobotListener {
         codeScrollPane.setOverscroll(false, false);
         codeScrollPane.setFadeScrollBars(false);
         codeScrollPane.setFlickScroll(false);
-        codeEditor.add(codeScrollPane).pad(10, 10, 10, 10).grow();
+        codeEditor.add(codeScrollPane).pad(10, 10, 10, 10).colspan(2).grow();
         codeEditor.setVisible(false);
         stage.addActor(codeEditor);
         codeArea.addListener(new ChangeListener() {
@@ -289,20 +290,22 @@ public class GameScreen extends RobotScreen implements RobotListener {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 catalog.setVisible(!catalog.isVisible());
-                catalog.setPosition(catalogButton.getX() + 1000, catalogButton.getY() - 200);
+                catalog.setPosition(viewport.getWorldWidth() - catalog.getWidth() - 50, viewport.getWorldHeight() - catalog.getHeight() - 50);
             }
         });
 
         // Code editor command catalog
         catalog = new Window("Command Catalog", skin);
-        catalog.padTop(50).padLeft(20);
+        catalog.padTop(100).padLeft(20);
         catalog.setSize(900, 300);
+        ImageButton catalogCloseButton = new ImageButton(skin, "close");
+        catalog.getTitleTable().add(catalogCloseButton).padRight(10).size(80, 80).right();
         final List<String> commandList = new List<>(skin);
         final IterativeStack commandInfoStack = new IterativeStack();
-        final Array<Command> commands = Helpers.json.fromJson(Array.class, Command.class,
-                Gdx.files.internal("commands-" + levelData.getLanguage().name().toLowerCase() + ".json"));
+        final Array<com.thelogicmaster.robot_recharge.code.Command> commands = Helpers.json.fromJson(Array.class, Command.class,
+                Gdx.files.internal("language/commands-" + levelData.getLanguage().name().toLowerCase() + ".json"));
         Array<String> commandLabels = new Array<>();
-        for (Command command: new Array.ArrayIterable<>(commands)) {
+        for (com.thelogicmaster.robot_recharge.code.Command command: new Array.ArrayIterable<>(commands)) {
             commandLabels.add(command.getName());
             Table infoTable = new Table(skin);
             infoTable.setBackground("windowTen");
@@ -341,6 +344,12 @@ public class GameScreen extends RobotScreen implements RobotListener {
                 commandInfoStack.show(commandList.getSelectedIndex());
             }
         });
+        catalogCloseButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                catalog.setVisible(false);
+            }
+        });
     }
 
     @Override
@@ -372,7 +381,7 @@ public class GameScreen extends RobotScreen implements RobotListener {
     @Override
     protected void drawLoading(float delta) {
         spriteBatch.begin();
-        RobotRecharge.assets.fontLarge.draw(spriteBatch, "Loading...", uiViewport.getWorldWidth() / 2 - 300,
+        RobotRecharge.assets.fontHuge.draw(spriteBatch, "Loading...", uiViewport.getWorldWidth() / 2 - 300,
                 uiViewport.getWorldHeight() / 2 + 100);
         loadingBar.setValue(assetManager.getProgress() * 100);
         loadingBar.act(delta);

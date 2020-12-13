@@ -1,8 +1,9 @@
-package com.thelogicmaster.robot_recharge;
+package com.thelogicmaster.robot_recharge.code;
 
 import com.badlogic.gdx.Gdx;
 import com.caucho.quercus.QuercusEngine;
 import com.caucho.quercus.QuercusException;
+import com.thelogicmaster.robot_recharge.IRobot;
 
 import java.io.IOException;
 
@@ -23,7 +24,7 @@ public class PhpEngine implements ICodeEngine {
                 try {
                     QuercusEngine engine = new QuercusEngine();
                     engine.init();
-                    engine.execute("<?php\nimport com.thelogicmaster.robot_recharge.PhpEngine;\n$Robot=PhpEngine::getRobot();\n" + code + "\n?>");
+                    engine.execute("<?php\nimport com.thelogicmaster.robot_recharge.code.PhpEngine;\n$Robot=PhpEngine::getRobot();\n" + code + "\n?>");
                     listener.onExecutionFinish();
                 } catch (QuercusException e) {
                     if (e.getCause() instanceof InterruptedException) {

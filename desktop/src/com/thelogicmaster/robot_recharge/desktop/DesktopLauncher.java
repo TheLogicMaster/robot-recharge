@@ -3,14 +3,14 @@ package com.thelogicmaster.robot_recharge.desktop;
 import com.badlogic.gdx.Files;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
-import com.thelogicmaster.robot_recharge.ICodeEngine;
-import com.thelogicmaster.robot_recharge.Language;
+import com.thelogicmaster.robot_recharge.code.ICodeEngine;
+import com.thelogicmaster.robot_recharge.code.Language;
 import com.thelogicmaster.robot_recharge.RobotRecharge;
 
 import java.util.HashMap;
 
 public class DesktopLauncher {
-    public static void main(String[] arg) throws InterruptedException {
+    public static void main(String[] arg) {
         LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
         config.allowSoftwareMode = true;
         config.addIcon("icon128.png", Files.FileType.Internal);
