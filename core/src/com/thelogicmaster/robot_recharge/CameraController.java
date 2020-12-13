@@ -1,5 +1,6 @@
 package com.thelogicmaster.robot_recharge;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.g3d.utils.CameraInputController;
 import com.badlogic.gdx.math.Quaternion;
@@ -24,6 +25,13 @@ public class CameraController extends CameraInputController {
 
     public void setDisabled(boolean disabled) {
         this.disabled = disabled;
+    }
+
+    @Override
+    public void update() {
+        if (disabled)
+            return;
+        super.update();
     }
 
     @Override

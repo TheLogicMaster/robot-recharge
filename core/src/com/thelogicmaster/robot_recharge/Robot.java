@@ -22,12 +22,14 @@ public class Robot implements IRobot, ExecutionListener {
     private volatile Vector3 position;
     private volatile Quaternion rotation;
     private final Vector3 tempVec3;
+    private final ICodeEngine engine;
 
     private static final float speed = 2;
     private static final float rotationSpeed = 180;
 
-    public Robot(ModelInstance model, RobotListener listener) {
+    public Robot(ModelInstance model, RobotListener listener, ICodeEngine engine) {
         this.model = model;
+        this.engine = engine;
         animator = new AnimationController(model);
         this.listener = listener;
         code = "";
@@ -86,7 +88,7 @@ public class Robot implements IRobot, ExecutionListener {
                 lock.notify();
             }
         } else
-            thread = RobotRecharge.javaScriptEngine.run(this, code, this);
+            thread = engine.run(this, code, this);
     }
 
     public void pause() {

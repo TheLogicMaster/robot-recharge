@@ -5,9 +5,9 @@ import android.widget.LinearLayout;
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 
-public class AndroidLauncher extends AndroidApplication {
+import java.util.HashMap;
 
-    boolean initialized;
+public class AndroidLauncher extends AndroidApplication {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -15,7 +15,10 @@ public class AndroidLauncher extends AndroidApplication {
 
         AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
         AndroidBlocklyEditor editor = new AndroidBlocklyEditor(getContext());
-        initialize(new RobotRecharge(new AndroidJavaScriptEngine(), editor), config);
+        HashMap<Language, ICodeEngine> engines = new HashMap<>();
+        engines.put(Language.JavaScript, new AndroidJavaScriptEngine());
+        engines.put(Language.Python, new AndroidPythonEngine(this));
+        initialize(new RobotRecharge(engines, editor), config);
         addContentView(editor, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
     }
 }

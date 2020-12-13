@@ -3,9 +3,12 @@ package com.thelogicmaster.robot_recharge.desktop;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.lwjgl.LwjglAWTCanvas;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
+import com.thelogicmaster.robot_recharge.ICodeEngine;
+import com.thelogicmaster.robot_recharge.Language;
 import com.thelogicmaster.robot_recharge.RobotRecharge;
 import org.cef.CefApp;
 import org.cef.handler.CefAppHandlerAdapter;
+import org.lwjgl.Sys;
 
 import javax.swing.*;
 import java.awt.*;
@@ -15,11 +18,12 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class JCEFDesktopLauncher extends JFrame {
 
     private JCEFDesktopLauncher() {
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
         CefApp.addAppHandler(new CefAppHandlerAdapter(null) {
             @Override
@@ -32,7 +36,28 @@ public class JCEFDesktopLauncher extends JFrame {
         final JCEFBlocklyEditor blocklyEditor = new JCEFBlocklyEditor();
         LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
         config.allowSoftwareMode = true;
-        final LwjglAWTCanvas canvas = new LwjglAWTCanvas(new RobotRecharge(new DesktopJavaScriptEngine(), blocklyEditor), config);
+        HashMap<Language, ICodeEngine> engines = new HashMap<>();
+        engines.put(Language.JavaScript, new DesktopJavaScriptEngine());
+        engines.put(Language.Python, new DesktopPythonEngine());
+        final LwjglAWTCanvas canvas = new LwjglAWTCanvas(new RobotRecharge(engines, blocklyEditor), config) {
+            // Graceful exit
+            @Override
+            public void exit () {
+                postRunnable(new Runnable() {
+                    @Override
+                    public void run () {
+                        CefApp.getInstance().dispose();
+                        stop();
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                System.exit(0);
+                            }
+                        }).start();
+                    }
+                });
+            }
+        };
         blocklyEditor.setup();
 
         setSize(800, 480);
@@ -57,8 +82,8 @@ public class JCEFDesktopLauncher extends JFrame {
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
-                CefApp.getInstance().dispose();
-                dispose();
+                if (Gdx.app != null)
+                    Gdx.app.exit();
             }
         });
 

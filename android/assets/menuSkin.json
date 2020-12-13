@@ -1,4 +1,53 @@
 {
+"com.badlogic.gdx.graphics.Color": {
+	"DarkGreen": {
+		"r": 0,
+		"g": 0.7566668,
+		"b": 0.16180094,
+		"a": 1
+	}
+},
+"com.ray3k.tenpatch.TenPatchDrawable": {
+	"buttonTen": {
+		"region": "button",
+		"horizontalStretchAreas": [ 15, 84 ],
+		"verticalStretchAreas": [ 15, 84 ],
+		"tiling": false,
+		"minWidth": 20,
+		"minHeight": 20,
+		"rightWidth": 0,
+		"leftWidth": 0,
+		"bottomHeight": 0,
+		"topHeight": 0,
+		"offsetX": 0,
+		"offsetY": 0,
+		"offsetXspeed": 0,
+		"offsetYspeed": 0,
+		"frameDuration": 0.03,
+		"regions": [],
+		"playMode": 2
+	},
+	"buttonPressedTen": {
+		"region": "button",
+		"color": "DarkGreen",
+		"horizontalStretchAreas": [ 15, 84 ],
+		"verticalStretchAreas": [ 15, 84 ],
+		"tiling": false,
+		"minWidth": 20,
+		"minHeight": 20,
+		"rightWidth": 0,
+		"leftWidth": 0,
+		"bottomHeight": 0,
+		"topHeight": 0,
+		"offsetX": 0,
+		"offsetY": 0,
+		"offsetXspeed": 0,
+		"offsetYspeed": 0,
+		"frameDuration": 0.03,
+		"regions": [],
+		"playMode": 2
+	}
+},
 "com.kotcrab.vis.ui.Sizes": {
 	"default": {
 		"scaleFactor": 1,
@@ -34,6 +83,66 @@
 		"height": 5,
 		"segmentWidth": 150,
 		"segmentOverflow": 10
+	}
+},
+"com.badlogic.gdx.scenes.scene2d.ui.CheckBox$CheckBoxStyle": {
+	"default": {
+		"checkboxOn": "checked",
+		"checkboxOff": "unchecked",
+		"font": "menuFont"
+	}
+},
+"com.badlogic.gdx.scenes.scene2d.ui.ImageButton$ImageButtonStyle": {
+	"backButton": {
+		"imageUp": "back",
+		"up": "buttonTen",
+		"down": "buttonPressedTen"
+	}
+},
+"com.badlogic.gdx.scenes.scene2d.ui.ImageTextButton$ImageTextButtonStyle": {
+	"default": {
+		"font": "menuFont",
+		"up": "buttonTen",
+		"pressedOffsetX": 3
+	}
+},
+"com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle": {
+	"default": {
+		"font": "menuFont"
+	}
+},
+"com.badlogic.gdx.scenes.scene2d.ui.List$ListStyle": {
+	"default": {
+		"font": "menuFont",
+		"fontColorSelected": "DarkGreen",
+		"fontColorUnselected": "DarkGreen",
+		"selection": "textSelection",
+		"background": "textSelection"
+	}
+},
+"com.badlogic.gdx.scenes.scene2d.ui.ScrollPane$ScrollPaneStyle": {
+	"default": {
+		"background": "buttonTen"
+	}
+},
+"com.badlogic.gdx.scenes.scene2d.ui.SelectBox$SelectBoxStyle": {
+	"default": {
+		"font": "menuFont",
+		"fontColor": "DarkGreen",
+		"scrollStyle": "default",
+		"listStyle": "default"
+	}
+},
+"com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle": {
+	"default": {
+		"font": "menuFont",
+		"up": "buttonTen",
+		"down": "buttonPressedTen"
+	}
+},
+"com.badlogic.gdx.scenes.scene2d.ui.TextTooltip$TextTooltipStyle": {
+	"default": {
+		"label": "default"
 	}
 }
 }

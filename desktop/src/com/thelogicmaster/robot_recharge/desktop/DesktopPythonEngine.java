@@ -4,25 +4,26 @@ import com.badlogic.gdx.Gdx;
 import com.thelogicmaster.robot_recharge.ExecutionListener;
 import com.thelogicmaster.robot_recharge.ICodeEngine;
 import com.thelogicmaster.robot_recharge.IRobot;
-import io.webfolder.ducktape4j.Duktape;
+import org.python.core.PyException;
+import org.python.util.PythonInterpreter;
 
-public class DesktopJavaScriptEngine implements ICodeEngine {
+public class DesktopPythonEngine implements ICodeEngine {
 
     @Override
     public Thread run(final IRobot robot, final String code, final ExecutionListener listener) {
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
-                try (Duktape duktape = Duktape.create()) {
-                    duktape.set("Robot", IRobot.class, robot);
-                    duktape.evaluate(code);
+                try(PythonInterpreter python = new PythonInterpreter()) {
+                    python.set("Robot", robot);
+                    python.exec(code);
                     listener.onExecutionFinish();
-                } catch (Exception e) {
-                    if (e instanceof InterruptedException) {
+                } catch (PyException e) {
+                    if (e.getCause() instanceof InterruptedException) {
                         listener.onExecutionInterrupted();
                         return;
                     }
-                    Gdx.app.error("Duktape", e.toString());
+                    Gdx.app.error("Python", "PyException", e);
                     listener.onExecutionError(e);
                 }
             }

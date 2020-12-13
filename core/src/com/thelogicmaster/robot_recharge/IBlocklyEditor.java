@@ -4,7 +4,9 @@ public interface IBlocklyEditor {
 
     void show();
 
-    void resize(int x, int width, int height);
+    void resize(int screenWidth, int screenHeight);
+
+    void setWidth(int width);
 
     void hide();
 
@@ -16,7 +18,7 @@ public interface IBlocklyEditor {
 
     void save(Consumer<String> callback);
 
-    void generateCode(Consumer<String> callback);
+    void generateCode(Language language, Consumer<String> callback);
 
     boolean isLoaded();
 }

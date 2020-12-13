@@ -1,15 +1,15 @@
 package com.thelogicmaster.robot_recharge;
 
-public class LevelData {
+public class LevelSave {
 
     private boolean useBlocks;
     private String code, level;
     private Language language;
 
-    public LevelData() {
+    public LevelSave() {
     }
 
-    public LevelData(String level, boolean useBlocks, String code, Language language) {
+    public LevelSave(String level, boolean useBlocks, String code, Language language) {
         this.useBlocks = useBlocks;
         this.code = code;
         this.language = language;

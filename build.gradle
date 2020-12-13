@@ -1,5 +1,5 @@
 buildscript {
-    
+
 
     repositories {
         mavenLocal()
@@ -8,6 +8,7 @@ buildscript {
         maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
         jcenter()
         google()
+        maven { url "https://chaquo.com/maven" }
     }
     dependencies {
         classpath 'org.wisepersist:gwt-gradle-plugin:1.0.13'
@@ -15,6 +16,7 @@ buildscript {
         classpath 'com.android.tools.build:gradle:3.4.3'
         classpath 'com.mobidevelop.robovm:robovm-gradle-plugin:2.3.11'
         classpath 'io.github.fvarrui:javapackager:1.4.1'
+        classpath 'com.chaquo.python:gradle:9.0.0'
     }
 }
 
@@ -60,6 +62,7 @@ project(":desktop") {
         api "de.tomgrill.gdxdialogs:gdx-dialogs-desktop:1.2.5"
         api "de.golfgl.gdxgamesvcs:gdx-gamesvcs-core-gamejolt:1.0.2"
         implementation 'io.webfolder:duktape4j:1.2.1'
+        implementation 'org.python:jython-slim:2.7.2'
     }
 }
 
@@ -136,5 +139,7 @@ project(":core") {
         implementation 'com.github.raeleus.TenPatch:tenpatch:5.0.0'
         api "com.github.mgsx-dev.gdx-gltf:gltf:$gltfVersion"
         implementation 'com.github.raeleus:stripe:master-SNAPSHOT'
+        implementation group: 'org.luaj', name: 'luaj-jse', version: '3.0.1'
+        implementation group: 'com.caucho', name: 'quercus', version: '4.0.45'
     }
 }

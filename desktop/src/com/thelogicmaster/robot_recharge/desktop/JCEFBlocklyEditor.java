@@ -3,6 +3,7 @@ package com.thelogicmaster.robot_recharge.desktop;
 import com.badlogic.gdx.Gdx;
 import com.thelogicmaster.robot_recharge.Consumer;
 import com.thelogicmaster.robot_recharge.IBlocklyEditor;
+import com.thelogicmaster.robot_recharge.Language;
 import org.cef.CefApp;
 import org.cef.CefClient;
 import org.cef.CefSettings;
@@ -29,8 +30,8 @@ public class JCEFBlocklyEditor implements IBlocklyEditor, ActionListener {
     private Consumer<String> blocksCallback, codeCallback;
     private Timer timer;
     private float progress;
+    private int screenWidth;
     private int width;
-    private int x;
     private boolean shown, loaded;
 
     public void setup() {
@@ -93,7 +94,6 @@ public class JCEFBlocklyEditor implements IBlocklyEditor, ActionListener {
         });
         browser.createImmediately();
         timer = new Timer(0, this);
-        progress = 1;
     }
 
     protected Component getEditor() {
@@ -106,20 +106,24 @@ public class JCEFBlocklyEditor implements IBlocklyEditor, ActionListener {
     }
 
     @Override
-    public void resize(int x, int width, int height) {
-        this.x = x;
+    public void setWidth(int width) {
         this.width = width;
-        browser.getUIComponent().setBounds((int) (progress * width) + x, 0, width, height);
+    }
+
+    @Override
+    public void resize(int screenWidth, int screenHeight) {
+        this.screenWidth = screenWidth;
+        browser.getUIComponent().setBounds(screenWidth - (int) (progress * width), 0, screenWidth, screenHeight);
     }
 
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
-        if ((shown && progress <= 0) || (!shown && progress >= 1)) {
+        if ((!shown && progress <= 0) || (shown && progress >= 1)) {
             timer.stop();
             return;
         }
-        progress += shown ? -.25f : .25f;
-        browser.getUIComponent().setBounds((int) (progress * width) + x, 0, width, browser.getUIComponent().getHeight());
+        progress += shown ? .25f : -.25f;
+        browser.getUIComponent().setLocation(screenWidth - (int) (progress * width), 0);
     }
 
     @Override
@@ -161,10 +165,10 @@ public class JCEFBlocklyEditor implements IBlocklyEditor, ActionListener {
     }
 
     @Override
-    public void generateCode(Consumer<String> callback) {
+    public void generateCode(Language language, Consumer<String> callback) {
         this.codeCallback = callback;
         browser.executeJavaScript("(function() {" +
-                "console.log('Code:' + Blockly.JavaScript.workspaceToCode(workspace));" +
+                "console.log('Code:' + Blockly." + language.name() + ".workspaceToCode(workspace));" +
                 "})();", "", 0);
     }
 }

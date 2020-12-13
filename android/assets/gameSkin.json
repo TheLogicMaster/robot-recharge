@@ -6,6 +6,12 @@
 		"b": 0,
 		"a": 1
 	},
+	"darkGreen": {
+		"r": 0.10944456,
+		"g": 0.6566669,
+		"b": 0.18280278,
+		"a": 1
+	},
 	"White": {
 		"r": 1,
 		"g": 1,
@@ -40,6 +46,83 @@
 		"tiling": false,
 		"minWidth": 81,
 		"minHeight": 50,
+		"rightWidth": 0,
+		"leftWidth": 0,
+		"bottomHeight": 0,
+		"topHeight": 0,
+		"offsetX": 0,
+		"offsetY": 0,
+		"offsetXspeed": 0,
+		"offsetYspeed": 0,
+		"frameDuration": 0.03,
+		"regions": [],
+		"playMode": 2
+	},
+	"windowTen": {
+		"region": "window",
+		"horizontalStretchAreas": [ 9, 90 ],
+		"verticalStretchAreas": [ 9, 90 ],
+		"tiling": false,
+		"minWidth": 20,
+		"minHeight": 20,
+		"rightWidth": 0,
+		"leftWidth": 0,
+		"bottomHeight": 0,
+		"topHeight": 0,
+		"offsetX": 0,
+		"offsetY": 0,
+		"offsetXspeed": 0,
+		"offsetYspeed": 0,
+		"frameDuration": 0.03,
+		"regions": [],
+		"playMode": 2
+	},
+	"buttonTen": {
+		"region": "button",
+		"horizontalStretchAreas": [ 15, 84 ],
+		"verticalStretchAreas": [ 15, 84 ],
+		"tiling": false,
+		"minWidth": 30,
+		"minHeight": 30,
+		"rightWidth": 0,
+		"leftWidth": 0,
+		"bottomHeight": 0,
+		"topHeight": 0,
+		"offsetX": 0,
+		"offsetY": 0,
+		"offsetXspeed": 0,
+		"offsetYspeed": 0,
+		"frameDuration": 0.03,
+		"regions": [],
+		"playMode": 2
+	},
+	"buttonDownTen": {
+		"region": "button",
+		"color": "darkGreen",
+		"horizontalStretchAreas": [ 15, 84 ],
+		"verticalStretchAreas": [ 15, 84 ],
+		"tiling": false,
+		"minWidth": 30,
+		"minHeight": 30,
+		"rightWidth": 0,
+		"leftWidth": 0,
+		"bottomHeight": 0,
+		"topHeight": 0,
+		"offsetX": 0,
+		"offsetY": 0,
+		"offsetXspeed": 0,
+		"offsetYspeed": 0,
+		"frameDuration": 0.03,
+		"regions": [],
+		"playMode": 2
+	},
+	"codeEditorTen": {
+		"region": "codeEditor",
+		"horizontalStretchAreas": [ 9, 90 ],
+		"verticalStretchAreas": [ 9, 90 ],
+		"tiling": false,
+		"minWidth": 100,
+		"minHeight": 100,
 		"rightWidth": 0,
 		"leftWidth": 0,
 		"bottomHeight": 0,
@@ -130,6 +213,26 @@
 	"settings": {
 		"imageUp": "settings",
 		"pressedOffsetY": 3
+	},
+	"catalog": {
+		"imageUp": "catalog",
+		"up": "buttonTen",
+		"pressedOffsetY": 2
+	}
+},
+"com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle": {
+	"default": {
+		"font": "menuFont",
+		"fontColor": "Black"
+	}
+},
+"com.badlogic.gdx.scenes.scene2d.ui.List$ListStyle": {
+	"default": {
+		"font": "menuFont",
+		"fontColorSelected": "Black",
+		"fontColorUnselected": "Black",
+		"selection": "textSelection",
+		"background": "windowTen"
 	}
 },
 "com.badlogic.gdx.scenes.scene2d.ui.ProgressBar$ProgressBarStyle": {
@@ -138,16 +241,57 @@
 		"knobBefore": "progressBarTen"
 	}
 },
+"com.badlogic.gdx.scenes.scene2d.ui.ScrollPane$ScrollPaneStyle": {
+	"default": {
+		"background": "windowTen",
+		"vScroll": "windowTen",
+		"vScrollKnob": "buttonDownTen"
+	}
+},
 "com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle": {
 	"default": {
 		"font": "menuFont",
-		"fontColor": "Black"
+		"fontColor": "Black",
+		"up": "buttonTen",
+		"down": "buttonDownTen",
+		"pressedOffsetY": 1
+	},
+	"command": {
+		"font": "menuFont",
+		"fontColor": "Black",
+		"up": "buttonTen",
+		"checked": "buttonDownTen"
+	}
+},
+"com.badlogic.gdx.scenes.scene2d.ui.TextField$TextFieldStyle": {
+	"default": {
+		"font": "menuFont",
+		"fontColor": "Black",
+		"background": "windowTen",
+		"cursor": "cursor",
+		"selection": "textSelection"
+	},
+	"code": {
+		"font": "menuFont",
+		"fontColor": "Black",
+		"background": "windowTen",
+		"cursor": "cursor",
+		"selection": "textSelection"
+	}
+},
+"com.badlogic.gdx.scenes.scene2d.ui.TextTooltip$TextTooltipStyle": {
+	"default": {
+		"label": "default"
 	}
 },
 "com.badlogic.gdx.scenes.scene2d.ui.Window$WindowStyle": {
-	"settingsMenu": {
-		"titleFont": "menuFont",
-		"titleFontColor": "Black"
+	"default": {
+		"background": "windowTen",
+		"titleFont": "menuFont"
+	},
+	"catalog": {
+		"background": "windowTen",
+		"titleFont": "menuFont"
 	}
 }
 }

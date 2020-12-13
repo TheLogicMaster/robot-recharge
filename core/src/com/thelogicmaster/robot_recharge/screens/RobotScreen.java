@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Array;
@@ -35,7 +36,10 @@ public abstract class RobotScreen implements Screen {
     private Texture background;
 
     public RobotScreen() {
-        menuSkin = new Skin(Gdx.files.internal("menuSkin.json"));
+        menuSkin = new Skin();
+        menuSkin.add("menuFont", RobotRecharge.assets.fontNormal);
+        menuSkin.addRegions(new TextureAtlas("menuSkin.atlas"));
+        menuSkin.load(Gdx.files.internal("menuSkin.json"));
         assetManager = Helpers.createAssetManager();
         spriteBatch = new SpriteBatch();
         inputMultiplexer = new InputMultiplexer();
@@ -74,10 +78,10 @@ public abstract class RobotScreen implements Screen {
         if (debugValues.size > 0) {
             spriteBatch.begin();
             for (int i = 0; i < debugValues.size; i++) {
-                debugLayout.setText(RobotRecharge.fontNormal, debugValues.get(i).getFirst());
-                RobotRecharge.fontNormal.draw(spriteBatch, debugValues.get(i).getFirst() + ":", 0, 30 + (5 + RobotRecharge.fontNormal.getLineHeight()) * i);
+                debugLayout.setText(RobotRecharge.assets.fontNormal, debugValues.get(i).getFirst());
+                RobotRecharge.assets.fontNormal.draw(spriteBatch, debugValues.get(i).getFirst() + ":", 0, 30 + (5 + RobotRecharge.assets.fontNormal.getLineHeight()) * i);
                 String text = debugValues.get(i).getSecond() == null ? "null" : debugValues.get(i).getSecond().toString();
-                RobotRecharge.fontNormal.draw(spriteBatch, text, 10 + debugLayout.width, 30 + (5 + RobotRecharge.fontNormal.getLineHeight()) * i);
+                RobotRecharge.assets.fontNormal.draw(spriteBatch, text, 10 + debugLayout.width, 30 + (5 + RobotRecharge.assets.fontNormal.getLineHeight()) * i);
             }
             debugValues.clear();
             spriteBatch.end();

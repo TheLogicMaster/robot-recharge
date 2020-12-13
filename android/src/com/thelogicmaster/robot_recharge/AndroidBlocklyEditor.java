@@ -13,6 +13,7 @@ import org.apache.commons.text.StringEscapeUtils;
 public class AndroidBlocklyEditor extends WebView implements IBlocklyEditor {
 
     private boolean loaded;
+    private int width;
 
     @SuppressLint("SetJavaScriptEnabled")
     public AndroidBlocklyEditor(Context context) {
@@ -41,12 +42,17 @@ public class AndroidBlocklyEditor extends WebView implements IBlocklyEditor {
     }
 
     @Override
-    public void resize(final int x, final int width, final int height) {
+    public void setWidth(final int width) {
+        this.width = width;
+    }
+
+    @Override
+    public void resize(final int screenWidth, final int screenHeight) {
         ((Activity) getContext()).runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(width, height);
-                layoutParams.setMargins(x, 0, 0, 0);
+                FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(screenWidth, screenHeight);
+                layoutParams.setMargins(screenWidth - width, 0, 0, 0);
                 setLayoutParams(layoutParams);
             }
         });
@@ -104,9 +110,9 @@ public class AndroidBlocklyEditor extends WebView implements IBlocklyEditor {
     }
 
     @Override
-    public void generateCode(final Consumer<String> callback) {
+    public void generateCode(Language language, final Consumer<String> callback) {
         runJavascript("(function() {" +
-                "return Blockly.JavaScript.workspaceToCode(workspace);" +
+                "return Blockly." + language.name() + ".workspaceToCode(workspace);" +
                 "})();", new ValueCallback<String>() {
             @Override
             public void onReceiveValue(String value) {

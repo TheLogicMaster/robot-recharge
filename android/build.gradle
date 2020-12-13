@@ -1,3 +1,5 @@
+apply plugin: 'com.chaquo.python'
+
 android {
     buildToolsVersion "29.0.2"
     compileSdkVersion 29
@@ -10,6 +12,7 @@ android {
             res.srcDirs = ['res']
             assets.srcDirs = ['assets']
             jniLibs.srcDirs = ['libs']
+            python.srcDir "python"
         }
 
     }
@@ -22,6 +25,17 @@ android {
         targetSdkVersion 29
         versionCode 2
         versionName "0.1"
+
+        python {
+            // If Chaquopy fails to find Python on your build machine, enable the following
+            // line and edit it to point to Python 3.5 or later.
+            // buildPython "C:/Python36/python.exe"
+            buildPython "/usr/bin/python3.8"
+            //staticProxy "engine"
+        }
+        ndk {
+            abiFilters "armeabi-v7a", "arm64-v8a", "x86", "x86_64"
+        }
     }
     buildTypes {
         release {
@@ -30,7 +44,6 @@ android {
         }
     }
 }
-
 
 // called every time gradle gets executed, takes the native dependencies of
 // the natives configuration, and extracts them to the proper libs/ folders
@@ -90,3 +103,7 @@ task run(type: Exec) {
 }
 
 eclipse.project.name = appName + "-android"
+
+repositories {
+    mavenCentral()
+}

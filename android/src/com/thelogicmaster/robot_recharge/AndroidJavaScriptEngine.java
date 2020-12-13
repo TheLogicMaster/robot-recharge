@@ -3,7 +3,7 @@ package com.thelogicmaster.robot_recharge;
 import com.badlogic.gdx.Gdx;
 import com.squareup.duktape.Duktape;
 
-public class AndroidJavaScriptEngine implements IJavaScriptEngine {
+public class AndroidJavaScriptEngine implements ICodeEngine {
 
     @Override
     public Thread run(final IRobot robot, final String code, final ExecutionListener listener) {

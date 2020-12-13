@@ -1,0 +1,10 @@
+[
+  {
+    name: test
+    description: This is some random text that is supposed to describe a very interesting level that has yet to be created and all of that fancy shit!
+  }
+  {
+    name: level 1
+    description: Level 1 description
+  }
+]

@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.VertexAttributes;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g3d.Attribute;
 import com.badlogic.gdx.graphics.g3d.Material;
@@ -15,6 +16,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.utils.Disableable;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import net.mgsx.gltf.loaders.glb.GLBAssetLoader;
@@ -22,6 +24,12 @@ import net.mgsx.gltf.loaders.gltf.GLTFAssetLoader;
 import net.mgsx.gltf.scene3d.scene.SceneAsset;
 
 public class Helpers {
+
+    public static final Json json;
+
+    static {
+        json = createJson();
+    }
 
     public static Viewport createViewport(Camera camera) {
         return new FitViewport(Constants.worldWidth, Constants.worldHeight, camera);
@@ -92,5 +100,11 @@ public class Helpers {
         builder.part("box", GL20.GL_TRIANGLES, attr, material)
                 .rect(0.5f, -0.5f, -0.5f, -0.5f, -0.5f, -0.5f, -0.5f, 0.5f, -0.5f, 0.5f, 0.5f, -0.5f, 0f, 0f, -1f);
         return builder.end();
+    }
+
+    public static Json createJson() {
+        Json json = new Json();
+        json.addClassTag("Command", Command.class);
+        return json;
     }
 }
