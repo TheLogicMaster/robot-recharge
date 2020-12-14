@@ -10,7 +10,7 @@ import com.badlogic.gdx.utils.Array;
 public class TargetBlock extends Block {
 
     @Override
-    void assetsLoaded(AssetManager assetManager) {
+    public void assetsLoaded(AssetManager assetManager) {
         super.assetsLoaded(assetManager);
         if (modelSource != null)
             for (Material mat : new Array.ArrayIterator<>(modelSource.materials))

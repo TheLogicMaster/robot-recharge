@@ -2,12 +2,12 @@ package com.thelogicmaster.robot_recharge.desktop;
 
 import com.badlogic.gdx.Gdx;
 import com.thelogicmaster.robot_recharge.code.ExecutionListener;
-import com.thelogicmaster.robot_recharge.code.ICodeEngine;
+import com.thelogicmaster.robot_recharge.code.CodeEngine;
 import com.thelogicmaster.robot_recharge.IRobot;
 import org.python.core.PyException;
 import org.python.util.PythonInterpreter;
 
-public class DesktopPythonEngine implements ICodeEngine {
+public class DesktopPythonEngine implements CodeEngine {
 
     @Override
     public Thread run(final IRobot robot, final String code, final ExecutionListener listener) {

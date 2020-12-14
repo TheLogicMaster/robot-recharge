@@ -1,18 +1,15 @@
 package com.thelogicmaster.robot_recharge.desktop;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Graphics;
 import com.badlogic.gdx.backends.lwjgl.LwjglAWTCanvas;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
-import com.badlogic.gdx.backends.lwjgl.LwjglGraphics;
-import com.thelogicmaster.robot_recharge.IPlatformUtils;
+import com.thelogicmaster.robot_recharge.PlatformUtils;
 import com.thelogicmaster.robot_recharge.WindowMode;
-import com.thelogicmaster.robot_recharge.code.ICodeEngine;
+import com.thelogicmaster.robot_recharge.code.CodeEngine;
 import com.thelogicmaster.robot_recharge.code.Language;
 import com.thelogicmaster.robot_recharge.RobotRecharge;
 import org.cef.CefApp;
 import org.cef.handler.CefAppHandlerAdapter;
-import org.python.modules._imp;
 
 import javax.swing.*;
 import java.awt.*;
@@ -24,7 +21,7 @@ import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class JCEFDesktopLauncher implements IPlatformUtils {
+public class JCEFDesktopLauncher implements PlatformUtils {
 
     private final JFrame jFrame;
     private final LwjglAWTCanvas lwjglAWTCanvas;
@@ -42,7 +39,7 @@ public class JCEFDesktopLauncher implements IPlatformUtils {
         blocklyEditor = new JCEFBlocklyEditor();
         LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
         config.allowSoftwareMode = true;
-        HashMap<Language, ICodeEngine> engines = new HashMap<>();
+        HashMap<Language, CodeEngine> engines = new HashMap<>();
         engines.put(Language.JavaScript, new DesktopJavaScriptEngine());
         engines.put(Language.Python, new DesktopPythonEngine());
         lwjglAWTCanvas = new LwjglAWTCanvas(new RobotRecharge(engines, blocklyEditor, this), config) {

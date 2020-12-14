@@ -15,7 +15,7 @@ public class LevelScreen extends MenuScreen {
     public LevelScreen(RobotScreen previousScreen) {
         super(previousScreen);
 
-        final Array<LevelInfo> levels = Helpers.json.fromJson(Array.class, LevelInfo.class, Gdx.files.internal("levels.json"));
+        final Array<LevelInfo> levels = RobotUtils.json.fromJson(Array.class, LevelInfo.class, Gdx.files.internal("levels.json"));
 
         // Level description
         final IterativeStack stack = new IterativeStack();
@@ -77,7 +77,7 @@ public class LevelScreen extends MenuScreen {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 FileHandle save = Gdx.files.internal("save/" + list.getSelected() + ".json");
-                RobotRecharge.instance.setScreen(new GameScreen(Helpers.json.fromJson(LevelSave.class, save)));
+                RobotRecharge.instance.setScreen(new GameScreen(RobotUtils.json.fromJson(LevelSave.class, save)));
             }
         });
     }

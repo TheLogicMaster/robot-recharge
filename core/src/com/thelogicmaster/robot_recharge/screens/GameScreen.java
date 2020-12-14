@@ -49,6 +49,7 @@ public class GameScreen extends RobotScreen implements RobotListener {
     private final Table codeEditor;
     private final Window catalog;
     private final CodeArea codeArea;
+    private final Level level;
 
     public GameScreen(final LevelSave levelData) {
         // Todo: remove all 'RobotRecharge.blocksEditor != null' checks from here
@@ -81,7 +82,7 @@ public class GameScreen extends RobotScreen implements RobotListener {
         environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.4f, 0.4f, 0.4f, 1f));
         environment.add(new DirectionalLight().set(0.8f, 0.8f, 0.8f, 0f, -1f, 0f));
         cam = new PerspectiveCamera();
-        viewport = Helpers.createViewport(cam);
+        viewport = RobotUtils.createViewport(cam);
         cam.position.x = 15;
         cam.position.y = 30;
         cam.position.z = 20;
@@ -92,6 +93,11 @@ public class GameScreen extends RobotScreen implements RobotListener {
         cam.lookAt(controller.target);
         cam.update();
         inputMultiplexer.addProcessor(controller);
+
+        // Load level
+        level = RobotUtils.json.fromJson(Level.class, Gdx.files.internal("levels/" + levelData.getLevel() + ".json"));
+        addDisposable(level);
+        level.loadAssets(assetManager);
 
         // Create loading bar
         loadingBar = new ProgressBar(-20f, 100f, 1f, false, skin);
@@ -302,7 +308,7 @@ public class GameScreen extends RobotScreen implements RobotListener {
         catalog.getTitleTable().add(catalogCloseButton).padRight(10).size(80, 80).right();
         final List<String> commandList = new List<>(skin);
         final IterativeStack commandInfoStack = new IterativeStack();
-        final Array<com.thelogicmaster.robot_recharge.code.Command> commands = Helpers.json.fromJson(Array.class, Command.class,
+        final Array<com.thelogicmaster.robot_recharge.code.Command> commands = RobotUtils.json.fromJson(Array.class, Command.class,
                 Gdx.files.internal("language/commands-" + levelData.getLanguage().name().toLowerCase() + ".json"));
         Array<String> commandLabels = new Array<>();
         for (com.thelogicmaster.robot_recharge.code.Command command: new Array.ArrayIterable<>(commands)) {
@@ -355,13 +361,15 @@ public class GameScreen extends RobotScreen implements RobotListener {
     @Override
     protected void doneLoading() {
         // Get assets
-        levelInstance = new ModelInstance(Helpers.cleanModel(assetManager.<Model>get("level.g3db")));
+        levelInstance = new ModelInstance(RobotUtils.cleanModel(assetManager.<Model>get("level.g3db")));
         background = assetManager.get("background.jpg");
         hud = assetManager.get("hud.png");
+        level.assetsLoaded(assetManager);
 
         // Setup level
         levelInstance.transform.setTranslation(15, -30, 15);
-        robot = new Robot(new ModelInstance(Helpers.cleanModel(assetManager.<Model>get("robot.g3db"))), this, RobotRecharge.codeEngines.get(levelData.getLanguage()));
+        robot = new Robot(new ModelInstance(RobotUtils.cleanModel(assetManager.<Model>get("robot.g3db"))), this,
+                RobotRecharge.codeEngines.get(levelData.getLanguage()));
         if (!levelData.usingBlocks()) {
             robot.setCode(levelData.getCode());
             codeArea.setText(levelData.getCode());
@@ -375,6 +383,10 @@ public class GameScreen extends RobotScreen implements RobotListener {
                 }
             });
         }
+
+        level.setRobot(robot);
+        robot.setLevel(level);
+
         resetLevel();
     }
 
@@ -408,7 +420,8 @@ public class GameScreen extends RobotScreen implements RobotListener {
         modelBatch.begin(cam);
         modelBatch.render(levelInstance, environment);
         modelBatch.render(gridInstance, environment);
-        robot.render(modelBatch, environment, delta);
+        robot.render(modelBatch, environment, robot.isRunning() ? delta : 0);
+        level.render(modelBatch, environment, robot.isRunning() ? delta : 0);
         modelBatch.end();
 
         // Draw HUD background
@@ -422,7 +435,7 @@ public class GameScreen extends RobotScreen implements RobotListener {
 
     private void saveLevel() {
         try (JsonWriter writer = new JsonWriter(new OutputStreamWriter(Gdx.files.local("save/" + levelData.getLevel() + ".json").write(false)))) {
-            writer.write(Helpers.json.prettyPrint(levelData));
+            writer.write(RobotUtils.json.prettyPrint(levelData));
         } catch (IOException e) {
             Gdx.app.error("Save Level", "Failed to save level", e);
             Dialogs.showErrorDialog(stage, "Failed to save level", e.getMessage());
@@ -430,7 +443,7 @@ public class GameScreen extends RobotScreen implements RobotListener {
     }
 
     private void resetLevel() {
-        robot.reset(new Vector3(), new Quaternion());
+        level.reset();
     }
 
     private boolean isEditorLoaded() {

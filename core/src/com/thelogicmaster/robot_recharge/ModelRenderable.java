@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.g3d.ModelBatch;
 /**
  * Represents an object that uses a ModelBatch to render
  */
-public interface IModelRenderable {
+public interface ModelRenderable {
 
     void render(ModelBatch batch, Environment environment, float delta);
 }

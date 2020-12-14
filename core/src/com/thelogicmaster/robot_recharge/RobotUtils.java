@@ -20,12 +20,15 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.thelogicmaster.robot_recharge.blocks.TargetBlock;
 import com.thelogicmaster.robot_recharge.code.Command;
+import com.thelogicmaster.robot_recharge.structures.BlocksStructure;
+import com.thelogicmaster.robot_recharge.structures.Elevator;
 import net.mgsx.gltf.loaders.glb.GLBAssetLoader;
 import net.mgsx.gltf.loaders.gltf.GLTFAssetLoader;
 import net.mgsx.gltf.scene3d.scene.SceneAsset;
 
-public class Helpers {
+public class RobotUtils {
 
     public static final Json json;
 
@@ -106,7 +109,13 @@ public class Helpers {
 
     public static Json createJson() {
         Json json = new Json();
-        json.addClassTag("Command", Command.class);
+        json.addClassTag("BlockStructure", BlocksStructure.class);
+        json.addClassTag("Elevator", Elevator.class);
+        json.addClassTag("TargetBlock", TargetBlock.class);
         return json;
+    }
+
+    public static int modulus(int a, int b) {
+        return (a % b + b) % b;
     }
 }

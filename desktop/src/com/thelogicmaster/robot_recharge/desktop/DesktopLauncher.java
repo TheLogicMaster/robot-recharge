@@ -5,10 +5,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Graphics;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
-import com.thelogicmaster.robot_recharge.Helpers;
-import com.thelogicmaster.robot_recharge.IPlatformUtils;
+import com.thelogicmaster.robot_recharge.PlatformUtils;
 import com.thelogicmaster.robot_recharge.WindowMode;
-import com.thelogicmaster.robot_recharge.code.ICodeEngine;
+import com.thelogicmaster.robot_recharge.code.CodeEngine;
 import com.thelogicmaster.robot_recharge.code.Language;
 import com.thelogicmaster.robot_recharge.RobotRecharge;
 
@@ -21,10 +20,10 @@ public class DesktopLauncher {
         config.addIcon("icon128.png", Files.FileType.Internal);
         config.addIcon("icon32.png", Files.FileType.Internal);
         config.addIcon("icon16.png", Files.FileType.Internal);
-        HashMap<Language, ICodeEngine> engines = new HashMap<>();
+        HashMap<Language, CodeEngine> engines = new HashMap<>();
         engines.put(Language.JavaScript, new DesktopJavaScriptEngine());
         engines.put(Language.Python, new DesktopPythonEngine());
-        new LwjglApplication(new RobotRecharge(engines, null, new IPlatformUtils() {
+        new LwjglApplication(new RobotRecharge(engines, null, new PlatformUtils() {
             @Override
             public void setWindowMode(WindowMode windowMode) {
                 switch (windowMode) {

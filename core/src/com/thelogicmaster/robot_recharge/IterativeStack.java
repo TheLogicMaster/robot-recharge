@@ -21,7 +21,7 @@ public class IterativeStack extends Stack {
 
     private void showSelected() {
         for (int i = 0; i < getChildren().size; i++)
-            Helpers.hideActor(getChildren().get(i), index != i);
+            RobotUtils.hideActor(getChildren().get(i), index != i);
     }
 
     /**

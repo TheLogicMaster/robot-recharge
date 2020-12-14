@@ -13,15 +13,15 @@ import java.util.Map;
 
 public class RobotRecharge extends Game {
 
-    public static IBlocklyEditor blocksEditor;
+    public static BlocklyEditor blocksEditor;
     public static RobotRecharge instance;
     public static RobotAssets assets;
-    public static Map<Language, ICodeEngine> codeEngines = new HashMap<>();
-    public static IPlatformUtils platformUtils;
+    public static Map<Language, CodeEngine> codeEngines = new HashMap<>();
+    public static PlatformUtils platformUtils;
 
     private TitleScreen titleScreen;
 
-    public RobotRecharge(Map<Language, ICodeEngine> engines, IBlocklyEditor blocksEditor, IPlatformUtils platformUtils) {
+    public RobotRecharge(Map<Language, CodeEngine> engines, BlocklyEditor blocksEditor, PlatformUtils platformUtils) {
         RobotRecharge.blocksEditor = blocksEditor;
         instance = this;
         codeEngines = engines;
@@ -41,7 +41,7 @@ public class RobotRecharge extends Game {
                 "while true do\n  Robot:sleep(1);\n  Robot:move(2);\n  Robot:turn(1);\n  end", Language.Lua);
         FileHandle save = Gdx.files.internal("save/test.txt");
         if (save.exists())
-            levelData = Helpers.json.fromJson(LevelSave.class, save);
+            levelData = RobotUtils.json.fromJson(LevelSave.class, save);
         setScreen(new GameScreen(levelData));
         titleScreen = new TitleScreen();
         //setScreen(titleScreen);

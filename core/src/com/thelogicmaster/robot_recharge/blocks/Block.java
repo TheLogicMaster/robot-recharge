@@ -7,9 +7,10 @@ import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.utils.Disposable;
 import com.thelogicmaster.robot_recharge.*;
 
-public class Block implements IModelRenderable {
+public class Block implements ModelRenderable, Disposable, AssetConsumer {
     private Position position;
     private boolean cubic;
     private String asset;
@@ -20,10 +21,11 @@ public class Block implements IModelRenderable {
     protected final transient Vector3 tempVec3 = new Vector3();
 
     public Block() {
+        this(null);
     }
 
     public Block(String asset) {
-        this(new Position(), false, asset);
+        this(true, asset);
     }
 
     public Block(boolean cubic, String asset) {
@@ -33,7 +35,19 @@ public class Block implements IModelRenderable {
     public Block(Position position, boolean cubic, String asset) {
         this.position = position;
         this.cubic = cubic;
-        this.asset = asset;
+        if (asset != null)
+            this.asset = "blocks/" + asset;
+    }
+
+    public Block copy() {
+        Block block = new Block();
+        block.position = position;
+        block.cubic = cubic;
+        block.asset = asset;
+        if (model != null)
+            block.model = new ModelInstance(model);
+        block.level = level;
+        return block;
     }
 
     public void setPosition(Position position) {
@@ -68,7 +82,8 @@ public class Block implements IModelRenderable {
         return true;
     }
 
-    void loadAssets(AssetManager assetManager) {
+    @Override
+    public void loadAssets(AssetManager assetManager) {
         if (asset == null)
             return;
         if (cubic)
@@ -77,15 +92,15 @@ public class Block implements IModelRenderable {
             assetManager.load(asset, Model.class);
     }
 
-    void assetsLoaded(AssetManager assetManager) {
+    @Override
+    public void assetsLoaded(AssetManager assetManager) {
         if (asset == null)
             return;
-        if (cubic)
-            model = new ModelInstance(Helpers.createCubeModel(assetManager.<Texture>get(asset)));
-        else {
-            modelSource = assetManager.get(asset);
+        if (cubic) {
+            modelSource = RobotUtils.createCubeModel(assetManager.<Texture>get(asset));
             model = new ModelInstance(modelSource);
-        }
+        } else
+            model = new ModelInstance(assetManager.<Model>get(asset));
     }
 
     @Override
@@ -96,6 +111,7 @@ public class Block implements IModelRenderable {
         }
     }
 
+    @Override
     public void dispose() {
         if (modelSource != null)
             modelSource.dispose();

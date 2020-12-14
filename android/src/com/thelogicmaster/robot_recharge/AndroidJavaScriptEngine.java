@@ -3,9 +3,9 @@ package com.thelogicmaster.robot_recharge;
 import com.badlogic.gdx.Gdx;
 import com.squareup.duktape.Duktape;
 import com.thelogicmaster.robot_recharge.code.ExecutionListener;
-import com.thelogicmaster.robot_recharge.code.ICodeEngine;
+import com.thelogicmaster.robot_recharge.code.CodeEngine;
 
-public class AndroidJavaScriptEngine implements ICodeEngine {
+public class AndroidJavaScriptEngine implements CodeEngine {
 
     @Override
     public Thread run(final IRobot robot, final String code, final ExecutionListener listener) {

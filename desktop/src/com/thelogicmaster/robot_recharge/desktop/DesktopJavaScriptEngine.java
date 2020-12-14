@@ -2,11 +2,11 @@ package com.thelogicmaster.robot_recharge.desktop;
 
 import com.badlogic.gdx.Gdx;
 import com.thelogicmaster.robot_recharge.code.ExecutionListener;
-import com.thelogicmaster.robot_recharge.code.ICodeEngine;
+import com.thelogicmaster.robot_recharge.code.CodeEngine;
 import com.thelogicmaster.robot_recharge.IRobot;
 import io.webfolder.ducktape4j.Duktape;
 
-public class DesktopJavaScriptEngine implements ICodeEngine {
+public class DesktopJavaScriptEngine implements CodeEngine {
 
     @Override
     public Thread run(final IRobot robot, final String code, final ExecutionListener listener) {

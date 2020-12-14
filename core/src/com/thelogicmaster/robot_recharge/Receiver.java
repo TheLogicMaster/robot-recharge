@@ -1,5 +1,5 @@
 package com.thelogicmaster.robot_recharge;
 
-public interface IReceiver {
+public interface Receiver {
     void receive(int value);
 }

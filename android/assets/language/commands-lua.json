@@ -12,7 +12,7 @@
     args: [
       distance
     ]
-    description: Turns the robot 'distance' times CCW
+    description: Turns the robot 'distance' times clockwise
     example: Robot:turn(1)
   }
   {

@@ -2,7 +2,7 @@ package com.thelogicmaster.robot_recharge.desktop;
 
 import com.badlogic.gdx.Gdx;
 import com.thelogicmaster.robot_recharge.Consumer;
-import com.thelogicmaster.robot_recharge.code.IBlocklyEditor;
+import com.thelogicmaster.robot_recharge.code.BlocklyEditor;
 import com.thelogicmaster.robot_recharge.code.Language;
 import org.cef.CefApp;
 import org.cef.CefClient;
@@ -22,7 +22,7 @@ import java.util.Enumeration;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
-public class JCEFBlocklyEditor implements IBlocklyEditor, ActionListener {
+public class JCEFBlocklyEditor implements BlocklyEditor, ActionListener {
 
     private CefApp cefApp;
     private CefClient client;

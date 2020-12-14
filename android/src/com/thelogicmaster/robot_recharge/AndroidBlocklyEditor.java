@@ -8,11 +8,11 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.FrameLayout;
-import com.thelogicmaster.robot_recharge.code.IBlocklyEditor;
+import com.thelogicmaster.robot_recharge.code.BlocklyEditor;
 import com.thelogicmaster.robot_recharge.code.Language;
 import org.apache.commons.text.StringEscapeUtils;
 
-public class AndroidBlocklyEditor extends WebView implements IBlocklyEditor {
+public class AndroidBlocklyEditor extends WebView implements BlocklyEditor {
 
     private boolean loaded;
     private int width;

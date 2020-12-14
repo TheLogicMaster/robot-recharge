@@ -8,14 +8,13 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.github.czyzby.kiwi.util.tuple.immutable.Pair;
-import com.thelogicmaster.robot_recharge.Helpers;
+import com.thelogicmaster.robot_recharge.RobotUtils;
 import com.thelogicmaster.robot_recharge.RobotRecharge;
 
 import java.util.ArrayList;
@@ -37,11 +36,11 @@ public abstract class RobotScreen implements Screen {
 
     public RobotScreen() {
         skin = RobotRecharge.assets.skin;
-        assetManager = Helpers.createAssetManager();
+        assetManager = RobotUtils.createAssetManager();
         spriteBatch = new SpriteBatch();
         inputMultiplexer = new InputMultiplexer();
         uiCamera = new OrthographicCamera();
-        uiViewport = Helpers.createViewport(uiCamera);
+        uiViewport = RobotUtils.createViewport(uiCamera);
         uiViewport.update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         stage = new Stage(uiViewport);
         inputMultiplexer.addProcessor(stage);

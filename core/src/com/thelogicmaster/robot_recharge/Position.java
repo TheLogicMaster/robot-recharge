@@ -1,12 +1,18 @@
 package com.thelogicmaster.robot_recharge;
 
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.utils.Json;
+import com.badlogic.gdx.utils.JsonValue;
 
 public class Position {
 
     public int x, y, z;
 
     public Position() {
+    }
+
+    public Position(Position position) {
+        this(position.x, position.y, position.z);
     }
 
     public Position(int x, int y, int z) {
@@ -31,5 +37,39 @@ public class Position {
         y = (int)vector.y;
         z = (int)vector.z;
         return this;
+    }
+
+    public Position add(int x, int y, int z) {
+        this.x += x;
+        this.y += y;
+        this.z += z;
+        return this;
+    }
+
+    public Position add(Vector3 vector) {
+        x += (int)vector.x;
+        y += (int)vector.y;
+        z += (int)vector.z;
+        return this;
+    }
+
+    public Position add(Position position) {
+        x += position.x;
+        y += position.y;
+        z += position.z;
+        return this;
+    }
+
+    public Position cpy() {
+        return new Position(this);
+    }
+
+    @Override
+    public String toString() {
+        return "Position{" +
+                "x=" + x +
+                ", y=" + y +
+                ", z=" + z +
+                '}';
     }
 }
