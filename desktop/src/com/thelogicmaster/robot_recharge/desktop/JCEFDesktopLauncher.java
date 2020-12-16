@@ -1,6 +1,7 @@
 package com.thelogicmaster.robot_recharge.desktop;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.backends.lwjgl.LwjglAWTCanvas;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.thelogicmaster.robot_recharge.PlatformUtils;
@@ -11,6 +12,7 @@ import com.thelogicmaster.robot_recharge.RobotRecharge;
 import org.cef.CefApp;
 import org.cef.handler.CefAppHandlerAdapter;
 
+import javax.sound.sampled.AudioInputStream;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ComponentAdapter;
@@ -42,7 +44,7 @@ public class JCEFDesktopLauncher implements PlatformUtils {
         HashMap<Language, CodeEngine> engines = new HashMap<>();
         engines.put(Language.JavaScript, new DesktopJavaScriptEngine());
         engines.put(Language.Python, new DesktopPythonEngine());
-        lwjglAWTCanvas = new LwjglAWTCanvas(new RobotRecharge(engines, blocklyEditor, this), config) {
+        lwjglAWTCanvas = new LwjglAWTCanvas(new RobotRecharge(engines, blocklyEditor, this, new DesktopTTSEngine()), config) {
             // Graceful exit
             @Override
             public void exit () {

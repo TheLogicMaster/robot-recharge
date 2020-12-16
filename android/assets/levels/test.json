@@ -12,7 +12,7 @@
           asset: blocks/test.png
         }
         target: {
-          class: TargetBlock
+          class: TriggerBlock
           position: {}
         }
       }

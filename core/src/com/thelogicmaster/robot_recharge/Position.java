@@ -72,4 +72,12 @@ public class Position {
                 ", z=" + z +
                 '}';
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof Position))
+            return false;
+        Position position = (Position)o;
+        return position.x == x && position.y == y && position.z == z;
+    }
 }

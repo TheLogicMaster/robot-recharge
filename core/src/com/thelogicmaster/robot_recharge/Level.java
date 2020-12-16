@@ -5,16 +5,18 @@ import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
+import com.badlogic.gdx.utils.ObjectSet;
+import com.badlogic.gdx.utils.OrderedSet;
 import com.thelogicmaster.robot_recharge.blocks.Block;
 import com.thelogicmaster.robot_recharge.structures.Structure;
 
-public class Level implements Disposable, ModelRenderable, AssetConsumer {
+public class Level implements Disposable, ModelRenderable, AssetConsumer, RobotListener {
     private int xSize, ySize, zSize;
     private final Array<Structure> structures = new Array<>();
 
     private transient Block[][][] blocks;
-    private transient final Array<NeighborListener> neighborListeners = new Array<>();
-    private transient final Array<RobotMovementListener> robotMovementListeners = new Array<>();
+    private transient final OrderedSet<LevelListener> levelListeners = new OrderedSet<>();
+    private transient final OrderedSet<RobotListener> robotListeners = new OrderedSet<>();
     private transient final Array<Block> realBlocks = new Array<>();
     private transient Robot robot;
     private transient boolean setup; // If setup is in progress
@@ -52,8 +54,8 @@ public class Level implements Disposable, ModelRenderable, AssetConsumer {
     public void reset() {
         robot.reset(new Position(), Direction.NORTH);
         realBlocks.clear();
-        neighborListeners.clear();
-        robotMovementListeners.clear();
+        levelListeners.clear();
+        robotListeners.clear();
         blocks = new Block[xSize][ySize][zSize];
         setup = true;
         for (Structure structure : new Array.ArrayIterator<>(structures))
@@ -85,10 +87,6 @@ public class Level implements Disposable, ModelRenderable, AssetConsumer {
         block.setPosition(position);
         blocks[position.x][position.y][position.z] = block;
         realBlocks.add(block);
-        if (block instanceof NeighborListener)
-            neighborListeners.add((NeighborListener) block);
-        if (block instanceof RobotMovementListener)
-            robotMovementListeners.add((RobotMovementListener)block);
         if (!setup) {
             // Alert listneres
         }
@@ -102,20 +100,64 @@ public class Level implements Disposable, ModelRenderable, AssetConsumer {
         block.setPosition(position);
     }
 
+    public void removeBlock(Position position) {
+        if (!isPositionInvalid(position))
+            removeBlock(getBlock(position));
+    }
+
     public void removeBlock(Block block) {
+        if (!realBlocks.contains(block, true))
+            return;
         Position position = block.getPosition();
         blocks[position.x][position.y][position.z] = null;
         realBlocks.removeValue(block, true);
-        if (block instanceof NeighborListener)
-            neighborListeners.removeValue((NeighborListener) block, true);
     }
 
     /**
-     * Should be called by structures that need robot events in the generate function call
-     * @param listener to receive events
+     * Add listeners in the Structure generate() and Block init() methods
+     * @param listener The RobotListener to add
      */
-    public void addRobotMovementListener(RobotMovementListener listener){
-        robotMovementListeners.add(listener);
+    public void addRobotListener(RobotListener listener) {
+        robotListeners.add(listener);
+    }
+
+    public void removeRobotListener(RobotListener listener) {
+        robotListeners.remove(listener);
+    }
+
+    /**
+     * Add listeners in the Structure generate() and Block init() methods
+     * @param listener The LevelListener to add
+     */
+    public void addLevelListener(LevelListener listener) {
+        levelListeners.add(listener);
+    }
+
+    public void removeLevelListener(LevelListener listener) {
+        levelListeners.remove(listener);
+    }
+
+    public void emitLevelEvent(LevelEvent event) {
+        for (LevelListener listener: new OrderedSet.OrderedSetIterator<>(levelListeners))
+            listener.onEvent(event);
+    }
+
+    @Override
+    public void onRobotMove(Robot robot) {
+        for (RobotListener listener: new OrderedSet.OrderedSetIterator<>(robotListeners))
+            listener.onRobotMove(robot);
+    }
+
+    @Override
+    public void onRobotSubMove(Robot robot) {
+        for (RobotListener listener: new OrderedSet.OrderedSetIterator<>(robotListeners))
+            listener.onRobotSubMove(robot);
+    }
+
+    @Override
+    public void onRobotCrash(Robot robot, Position crash) {
+        for (RobotListener listener: new OrderedSet.OrderedSetIterator<>(robotListeners))
+            listener.onRobotCrash(robot, crash);
     }
 
     @Override

@@ -14,7 +14,8 @@ public class AndroidPythonEngine implements CodeEngine {
     public static IRobot robot;
 
     public AndroidPythonEngine(Context context) {
-        Python.start(new AndroidPlatform(context));
+        if (!Python.isStarted())
+            Python.start(new AndroidPlatform(context));
     }
 
     @Override

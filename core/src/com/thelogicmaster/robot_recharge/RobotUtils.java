@@ -1,8 +1,8 @@
 package com.thelogicmaster.robot_recharge;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Graphics;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
@@ -18,23 +18,23 @@ import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.utils.Disableable;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Json;
+import com.badlogic.gdx.utils.StreamUtils;
+import com.badlogic.gdx.utils.reflect.ClassReflection;
+import com.badlogic.gdx.utils.reflect.Method;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.thelogicmaster.robot_recharge.blocks.TargetBlock;
-import com.thelogicmaster.robot_recharge.code.Command;
+import com.thelogicmaster.robot_recharge.blocks.TriggerBlock;
 import com.thelogicmaster.robot_recharge.structures.BlocksStructure;
 import com.thelogicmaster.robot_recharge.structures.Elevator;
 import net.mgsx.gltf.loaders.glb.GLBAssetLoader;
 import net.mgsx.gltf.loaders.gltf.GLTFAssetLoader;
 import net.mgsx.gltf.scene3d.scene.SceneAsset;
 
+import java.io.InputStream;
+
 public class RobotUtils {
 
-    public static final Json json;
-
-    static {
-        json = createJson();
-    }
+    public static final Json json = createJson();
 
     public static Viewport createViewport(Camera camera) {
         return new FitViewport(Constants.worldWidth, Constants.worldHeight, camera);
@@ -111,10 +111,17 @@ public class RobotUtils {
         Json json = new Json();
         json.addClassTag("BlockStructure", BlocksStructure.class);
         json.addClassTag("Elevator", Elevator.class);
-        json.addClassTag("TargetBlock", TargetBlock.class);
+        json.addClassTag("TriggerBlock", TriggerBlock.class);
         return json;
     }
 
+    /**
+     * Actual modulus implementation, not remainder operator
+     * Source: https://stackoverflow.com/a/4412200
+     * @param a The dividend
+     * @param b The divisor
+     * @return modulus result
+     */
     public static int modulus(int a, int b) {
         return (a % b + b) % b;
     }

@@ -9,4 +9,9 @@ public class ElevatorBlock extends Block {
     public ElevatorBlock(Elevator elevator) {
         this.elevator = elevator;
     }
+
+    @Override
+    public boolean isSolid() {
+        return super.isSolid();
+    }
 }

@@ -1,8 +1,10 @@
 package com.thelogicmaster.robot_recharge;
 
-import com.thelogicmaster.robot_recharge.code.ExecutionListener;
+public interface RobotListener {
 
-public interface RobotListener extends ExecutionListener {
+    void onRobotMove(Robot robot);
 
-    void onExecutionPaused();
+    void onRobotSubMove(Robot robot);
+
+    void onRobotCrash(Robot robot, Position crash);
 }

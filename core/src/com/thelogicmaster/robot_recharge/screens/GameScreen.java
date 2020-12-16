@@ -1,13 +1,13 @@
 package com.thelogicmaster.robot_recharge.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g3d.*;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
 import com.badlogic.gdx.graphics.g3d.utils.MeshPartBuilder;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
-import com.badlogic.gdx.math.Quaternion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -23,10 +23,11 @@ import com.kotcrab.vis.ui.util.dialog.Dialogs;
 import com.thelogicmaster.robot_recharge.*;
 import com.thelogicmaster.robot_recharge.code.Command;
 
+import javax.sound.sampled.AudioInputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 
-public class GameScreen extends RobotScreen implements RobotListener {
+public class GameScreen extends RobotScreen implements RobotExecutionListener {
 
     private static final int editorSidebarWidth = 128;
 
@@ -165,6 +166,9 @@ public class GameScreen extends RobotScreen implements RobotListener {
                 playPause.next();
                 programButton.setDisabled(true);
                 robot.start();
+                Sound s = RobotRecharge.ttsEngine.textToSpeech("Hello World");
+                if (s != null)
+                    s.play();
             }
         });
         resetButton.addListener(new ChangeListener() {
@@ -388,6 +392,9 @@ public class GameScreen extends RobotScreen implements RobotListener {
         robot.setLevel(level);
 
         resetLevel();
+
+        if (RobotRecharge.ttsEngine != null)
+            RobotRecharge.ttsEngine.init();
     }
 
     @Override

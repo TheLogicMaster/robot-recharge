@@ -2,6 +2,7 @@ package com.thelogicmaster.robot_recharge;
 
 import android.os.Bundle;
 import android.widget.LinearLayout;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 import com.thelogicmaster.robot_recharge.code.CodeEngine;
@@ -24,7 +25,7 @@ public class AndroidLauncher extends AndroidApplication {
             @Override
             public void setWindowMode(WindowMode windowMode) {
             }
-        }), config);
+        }, new AndroidTTSEngine(getContext())), config);
         addContentView(editor, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
     }
 }

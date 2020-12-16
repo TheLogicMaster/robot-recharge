@@ -17,7 +17,7 @@ public class Robot implements IRobot, ExecutionListener {
     private volatile Thread thread;
     private String code;
     private final ModelInstance model;
-    private final RobotListener listener;
+    private final RobotExecutionListener listener;
     private final AnimationController animator;
     private volatile boolean fastForward;
     private volatile Vector3 position;
@@ -33,7 +33,7 @@ public class Robot implements IRobot, ExecutionListener {
     private static final float rotationSpeed = 180;
     private static final Quaternion rotOffset = new Quaternion(Vector3.Y, 90);
 
-    public Robot(ModelInstance model, RobotListener listener, CodeEngine engine) {
+    public Robot(ModelInstance model, RobotExecutionListener listener, CodeEngine engine) {
         this.model = model;
         this.engine = engine;
         animator = new AnimationController(model);
@@ -175,22 +175,27 @@ public class Robot implements IRobot, ExecutionListener {
         Vector3 step = direction.getVector().cpy().scl(Math.signum(distance) * speed * .01f);
         for (int i = 0; i < Math.abs(distance); i++) {
             Position target = blockPos.cpy().add(direction.getVector().cpy().scl(Math.signum(distance)));
-            // Todo: play almost falling off animation for ledges
-            if (level.isPositionInvalid(target) || (level.getBlock(target) != null && level.getBlock(target).isSolid())
-                    || (target.y > 0 && level.getBlock(target.cpy().add(0, -1, 0)) == null)) {
+            if (level.isPositionInvalid(target) || (target.y > 0 && level.getBlock(target.cpy().add(0, -1, 0)) == null)) {
                 playAnimation(null);
-                // Todo: Play sound effect
+                // Todo: play almost falling off 'animation' for ledges
+                return;
+            } else if (level.getBlock(target) != null && level.getBlock(target).isSolid()) {
+                playAnimation(null);
+                level.onRobotCrash(this, target);
+                // Todo: Play sound effect and move forward and back slightly to hit the block
                 return;
             }
             double time = 1 / speed;
             while (time > 0) {
                 ensureRunning();
                 position.add(step);
+                level.onRobotSubMove(this);
                 Thread.sleep(fastForward ? 5 : 10);
                 time -= .01f;
             }
             blockPos = target;
             blockPos.toVector(position);
+            level.onRobotMove(this);
         }
         playAnimation(null);
     }

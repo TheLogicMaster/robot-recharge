@@ -18,14 +18,16 @@ public class RobotRecharge extends Game {
     public static RobotAssets assets;
     public static Map<Language, CodeEngine> codeEngines = new HashMap<>();
     public static PlatformUtils platformUtils;
+    public static TTSEngine ttsEngine;
 
     private TitleScreen titleScreen;
 
-    public RobotRecharge(Map<Language, CodeEngine> engines, BlocklyEditor blocksEditor, PlatformUtils platformUtils) {
+    public RobotRecharge(Map<Language, CodeEngine> codeEngines, BlocklyEditor blocksEditor, PlatformUtils platformUtils, TTSEngine ttsEngine) {
         RobotRecharge.blocksEditor = blocksEditor;
-        instance = this;
-        codeEngines = engines;
+        RobotRecharge.codeEngines = codeEngines;
         RobotRecharge.platformUtils = platformUtils;
+        RobotRecharge.ttsEngine = ttsEngine;
+        instance = this;
     }
 
     @Override
