@@ -7,4 +7,6 @@ public interface IRobot {
     void turn(int distance) throws InterruptedException;
 
     void sleep(double duration) throws InterruptedException;
+
+    void speak(String message);
 }

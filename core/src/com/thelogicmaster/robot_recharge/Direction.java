@@ -27,7 +27,7 @@ public enum Direction {
     }
 
     public static Direction fromYaw(float yaw) {
-        int normalized = RobotUtils.modulus((int)Math.floor(yaw), 360);
+        int normalized = RobotUtils.modulus((int) Math.floor(yaw), 360);
         if (normalized <= 45 || normalized > 315)
             return NORTH;
         else if (normalized <= 135)

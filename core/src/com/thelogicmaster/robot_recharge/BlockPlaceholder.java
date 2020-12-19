@@ -1,7 +1,5 @@
 package com.thelogicmaster.robot_recharge;
 
-import com.thelogicmaster.robot_recharge.blocks.Block;
-
 public class BlockPlaceholder {
 
     private String block;

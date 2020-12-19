@@ -1,18 +1,16 @@
 package com.thelogicmaster.robot_recharge.desktop;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.backends.lwjgl.LwjglAWTCanvas;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.thelogicmaster.robot_recharge.PlatformUtils;
+import com.thelogicmaster.robot_recharge.RobotRecharge;
 import com.thelogicmaster.robot_recharge.WindowMode;
 import com.thelogicmaster.robot_recharge.code.CodeEngine;
 import com.thelogicmaster.robot_recharge.code.Language;
-import com.thelogicmaster.robot_recharge.RobotRecharge;
 import org.cef.CefApp;
 import org.cef.handler.CefAppHandlerAdapter;
 
-import javax.sound.sampled.AudioInputStream;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ComponentAdapter;
@@ -27,18 +25,18 @@ public class JCEFDesktopLauncher implements PlatformUtils {
 
     private final JFrame jFrame;
     private final LwjglAWTCanvas lwjglAWTCanvas;
-    private final JCEFBlocklyEditor blocklyEditor;
+    private final DesktopBlocklyEditor blocklyEditor;
 
     private JCEFDesktopLauncher() {
         CefApp.addAppHandler(new CefAppHandlerAdapter(null) {
             @Override
             public void stateHasChanged(CefApp.CefAppState state) {
                 if (state == CefApp.CefAppState.TERMINATED)
-                    System.exit(0);
+                    Gdx.app.exit();
             }
         });
 
-        blocklyEditor = new JCEFBlocklyEditor();
+        blocklyEditor = new DesktopBlocklyEditor();
         LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
         config.allowSoftwareMode = true;
         HashMap<Language, CodeEngine> engines = new HashMap<>();
@@ -47,20 +45,22 @@ public class JCEFDesktopLauncher implements PlatformUtils {
         lwjglAWTCanvas = new LwjglAWTCanvas(new RobotRecharge(engines, blocklyEditor, this, new DesktopTTSEngine()), config) {
             // Graceful exit
             @Override
-            public void exit () {
+            public void exit() {
                 postRunnable(new Runnable() {
                     @Override
-                    public void run () {
+                    public void run() {
                         CefApp.getInstance().dispose();
                         stop();
-                        new Thread(new Runnable() {
-                            @Override
-                            public void run() {
-                                System.exit(0);
-                            }
-                        }).start();
+                        exitDelayed();
                     }
                 });
+            }
+
+            @Override
+            protected void exception(Throwable ex) {
+                CefApp.getInstance().dispose();
+                super.exception(ex);
+                exitDelayed();
             }
         };
         blocklyEditor.setup();
@@ -71,6 +71,15 @@ public class JCEFDesktopLauncher implements PlatformUtils {
         jFrame.add(lwjglAWTCanvas.getCanvas());
         jFrame.pack();
         jFrame.setVisible(true);
+    }
+
+    private void exitDelayed() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                System.exit(0);
+            }
+        }).start();
     }
 
     private JFrame createFrame() {

@@ -1,6 +1,5 @@
 package com.thelogicmaster.robot_recharge;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Camera;
@@ -18,9 +17,6 @@ import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.utils.Disableable;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Json;
-import com.badlogic.gdx.utils.StreamUtils;
-import com.badlogic.gdx.utils.reflect.ClassReflection;
-import com.badlogic.gdx.utils.reflect.Method;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.thelogicmaster.robot_recharge.blocks.TriggerBlock;
@@ -29,8 +25,6 @@ import com.thelogicmaster.robot_recharge.structures.Elevator;
 import net.mgsx.gltf.loaders.glb.GLBAssetLoader;
 import net.mgsx.gltf.loaders.gltf.GLTFAssetLoader;
 import net.mgsx.gltf.scene3d.scene.SceneAsset;
-
-import java.io.InputStream;
 
 public class RobotUtils {
 
@@ -118,11 +112,28 @@ public class RobotUtils {
     /**
      * Actual modulus implementation, not remainder operator
      * Source: https://stackoverflow.com/a/4412200
+     *
      * @param a The dividend
      * @param b The divisor
      * @return modulus result
      */
     public static int modulus(int a, int b) {
         return (a % b + b) % b;
+    }
+
+    /**
+     * Converts text to Sound and plays it if TTS is available
+     *
+     * @param text The text to speak
+     * @return The generated Sound
+     */
+    public static Sound textToSpeech(String text) {
+        if (RobotRecharge.ttsEngine != null) {
+            Sound sound = RobotRecharge.ttsEngine.textToSpeech(text);
+            if (sound != null)
+                sound.play();
+            return sound;
+        }
+        return null;
     }
 }

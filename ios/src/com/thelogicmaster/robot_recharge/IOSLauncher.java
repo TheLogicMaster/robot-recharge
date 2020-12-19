@@ -1,6 +1,5 @@
 package com.thelogicmaster.robot_recharge;
 
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.backends.iosrobovm.IOSApplication;
 import com.badlogic.gdx.backends.iosrobovm.IOSApplicationConfiguration;
 import com.thelogicmaster.robot_recharge.code.CodeEngine;
@@ -18,7 +17,7 @@ public class IOSLauncher extends IOSApplication.Delegate {
             @Override
             public void setWindowMode(WindowMode windowMode) {
             }
-        }, new IOSTTSEngine()), config);
+        }, null), config);
     }
 
     public static void main(String[] argv) {

@@ -4,13 +4,20 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
+import com.badlogic.gdx.graphics.g3d.decals.DecalBatch;
 import com.badlogic.gdx.graphics.g3d.utils.AnimationController;
 import com.badlogic.gdx.math.Quaternion;
 import com.badlogic.gdx.math.Vector3;
-import com.thelogicmaster.robot_recharge.code.ExecutionListener;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.utils.Disposable;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import com.thelogicmaster.robot_recharge.code.CodeEngine;
+import com.thelogicmaster.robot_recharge.code.ExecutionListener;
+import com.thelogicmaster.robot_recharge.ui.TableDecal;
 
-public class Robot implements IRobot, ExecutionListener {
+public class Robot implements IRobot, ExecutionListener, Disposable, Renderable3D {
 
     private volatile boolean running;
     private final Object lock = new Object();
@@ -28,12 +35,14 @@ public class Robot implements IRobot, ExecutionListener {
     private final Quaternion tempRot = new Quaternion();
     private final CodeEngine engine;
     private Level level;
+    private final TableDecal dialog;
+    private final Label message;
 
     private static final float speed = 2;
     private static final float rotationSpeed = 180;
     private static final Quaternion rotOffset = new Quaternion(Vector3.Y, 90);
 
-    public Robot(ModelInstance model, RobotExecutionListener listener, CodeEngine engine) {
+    public Robot(ModelInstance model, RobotExecutionListener listener, CodeEngine engine, Viewport viewport) {
         this.model = model;
         this.engine = engine;
         animator = new AnimationController(model);
@@ -43,6 +52,13 @@ public class Robot implements IRobot, ExecutionListener {
         rotation = new Quaternion();
         blockPos = new Position();
         direction = Direction.NORTH;
+        Table table = new Table(RobotRecharge.assets.skin);
+        dialog = new TableDecal(viewport, table, 256, 256, 1, 1, true);
+        table.setBackground("robotDialogTen");
+        table.pad(10);
+        table.getColor().a = 0;
+        message = new Label("", RobotRecharge.assets.skin);
+        table.add(message).grow();
     }
 
     public void setLevel(Level level) {
@@ -77,11 +93,14 @@ public class Robot implements IRobot, ExecutionListener {
         return direction;
     }
 
-    public void render(ModelBatch batch, Environment environment, float delta) {
+    @Override
+    public void render(ModelBatch modelBatch, DecalBatch decalBatch, Environment environment, float delta) {
         animator.update(fastForward ? 2 * delta : delta);
         rotation.nor();
         model.transform.set(tempVec3.set(position).add(Constants.blockOffset), tempRot.set(rotation).mul(rotOffset));
-        batch.render(model, environment);
+        modelBatch.render(model, environment);
+        dialog.setPosition(tempVec3.set(position).add(0, 1, 0).add(Constants.blockOffset));
+        dialog.draw(decalBatch, delta);
     }
 
     public void reset(Position position, Direction direction) {
@@ -208,5 +227,28 @@ public class Robot implements IRobot, ExecutionListener {
             Thread.sleep(fastForward ? 5 : 10);
             time -= 10;
         }
+    }
+
+    @Override
+    public void speak(final String message) {
+        Gdx.app.postRunnable(new Runnable() {
+            @Override
+            public void run() {
+                RobotUtils.textToSpeech(message);
+                Robot.this.message.setText(message);
+                dialog.getTable().clearActions();
+                dialog.getTable().addAction(Actions.sequence(
+                        Actions.alpha(1, 0.25f),
+                        Actions.delay(3),
+                        Actions.alpha(0, 0.25f))
+                );
+            }
+        });
+    }
+
+    @Override
+    public void dispose() {
+        dialog.dispose();
+        stop();
     }
 }

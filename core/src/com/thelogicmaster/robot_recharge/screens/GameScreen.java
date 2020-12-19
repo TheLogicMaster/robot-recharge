@@ -1,10 +1,11 @@
 package com.thelogicmaster.robot_recharge.screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g3d.*;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
+import com.badlogic.gdx.graphics.g3d.decals.CameraGroupStrategy;
+import com.badlogic.gdx.graphics.g3d.decals.DecalBatch;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
 import com.badlogic.gdx.graphics.g3d.utils.MeshPartBuilder;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
@@ -22,8 +23,9 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.kotcrab.vis.ui.util.dialog.Dialogs;
 import com.thelogicmaster.robot_recharge.*;
 import com.thelogicmaster.robot_recharge.code.Command;
+import com.thelogicmaster.robot_recharge.ui.CodeArea;
+import com.thelogicmaster.robot_recharge.ui.IterativeStack;
 
-import javax.sound.sampled.AudioInputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 
@@ -51,6 +53,7 @@ public class GameScreen extends RobotScreen implements RobotExecutionListener {
     private final Window catalog;
     private final CodeArea codeArea;
     private final Level level;
+    private final DecalBatch decalBatch;
 
     public GameScreen(final LevelSave levelData) {
         // Todo: remove all 'RobotRecharge.blocksEditor != null' checks from here
@@ -83,6 +86,7 @@ public class GameScreen extends RobotScreen implements RobotExecutionListener {
         environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.4f, 0.4f, 0.4f, 1f));
         environment.add(new DirectionalLight().set(0.8f, 0.8f, 0.8f, 0f, -1f, 0f));
         cam = new PerspectiveCamera();
+        decalBatch = addDisposable(new DecalBatch(new CameraGroupStrategy(cam)));
         viewport = RobotUtils.createViewport(cam);
         cam.position.x = 15;
         cam.position.y = 30;
@@ -138,13 +142,13 @@ public class GameScreen extends RobotScreen implements RobotExecutionListener {
         controlPanel.add(programButton).padRight(10);
         playButton = new ImageButton(skin, "playGame");
         pauseButton = new ImageButton(skin, "pauseGame");
-        playPause = new IterativeStack(playButton, pauseButton);
+        playPause = new com.thelogicmaster.robot_recharge.ui.IterativeStack(playButton, pauseButton);
         controlPanel.add(playPause).padRight(10);
         ImageButton resetButton = new ImageButton(skin, "resetGame");
         controlPanel.add(resetButton).padRight(uiViewport.getWorldWidth() - 5 * 128 - 20 - 20 - 30);
         ImageButton fastForwardButton = new ImageButton(skin, "fastForwardGame");
         controlPanel.add(fastForwardButton);
-            ImageButton settingsButton = new ImageButton(skin, "settingsGame");
+        ImageButton settingsButton = new ImageButton(skin, "settingsGame");
         controlPanel.add(settingsButton).padLeft(10);
         controlPanel.align(Align.top);
         stage.addActor(controlPanel);
@@ -166,9 +170,6 @@ public class GameScreen extends RobotScreen implements RobotExecutionListener {
                 playPause.next();
                 programButton.setDisabled(true);
                 robot.start();
-                Sound s = RobotRecharge.ttsEngine.textToSpeech("Hello World");
-                if (s != null)
-                    s.play();
             }
         });
         resetButton.addListener(new ChangeListener() {
@@ -311,18 +312,18 @@ public class GameScreen extends RobotScreen implements RobotExecutionListener {
         ImageButton catalogCloseButton = new ImageButton(skin, "close");
         catalog.getTitleTable().add(catalogCloseButton).padRight(10).size(80, 80).right();
         final List<String> commandList = new List<>(skin);
-        final IterativeStack commandInfoStack = new IterativeStack();
+        final com.thelogicmaster.robot_recharge.ui.IterativeStack commandInfoStack = new IterativeStack();
         final Array<com.thelogicmaster.robot_recharge.code.Command> commands = RobotUtils.json.fromJson(Array.class, Command.class,
                 Gdx.files.internal("language/commands-" + levelData.getLanguage().name().toLowerCase() + ".json"));
         Array<String> commandLabels = new Array<>();
-        for (com.thelogicmaster.robot_recharge.code.Command command: new Array.ArrayIterable<>(commands)) {
+        for (com.thelogicmaster.robot_recharge.code.Command command : new Array.ArrayIterable<>(commands)) {
             commandLabels.add(command.getName());
             Table infoTable = new Table(skin);
             infoTable.setBackground("windowTen");
             infoTable.align(Align.top);
             infoTable.pad(10, 20, 10, 20);
             StringBuilder args = new StringBuilder(command.getName()).append("(");
-            for (String arg: command.getArgs())
+            for (String arg : command.getArgs())
                 args.append(arg).append(",");
             if (command.getArgs().length > 0)
                 args.deleteCharAt(args.length() - 1);
@@ -372,13 +373,12 @@ public class GameScreen extends RobotScreen implements RobotExecutionListener {
 
         // Setup level
         levelInstance.transform.setTranslation(15, -30, 15);
-        robot = new Robot(new ModelInstance(RobotUtils.cleanModel(assetManager.<Model>get("robot.g3db"))), this,
-                RobotRecharge.codeEngines.get(levelData.getLanguage()));
+        robot = addDisposable(new Robot(new ModelInstance(RobotUtils.cleanModel(assetManager.<Model>get("robot.g3db"))),
+                this, RobotRecharge.codeEngines.get(levelData.getLanguage()), viewport));
         if (!levelData.usingBlocks()) {
             robot.setCode(levelData.getCode());
             codeArea.setText(levelData.getCode());
-        }
-        else if (RobotRecharge.blocksEditor != null) {
+        } else if (RobotRecharge.blocksEditor != null) {
             RobotRecharge.blocksEditor.load(levelData.getCode());
             RobotRecharge.blocksEditor.generateCode(levelData.getLanguage(), new Consumer<String>() {
                 @Override
@@ -427,9 +427,12 @@ public class GameScreen extends RobotScreen implements RobotExecutionListener {
         modelBatch.begin(cam);
         modelBatch.render(levelInstance, environment);
         modelBatch.render(gridInstance, environment);
-        robot.render(modelBatch, environment, robot.isRunning() ? delta : 0);
-        level.render(modelBatch, environment, robot.isRunning() ? delta : 0);
+        robot.render(modelBatch, decalBatch, environment, robot.isRunning() ? delta : 0);
+        level.render(modelBatch, decalBatch, environment, robot.isRunning() ? delta : 0);
         modelBatch.end();
+        decalBatch.flush();
+
+        uiViewport.update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
 
         // Draw HUD background
         spriteBatch.begin();
@@ -476,8 +479,7 @@ public class GameScreen extends RobotScreen implements RobotExecutionListener {
         if (!levelData.usingBlocks()) {
             codeEditor.setVisible(false);
             catalog.setVisible(false);
-        }
-        else if (RobotRecharge.blocksEditor != null)
+        } else if (RobotRecharge.blocksEditor != null)
             RobotRecharge.blocksEditor.hide();
     }
 
@@ -520,11 +522,5 @@ public class GameScreen extends RobotScreen implements RobotExecutionListener {
         if (RobotRecharge.blocksEditor != null)
             RobotRecharge.blocksEditor.setWidth(
                     Gdx.graphics.getWidth() - (int) uiViewport.project(new Vector2(editorSidebarWidth, 0)).x);
-    }
-
-    @Override
-    public void dispose() {
-        robot.stop();
-        super.dispose();
     }
 }

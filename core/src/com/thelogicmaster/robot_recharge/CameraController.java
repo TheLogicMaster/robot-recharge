@@ -1,6 +1,5 @@
 package com.thelogicmaster.robot_recharge;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.g3d.utils.CameraInputController;
 import com.badlogic.gdx.math.Quaternion;

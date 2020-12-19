@@ -5,12 +5,12 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Array;
-import com.thelogicmaster.robot_recharge.RobotUtils;
-import com.thelogicmaster.robot_recharge.IterativeStack;
 import com.thelogicmaster.robot_recharge.LevelSave;
 import com.thelogicmaster.robot_recharge.RobotRecharge;
+import com.thelogicmaster.robot_recharge.RobotUtils;
 import com.thelogicmaster.robot_recharge.code.Example;
 import com.thelogicmaster.robot_recharge.code.Language;
+import com.thelogicmaster.robot_recharge.ui.IterativeStack;
 
 public class ExamplesScreen extends MenuScreen {
 
@@ -32,12 +32,12 @@ public class ExamplesScreen extends MenuScreen {
         descriptionTable.setBackground("windowTen");
         descriptionTable.setBounds(500, 300, 800, 400);
         final IterativeStack stack = new IterativeStack();
-        for (Example example: new Array.ArrayIterator<>(examples))
+        for (Example example : new Array.ArrayIterator<>(examples))
             stack.add(new Label(example.getDescription(), skin));
         descriptionTable.add(stack).padBottom(20).row();
         final SelectBox<Language> languageSelect = new SelectBox<com.thelogicmaster.robot_recharge.code.Language>(skin);
         Array<Language> languages = new Array<>();
-        for (Language language: Language.values())
+        for (Language language : Language.values())
             if (RobotRecharge.codeEngines.containsKey(language))
                 languages.add(language);
         languageSelect.setItems(languages);

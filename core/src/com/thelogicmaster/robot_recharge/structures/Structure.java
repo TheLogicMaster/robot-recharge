@@ -2,13 +2,14 @@ package com.thelogicmaster.robot_recharge.structures;
 
 import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
+import com.badlogic.gdx.graphics.g3d.decals.DecalBatch;
 import com.badlogic.gdx.utils.Disposable;
 import com.thelogicmaster.robot_recharge.AssetConsumer;
-import com.thelogicmaster.robot_recharge.ModelRenderable;
 import com.thelogicmaster.robot_recharge.Level;
 import com.thelogicmaster.robot_recharge.Position;
+import com.thelogicmaster.robot_recharge.Renderable3D;
 
-public abstract class Structure implements AssetConsumer, ModelRenderable, Disposable {
+public abstract class Structure implements AssetConsumer, Renderable3D, Disposable {
 
     private transient Level level;
 
@@ -21,12 +22,13 @@ public abstract class Structure implements AssetConsumer, ModelRenderable, Dispo
     }
 
     @Override
-    public void render(ModelBatch batch, Environment environment, float delta) {
+    public void render(ModelBatch modelBatch, DecalBatch decalBatch, Environment environment, float delta) {
 
     }
 
     /**
      * Generates all of the blocks for the structure
+     *
      * @param level to place blocks
      */
     public void generate(Level level) {
@@ -35,6 +37,7 @@ public abstract class Structure implements AssetConsumer, ModelRenderable, Dispo
 
     /**
      * Translates a Position from relative coordinates and by the rotation
+     *
      * @param position to transform
      * @return transformed position
      */

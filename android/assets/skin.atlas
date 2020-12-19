@@ -6,182 +6,189 @@ filter: Linear,Linear
 repeat: none
 backIcon
   rotate: false
-  xy: 933, 1587
+  xy: 1, 367
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: -1
 button
   rotate: false
-  xy: 1, 1
+  xy: 131, 135
   size: 100, 100
   orig: 100, 100
   offset: 0, 0
   index: -1
 buttonDisabled
   rotate: false
-  xy: 1063, 1225
+  xy: 391, 395
   size: 100, 100
   orig: 100, 100
   offset: 0, 0
   index: -1
 buttonPressed
   rotate: false
-  xy: 1323, 1615
+  xy: 1, 5
   size: 100, 100
   orig: 100, 100
   offset: 0, 0
   index: -1
 catalog
   rotate: false
-  xy: 803, 1587
+  xy: 1, 497
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: -1
 checkedBox
   rotate: false
-  xy: 1193, 1423
+  xy: 521, 593
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 closeIcon
   rotate: false
-  xy: 1193, 1457
+  xy: 649, 627
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: -1
 cursor
   rotate: false
-  xy: 1323, 1603
+  xy: 779, 745
   size: 4, 10
   orig: 4, 10
   offset: 0, 0
   index: -1
 downloadIcon
   rotate: false
-  xy: 1, 363
+  xy: 131, 497
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: -1
 editorSidebar
   rotate: false
-  xy: 803, 505
+  xy: 803, 665
   size: 128, 1080
   orig: 128, 1080
   offset: 0, 0
   index: -1
 fastForwardCheckedIcon
   rotate: false
-  xy: 1, 233
+  xy: 131, 367
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: -1
 fastForwardIcon
   rotate: false
-  xy: 933, 1197
+  xy: 261, 367
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: -1
 pauseDisabledIcon
   rotate: false
-  xy: 1063, 1587
+  xy: 1, 237
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: -1
 pauseIcon
   rotate: false
-  xy: 1193, 1587
+  xy: 1, 107
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: -1
 playDisabledIcon
   rotate: false
-  xy: 933, 1457
+  xy: 389, 627
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: -1
 playIcon
   rotate: false
-  xy: 1063, 1457
+  xy: 519, 627
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: -1
 programmingDisabledIcon
   rotate: false
-  xy: 1, 493
+  xy: 259, 627
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: -1
 programmingIcon
   rotate: false
-  xy: 933, 1327
+  xy: 261, 497
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: -1
 progressBack
   rotate: false
-  xy: 156, 623
+  xy: 958, 1747
   size: 81, 50
   orig: 81, 50
   offset: 0, 0
   index: -1
 progressBar
   rotate: false
-  xy: 1, 623
+  xy: 803, 1747
   size: 153, 50
   orig: 153, 50
   offset: 0, 0
   index: -1
 rewindIcon
   rotate: false
-  xy: 1, 103
+  xy: 131, 237
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: -1
+robotDialog
+  rotate: false
+  xy: 1, 627
+  size: 256, 128
+  orig: 256, 128
+  offset: 0, 0
+  index: -1
 selection
   rotate: false
-  xy: 1425, 1713
+  xy: 1, 1
   size: 2, 2
   orig: 2, 2
   offset: 0, 0
   index: -1
 settingsIcon
   rotate: false
-  xy: 1063, 1327
+  xy: 391, 497
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: -1
 titleMenu
   rotate: false
-  xy: 1, 675
+  xy: 1, 757
   size: 800, 1040
   orig: 800, 1040
   offset: 0, 0
   index: -1
 uncheckedBox
   rotate: false
-  xy: 131, 589
+  xy: 933, 1713
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 window
   rotate: false
-  xy: 933, 1095
+  xy: 261, 265
   size: 100, 100
   orig: 100, 100
   offset: 0, 0

@@ -22,7 +22,7 @@ import java.util.Enumeration;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
-public class JCEFBlocklyEditor implements BlocklyEditor, ActionListener {
+public class DesktopBlocklyEditor implements BlocklyEditor, ActionListener {
 
     private CefApp cefApp;
     private CefClient client;

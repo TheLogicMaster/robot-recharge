@@ -17,8 +17,8 @@ import marytts.exceptions.MaryConfigurationException;
 public class AndroidTTSEngine implements TTSEngine {
 
     private LocalMaryInterface mary;
-    private Context context;
-    private AudioFormat format;
+    private final Context context;
+    private final AudioFormat format;
 
     public AndroidTTSEngine(Context context) {
         this.context = context;

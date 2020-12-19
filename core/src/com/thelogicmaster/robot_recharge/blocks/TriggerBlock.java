@@ -1,14 +1,11 @@
 package com.thelogicmaster.robot_recharge.blocks;
 
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.Material;
-import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.attributes.BlendingAttribute;
 import com.badlogic.gdx.utils.Array;
 import com.thelogicmaster.robot_recharge.Level;
 import com.thelogicmaster.robot_recharge.Robot;
-import com.thelogicmaster.robot_recharge.RobotListener;
 import com.thelogicmaster.robot_recharge.RobotListenerAdaptor;
 
 public class TriggerBlock extends Block {
@@ -51,7 +48,7 @@ public class TriggerBlock extends Block {
 
     @Override
     public Block copy() {
-        TriggerBlock block = (TriggerBlock)super.copy();
+        TriggerBlock block = (TriggerBlock) super.copy();
         block.destroy = destroy;
         block.oneShot = oneShot;
         return block;

@@ -3,14 +3,14 @@ package com.thelogicmaster.robot_recharge;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
+import com.badlogic.gdx.graphics.g3d.decals.DecalBatch;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
-import com.badlogic.gdx.utils.ObjectSet;
 import com.badlogic.gdx.utils.OrderedSet;
 import com.thelogicmaster.robot_recharge.blocks.Block;
 import com.thelogicmaster.robot_recharge.structures.Structure;
 
-public class Level implements Disposable, ModelRenderable, AssetConsumer, RobotListener {
+public class Level implements Disposable, Renderable3D, AssetConsumer, RobotListener {
     private int xSize, ySize, zSize;
     private final Array<Structure> structures = new Array<>();
 
@@ -115,6 +115,7 @@ public class Level implements Disposable, ModelRenderable, AssetConsumer, RobotL
 
     /**
      * Add listeners in the Structure generate() and Block init() methods
+     *
      * @param listener The RobotListener to add
      */
     public void addRobotListener(RobotListener listener) {
@@ -127,6 +128,7 @@ public class Level implements Disposable, ModelRenderable, AssetConsumer, RobotL
 
     /**
      * Add listeners in the Structure generate() and Block init() methods
+     *
      * @param listener The LevelListener to add
      */
     public void addLevelListener(LevelListener listener) {
@@ -138,25 +140,25 @@ public class Level implements Disposable, ModelRenderable, AssetConsumer, RobotL
     }
 
     public void emitLevelEvent(LevelEvent event) {
-        for (LevelListener listener: new OrderedSet.OrderedSetIterator<>(levelListeners))
+        for (LevelListener listener : new OrderedSet.OrderedSetIterator<>(levelListeners))
             listener.onEvent(event);
     }
 
     @Override
     public void onRobotMove(Robot robot) {
-        for (RobotListener listener: new OrderedSet.OrderedSetIterator<>(robotListeners))
+        for (RobotListener listener : new OrderedSet.OrderedSetIterator<>(robotListeners))
             listener.onRobotMove(robot);
     }
 
     @Override
     public void onRobotSubMove(Robot robot) {
-        for (RobotListener listener: new OrderedSet.OrderedSetIterator<>(robotListeners))
+        for (RobotListener listener : new OrderedSet.OrderedSetIterator<>(robotListeners))
             listener.onRobotSubMove(robot);
     }
 
     @Override
     public void onRobotCrash(Robot robot, Position crash) {
-        for (RobotListener listener: new OrderedSet.OrderedSetIterator<>(robotListeners))
+        for (RobotListener listener : new OrderedSet.OrderedSetIterator<>(robotListeners))
             listener.onRobotCrash(robot, crash);
     }
 
@@ -173,11 +175,11 @@ public class Level implements Disposable, ModelRenderable, AssetConsumer, RobotL
     }
 
     @Override
-    public void render(ModelBatch batch, Environment environment, float delta) {
+    public void render(ModelBatch modelBatch, DecalBatch decalBatch, Environment environment, float delta) {
         for (Block block : new Array.ArrayIterator<>(realBlocks))
-            block.render(batch, environment, delta);
+            block.render(modelBatch, decalBatch, environment, delta);
         for (Structure structure : new Array.ArrayIterator<>(structures))
-            structure.render(batch, environment, delta);
+            structure.render(modelBatch, decalBatch, environment, delta);
     }
 
     @Override

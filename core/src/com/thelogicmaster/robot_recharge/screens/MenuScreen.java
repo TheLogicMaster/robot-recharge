@@ -7,7 +7,7 @@ import com.thelogicmaster.robot_recharge.RobotRecharge;
 
 public abstract class MenuScreen extends RobotScreen {
 
-    private RobotScreen previousScreen;
+    private final RobotScreen previousScreen;
 
     public MenuScreen(RobotScreen previousScreen) {
         this.previousScreen = previousScreen;

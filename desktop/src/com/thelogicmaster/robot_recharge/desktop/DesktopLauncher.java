@@ -3,16 +3,14 @@ package com.thelogicmaster.robot_recharge.desktop;
 import com.badlogic.gdx.Files;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Graphics;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.thelogicmaster.robot_recharge.PlatformUtils;
+import com.thelogicmaster.robot_recharge.RobotRecharge;
 import com.thelogicmaster.robot_recharge.WindowMode;
 import com.thelogicmaster.robot_recharge.code.CodeEngine;
 import com.thelogicmaster.robot_recharge.code.Language;
-import com.thelogicmaster.robot_recharge.RobotRecharge;
 
-import javax.sound.sampled.AudioInputStream;
 import java.util.HashMap;
 
 public class DesktopLauncher {
@@ -43,6 +41,16 @@ public class DesktopLauncher {
                         break;
                 }
             }
-        }, new DesktopTTSEngine()), config);
+        }, new DesktopTTSEngine()), config) {
+            @Override
+            protected void mainLoop() {
+                try {
+                    super.mainLoop();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    System.exit(-1);
+                }
+            }
+        };
     }
 }

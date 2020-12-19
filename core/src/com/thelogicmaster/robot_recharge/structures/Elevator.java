@@ -3,6 +3,7 @@ package com.thelogicmaster.robot_recharge.structures;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
+import com.badlogic.gdx.graphics.g3d.decals.DecalBatch;
 import com.thelogicmaster.robot_recharge.Level;
 import com.thelogicmaster.robot_recharge.Position;
 import com.thelogicmaster.robot_recharge.blocks.ElevatorBlock;
@@ -26,7 +27,7 @@ public class Elevator extends Structure {
             level.setBlock(new ElevatorBlock(this), transformPosition(new Position(position.x, position.y + i, position.z)));
     }
 
-    public void render(ModelBatch batch, Environment environment, float delta) {
+    public void render(ModelBatch modelBatch, DecalBatch decalBatch, Environment environment, float delta) {
 
     }
 

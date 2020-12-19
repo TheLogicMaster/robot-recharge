@@ -13,12 +13,15 @@ control the robot.
 - LibGDX (Game framework)
 - Blockly (Graphical programming)
 - Jython (Desktop Python)
-- Chaquopy (Android Python)
+- [Chaquopy](https://chaquo.com/chaquopy) (Android Python)
 - LuaJ (Lua)
 - Quercus (PHP)
 - Duktape Android (Android JavaScript)
 - duktape4j (Desktop JavaScript)
+- [MaryTTS](https://github.com/marytts/marytts) (Desktop text to speech)
+- Android MaryTTS (Android text to speech)
 
 ## Todo
 - Debug/step through mode
 - Tab to double space functionality in editor
+- IOS port of MaryTTS or Android MaryTTS

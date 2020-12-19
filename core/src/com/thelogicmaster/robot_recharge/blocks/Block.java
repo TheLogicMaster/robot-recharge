@@ -6,11 +6,12 @@ import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
+import com.badlogic.gdx.graphics.g3d.decals.DecalBatch;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Disposable;
 import com.thelogicmaster.robot_recharge.*;
 
-public class Block implements ModelRenderable, Disposable, AssetConsumer {
+public class Block implements Renderable3D, Disposable, AssetConsumer {
     private Position position;
     private boolean cubic;
     private String asset;
@@ -104,10 +105,10 @@ public class Block implements ModelRenderable, Disposable, AssetConsumer {
     }
 
     @Override
-    public void render(ModelBatch batch, Environment environment, float delta) {
+    public void render(ModelBatch modelBatch, DecalBatch decalBatch, Environment environment, float delta) {
         if (model != null) {
             model.transform.setToTranslation(position.toVector(tempVec3).add(Constants.blockOffset));
-            batch.render(model, environment);
+            modelBatch.render(model, environment);
         }
     }
 

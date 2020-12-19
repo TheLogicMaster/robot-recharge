@@ -778,6 +778,72 @@ atlasData: {
 			type: TEXTURE
 			hidden: false
 		}
+		{
+			file: "/home/justin/Programming/robot-recharge/Assets/skin_data/robotDialog.png"
+			bgColor: {
+				r: 1
+				g: 1
+				b: 1
+				a: 1
+			}
+			tint: null
+			tintName: null
+			name: robotDialog
+			tiled: false
+			minWidth: -1
+			minHeight: -1
+			customized: false
+			tenPatchData: null
+			type: TEXTURE
+			hidden: false
+		}
+		{
+			file: "/home/justin/Programming/robot-recharge/Assets/skin_data/robotDialog.png"
+			bgColor: {
+				r: 1
+				g: 1
+				b: 1
+				a: 1
+			}
+			tint: null
+			tintName: null
+			name: robotDialogTen
+			tiled: false
+			minWidth: -1
+			minHeight: -1
+			customized: false
+			tenPatchData: {
+				horizontalStretchAreas: {
+					items: [ 18, 238, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ]
+					size: 2
+					ordered: true
+				}
+				verticalStretchAreas: {
+					items: [ 18, 109, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ]
+					size: 2
+					ordered: true
+				}
+				contentLeft: 0
+				contentRight: 0
+				contentTop: 0
+				contentBottom: 0
+				tile: false
+				colorName: null
+				color1Name: null
+				color2Name: null
+				color3Name: null
+				color4Name: null
+				offsetX: 0
+				offsetY: 0
+				offsetXspeed: 0
+				offsetYspeed: 0
+				frameDuration: 0.03
+				regionNames: []
+				playMode: 2
+			}
+			type: TENPATCH
+			hidden: false
+		}
 	]
 	fontDrawables: []
 }

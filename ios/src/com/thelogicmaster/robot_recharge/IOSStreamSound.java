@@ -4,12 +4,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.utils.StreamUtils;
 import org.robovm.apple.avfoundation.*;
-import org.robovm.apple.coreaudio.AudioFormat;
 import org.robovm.rt.bro.ptr.BytePtr;
-import org.robovm.rt.bro.ptr.IntPtr;
 
 import javax.sound.sampled.AudioInputStream;
-import java.lang.reflect.Method;
 import java.nio.ByteBuffer;
 
 public class IOSStreamSound implements Sound {
