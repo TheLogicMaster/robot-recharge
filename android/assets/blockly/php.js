@@ -96,18 +96,23 @@ Blockly.PHP.text_count=function(a){var b=Blockly.PHP.valueToCode(a,"TEXT",Blockl
 Blockly.PHP.text_replace=function(a){var b=Blockly.PHP.valueToCode(a,"TEXT",Blockly.PHP.ORDER_MEMBER)||"''",c=Blockly.PHP.valueToCode(a,"FROM",Blockly.PHP.ORDER_NONE)||"''";a=Blockly.PHP.valueToCode(a,"TO",Blockly.PHP.ORDER_NONE)||"''";return["str_replace("+c+", "+a+", "+b+")",Blockly.PHP.ORDER_FUNCTION_CALL]};Blockly.PHP.text_reverse=function(a){return["strrev("+(Blockly.PHP.valueToCode(a,"TEXT",Blockly.PHP.ORDER_MEMBER)||"''")+")",Blockly.PHP.ORDER_FUNCTION_CALL]};Blockly.PHP.variables={};Blockly.PHP.variables_get=function(a){return[Blockly.PHP.variableDB_.getName(a.getFieldValue("VAR"),Blockly.VARIABLE_CATEGORY_NAME),Blockly.PHP.ORDER_ATOMIC]};Blockly.PHP.variables_set=function(a){var b=Blockly.PHP.valueToCode(a,"VALUE",Blockly.PHP.ORDER_ASSIGNMENT)||"0";return Blockly.PHP.variableDB_.getName(a.getFieldValue("VAR"),Blockly.VARIABLE_CATEGORY_NAME)+" = "+b+";\n"};Blockly.PHP.variablesDynamic={};Blockly.PHP.variables_get_dynamic=Blockly.PHP.variables_get;Blockly.PHP.variables_set_dynamic=Blockly.PHP.variables_set;
 
   Blockly.PHP['robot_move'] = function(block) {
-    var value_distance = Blockly.PHP.valueToCode(block, 'distance', Blockly.PHP.ORDER_ATOMIC);
+    var value_distance = Blockly.PHP.valueToCode(block, 'DISTANCE', Blockly.PHP.ORDER_ATOMIC) || '0';
     return '$Robot->move(' + value_distance + ')\n';
   };
 
   Blockly.PHP['robot_sleep'] = function(block) {
-    var value_duration = Blockly.PHP.valueToCode(block, 'duration', Blockly.PHP.ORDER_ATOMIC) || '0';
+    var value_duration = Blockly.PHP.valueToCode(block, 'DURATION', Blockly.PHP.ORDER_ATOMIC) || '0';
     return '$Robot->sleep(' + value_duration + ')\n';
   };
 
   Blockly.PHP['robot_turn'] = function(block) {
-    var value_duration = Blockly.PHP.valueToCode(block, 'distance', Blockly.PHP.ORDER_ATOMIC) || '0';
+    var value_duration = Blockly.PHP.valueToCode(block, 'DISTANCE', Blockly.PHP.ORDER_ATOMIC) || '0';
     return '$Robot->turn(' + value_duration + ')\n';
+  };
+
+  Blockly.PHP['robot_speak'] = function(block) {
+    var value_text = Blockly.PHP.valueToCode(block, 'TEXT', Blockly.PHP.ORDER_ATOMIC) || '';
+    return '$Robot->speak(' + value_text + ')\n';
   };
 
 return Blockly.PHP;

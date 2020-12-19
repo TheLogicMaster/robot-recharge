@@ -87,18 +87,23 @@ Blockly.Lua.text_replace=function(a){var b=Blockly.Lua.valueToCode(a,"TEXT",Bloc
 "        table.insert(buf, string.sub(replacement, j, j))","      end","      i = i + #needle","    else","      table.insert(buf, string.sub(haystack, i, i))","      i = i + 1","    end","  end","  return table.concat(buf)","end"])+"("+b+", "+c+", "+a+")",Blockly.Lua.ORDER_HIGH]};Blockly.Lua.text_reverse=function(a){return["string.reverse("+(Blockly.Lua.valueToCode(a,"TEXT",Blockly.Lua.ORDER_HIGH)||"''")+")",Blockly.Lua.ORDER_HIGH]};Blockly.Lua.variables={};Blockly.Lua.variables_get=function(a){return[Blockly.Lua.variableDB_.getName(a.getFieldValue("VAR"),Blockly.VARIABLE_CATEGORY_NAME),Blockly.Lua.ORDER_ATOMIC]};Blockly.Lua.variables_set=function(a){var b=Blockly.Lua.valueToCode(a,"VALUE",Blockly.Lua.ORDER_NONE)||"0";return Blockly.Lua.variableDB_.getName(a.getFieldValue("VAR"),Blockly.VARIABLE_CATEGORY_NAME)+" = "+b+"\n"};Blockly.Lua.variablesDynamic={};Blockly.Lua.variables_get_dynamic=Blockly.Lua.variables_get;Blockly.Lua.variables_set_dynamic=Blockly.Lua.variables_set;
 
   Blockly.Lua['robot_move'] = function(block) {
-    var value_distance = Blockly.JavaScript.valueToCode(block, 'distance', Blockly.Lua.ORDER_ATOMIC);
+    var value_distance = Blockly.JavaScript.valueToCode(block, 'DISTANCE', Blockly.Lua.ORDER_ATOMIC) || '0';
     return 'Robot:move(' + value_distance + ')\n';
   };
 
   Blockly.Lua['robot_sleep'] = function(block) {
-    var value_duration = Blockly.JavaScript.valueToCode(block, 'duration', Blockly.Lua.ORDER_ATOMIC) || '0';
+    var value_duration = Blockly.JavaScript.valueToCode(block, 'DURATION', Blockly.Lua.ORDER_ATOMIC) || '0';
     return 'Robot:sleep(' + value_duration + ')\n';
   };
 
   Blockly.Lua['robot_turn'] = function(block) {
-    var value_duration = Blockly.JavaScript.valueToCode(block, 'distance', Blockly.Lua.ORDER_ATOMIC) || '0';
+    var value_duration = Blockly.JavaScript.valueToCode(block, 'DISTANCE', Blockly.Lua.ORDER_ATOMIC) || '0';
     return 'Robot:turn(' + value_duration + ')\n';
+  };
+
+  Blockly.Lua['robot_speak'] = function(block) {
+    var value_text = Blockly.JavaScript.valueToCode(block, 'TEXT', Blockly.Lua.ORDER_ATOMIC) || '';
+    return 'Robot:speak(' + value_text + ')\n';
   };
 
 return Blockly.Lua;

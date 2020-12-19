@@ -111,6 +111,8 @@ public class Robot implements IRobot, ExecutionListener, Disposable, Renderable3
         stop();
         running = false;
         animator.setAnimation(null);
+        dialog.getTable().clearActions();
+        dialog.getTable().getColor().a = 0;
     }
 
     public void stop() {
@@ -237,8 +239,8 @@ public class Robot implements IRobot, ExecutionListener, Disposable, Renderable3
                 RobotUtils.textToSpeech(message);
                 Robot.this.message.setText(message);
                 dialog.getTable().clearActions();
+                dialog.getTable().getColor().a = 1;
                 dialog.getTable().addAction(Actions.sequence(
-                        Actions.alpha(1, 0.25f),
                         Actions.delay(3),
                         Actions.alpha(0, 0.25f))
                 );

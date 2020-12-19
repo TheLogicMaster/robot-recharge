@@ -23,4 +23,12 @@
     description: Waits 'duration' seconds
     example: Robot:sleep(1)
   }
+  {
+    name: Robot:speak
+    args: [
+      text
+    ]
+    description: Speaks 'text'
+    example: Robot:speak("Hello")
+  }
 ]

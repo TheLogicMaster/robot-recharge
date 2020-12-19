@@ -91,18 +91,23 @@ Blockly.Python.text_prompt=Blockly.Python.text_prompt_ext;Blockly.Python.text_co
 Blockly.Python.text_replace=function(a){var b=Blockly.Python.valueToCode(a,"TEXT",Blockly.Python.ORDER_MEMBER)||"''",c=Blockly.Python.valueToCode(a,"FROM",Blockly.Python.ORDER_NONE)||"''";a=Blockly.Python.valueToCode(a,"TO",Blockly.Python.ORDER_NONE)||"''";return[b+".replace("+c+", "+a+")",Blockly.Python.ORDER_MEMBER]};Blockly.Python.text_reverse=function(a){return[(Blockly.Python.valueToCode(a,"TEXT",Blockly.Python.ORDER_MEMBER)||"''")+"[::-1]",Blockly.Python.ORDER_MEMBER]};Blockly.Python.variables={};Blockly.Python.variables_get=function(a){return[Blockly.Python.variableDB_.getName(a.getFieldValue("VAR"),Blockly.VARIABLE_CATEGORY_NAME),Blockly.Python.ORDER_ATOMIC]};Blockly.Python.variables_set=function(a){var b=Blockly.Python.valueToCode(a,"VALUE",Blockly.Python.ORDER_NONE)||"0";return Blockly.Python.variableDB_.getName(a.getFieldValue("VAR"),Blockly.VARIABLE_CATEGORY_NAME)+" = "+b+"\n"};Blockly.Python.variablesDynamic={};Blockly.Python.variables_get_dynamic=Blockly.Python.variables_get;Blockly.Python.variables_set_dynamic=Blockly.Python.variables_set;
 
   Blockly.Python['robot_move'] = function(block) {
-    var value_distance = Blockly.JavaScript.valueToCode(block, 'distance', Blockly.Python.ORDER_ATOMIC);
+    var value_distance = Blockly.JavaScript.valueToCode(block, 'DISTANCE', Blockly.Python.ORDER_ATOMIC) || '0';
     return 'Robot.move(' + value_distance + ')\n';
   };
 
   Blockly.Python['robot_sleep'] = function(block) {
-    var value_duration = Blockly.JavaScript.valueToCode(block, 'duration', Blockly.Python.ORDER_ATOMIC) || '0';
+    var value_duration = Blockly.JavaScript.valueToCode(block, 'DURATION', Blockly.Python.ORDER_ATOMIC) || '0';
     return 'Robot.sleep(' + value_duration + ')\n';
   };
 
   Blockly.Python['robot_turn'] = function(block) {
-    var value_duration = Blockly.JavaScript.valueToCode(block, 'distance', Blockly.Python.ORDER_ATOMIC) || '0';
+    var value_duration = Blockly.JavaScript.valueToCode(block, 'DISTANCE', Blockly.Python.ORDER_ATOMIC) || '0';
     return 'Robot.turn(' + value_duration + ')\n';
+  };
+
+  Blockly.Python['robot_speak'] = function(block) {
+    var value_text = Blockly.JavaScript.valueToCode(block, 'TEXT', Blockly.Python.ORDER_ATOMIC) || '';
+    return 'Robot.speak(' + value_text + ')\n';
   };
 
 return Blockly.Python;

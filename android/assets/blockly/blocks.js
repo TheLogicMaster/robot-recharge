@@ -182,7 +182,7 @@ Blockly.defineBlocksWithJsonArray([
       "args0": [
         {
           "type": "input_value",
-          "name": "distance",
+          "name": "DISTANCE",
           "check": "Number"
         }
       ],
@@ -198,7 +198,7 @@ Blockly.defineBlocksWithJsonArray([
       "args0": [
         {
           "type": "input_value",
-          "name": "duration",
+          "name": "DURATION",
           "check": "Number"
         }
       ],
@@ -214,7 +214,7 @@ Blockly.defineBlocksWithJsonArray([
     "args0": [
       {
         "type": "input_value",
-        "name": "distance",
+        "name": "DISTANCE",
         "check": "Number"
       }
     ],
@@ -222,6 +222,22 @@ Blockly.defineBlocksWithJsonArray([
     "nextStatement": null,
     "colour": 210,
     "tooltip": "Turn n times",
+    "helpUrl": ""
+  },
+  {
+    "type": "robot_speak",
+    "message0": "Speak %1",
+    "args0": [
+      {
+        "type": "input_value",
+        "name": "TEXT",
+        "check": "String"
+      }
+    ],
+    "previousStatement": null,
+    "nextStatement": null,
+    "colour": 210,
+    "tooltip": "Speak text",
     "helpUrl": ""
   }
 ]);
