@@ -102,7 +102,7 @@ jobs:
           
       - name: Generate local.properties file
         run: |
-          echo sdk.dir=$HOME/.android/sdk >> ./local.properties
+          echo sdk.dir=$ANDROID_HOME/.android/sdk >> ./local.properties
           #echo KEY=\"$KEY\" >> ./local.properties
           cat ./local.properties
         #env:
