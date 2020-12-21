@@ -6,8 +6,8 @@ on:
 name: Build Game
 
 jobs:
-  build-linux:
-    name: Upload Linux Build
+  build:
+    name: Build Game
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -97,6 +97,15 @@ jobs:
           sudo mv ./jcef_windows/*/* ./jcef_windows
           sudo mv ./jcef_mac/*/* ./jcef_mac
 
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v2
+          
+      #- name: Generate local.properties file
+      #  run: |
+      #    echo KEY=\"$KEY\" > ./local.properties
+      #  env:
+      #    KEY: ${{ secrets.KEY }}
+          
       - name: Package Linux release
         run: ./gradlew packageLinuxGHActions
 
@@ -145,9 +154,6 @@ jobs:
         run: |
           ./gradlew dist
           mv ./desktop/build/libs/*.jar ./RobotRecharge-${{ steps.get_version.outputs.VERSION }}.jar
-          
-      - name: Setup Android SDK
-        uses: android-actions/setup-android@v2
 
       - name: Build Android Release
         run: |
