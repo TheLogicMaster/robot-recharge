@@ -100,11 +100,13 @@ jobs:
       - name: Setup Android SDK
         uses: android-actions/setup-android@v2
           
-      #- name: Generate local.properties file
-      #  run: |
-      #    echo KEY=\"$KEY\" > ./local.properties
-      #  env:
-      #    KEY: ${{ secrets.KEY }}
+      - name: Generate local.properties file
+        run: |
+          echo sdk.dir=~/.android/sdk >> ./local.properties
+          #echo KEY=\"$KEY\" >> ./local.properties
+          cat ./local.properties
+        #env:
+          #KEY: ${{ secrets.KEY }}
           
       - name: Package Linux release
         run: ./gradlew packageLinuxGHActions
