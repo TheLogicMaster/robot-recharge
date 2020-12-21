@@ -5,11 +5,11 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Graphics;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
-import com.thelogicmaster.robot_recharge.PlatformUtils;
-import com.thelogicmaster.robot_recharge.RobotRecharge;
-import com.thelogicmaster.robot_recharge.WindowMode;
+import com.thelogicmaster.robot_recharge.*;
 import com.thelogicmaster.robot_recharge.code.CodeEngine;
 import com.thelogicmaster.robot_recharge.code.Language;
+import com.thelogicmaster.robot_recharge.LuaEngine;
+import com.thelogicmaster.robot_recharge.PhpEngine;
 
 import java.util.HashMap;
 
@@ -23,6 +23,8 @@ public class DesktopLauncher {
         HashMap<Language, CodeEngine> engines = new HashMap<>();
         engines.put(Language.JavaScript, new DesktopJavaScriptEngine());
         engines.put(Language.Python, new DesktopPythonEngine());
+        engines.put(Language.Lua, new LuaEngine());
+        engines.put(Language.PHP, new PhpEngine());
         new LwjglApplication(new RobotRecharge(engines, null, new PlatformUtils() {
             @Override
             public void setWindowMode(WindowMode windowMode) {
@@ -40,6 +42,11 @@ public class DesktopLauncher {
                         Gdx.graphics.setWindowedMode(mode.width, mode.height);
                         break;
                 }
+            }
+
+            @Override
+            public RobotController createRobot(Robot controller, RobotExecutionListener listener, CodeEngine engine) {
+                return new JavaRobotController(controller, listener, engine);
             }
         }, new DesktopTTSEngine()), config) {
             @Override

@@ -1,5 +1,6 @@
 package com.thelogicmaster.robot_recharge.screens;
 
+import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g3d.*;
@@ -444,12 +445,13 @@ public class GameScreen extends RobotScreen implements RobotExecutionListener {
     }
 
     private void saveLevel() {
-        try (JsonWriter writer = new JsonWriter(new OutputStreamWriter(Gdx.files.local("save/" + levelData.getLevel() + ".json").write(false)))) {
-            writer.write(RobotUtils.json.prettyPrint(levelData));
-        } catch (IOException e) {
-            Gdx.app.error("Save Level", "Failed to save level", e);
-            Dialogs.showErrorDialog(stage, "Failed to save level", e.getMessage());
-        }
+        if (Gdx.app.getType() != Application.ApplicationType.WebGL)
+            try (JsonWriter writer = new JsonWriter(new OutputStreamWriter(Gdx.files.local("save/" + levelData.getLevel() + ".json").write(false)))) {
+                writer.write(RobotUtils.json.prettyPrint(levelData));
+            } catch (IOException e) {
+                Gdx.app.error("Save Level", "Failed to save level", e);
+                Dialogs.showErrorDialog(stage, "Failed to save level", e.getMessage());
+            }
     }
 
     private void resetLevel() {

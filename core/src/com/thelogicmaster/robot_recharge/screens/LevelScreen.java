@@ -1,5 +1,6 @@
 package com.thelogicmaster.robot_recharge.screens;
 
+import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -15,6 +16,8 @@ import com.thelogicmaster.robot_recharge.code.Language;
 import com.thelogicmaster.robot_recharge.ui.IterativeStack;
 
 public class LevelScreen extends MenuScreen {
+
+    private final TextButton resumeButton;
 
     public LevelScreen(RobotScreen previousScreen) {
         super(previousScreen);
@@ -53,7 +56,7 @@ public class LevelScreen extends MenuScreen {
         controlsTable.add(blocksCheckbox).fillX().padBottom(10).row();
         TextButton playButton = new TextButton("New Game", skin);
         controlsTable.add(playButton).fillX().padBottom(10).row();
-        final TextButton resumeButton = new TextButton("Resume Game", skin);
+        resumeButton = new TextButton("Resume Game", skin);
         controlsTable.add(resumeButton).fillX();
         stage.addActor(controlsTable);
 
@@ -63,11 +66,12 @@ public class LevelScreen extends MenuScreen {
         ScrollPane levelPane = new ScrollPane(list, skin);
         levelPane.setBounds(200, 50, 600, 800);
         stage.addActor(levelPane);
+        checkSave(list.getSelected().getName());
         list.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 stack.show(list.getSelectedIndex());
-                resumeButton.setDisabled(!Gdx.files.local("save/" + list.getSelected().getName() + ".json").exists());
+                checkSave(list.getSelected().getName());
             }
         });
         playButton.addListener(new ChangeListener() {
@@ -84,5 +88,12 @@ public class LevelScreen extends MenuScreen {
                 RobotRecharge.instance.setScreen(new GameScreen(RobotUtils.json.fromJson(LevelSave.class, save)));
             }
         });
+    }
+
+    private void checkSave(String level) {
+        if (Gdx.app.getType() == Application.ApplicationType.WebGL)
+            resumeButton.setDisabled(true);
+        else
+            resumeButton.setDisabled(!Gdx.files.local("save/" + level + ".json").exists());
     }
 }

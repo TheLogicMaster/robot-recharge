@@ -9,4 +9,16 @@ public interface IRobot {
     void sleep(double duration) throws InterruptedException;
 
     void speak(String message);
+
+    void start();
+
+    void stop();
+
+    void pause();
+
+    void setFastForward(boolean fastForward);
+
+    void setCode(String code);
+
+    boolean isRunning();
 }

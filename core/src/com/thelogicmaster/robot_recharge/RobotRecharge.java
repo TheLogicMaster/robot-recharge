@@ -1,5 +1,6 @@
 package com.thelogicmaster.robot_recharge;
 
+import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
@@ -34,19 +35,17 @@ public class RobotRecharge extends Game {
     public void create() {
         assets = new RobotAssets();
 
-        codeEngines.put(Language.Lua, new LuaEngine());
-        codeEngines.put(Language.PHP, new PhpEngine());
+        if (Gdx.app.getType() != Application.ApplicationType.WebGL)
+            Gdx.files.local("save/").mkdirs();
 
-        Gdx.files.local("save/").mkdirs();
-
-        LevelSave levelData = new LevelSave("test", false,
+        /*LevelSave levelData = new LevelSave("test", false,
                 "while true do\n  Robot:sleep(1);\n  Robot:move(2);\n  Robot:turn(1);\n  end", Language.Lua);
         FileHandle save = Gdx.files.internal("save/test.txt");
         if (save.exists())
             levelData = RobotUtils.json.fromJson(LevelSave.class, save);
-        setScreen(new GameScreen(levelData));
+        setScreen(new GameScreen(levelData));*/
         titleScreen = new TitleScreen();
-        //setScreen(titleScreen);
+        setScreen(titleScreen);
     }
 
     public void returnToTitle() {

@@ -3,7 +3,7 @@ on:
     tags:
       - 'v*'
 
-name: Upload Release Assets
+name: Build Game
 
 jobs:
   build-linux:
@@ -155,6 +155,27 @@ jobs:
           ./gradlew bundleRelease
           mv ./android/build/outputs/universal_apk/release/android-release-universal-unsigned.apk ./android-${{ steps.get_version.outputs.VERSION }}.apk
 
+      - name: Build GWT Release
+        run: ./gradlew -p html dist
+          
+      - name: Move GWT files
+        run: |
+          rm -rf ./RobotRecharge
+          mv ./html/build/dist ./RobotRecharge
+
+      - name: Deploy Demo 🚀
+        uses: JamesIves/github-pages-deploy-action@3.6.1
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BRANCH: gh-pages # The branch the action should deploy to.
+          FOLDER: RobotRecharge # The folder the action should deploy.
+          CLEAN: true # Automatically remove deleted files from the deploy branch
+          
+      - name: Zip HTML Release
+        uses: montudor/action-zip@v0.1.1
+        with:
+          args: zip -qq -r html-${{ steps.get_version.outputs.VERSION }}.zip ./RobotRecharge/
+          
       - name: Create Release
         uses: actions/create-release@v1
         env:
@@ -174,6 +195,7 @@ jobs:
           hub release edit -a ./win64-${{ steps.get_version.outputs.VERSION }}.zip -m "" ${{ steps.get_version.outputs.VERSION }}
           hub release edit -a ./mac64-${{ steps.get_version.outputs.VERSION }}.zip -m "" ${{ steps.get_version.outputs.VERSION }}
           hub release edit -a ./android-${{ steps.get_version.outputs.VERSION }}.apk -m "" ${{ steps.get_version.outputs.VERSION }}
+          hub release edit -a ./html-${{ steps.get_version.outputs.VERSION }}.zip -m "" ${{ steps.get_version.outputs.VERSION }}
 
       #- name: Sign Android bundle
         #uses: r0adkll/sign-android-release@v1

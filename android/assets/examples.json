@@ -2,7 +2,7 @@
   {
     name: Example 1
     description: An example 1
-    level: test
+    level: test 1
     blocks: ""
     code: {
       JavaScript: "while(true){\n  Robot.move(1);\n  Robot.turn(1);\n  Robot.sleep(1);\n}"
@@ -14,7 +14,7 @@
   {
     name: Example 2
     description: An example 2
-    level: test
+    level: test 2
     blocks: ""
     code: {
       JavaScript: "while(true){\n  Robot.move(2);\n  Robot.turn(1);\n  Robot.sleep(1);\n}"

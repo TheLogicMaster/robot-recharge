@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE module PUBLIC "-//Google Inc.//DTD Google Web Toolkit trunk//EN" "http://www.gwtproject.org/doctype/2.8.0/gwt-module.dtd">
+<module>
+	<source path="com/thelogicmaster/robot_recharge" >
+		<exclude name="JavaRobot.java"/>
+	</source>
+
+	<extend-configuration-property name="gdx.reflect.include" value="com.thelogicmaster.robot_recharge.Level" />
+	<extend-configuration-property name="gdx.reflect.include" value="com.thelogicmaster.robot_recharge.blocks" />
+	<extend-configuration-property name="gdx.reflect.include" value="com.thelogicmaster.robot_recharge.structures" />
+	<extend-configuration-property name="gdx.reflect.include" value="com.thelogicmaster.robot_recharge.Position" />
+	<extend-configuration-property name="gdx.reflect.include" value="com.thelogicmaster.robot_recharge.BlockPlaceholder" />
+	<extend-configuration-property name="gdx.reflect.include" value="com.thelogicmaster.robot_recharge.LevelData" />
+	<extend-configuration-property name="gdx.reflect.include" value="com.thelogicmaster.robot_recharge.code.Command" />
+	<extend-configuration-property name="gdx.reflect.include" value="com.thelogicmaster.robot_recharge.code.Example" />
+
+	<extend-configuration-property name="gdx.reflect.include" value="com.badlogic.gdx.graphics.g3d.Attribute" />
+</module>

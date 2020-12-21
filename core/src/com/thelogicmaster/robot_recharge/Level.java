@@ -12,7 +12,7 @@ import com.thelogicmaster.robot_recharge.structures.Structure;
 
 public class Level implements Disposable, Renderable3D, AssetConsumer, RobotListener {
     private int xSize, ySize, zSize;
-    private final Array<Structure> structures = new Array<>();
+    private Array<Structure> structures = new Array<>();
 
     private transient Block[][][] blocks;
     private transient final OrderedSet<LevelListener> levelListeners = new OrderedSet<>();

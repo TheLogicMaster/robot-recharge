@@ -3,11 +3,12 @@ package com.thelogicmaster.robot_recharge.desktop;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.lwjgl.LwjglAWTCanvas;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
-import com.thelogicmaster.robot_recharge.PlatformUtils;
-import com.thelogicmaster.robot_recharge.RobotRecharge;
-import com.thelogicmaster.robot_recharge.WindowMode;
+import com.thelogicmaster.robot_recharge.*;
+import com.thelogicmaster.robot_recharge.Robot;
 import com.thelogicmaster.robot_recharge.code.CodeEngine;
 import com.thelogicmaster.robot_recharge.code.Language;
+import com.thelogicmaster.robot_recharge.LuaEngine;
+import com.thelogicmaster.robot_recharge.PhpEngine;
 import org.cef.CefApp;
 import org.cef.handler.CefAppHandlerAdapter;
 
@@ -42,6 +43,8 @@ public class JCEFDesktopLauncher implements PlatformUtils {
         HashMap<Language, CodeEngine> engines = new HashMap<>();
         engines.put(Language.JavaScript, new DesktopJavaScriptEngine());
         engines.put(Language.Python, new DesktopPythonEngine());
+        engines.put(Language.Lua, new LuaEngine());
+        engines.put(Language.PHP, new PhpEngine());
         lwjglAWTCanvas = new LwjglAWTCanvas(new RobotRecharge(engines, blocklyEditor, this, new DesktopTTSEngine()), config) {
             // Graceful exit
             @Override
@@ -131,6 +134,11 @@ public class JCEFDesktopLauncher implements PlatformUtils {
                 jFrame.setResizable(true);
                 break;
         }
+    }
+
+    @Override
+    public RobotController createRobot(Robot controller, RobotExecutionListener listener, CodeEngine engine) {
+        return new JavaRobotController(controller, listener, engine);
     }
 
     public static void main(String[] args) {

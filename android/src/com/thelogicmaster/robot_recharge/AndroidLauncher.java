@@ -20,9 +20,16 @@ public class AndroidLauncher extends AndroidApplication {
         HashMap<Language, CodeEngine> engines = new HashMap<>();
         engines.put(Language.JavaScript, new AndroidJavaScriptEngine());
         engines.put(Language.Python, new AndroidPythonEngine(this));
+        engines.put(Language.Lua, new LuaEngine());
+        engines.put(Language.PHP, new PhpEngine());
         initialize(new RobotRecharge(engines, editor, new PlatformUtils() {
             @Override
             public void setWindowMode(WindowMode windowMode) {
+            }
+
+            @Override
+            public RobotController createRobot(Robot controller, RobotExecutionListener listener, CodeEngine engine) {
+                return new JavaRobotController(controller, listener, engine);
             }
         }, new AndroidTTSEngine(getContext())), config);
         addContentView(editor, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));

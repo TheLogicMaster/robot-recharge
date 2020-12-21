@@ -32,6 +32,7 @@ allprojects {
         ashleyVersion = '1.7.3'
         aiVersion = '1.8.2'
         gltfVersion = 'master-SNAPSHOT'
+        freetypeGwtVersion = '1.9.10.1'
     }
 
     repositories {
@@ -52,6 +53,7 @@ project(":desktop") {
 
     dependencies {
         implementation project(":core")
+        implementation project(":java")
         api "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
         api "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
         api "com.badlogicgames.gdx:gdx-bullet-platform:$gdxVersion:natives-desktop"
@@ -73,6 +75,7 @@ project(":android") {
 
     dependencies {
         implementation project(":core")
+        implementation project(":java")
         api "com.badlogicgames.gdx:gdx-backend-android:$gdxVersion"
         natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-armeabi"
         natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-armeabi-v7a"
@@ -108,6 +111,7 @@ project(":ios") {
 
     dependencies {
         implementation project(":core")
+        implementation project(":java")
         api "com.mobidevelop.robovm:robovm-rt:$roboVMVersion"
         api "com.mobidevelop.robovm:robovm-cocoatouch:$roboVMVersion"
         api "com.badlogicgames.gdx:gdx-backend-robovm:$gdxVersion"
@@ -116,6 +120,38 @@ project(":ios") {
         api "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-ios"
         api "de.golfgl.gdxgamesvcs:gdx-gamesvcs-ios-gamecenter:1.0.2"
         implementation group: 'de.dfki.mary', name: 'voice-cmu-slt-hsmm', version: '5.2'
+    }
+}
+
+project(":html") {
+    apply plugin: "java-library"
+    apply plugin: "gwt"
+    apply plugin: "war"
+    apply plugin: "org.gretty"
+
+
+    dependencies {
+        implementation project(":core")
+        api "com.badlogicgames.gdx:gdx-backend-gwt:$gdxVersion"
+        api "com.badlogicgames.gdx:gdx:$gdxVersion:sources"
+        api "com.badlogicgames.gdx:gdx-backend-gwt:$gdxVersion:sources"
+        api "com.badlogicgames.gdx:gdx-controllers:$gdxVersion:sources"
+        api "com.badlogicgames.gdx:gdx-controllers-gwt:$gdxVersion"
+        api "com.badlogicgames.gdx:gdx-controllers-gwt:$gdxVersion:sources"
+        api "com.badlogicgames.gdx:gdx-ai:$aiVersion:sources"
+        api "de.golfgl.gdxgamesvcs:gdx-gamesvcs-core:1.0.2:sources"
+        api "de.golfgl.gdxgamesvcs:gdx-gamesvcs-core-gamejolt:1.0.2:sources"
+        api "com.github.czyzby:gdx-kiwi:1.9.1.9.6:sources"
+        api "de.tomgrill.gdxdialogs:gdx-dialogs-html:1.2.5"
+        api "de.tomgrill.gdxdialogs:gdx-dialogs-html:1.2.5:sources"
+        api "de.tomgrill.gdxdialogs:gdx-dialogs-core:1.2.5:sources"
+        api "net.dermetfan.libgdx-utils:libgdx-utils:0.13.4:sources"
+        api "com.kotcrab.vis:vis-ui:1.4.8:sources"
+        implementation 'com.github.raeleus.TenPatch:tenpatch:5.0.0:sources'
+        implementation 'com.github.raeleus:stripe:master-SNAPSHOT:sources'
+        implementation "com.github.intrigus.gdx-freetype-gwt:gdx-freetype-gwt:$freetypeGwtVersion"
+        implementation "com.github.intrigus.gdx-freetype-gwt:gdx-freetype-gwt:$freetypeGwtVersion:sources"
+        api "com.github.mgsx-dev.gdx-gltf:gltf:$gltfVersion:sources"
     }
 }
 
@@ -129,9 +165,10 @@ project(":core") {
         api "com.badlogicgames.gdx:gdx-controllers:$gdxVersion"
         api "com.badlogicgames.gdx:gdx-ai:$aiVersion"
         api "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
-        api "com.kotcrab.vis:vis-ui:1.3.0"
-        api "net.dermetfan.libgdx-utils:libgdx-utils:0.13.4"
-        api "com.github.czyzby:gdx-kiwi:1.9.1.9.6"
+        api "com.kotcrab.vis:vis-ui:1.4.8"
+        // Not compatible with LibGDX 1.9.12 GWT
+        //api "net.dermetfan.libgdx-utils:libgdx-utils:0.13.4"
+        //api "com.github.czyzby:gdx-kiwi:1.9.1.9.11-SNAPSHOT"
         api "de.golfgl.gdxgamesvcs:gdx-gamesvcs-core:1.0.2"
         implementation 'com.github.raeleus.TenPatch:tenpatch:5.0.0'
         api "com.github.mgsx-dev.gdx-gltf:gltf:$gltfVersion"
@@ -139,5 +176,15 @@ project(":core") {
         implementation group: 'org.luaj', name: 'luaj-jse', version: '3.0.1'
         implementation group: 'com.caucho', name: 'quercus', version: '4.0.45'
         api "com.rafaskoberg.gdx:typing-label:1.2.0"
+    }
+}
+
+project(":java") {
+    apply plugin: "java-library"
+
+    dependencies {
+        implementation project(":core")
+        implementation group: 'org.luaj', name: 'luaj-jse', version: '3.0.1'
+        implementation group: 'com.caucho', name: 'quercus', version: '4.0.45'
     }
 }

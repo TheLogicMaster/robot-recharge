@@ -11,8 +11,8 @@ import com.thelogicmaster.robot_recharge.blocks.Block;
 
 public class BlocksStructure extends Structure {
 
-    private final OrderedMap<String, Block> templates;
-    private final Array<BlockPlaceholder> blocks;
+    private OrderedMap<String, Block> templates;
+    private Array<BlockPlaceholder> blocks;
 
     public BlocksStructure() {
         this(new Position(), 0, new OrderedMap<String, Block>(), new Array<BlockPlaceholder>());

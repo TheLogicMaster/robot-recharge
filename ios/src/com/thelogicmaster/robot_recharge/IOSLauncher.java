@@ -13,9 +13,17 @@ public class IOSLauncher extends IOSApplication.Delegate {
     @Override
     protected IOSApplication createApplication() {
         IOSApplicationConfiguration config = new IOSApplicationConfiguration();
-        return new IOSApplication(new RobotRecharge(new HashMap<Language, CodeEngine>(), null, new PlatformUtils() {
+        HashMap<Language, CodeEngine> engines = new HashMap<>();
+        engines.put(Language.Lua, new LuaEngine());
+        engines.put(Language.PHP, new PhpEngine());
+        return new IOSApplication(new RobotRecharge(engines, null, new PlatformUtils() {
             @Override
             public void setWindowMode(WindowMode windowMode) {
+            }
+
+            @Override
+            public RobotController createRobot(Robot controller, RobotExecutionListener listener, CodeEngine engine) {
+                return new JavaRobotController(controller, listener, engine);
             }
         }, null), config);
     }

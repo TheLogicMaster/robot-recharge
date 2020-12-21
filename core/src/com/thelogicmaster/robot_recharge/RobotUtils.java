@@ -22,9 +22,6 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.thelogicmaster.robot_recharge.blocks.TriggerBlock;
 import com.thelogicmaster.robot_recharge.structures.BlocksStructure;
 import com.thelogicmaster.robot_recharge.structures.Elevator;
-import net.mgsx.gltf.loaders.glb.GLBAssetLoader;
-import net.mgsx.gltf.loaders.gltf.GLTFAssetLoader;
-import net.mgsx.gltf.scene3d.scene.SceneAsset;
 
 public class RobotUtils {
 
@@ -36,8 +33,8 @@ public class RobotUtils {
 
     public static AssetManager createAssetManager() {
         AssetManager assetManager = new AssetManager();
-        assetManager.setLoader(SceneAsset.class, ".gltf", new GLTFAssetLoader());
-        assetManager.setLoader(SceneAsset.class, ".glb", new GLBAssetLoader());
+        //assetManager.setLoader(SceneAsset.class, ".gltf", new GLTFAssetLoader());
+        //assetManager.setLoader(SceneAsset.class, ".glb", new GLBAssetLoader());
         return assetManager;
     }
 

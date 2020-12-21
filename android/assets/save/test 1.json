@@ -1,0 +1,6 @@
+{
+useBlocks: true
+code: "<xml xmlns=\"https://developers.google.com/blockly/xml\"></xml>"
+level: test 1
+language: JavaScript
+}
