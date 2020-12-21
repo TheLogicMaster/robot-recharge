@@ -1,0 +1,34 @@
+[
+  {
+    name: Robot:move
+    args: [
+      distance
+    ]
+    description: Moves the robot 'distance' meters forward
+    example: Robot:move(1)
+  }
+  {
+    name: Robot:turn
+    args: [
+      distance
+    ]
+    description: Turns the robot 'distance' times clockwise
+    example: Robot:turn(1)
+  }
+  {
+    name: Robot:sleep
+    args: [
+      duration
+    ]
+    description: Waits 'duration' seconds
+    example: Robot:sleep(1)
+  }
+  {
+    name: Robot:speak
+    args: [
+      text
+    ]
+    description: Speaks 'text'
+    example: Robot:speak("Hello")
+  }
+]
