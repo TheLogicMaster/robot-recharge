@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<!-- HTML file to host Blockly in a WebView. -->
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <style type="text/css">
+    html, body, #blocklyDiv {
+      border: 0;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      width: 100%;
+    }
+  </style>
+  <script src="blockly.js"></script>
+  <script src="javascript.js"></script>
+  <script src="lua.js"></script>
+  <script src="php.js"></script>
+  <script src="python.js"></script>
+  <script src="blocks.js"></script>
+  <!-- TODO: Select msg file based on locale. -->
+  <script src="msg/js/en.js"></script>
+  <script src="toolbox.js"></script>
+</head>
+<body>
+  <div id="blocklyDiv"></div>
+  <script type="text/javascript">
+    var workspace = Blockly.inject('blocklyDiv', {
+          media: 'media/',
+          toolbox: BLOCKLY_TOOLBOX_XML['standard'],
+          zoom: {controls: true}
+        });
+  </script>
+</body>
+</html>

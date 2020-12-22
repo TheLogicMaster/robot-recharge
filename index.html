@@ -7,10 +7,30 @@
               <link href="styles.css" rel="stylesheet" type="text/css">
        </head>
 
-       <body>
-              <a class="superdev" href="javascript:%7B%20window.__gwt_bookmarklet_params%20%3D%20%7B'server_url'%3A'http%3A%2F%2Flocalhost%3A9876%2F'%7D%3B%20var%20s%20%3D%20document.createElement('script')%3B%20s.src%20%3D%20'http%3A%2F%2Flocalhost%3A9876%2Fdev_mode_on.js'%3B%20void(document.getElementsByTagName('head')%5B0%5D.appendChild(s))%3B%7D">&#8635;</a>
+       <body oncontextmenu="return false;">
+              <!--<a class="superdev" href="javascript:%7B%20window.__gwt_bookmarklet_params%20%3D%20%7B'server_url'%3A'http%3A%2F%2Flocalhost%3A9876%2F'%7D%3B%20var%20s%20%3D%20document.createElement('script')%3B%20s.src%20%3D%20'http%3A%2F%2Flocalhost%3A9876%2Fdev_mode_on.js'%3B%20void(document.getElementsByTagName('head')%5B0%5D.appendChild(s))%3B%7D">&#8635;</a>-->
+              <div id="blocklyDiv" style="position: absolute; display: none;"></div>
               <div align="center" id="embed-html"></div>
+
+              <script src="blockly/blockly.js"></script>
+              <script src="blockly/javascript.js"></script>
+              <!--<script src="assets/blockly/lua.js"></script>
+              <script src="assets/blockly/php.js"></script>
+              <script src="assets/blockly/python.js"></script>-->
+              <script src="blockly/blocks.js"></script>
+              <!-- TODO: Select msg file based on locale. -->
+              <script src="blockly/msg/js/en.js"></script>
+              <script src="blockly/toolbox.js"></script>
               <script type="text/javascript" src="html/html.nocache.js"></script>
+
+              <script type="text/javascript">
+                     var workspace = Blockly.inject('blocklyDiv', {
+                            media: 'blockly/media/',
+                            toolbox: BLOCKLY_TOOLBOX_XML['standard'],
+                            zoom: {controls: true}
+                     });
+                     window.workspace = workspace;
+              </script>
        </body>
 
        <script>
