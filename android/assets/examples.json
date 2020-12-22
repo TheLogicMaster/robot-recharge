@@ -3,7 +3,7 @@
     name: Example 1
     description: An example 1
     level: test 1
-    blocks: ""
+    blocks: "<xml xmlns=\"https://developers.google.com/blockly/xml\"><block type=\"controls_whileUntil\" id=\"k3,hdiw[y!A2Lk|RX=qr\" x=\"202\" y=\"103\"><field name=\"MODE\">WHILE</field><value name=\"BOOL\"><block type=\"logic_boolean\" id=\"D*$a9HImBm|u;o}/^()+\"><field name=\"BOOL\">TRUE</field></block></value><statement name=\"DO\"><block type=\"robot_move\" id=\"[lR@,mUt/V8Z$C/A_!qn\"><value name=\"DISTANCE\"><shadow type=\"math_number\" id=\"*}DK$/@O^d*^(lg^9aPm\"><field name=\"NUM\">1</field></shadow></value><next><block type=\"robot_turn\" id=\"3b1iv@M8c~4`1pfq=acI\"><value name=\"DISTANCE\"><shadow type=\"math_number\" id=\"PCa?r;oupY6MUYW+{qgT\"><field name=\"NUM\">1</field></shadow></value><next><block type=\"robot_sleep\" id=\"{gLJN%IO_,|Ri+yd_4XH\"><value name=\"DURATION\"><shadow type=\"math_number\" id=\"ku*j.*QHVtq|8.F7L?gC\"><field name=\"NUM\">1</field></shadow></value></block></next></block></next></block></statement></block></xml>"
     code: {
       JavaScript: "while(true){\n  Robot.move(1);\n  Robot.turn(1);\n  Robot.sleep(1);\n}"
       Python: "while True:\n  Robot.move(1)\n  Robot.turn(1)\n  Robot.sleep(1)\n"
@@ -15,7 +15,7 @@
     name: Example 2
     description: An example 2
     level: test 2
-    blocks: ""
+    blocks: "<xml xmlns=\"https://developers.google.com/blockly/xml\"><block type=\"controls_whileUntil\" id=\"k3,hdiw[y!A2Lk|RX=qr\" x=\"202\" y=\"103\"><field name=\"MODE\">WHILE</field><value name=\"BOOL\"><block type=\"logic_boolean\" id=\"D*$a9HImBm|u;o}/^()+\"><field name=\"BOOL\">TRUE</field></block></value><statement name=\"DO\"><block type=\"robot_move\" id=\"[lR@,mUt/V8Z$C/A_!qn\"><value name=\"DISTANCE\"><shadow type=\"math_number\" id=\"*}DK$/@O^d*^(lg^9aPm\"><field name=\"NUM\">2</field></shadow></value><next><block type=\"robot_turn\" id=\"3b1iv@M8c~4`1pfq=acI\"><value name=\"DISTANCE\"><shadow type=\"math_number\" id=\"PCa?r;oupY6MUYW+{qgT\"><field name=\"NUM\">1</field></shadow></value><next><block type=\"robot_sleep\" id=\"{gLJN%IO_,|Ri+yd_4XH\"><value name=\"DURATION\"><shadow type=\"math_number\" id=\"ku*j.*QHVtq|8.F7L?gC\"><field name=\"NUM\">1</field></shadow></value></block></next></block></next></block></statement></block></xml>"
     code: {
       JavaScript: "while(true){\n  Robot.move(2);\n  Robot.turn(1);\n  Robot.sleep(1);\n}"
       Python: "while True:\n  Robot.move(2)\n  Robot.turn(1)\n  Robot.sleep(1)\n"

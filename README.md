@@ -3,6 +3,9 @@ A programming game where the goal is to guide a robot through various levels.
 Google Blockly, Python, Lua, PHP, and JavaScript are all implemented as ways to
 control the robot.
 
+## Online Demo
+[Demo](https://thelogicmaster.github.io/robot-recharge/)
+
 ## Screenshots
 
 <img src="media/screenshot1.png?raw=true" height="336" width="598">
@@ -25,3 +28,4 @@ control the robot.
 - Debug/step through mode
 - Tab to double space functionality in editor
 - IOS port of MaryTTS or Android MaryTTS
+- Make the UI not terrible

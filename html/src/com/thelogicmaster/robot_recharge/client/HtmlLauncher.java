@@ -5,6 +5,7 @@ import com.badlogic.gdx.backends.gwt.GwtApplication;
 import com.badlogic.gdx.backends.gwt.GwtApplicationConfiguration;
 import com.badlogic.gdx.graphics.g2d.freetype.gwt.FreetypeInjector;
 import com.badlogic.gdx.graphics.g2d.freetype.gwt.inject.OnCompletion;
+import com.google.gwt.core.client.ScriptInjector;
 import com.thelogicmaster.robot_recharge.*;
 import com.thelogicmaster.robot_recharge.code.CodeEngine;
 import com.thelogicmaster.robot_recharge.code.Language;
@@ -15,17 +16,19 @@ public class HtmlLauncher extends GwtApplication {
 
     @Override
     public GwtApplicationConfiguration getConfig() {
-        // Resizable application, uses available space in browser
         return new GwtApplicationConfiguration(true);
-        // Fixed size application:
-        //return new GwtApplicationConfiguration(480, 320);
     }
+
+    private native boolean ttsSupported()/*-{
+        return 'speechSynthesis' in $wnd;
+    }-*/;
 
     @Override
     public ApplicationListener createApplicationListener() {
+        final GwtBlocklyEditor editor = new GwtBlocklyEditor();
         HashMap<Language, CodeEngine> engines = new HashMap<>();
         engines.put(Language.JavaScript, null);
-        return new RobotRecharge(engines, null, new PlatformUtils() {
+        return new RobotRecharge(engines, editor, new PlatformUtils() {
             @Override
             public void setWindowMode(WindowMode windowMode) {
 
@@ -35,7 +38,13 @@ public class HtmlLauncher extends GwtApplication {
             public RobotController createRobot(Robot controller, RobotExecutionListener listener, CodeEngine engine) {
                 return new JavaScriptRobotController(controller, listener);
             }
-        }, null);
+        }, ttsSupported() ? new GwtTTSEngine() : null) {
+            @Override
+            public void create() {
+                super.create();
+                editor.init();
+            }
+        };
     }
 
     @Override

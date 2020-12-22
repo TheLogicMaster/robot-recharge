@@ -54,6 +54,10 @@ task superDev (type: GwtSuperDev) {
     dependsOn startHttpServer
     doFirst {
         gwt.modules = gwt.devModules
+        copy {
+            from "../android/assets/blockly"
+            into "build/gwt/draftOut/blockly"
+        }
     }
 }
 
@@ -67,10 +71,14 @@ task dist(dependsOn: [clean, compileGwt]) {
         copy {
             from "webapp"
             into "build/dist"
-            }
+        }
         copy {
             from "war"
             into "build/dist"
+        }
+        copy {
+            from "../android/assets/blockly"
+            into "build/dist/blockly"
         }
     }
 }
