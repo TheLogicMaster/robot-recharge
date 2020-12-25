@@ -17,12 +17,14 @@ import com.thelogicmaster.robot_recharge.ui.IterativeStack;
 
 public class LevelScreen extends MenuScreen {
 
-    private final TextButton resumeButton;
+    final TextButton resumeButton;
+    final List<LevelInfo> list;
 
     public LevelScreen(RobotScreen previousScreen) {
         super(previousScreen);
 
-        final Array<LevelInfo> levels = RobotUtils.json.fromJson(Array.class, LevelInfo.class, Gdx.files.internal("levels.json"));
+        final Array<LevelInfo> levels = RobotUtils.json.fromJson(Array.class, LevelInfo.class,
+                Gdx.files.internal("levels.json"));
 
         // Level description
         final com.thelogicmaster.robot_recharge.ui.IterativeStack stack = new IterativeStack();
@@ -43,7 +45,8 @@ public class LevelScreen extends MenuScreen {
         // Controls
         Table controlsTable = new Table(skin);
         controlsTable.setBackground("buttonTen");
-        controlsTable.setBounds(uiViewport.getWorldWidth() - 1000, uiViewport.getWorldHeight() - 590, 800, 350);
+        controlsTable.setBounds(uiViewport.getWorldWidth() - 1000, uiViewport.getWorldHeight() - 590,
+                800, 350);
         final SelectBox<Language> languageSelect = new SelectBox<>(skin);
         Array<Language> languages = new Array<>();
         for (Language language : Language.values())
@@ -61,39 +64,46 @@ public class LevelScreen extends MenuScreen {
         stage.addActor(controlsTable);
 
         // Level select
-        final List<LevelInfo> list = new List<>(skin);
+        list = new List<>(skin);
         list.setItems(levels);
         ScrollPane levelPane = new ScrollPane(list, skin);
         levelPane.setBounds(200, 50, 600, 800);
         stage.addActor(levelPane);
-        checkSave(list.getSelected().getName());
         list.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 stack.show(list.getSelectedIndex());
-                checkSave(list.getSelected().getName());
+                updateButtons();
             }
         });
         playButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                LevelSave save = new LevelSave(list.getSelected().getName(), blocksCheckbox.isChecked(), "", languageSelect.getSelected());
-                RobotRecharge.instance.setScreen(new GameScreen(save));
+                try {
+                    LevelSave save = new LevelSave(list.getSelected().getName(), blocksCheckbox.isChecked(), "",
+                            languageSelect.getSelected());
+                    RobotRecharge.instance.setScreen(new GameScreen(save));
+                } catch (Exception e) {
+                    Gdx.app.error("err", "", e);
+                }
             }
         });
         resumeButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                FileHandle save = Gdx.files.internal("save/" + list.getSelected() + ".json");
-                RobotRecharge.instance.setScreen(new GameScreen(RobotUtils.json.fromJson(LevelSave.class, save)));
+                RobotRecharge.instance.setScreen(new GameScreen(RobotUtils.json.fromJson(LevelSave.class,
+                        RobotRecharge.preferences.getString("save/" + list.getSelected().getName()))));
             }
         });
     }
 
-    private void checkSave(String level) {
-        if (Gdx.app.getType() == Application.ApplicationType.WebGL)
-            resumeButton.setDisabled(true);
-        else
-            resumeButton.setDisabled(!Gdx.files.local("save/" + level + ".json").exists());
+    @Override
+    public void show() {
+        super.show();
+        updateButtons();
+    }
+
+    private void updateButtons() {
+        resumeButton.setDisabled(!RobotRecharge.preferences.contains("save/" + list.getSelected().getName()));
     }
 }

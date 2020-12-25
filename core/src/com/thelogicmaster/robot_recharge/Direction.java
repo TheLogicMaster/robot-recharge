@@ -10,8 +10,8 @@ public enum Direction {
     SOUTH(new Quaternion(Vector3.Y, 180), new Vector3(-1, 0, 0)),
     EAST(new Quaternion(Vector3.Y, 270), new Vector3(0, 0, 1));
 
-    private final Quaternion quaternion;
-    private final Vector3 vector;
+    private Quaternion quaternion;
+    private Vector3 vector;
 
     Direction(Quaternion quaternion, Vector3 vector) {
         this.quaternion = quaternion;

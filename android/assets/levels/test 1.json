@@ -2,18 +2,32 @@
   xSize: 30
   ySize: 30
   zSize: 30
+  levelHeight: 30
+  levelModelName: level.g3db
   structures: [
     {
       class: BlockStructure
       position: {}
       templates: {
         block: {
-          position: {}
-          asset: blocks/test.png
-        }
-        target: {
           class: TriggerBlock
-          position: {}
+          asset: blocks/test.png
+          color: {
+            r: 1
+            a: 0.7
+          }
+          triggeredColor: {
+            g: 1
+            a: 0.7
+          }
+        }
+        teleporter: {
+          class: TeleporterBlock
+          target: {
+            z: 3
+          }
+          direction: NORTH
+          asset: blocks/test.png
         }
       }
       blocks: [
@@ -21,9 +35,18 @@
           block: block
           position: {
             z: 3
+            x: 3
+          }
+        }
+        {
+          block: teleporter
+          position: {
+            x: 3
           }
         }
       ]
     }
+  ]
+  objectives: [
   ]
 }

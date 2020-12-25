@@ -2,6 +2,8 @@
   xSize: 30
   ySize: 30
   zSize: 30
+  levelHeight: 30
+  levelModelName: level.g3db
   structures: [
     {
       class: BlockStructure

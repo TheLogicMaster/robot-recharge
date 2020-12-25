@@ -1,11 +1,12 @@
 package com.thelogicmaster.robot_recharge;
 
-import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.graphics.GL20;
-import com.thelogicmaster.robot_recharge.code.*;
+import com.thelogicmaster.robot_recharge.code.BlocklyEditor;
+import com.thelogicmaster.robot_recharge.code.CodeEngine;
+import com.thelogicmaster.robot_recharge.code.Language;
 import com.thelogicmaster.robot_recharge.screens.GameScreen;
 import com.thelogicmaster.robot_recharge.screens.TitleScreen;
 
@@ -16,10 +17,12 @@ public class RobotRecharge extends Game {
 
     public static BlocklyEditor blocksEditor;
     public static RobotRecharge instance;
+    @SuppressWarnings("LibGDXStaticResource")
     public static RobotAssets assets;
     public static Map<Language, CodeEngine> codeEngines = new HashMap<>();
     public static PlatformUtils platformUtils;
     public static TTSEngine ttsEngine;
+    public static Preferences preferences;
 
     private TitleScreen titleScreen;
 
@@ -34,16 +37,10 @@ public class RobotRecharge extends Game {
     @Override
     public void create() {
         assets = new RobotAssets();
+        preferences = Gdx.app.getPreferences("RobotRecharge");
 
-        if (Gdx.app.getType() != Application.ApplicationType.WebGL)
-            Gdx.files.local("save/").mkdirs();
-
-        /*LevelSave levelData = new LevelSave("test", false,
-                "while true do\n  Robot:sleep(1);\n  Robot:move(2);\n  Robot:turn(1);\n  end", Language.Lua);
-        FileHandle save = Gdx.files.internal("save/test.txt");
-        if (save.exists())
-            levelData = RobotUtils.json.fromJson(LevelSave.class, save);
-        setScreen(new GameScreen(levelData));*/
+        /*setScreen(new GameScreen(new LevelSave("test", false,
+                "while true do\n  Robot:sleep(1);\n  Robot:move(2);\n  Robot:turn(1);\n  end", Language.Lua)));*/
         titleScreen = new TitleScreen();
         setScreen(titleScreen);
     }

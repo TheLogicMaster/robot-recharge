@@ -1,20 +1,23 @@
 package com.thelogicmaster.robot_recharge.blocks;
 
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g3d.Environment;
-import com.badlogic.gdx.graphics.g3d.Model;
-import com.badlogic.gdx.graphics.g3d.ModelBatch;
-import com.badlogic.gdx.graphics.g3d.ModelInstance;
+import com.badlogic.gdx.graphics.g3d.*;
+import com.badlogic.gdx.graphics.g3d.attributes.BlendingAttribute;
+import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.decals.DecalBatch;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
 import com.thelogicmaster.robot_recharge.*;
 
 public class Block implements Renderable3D, Disposable, AssetConsumer {
     private Position position;
-    private boolean cubic;
+    private boolean modeled;
     private String asset;
+    private float transparency;
+    private Color color;
 
     protected transient ModelInstance model;
     protected transient Model modelSource;
@@ -22,33 +25,28 @@ public class Block implements Renderable3D, Disposable, AssetConsumer {
     protected final transient Vector3 tempVec3 = new Vector3();
 
     public Block() {
-        this(null);
     }
 
-    public Block(String asset) {
-        this(true, asset);
-    }
-
-    public Block(boolean cubic, String asset) {
-        this(new Position(), cubic, asset);
-    }
-
-    public Block(Position position, boolean cubic, String asset) {
+    public Block(Position position, boolean modeled, String asset) {
         this.position = position;
-        this.cubic = cubic;
+        this.modeled = modeled;
         if (asset != null)
             this.asset = "blocks/" + asset;
     }
 
+    public Block(Block block) {
+        position = block.position;
+        modeled = block.modeled;
+        asset = block.asset;
+        transparency = block.transparency;
+        if (block.model != null)
+            model = new ModelInstance(block.model);
+        level = block.level;
+        color = block.color;
+    }
+
     public Block copy() {
-        Block block = new Block();
-        block.position = position;
-        block.cubic = cubic;
-        block.asset = asset;
-        if (model != null)
-            block.model = new ModelInstance(model);
-        block.level = level;
-        return block;
+        return new Block(this);
     }
 
     public void setPosition(Position position) {
@@ -59,12 +57,12 @@ public class Block implements Renderable3D, Disposable, AssetConsumer {
         return position;
     }
 
-    public boolean isCubic() {
-        return cubic;
+    public boolean isModeled() {
+        return modeled;
     }
 
-    public void setCubic(boolean cubic) {
-        this.cubic = cubic;
+    public void setModeled(boolean modeled) {
+        this.modeled = modeled;
     }
 
     public String getAsset() {
@@ -87,21 +85,42 @@ public class Block implements Renderable3D, Disposable, AssetConsumer {
     public void loadAssets(AssetManager assetManager) {
         if (asset == null)
             return;
-        if (cubic)
-            assetManager.load(asset, Texture.class);
-        else
+        if (modeled)
             assetManager.load(asset, Model.class);
+        else
+            assetManager.load(asset, Texture.class);
     }
 
     @Override
     public void assetsLoaded(AssetManager assetManager) {
         if (asset == null)
             return;
-        if (cubic) {
+        if (modeled)
+            model = new ModelInstance(assetManager.<Model>get(asset));
+        else {
             modelSource = RobotUtils.createCubeModel(assetManager.<Texture>get(asset));
             model = new ModelInstance(modelSource);
-        } else
-            model = new ModelInstance(assetManager.<Model>get(asset));
+        }
+        for (Material mat : new Array.ArrayIterator<>(model.materials)) {
+            if (color != null)
+                mat.set(ColorAttribute.createDiffuse(color));
+            if (transparency > 0f)
+                mat.set(new BlendingAttribute(1 - transparency));
+        }
+    }
+
+    public void setTransparency(float transparency) {
+        this.transparency = transparency;
+        if (model != null)
+            for (Material mat : new Array.ArrayIterator<>(model.materials))
+                mat.set(new BlendingAttribute(1 - transparency));
+    }
+
+    public void setColor(Color color) {
+        this.color = color;
+        if (model != null)
+            for (Material mat : new Array.ArrayIterator<>(model.materials))
+                mat.set(ColorAttribute.createDiffuse(color));
     }
 
     @Override

@@ -35,6 +35,18 @@ public class IterativeStack extends Stack {
     }
 
     /**
+     * Show the previous child
+     */
+    public void previous() {
+        index--;
+        index = RobotUtils.modulus(index, getChildren().size);
+    }
+
+    public int getIndex() {
+        return index;
+    }
+
+    /**
      * Show a specific child
      *
      * @param index of the child

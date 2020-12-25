@@ -19,6 +19,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.thelogicmaster.robot_recharge.blocks.TeleporterBlock;
 import com.thelogicmaster.robot_recharge.blocks.TriggerBlock;
 import com.thelogicmaster.robot_recharge.structures.BlocksStructure;
 import com.thelogicmaster.robot_recharge.structures.Elevator;
@@ -103,6 +104,7 @@ public class RobotUtils {
         json.addClassTag("BlockStructure", BlocksStructure.class);
         json.addClassTag("Elevator", Elevator.class);
         json.addClassTag("TriggerBlock", TriggerBlock.class);
+        json.addClassTag("TeleporterBlock", TeleporterBlock.class);
         return json;
     }
 

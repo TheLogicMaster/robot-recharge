@@ -1,10 +1,13 @@
 package com.thelogicmaster.robot_recharge.blocks;
 
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g3d.Material;
 import com.badlogic.gdx.graphics.g3d.attributes.BlendingAttribute;
+import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.utils.Array;
 import com.thelogicmaster.robot_recharge.Level;
+import com.thelogicmaster.robot_recharge.Position;
 import com.thelogicmaster.robot_recharge.Robot;
 import com.thelogicmaster.robot_recharge.RobotListenerAdaptor;
 
@@ -12,15 +15,29 @@ public class TriggerBlock extends Block {
 
     private boolean destroy;
     private boolean oneShot;
+    private Color triggeredColor;
 
     private transient boolean triggered;
 
+    public TriggerBlock() {
+    }
+
+    public TriggerBlock(Position position, boolean cubic, String asset, boolean destroy, boolean oneShot) {
+        super(position, cubic, asset);
+        this.destroy = destroy;
+        this.oneShot = oneShot;
+    }
+
+    public TriggerBlock(TriggerBlock block) {
+        super(block);
+        destroy = block.destroy;
+        oneShot = block.oneShot;
+        triggeredColor = block.triggeredColor;
+    }
+
     @Override
-    public void assetsLoaded(AssetManager assetManager) {
-        super.assetsLoaded(assetManager);
-        if (modelSource != null)
-            for (Material mat : new Array.ArrayIterator<>(modelSource.materials))
-                mat.set(new BlendingAttribute(0.7f));
+    public TriggerBlock copy() {
+        return new TriggerBlock(this);
     }
 
     @Override
@@ -32,6 +49,8 @@ public class TriggerBlock extends Block {
                 if (robot.getBlockPos().equals(getPosition())) {
                     if (oneShot && triggered)
                         return;
+                    if (triggeredColor != null)
+                        setColor(triggeredColor);
                     if (oneShot)
                         triggered = true;
                     if (destroy)
@@ -44,13 +63,5 @@ public class TriggerBlock extends Block {
     @Override
     public boolean isSolid() {
         return false;
-    }
-
-    @Override
-    public Block copy() {
-        TriggerBlock block = (TriggerBlock) super.copy();
-        block.destroy = destroy;
-        block.oneShot = oneShot;
-        return block;
     }
 }

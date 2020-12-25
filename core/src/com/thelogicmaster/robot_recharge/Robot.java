@@ -69,6 +69,12 @@ public class Robot implements Disposable, Renderable3D {
         return rotation;
     }
 
+    public void setPosition(Position position) {
+        this.blockPos = position;
+        this.blockPos.toVector(this.position);
+        level.onRobotMove(this);
+    }
+
     public void setCode(String code) {
         robot.setCode(code);
     }
@@ -96,10 +102,13 @@ public class Robot implements Disposable, Renderable3D {
 
     public void setDirection(Direction direction) {
         this.direction = direction;
+        rotation = direction.getQuaternion().cpy();
     }
 
     @Override
     public void render(ModelBatch modelBatch, DecalBatch decalBatch, Environment environment, float delta) {
+        if (!isRunning())
+            delta = 0;
         animator.update(fastForward ? 2 * delta : delta);
         rotation.nor();
         model.transform.set(tempVec3.set(position).add(Constants.blockOffset), tempRot.set(rotation).mul(rotOffset));

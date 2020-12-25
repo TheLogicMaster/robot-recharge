@@ -43,8 +43,8 @@ public class JavaRobotController implements RobotController, ExecutionListener, 
 
     @Override
     public void turn(int distance) throws InterruptedException {
-        Quaternion step = new Quaternion(Vector3.Y, Robot.rotationSpeed * .01f * -Math.signum(distance));
         for (int i = 0; i < Math.abs(distance); i++) {
+            Quaternion step = new Quaternion(Vector3.Y, Robot.rotationSpeed * .01f * -Math.signum(distance));
             double time = 90 / Robot.rotationSpeed;
             Direction target = Direction.fromYaw(robot.getDirection().getQuaternion().getYaw() - distance * 90);
             while (time > 0) {
@@ -61,8 +61,8 @@ public class JavaRobotController implements RobotController, ExecutionListener, 
     @Override
     public void move(int distance) throws InterruptedException {
         robot.playAnimation("Armature|MoveForward");
-        Vector3 step = robot.getDirection().getVector().cpy().scl(Math.signum(distance) * Robot.speed * .01f);
         for (int i = 0; i < Math.abs(distance); i++) {
+            Vector3 step = robot.getDirection().getVector().cpy().scl(Math.signum(distance) * Robot.speed * .01f);
             Position target = robot.getBlockPos().cpy().add(robot.getDirection().getVector().cpy().scl(Math.signum(distance)));
             if (robot.getLevel().isPositionInvalid(target) || (target.y > 0 && robot.getLevel().getBlock(target.cpy().add(0, -1, 0)) == null)) {
                 robot.playAnimation(null);

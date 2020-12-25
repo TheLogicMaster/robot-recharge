@@ -10,6 +10,7 @@
 	<entry-point class='com.thelogicmaster.robot_recharge.client.HtmlLauncher' />
 	<set-configuration-property name='xsiframe.failIfScriptTag' value='FALSE'/>
 	<set-configuration-property name="gdx.assetpath" value="../android/assets" />
+	<set-configuration-property name="gdx.assetfilterclass" value="com.thelogicmaster.robot_recharge.client.BlocklyAssetFilter" />
 	<set-property name="user.agent" value="gecko1_8, safari"/>
 	<collapse-property name="user.agent" values="*" />
 </module>

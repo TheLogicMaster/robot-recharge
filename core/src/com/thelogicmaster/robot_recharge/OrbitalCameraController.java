@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.g3d.utils.CameraInputController;
 import com.badlogic.gdx.math.Quaternion;
 import com.badlogic.gdx.math.Vector3;
 
-public class CameraController extends CameraInputController {
+public class OrbitalCameraController extends CameraInputController {
 
     public float minAngle = 10;
     public float maxAngle = 90;
@@ -14,11 +14,10 @@ public class CameraController extends CameraInputController {
 
     private final Quaternion tempRot = new Quaternion();
     private final Vector3 tempVector1 = new Vector3();
-    private final Vector3 tempVector2 = new Vector3();
 
     private boolean disabled;
 
-    public CameraController(Camera camera) {
+    public OrbitalCameraController(Camera camera) {
         super(camera);
     }
 
@@ -68,15 +67,6 @@ public class CameraController extends CameraInputController {
                 constrained = Math.max(deltaY, Math.min(0, angle - maxAngle) / rotateAngle);
             camera.rotateAround(target, tempVector1, constrained * rotateAngle);
             camera.rotateAround(target, Vector3.Y, deltaX * -rotateAngle);
-        } else if (button == translateButton) {
-            camera.translate(tempVector1.set(camera.direction).crs(camera.up).nor().scl(-deltaX * translateUnits));
-            camera.translate(tempVector2.set(camera.up).scl(-deltaY * translateUnits));
-            if (translateTarget)
-                target.add(tempVector1).add(tempVector2);
-        } else if (button == forwardButton) {
-            camera.translate(tempVector1.set(camera.direction).scl(deltaY * translateUnits));
-            if (forwardTarget)
-                target.add(tempVector1);
         }
         if (autoUpdate)
             camera.update();

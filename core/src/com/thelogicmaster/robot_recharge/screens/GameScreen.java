@@ -8,8 +8,12 @@ import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.decals.CameraGroupStrategy;
 import com.badlogic.gdx.graphics.g3d.decals.DecalBatch;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
-import com.badlogic.gdx.graphics.g3d.utils.MeshPartBuilder;
-import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
+import com.badlogic.gdx.graphics.g3d.particles.ParticleEffect;
+import com.badlogic.gdx.graphics.g3d.particles.ParticleEffectLoader;
+import com.badlogic.gdx.graphics.g3d.particles.ParticleSystem;
+import com.badlogic.gdx.graphics.g3d.particles.batches.BillboardParticleBatch;
+import com.badlogic.gdx.graphics.g3d.particles.batches.ModelInstanceParticleBatch;
+import com.badlogic.gdx.graphics.g3d.particles.batches.PointSpriteParticleBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -39,15 +43,13 @@ public class GameScreen extends RobotScreen implements RobotExecutionListener {
     private Texture hud;
     private final ImageButton pauseButton, playButton, programButton;
     private final Table editorSidebar, controlPanel;
-    private ModelInstance levelInstance;
-    private final ModelInstance gridInstance;
     private Robot robot;
     private final PerspectiveCamera cam;
-    private final CameraController controller;
+    private final OrbitalCameraController controller;
     private final Viewport viewport;
     private final IterativeStack playPause;
-    private final LevelSave levelData;
-    private final Dialog settingsMenu;
+    private final LevelSave levelSave;
+    private final Dialog settingsMenu, introDialog;
     private final Environment environment;
     private final ProgressBar loadingBar;
     private final Table codeEditor;
@@ -55,31 +57,17 @@ public class GameScreen extends RobotScreen implements RobotExecutionListener {
     private final CodeArea codeArea;
     private final Level level;
     private final DecalBatch decalBatch;
+    private final ParticleSystem particleSystem;
 
-    public GameScreen(final LevelSave levelData) {
+    public GameScreen(final LevelSave levelSave) {
         // Todo: remove all 'RobotRecharge.blocksEditor != null' checks from here
 
-        this.levelData = levelData;
+        this.levelSave = levelSave;
 
         // Load assets
-        assetManager.load("level.g3db", Model.class);
         assetManager.load("robot.g3db", Model.class);
         assetManager.load("background.jpg", Texture.class);
         assetManager.load("hud.png", Texture.class);
-
-        // Create grid model
-        ModelBuilder modelBuilder = new ModelBuilder();
-        modelBuilder.begin();
-        MeshPartBuilder builder = modelBuilder.part("grid", GL20.GL_LINES, VertexAttributes.Usage.Position
-                | VertexAttributes.Usage.ColorUnpacked, new Material());
-        builder.setColor(Color.BLACK);
-        for (float t = 0; t <= 30; t += 1) {
-            builder.line(t, 0.01f, 0, t, 0.01f, 30);
-            builder.line(0, 0.01f, t, 30, 0.01f, t);
-        }
-        Model gridModel = modelBuilder.end();
-        addDisposable(gridModel);
-        gridInstance = new ModelInstance(gridModel);
 
         // Setup camera and environment
         modelBatch = new ModelBatch();
@@ -94,14 +82,27 @@ public class GameScreen extends RobotScreen implements RobotExecutionListener {
         cam.position.z = 20;
         cam.near = 1;
         cam.far = 3000;
-        controller = new CameraController(cam);
+        controller = new OrbitalCameraController(cam);
         controller.target = new Vector3(15, 0, 15);
         cam.lookAt(controller.target);
         cam.update();
         inputMultiplexer.addProcessor(controller);
 
+        // Setup particle system
+        particleSystem = new ParticleSystem();
+        PointSpriteParticleBatch pointSpriteBatch = new PointSpriteParticleBatch();
+        pointSpriteBatch.setCamera(cam);
+        particleSystem.add(pointSpriteBatch);
+        BillboardParticleBatch billboardBatch = new BillboardParticleBatch();
+        billboardBatch.setCamera(cam);
+        particleSystem.add(billboardBatch);
+        particleSystem.add(new ModelInstanceParticleBatch());
+        ParticleEffectLoader.ParticleEffectLoadParameter particleParameter =
+                new ParticleEffectLoader.ParticleEffectLoadParameter(particleSystem.getBatches());
+        assetManager.setLoader(ParticleEffect.class, new PreconfiguredParticleEffectLoader(particleParameter));
+
         // Load level
-        level = RobotUtils.json.fromJson(Level.class, Gdx.files.internal("levels/" + levelData.getLevel() + ".json"));
+        level = new Level(RobotUtils.json.fromJson(LevelData.class, Gdx.files.internal("levels/" + levelSave.getLevel() + ".json")));
         addDisposable(level);
         level.loadAssets(assetManager);
 
@@ -110,16 +111,17 @@ public class GameScreen extends RobotScreen implements RobotExecutionListener {
         loadingBar.setBounds(uiViewport.getWorldWidth() / 2 - 500, uiViewport.getWorldHeight() / 2 - 200, 1000, 50);
 
         // Create settings menu
-        // Todo: Switch to a Window, maybe? Needs input blocking still for rest of screen.
         settingsMenu = new Dialog("Settings", skin);
         settingsMenu.padTop(90);
         settingsMenu.setMovable(false);
         settingsMenu.getContentTable().pad(50, 50, 0, 50);
-        TextButton closeButton = new TextButton("Close", skin);
-        closeButton.getLabelCell().pad(0, 10, 0, 10);
+        final CheckBox gridCheckbox = new CheckBox("Show Grid", skin);
+        settingsMenu.getContentTable().add(gridCheckbox).padBottom(20).row();
         TextButton exitButton = new TextButton("Exit to Main Menu", skin);
         exitButton.getLabelCell().pad(0, 10, 0, 10);
         settingsMenu.getContentTable().add(exitButton).row();
+        TextButton closeButton = new TextButton("Close", skin);
+        closeButton.getLabelCell().pad(0, 10, 0, 10);
         settingsMenu.getContentTable().add(closeButton).padBottom(5);
         exitButton.addListener(new ChangeListener() {
             @Override
@@ -135,6 +137,13 @@ public class GameScreen extends RobotScreen implements RobotExecutionListener {
                 controller.setDisabled(false);
             }
         });
+        gridCheckbox.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                level.showGrid(gridCheckbox.isChecked());
+            }
+        });
+        gridCheckbox.setChecked(true);
 
         // Create main control panel
         controlPanel = new Table();
@@ -218,27 +227,27 @@ public class GameScreen extends RobotScreen implements RobotExecutionListener {
         revertEditorButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                if (!levelData.usingBlocks())
-                    codeArea.setText(levelData.getCode());
+                if (!levelSave.usingBlocks())
+                    codeArea.setText(levelSave.getCode());
                 else if (RobotRecharge.blocksEditor != null)
-                    RobotRecharge.blocksEditor.load(levelData.getCode());
+                    RobotRecharge.blocksEditor.load(levelSave.getCode());
             }
         });
         saveEditorButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                if (!levelData.usingBlocks()) {
+                if (!levelSave.usingBlocks()) {
                     robot.setCode(codeArea.getText());
-                    levelData.setCode(codeArea.getText());
+                    levelSave.setCode(codeArea.getText());
                     saveLevel();
                 } else if (RobotRecharge.blocksEditor != null) {
                     RobotRecharge.blocksEditor.save(new Consumer<String>() {
                         @Override
                         public void accept(String blocks) {
-                            levelData.setCode(blocks);
+                            levelSave.setCode(blocks);
                         }
                     });
-                    RobotRecharge.blocksEditor.generateCode(levelData.getLanguage(), new Consumer<String>() {
+                    RobotRecharge.blocksEditor.generateCode(levelSave.getLanguage(), new Consumer<String>() {
                         @Override
                         public void accept(String code) {
                             robot.setCode(code);
@@ -257,7 +266,7 @@ public class GameScreen extends RobotScreen implements RobotExecutionListener {
                 uiViewport.getWorldHeight());
         final ImageButton catalogButton = new ImageButton(skin, "programmingCatalog");
         codeEditor.add(catalogButton).padLeft(10).padTop(10).padRight(100).left();
-        codeEditor.add(new Label(levelData.getLanguage().name() + " Editor", skin, "large")).left().expandX().row();
+        codeEditor.add(new Label(levelSave.getLanguage().name() + " Editor", skin, "large")).left().expandX().row();
         final Table codeTable = new Table();
         final TextArea lineNumbers = new TextArea("", skin);
         lineNumbers.setDisabled(true);
@@ -313,9 +322,9 @@ public class GameScreen extends RobotScreen implements RobotExecutionListener {
         ImageButton catalogCloseButton = new ImageButton(skin, "close");
         catalog.getTitleTable().add(catalogCloseButton).padRight(10).size(80, 80).right();
         final List<String> commandList = new List<>(skin);
-        final com.thelogicmaster.robot_recharge.ui.IterativeStack commandInfoStack = new IterativeStack();
-        final Array<com.thelogicmaster.robot_recharge.code.Command> commands = RobotUtils.json.fromJson(Array.class, Command.class,
-                Gdx.files.internal("language/commands-" + levelData.getLanguage().name().toLowerCase() + ".json"));
+        final IterativeStack commandInfoStack = new IterativeStack();
+        final Array<Command> commands = RobotUtils.json.fromJson(Array.class, Command.class,
+                Gdx.files.internal("language/commands-" + levelSave.getLanguage().name().toLowerCase() + ".json"));
         Array<String> commandLabels = new Array<>();
         for (com.thelogicmaster.robot_recharge.code.Command command : new Array.ArrayIterable<>(commands)) {
             commandLabels.add(command.getName());
@@ -362,26 +371,37 @@ public class GameScreen extends RobotScreen implements RobotExecutionListener {
                 catalog.setVisible(false);
             }
         });
+
+        // Create intro dialog
+        introDialog = new Dialog(levelSave.getLevel(), skin);
+        introDialog.padTop(50);
+        TextButton introCloseButton = new TextButton("Close", skin);
+        introDialog.getContentTable().add(new Label("", skin));
+        introDialog.getButtonTable().add(introCloseButton);
+        introCloseButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                introDialog.hide();
+            }
+        });
     }
 
     @Override
     protected void doneLoading() {
         // Get assets
-        levelInstance = new ModelInstance(RobotUtils.cleanModel(assetManager.<Model>get("level.g3db")));
         background = assetManager.get("background.jpg");
         hud = assetManager.get("hud.png");
         level.assetsLoaded(assetManager);
 
         // Setup level
-        levelInstance.transform.setTranslation(15, -30, 15);
         robot = addDisposable(new Robot(new ModelInstance(RobotUtils.cleanModel(assetManager.<Model>get("robot.g3db"))),
-                this, RobotRecharge.codeEngines.get(levelData.getLanguage()), viewport));
-        if (!levelData.usingBlocks()) {
-            robot.setCode(levelData.getCode());
-            codeArea.setText(levelData.getCode());
+                this, RobotRecharge.codeEngines.get(levelSave.getLanguage()), viewport));
+        if (!levelSave.usingBlocks()) {
+            robot.setCode(levelSave.getCode());
+            codeArea.setText(levelSave.getCode());
         } else if (RobotRecharge.blocksEditor != null) {
-            RobotRecharge.blocksEditor.load(levelData.getCode());
-            RobotRecharge.blocksEditor.generateCode(levelData.getLanguage(), new Consumer<String>() {
+            RobotRecharge.blocksEditor.load(levelSave.getCode());
+            RobotRecharge.blocksEditor.generateCode(levelSave.getLanguage(), new Consumer<String>() {
                 @Override
                 public void accept(String code) {
                     robot.setCode(code);
@@ -389,13 +409,15 @@ public class GameScreen extends RobotScreen implements RobotExecutionListener {
             });
         }
 
-        level.setRobot(robot);
+        level.setup(robot, particleSystem);
         robot.setLevel(level);
 
         resetLevel();
 
         if (RobotRecharge.ttsEngine != null)
             RobotRecharge.ttsEngine.init();
+
+        //introDialog.show(stage);
     }
 
     @Override
@@ -426,12 +448,15 @@ public class GameScreen extends RobotScreen implements RobotExecutionListener {
 
         // Draw level
         modelBatch.begin(cam);
-        modelBatch.render(levelInstance, environment);
-        modelBatch.render(gridInstance, environment);
-        robot.render(modelBatch, decalBatch, environment, robot.isRunning() ? delta : 0);
-        level.render(modelBatch, decalBatch, environment, robot.isRunning() ? delta : 0);
+        robot.render(modelBatch, decalBatch, environment, delta);
+        level.render(modelBatch, decalBatch, environment, delta);
         modelBatch.end();
         decalBatch.flush();
+        particleSystem.update();
+        particleSystem.begin();
+        particleSystem.draw();
+        particleSystem.end();
+        modelBatch.render(particleSystem);
 
         uiViewport.update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
 
@@ -445,21 +470,17 @@ public class GameScreen extends RobotScreen implements RobotExecutionListener {
     }
 
     private void saveLevel() {
-        if (Gdx.app.getType() != Application.ApplicationType.WebGL)
-            try (JsonWriter writer = new JsonWriter(new OutputStreamWriter(Gdx.files.local("save/" + levelData.getLevel() + ".json").write(false)))) {
-                writer.write(RobotUtils.json.prettyPrint(levelData));
-            } catch (IOException e) {
-                Gdx.app.error("Save Level", "Failed to save level", e);
-                Dialogs.showErrorDialog(stage, "Failed to save level", e.getMessage());
-            }
+        RobotRecharge.preferences.putString("save/" + levelSave.getLevel(), RobotUtils.json.toJson(levelSave));
+        RobotRecharge.preferences.flush();
     }
 
     private void resetLevel() {
         level.reset();
+        particleSystem.removeAll();
     }
 
     private boolean isEditorLoaded() {
-        if (levelData.usingBlocks() && RobotRecharge.blocksEditor != null)
+        if (levelSave.usingBlocks() && RobotRecharge.blocksEditor != null)
             return RobotRecharge.blocksEditor.isLoaded();
         return true;
     }
@@ -468,7 +489,7 @@ public class GameScreen extends RobotScreen implements RobotExecutionListener {
         controlPanel.setTouchable(Touchable.disabled);
         controller.setDisabled(true);
         editorSidebar.addAction(Actions.moveTo(0, 0, 0.25f));
-        if (!levelData.usingBlocks())
+        if (!levelSave.usingBlocks())
             codeEditor.setVisible(true);
         else if (RobotRecharge.blocksEditor != null)
             RobotRecharge.blocksEditor.show();
@@ -478,7 +499,7 @@ public class GameScreen extends RobotScreen implements RobotExecutionListener {
         controlPanel.setTouchable(Touchable.childrenOnly);
         controller.setDisabled(false);
         editorSidebar.addAction(Actions.moveTo(-editorSidebarWidth, 0, 0.25f));
-        if (!levelData.usingBlocks()) {
+        if (!levelSave.usingBlocks()) {
             codeEditor.setVisible(false);
             catalog.setVisible(false);
         } else if (RobotRecharge.blocksEditor != null)
@@ -486,7 +507,7 @@ public class GameScreen extends RobotScreen implements RobotExecutionListener {
     }
 
     private boolean isEditorShown() {
-        if (!levelData.usingBlocks())
+        if (!levelSave.usingBlocks())
             return codeEditor.isVisible();
         else
             return RobotRecharge.blocksEditor != null && RobotRecharge.blocksEditor.isShown();
