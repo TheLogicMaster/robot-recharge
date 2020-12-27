@@ -17,8 +17,8 @@ public class RobotAssets implements Disposable {
     public RobotAssets() {
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("monog.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        parameter.color = Color.BLACK;
-        parameter.borderColor = Color.BLACK;
+        parameter.color = Color.WHITE;
+        parameter.borderColor = Color.WHITE;
         parameter.borderWidth = 1;
         parameter.size = 30;
         fontSmall = generator.generateFont(parameter);

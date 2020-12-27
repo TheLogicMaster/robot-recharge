@@ -137,8 +137,8 @@ public class JCEFDesktopLauncher implements PlatformUtils {
     }
 
     @Override
-    public RobotController createRobot(Robot controller, RobotExecutionListener listener, CodeEngine engine) {
-        return new JavaRobotController(controller, listener, engine);
+    public RobotController createRobotController(Robot robot, RobotExecutionListener listener, CodeEngine engine) {
+        return new JavaRobotController(robot, listener, engine);
     }
 
     public static void main(String[] args) {

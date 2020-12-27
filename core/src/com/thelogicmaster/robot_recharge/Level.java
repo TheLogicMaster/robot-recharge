@@ -9,35 +9,49 @@ import com.badlogic.gdx.graphics.VertexAttributes;
 import com.badlogic.gdx.graphics.g3d.*;
 import com.badlogic.gdx.graphics.g3d.decals.DecalBatch;
 import com.badlogic.gdx.graphics.g3d.particles.ParticleEffect;
+import com.badlogic.gdx.graphics.g3d.particles.ParticleEffectLoader;
 import com.badlogic.gdx.graphics.g3d.particles.ParticleSystem;
+import com.badlogic.gdx.graphics.g3d.particles.batches.BillboardParticleBatch;
+import com.badlogic.gdx.graphics.g3d.particles.batches.ModelInstanceParticleBatch;
+import com.badlogic.gdx.graphics.g3d.particles.batches.PointSpriteParticleBatch;
 import com.badlogic.gdx.graphics.g3d.utils.MeshPartBuilder;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.OrderedSet;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import com.thelogicmaster.robot_recharge.blocks.Block;
+import com.thelogicmaster.robot_recharge.code.CodeEngine;
 import com.thelogicmaster.robot_recharge.structures.Structure;
+import com.thelogicmaster.robot_recharge.objectives.Objective;
 
-public class Level implements Disposable, Renderable3D, AssetConsumer, RobotListener {
+public class Level implements Disposable, Renderable3D, AssetConsumer, RobotListener, RobotExecutionListener {
 
     private final int xSize, ySize, zSize;
     private final float levelHeight;
     private final Array<Structure> structures;
-    private final Array<LevelObjective> objectives;
+    private final Array<Objective> objectives;
     private final String levelModelName;
     private Robot robot;
-    private ParticleSystem particleSystem;
-    private final OrderedSet<LevelListener> levelListeners = new OrderedSet<>();
+    private final ParticleSystem particleSystem;
+    private final OrderedSet<LevelEventListener> levelListeners = new OrderedSet<>();
     private final OrderedSet<RobotListener> robotListeners = new OrderedSet<>();
+    private final Array<LevelEvent> events = new Array<>();
     private final Array<Block> realBlocks = new Array<>();
+    private final LevelExecutionListener listener;
     private Block[][][] blocks;
     private ModelInstance level, grid;
     private Model gridModel;
     private boolean showingGrid;
+    private final boolean useBlocks;
+    private final CodeEngine engine;
+    private String blocklyData, code;
+    private final Viewport viewport;
+    private float runTime;
     private boolean setup; // If setup is in progress
 
-    public Level(LevelData levelData) {
+    public Level(LevelData levelData, LevelExecutionListener listener, Viewport viewport, CodeEngine engine, boolean useBlocks) {
         this.xSize = levelData.getXSize();
         this.ySize = levelData.getYSize();
         this.zSize = levelData.getZSize();
@@ -45,11 +59,19 @@ public class Level implements Disposable, Renderable3D, AssetConsumer, RobotList
         this.levelModelName = levelData.getLevelModelName();
         this.objectives = levelData.getObjectives();
         this.structures = levelData.getStructures();
-    }
+        this.listener = listener;
+        this.useBlocks = useBlocks;
+        this.viewport = viewport;
+        this.engine = engine;
 
-    public void setup(Robot robot, ParticleSystem particleSystem) {
-        this.robot = robot;
-        this.particleSystem = particleSystem;
+        particleSystem = new ParticleSystem();
+        PointSpriteParticleBatch pointSpriteBatch = new PointSpriteParticleBatch();
+        pointSpriteBatch.setCamera(viewport.getCamera());
+        particleSystem.add(pointSpriteBatch);
+        BillboardParticleBatch billboardBatch = new BillboardParticleBatch();
+        billboardBatch.setCamera(viewport.getCamera());
+        particleSystem.add(billboardBatch);
+        particleSystem.add(new ModelInstanceParticleBatch());
     }
 
     public Robot getRobot() {
@@ -58,6 +80,10 @@ public class Level implements Disposable, Renderable3D, AssetConsumer, RobotList
 
     public Array<Structure> getStructures() {
         return structures;
+    }
+
+    public Array<Objective> getObjectives() {
+        return objectives;
     }
 
     public void showGrid(boolean shown) {
@@ -91,6 +117,9 @@ public class Level implements Disposable, Renderable3D, AssetConsumer, RobotList
         grid = new ModelInstance(gridModel);
     }
 
+    /**
+     * Completely resets and regenerates the level
+     */
     public void reset() {
         robot.reset(new Position(), Direction.NORTH);
         realBlocks.clear();
@@ -100,10 +129,34 @@ public class Level implements Disposable, Renderable3D, AssetConsumer, RobotList
         setup = true;
         for (Structure structure : new Array.ArrayIterator<>(structures))
             structure.generate(this);
-        for (Block block: new Array.ArrayIterator<>(realBlocks))
+        for (Block block : new Array.ArrayIterator<>(realBlocks))
             block.setup(this);
+        particleSystem.removeAll();
         createGrid();
+        events.clear();
         setup = false;
+        runTime = 0f;
+    }
+
+    public void start() {
+        robot.start();
+    }
+
+    public void pause() {
+        robot.pause();
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+        robot.setCode(code);
+    }
+
+    public void setBlocklyData(String data) {
+        blocklyData = data;
+    }
+
+    public void toggleFastForward() {
+        robot.setFastForward(!robot.isFastForward());
     }
 
     /**
@@ -174,17 +227,18 @@ public class Level implements Disposable, Renderable3D, AssetConsumer, RobotList
      *
      * @param listener The LevelListener to add
      */
-    public void addLevelListener(LevelListener listener) {
+    public void addLevelListener(LevelEventListener listener) {
         levelListeners.add(listener);
     }
 
-    public void removeLevelListener(LevelListener listener) {
+    public void removeLevelListener(LevelEventListener listener) {
         levelListeners.remove(listener);
     }
 
     public void emitLevelEvent(LevelEvent event) {
-        for (LevelListener listener : new OrderedSet.OrderedSetIterator<>(levelListeners))
+        for (LevelEventListener listener : new OrderedSet.OrderedSetIterator<>(levelListeners))
             listener.onEvent(event);
+        events.add(event);
     }
 
     @Override
@@ -205,6 +259,26 @@ public class Level implements Disposable, Renderable3D, AssetConsumer, RobotList
             listener.onRobotCrash(robot, crash);
     }
 
+    @Override
+    public void onExecutionPaused() {
+        listener.onLevelPause();
+    }
+
+    @Override
+    public void onExecutionFinish() {
+        completeLevel();
+    }
+
+    @Override
+    public void onExecutionInterrupted() {
+        listener.onLevelAbort();
+    }
+
+    @Override
+    public void onExecutionError(Exception e) {
+        listener.onLevelError(e);
+    }
+
     public void playParticleEffect(ParticleEffect effect, Vector3 position) {
         if (Gdx.app.getType() == Application.ApplicationType.WebGL)
             return;
@@ -215,11 +289,35 @@ public class Level implements Disposable, Renderable3D, AssetConsumer, RobotList
         particleSystem.add(particles);
     }
 
+    /**
+     * Call when the level has been completed
+     */
+    public void completeLevel() {
+        int length;
+        if (useBlocks)
+            length = blocklyData.split("robot_").length - 1;
+        else
+            length = code.split("\n").length - 1;
+        Array<Objective> failed = new Array<>();
+        for (Objective objective : new Array.ArrayIterator<>(objectives))
+            if (!objective.check(length, runTime, events))
+                failed.add(objective);
+        robot.stop();
+        if (failed.size == 0)
+            listener.onLevelComplete(runTime);
+        else
+            listener.onLevelFail(failed);
+    }
+
     @Override
     public void loadAssets(AssetManager assetManager) {
+        ParticleEffectLoader.ParticleEffectLoadParameter particleParameter =
+                new ParticleEffectLoader.ParticleEffectLoadParameter(particleSystem.getBatches());
+        assetManager.setLoader(ParticleEffect.class, new PreconfiguredParticleEffectLoader(particleParameter));
         for (Structure structure : new Array.ArrayIterator<>(structures))
             structure.loadAssets(assetManager);
         assetManager.load("levels/" + levelModelName, Model.class);
+        assetManager.load("robot.g3db", Model.class);
     }
 
     @Override
@@ -228,17 +326,27 @@ public class Level implements Disposable, Renderable3D, AssetConsumer, RobotList
             structure.assetsLoaded(assetManager);
         level = new ModelInstance(RobotUtils.cleanModel(assetManager.<Model>get("levels/" + levelModelName)));
         level.transform.setTranslation(xSize / 2f, -levelHeight, zSize / 2f);
+        robot = new Robot(new ModelInstance(RobotUtils.cleanModel(assetManager.<Model>get("robot.g3db"))), engine,
+                viewport, this);
     }
 
     @Override
     public void render(ModelBatch modelBatch, DecalBatch decalBatch, Environment environment, float delta) {
         if (!robot.isRunning())
             delta = 0;
+        runTime += delta;
+        robot.render(modelBatch, decalBatch, environment, delta);
         for (Block block : new Array.ArrayIterator<>(realBlocks))
             block.render(modelBatch, decalBatch, environment, delta);
         for (Structure structure : new Array.ArrayIterator<>(structures))
             structure.render(modelBatch, decalBatch, environment, delta);
         modelBatch.render(level, environment);
+        if (delta > 0f)
+            particleSystem.update(delta);
+        particleSystem.begin();
+        particleSystem.draw();
+        particleSystem.end();
+        modelBatch.render(particleSystem);
         if (showingGrid)
             modelBatch.render(grid, environment);
     }
@@ -248,6 +356,7 @@ public class Level implements Disposable, Renderable3D, AssetConsumer, RobotList
         for (Structure structure : new Array.ArrayIterator<>(structures))
             structure.dispose();
         gridModel.dispose();
+        robot.dispose();
     }
 
     @Override

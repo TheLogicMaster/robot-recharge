@@ -6,5 +6,5 @@ public interface PlatformUtils {
 
     void setWindowMode(WindowMode windowMode);
 
-    RobotController createRobot(Robot controller, RobotExecutionListener listener, CodeEngine engine);
+    RobotController createRobotController(Robot robot, RobotExecutionListener listener, CodeEngine engine);
 }

@@ -21,6 +21,10 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.thelogicmaster.robot_recharge.blocks.TeleporterBlock;
 import com.thelogicmaster.robot_recharge.blocks.TriggerBlock;
+import com.thelogicmaster.robot_recharge.objectives.EventCountObjective;
+import com.thelogicmaster.robot_recharge.objectives.EventsObjective;
+import com.thelogicmaster.robot_recharge.objectives.MaxLengthObjective;
+import com.thelogicmaster.robot_recharge.objectives.MaxTimeObjective;
 import com.thelogicmaster.robot_recharge.structures.BlocksStructure;
 import com.thelogicmaster.robot_recharge.structures.Elevator;
 
@@ -105,6 +109,10 @@ public class RobotUtils {
         json.addClassTag("Elevator", Elevator.class);
         json.addClassTag("TriggerBlock", TriggerBlock.class);
         json.addClassTag("TeleporterBlock", TeleporterBlock.class);
+        json.addClassTag("EventsObjective", EventsObjective.class);
+        json.addClassTag("EventCountObjective", EventCountObjective.class);
+        json.addClassTag("MaxLengthObjective", MaxLengthObjective.class);
+        json.addClassTag("MaxTimeObjective", MaxTimeObjective.class);
         return json;
     }
 

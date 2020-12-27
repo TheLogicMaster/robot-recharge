@@ -35,8 +35,8 @@ public class HtmlLauncher extends GwtApplication {
             }
 
             @Override
-            public RobotController createRobot(Robot controller, RobotExecutionListener listener, CodeEngine engine) {
-                return new JavaScriptRobotController(controller, listener);
+            public RobotController createRobotController(Robot robot, RobotExecutionListener listener, CodeEngine engine) {
+                return new JavaScriptRobotController(robot, listener);
             }
         }, ttsSupported() ? new GwtTTSEngine() : null) {
             @Override

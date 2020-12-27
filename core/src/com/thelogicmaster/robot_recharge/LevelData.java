@@ -2,12 +2,13 @@ package com.thelogicmaster.robot_recharge;
 
 import com.badlogic.gdx.utils.Array;
 import com.thelogicmaster.robot_recharge.structures.Structure;
+import com.thelogicmaster.robot_recharge.objectives.Objective;
 
 public class LevelData {
     private int xSize, ySize, zSize;
     private float levelHeight;
     private Array<Structure> structures = new Array<>();
-    private Array<LevelObjective> objectives = new Array<>();
+    private Array<Objective> objectives = new Array<>();
     private String levelModelName;
 
     public int getXSize() {
@@ -58,11 +59,11 @@ public class LevelData {
         this.structures = structures;
     }
 
-    public Array<LevelObjective> getObjectives() {
+    public Array<Objective> getObjectives() {
         return objectives;
     }
 
-    public void setObjectives(Array<LevelObjective> objectives) {
+    public void setObjectives(Array<Objective> objectives) {
         this.objectives = objectives;
     }
 }

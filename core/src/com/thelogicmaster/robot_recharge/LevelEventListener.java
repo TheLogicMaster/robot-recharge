@@ -1,6 +1,6 @@
 package com.thelogicmaster.robot_recharge;
 
-public interface LevelListener {
+public interface LevelEventListener {
 
     void onEvent(LevelEvent event);
 }

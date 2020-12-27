@@ -27,7 +27,7 @@ public class Robot implements Disposable, Renderable3D {
     private volatile Direction direction;
     private final Vector3 tempVec3 = new Vector3();
     private final Quaternion tempRot = new Quaternion();
-    private Level level;
+    private final Level level;
     private final TableDecal dialog;
     private final Label message;
     private final RobotController robot;
@@ -36,7 +36,7 @@ public class Robot implements Disposable, Renderable3D {
     public static final float rotationSpeed = 180;
     private static final Quaternion rotOffset = new Quaternion(Vector3.Y, 90);
 
-    public Robot(ModelInstance model, RobotExecutionListener listener, CodeEngine engine, Viewport viewport) {
+    public Robot(ModelInstance model, CodeEngine engine, Viewport viewport, Level level) {
         this.model = model;
         animator = new AnimationController(model);
         position = new Vector3();
@@ -50,10 +50,7 @@ public class Robot implements Disposable, Renderable3D {
         table.getColor().a = 0;
         message = new Label("", RobotRecharge.assets.skin);
         table.add(message).grow();
-        robot = RobotRecharge.platformUtils.createRobot(this, listener, engine);
-    }
-
-    public void setLevel(Level level) {
+        robot = RobotRecharge.platformUtils.createRobotController(this, level, engine);
         this.level = level;
     }
 
@@ -128,6 +125,10 @@ public class Robot implements Disposable, Renderable3D {
         dialog.getTable().getColor().a = 0;
     }
 
+    public void stop() {
+        robot.stop();
+    }
+
     public void pause() {
         robot.pause();
     }
@@ -152,13 +153,25 @@ public class Robot implements Disposable, Renderable3D {
         });
     }
 
-    public void playAnimation(final String animation) {
+    public void playAnimation(final String animation, final int loopCount) {
         Gdx.app.postRunnable(new Runnable() {
             @Override
             public void run() {
-                animator.setAnimation(animation);
+                animator.setAnimation(animation, loopCount);
             }
         });
+    }
+
+    public void playAnimation(String animation) {
+        playAnimation(animation, 1);
+    }
+
+    public void loopAnimation(String animation) {
+        playAnimation(animation, -1);
+    }
+
+    public void stopAnimation() {
+        animator.setAnimation(null);
     }
 
     @Override

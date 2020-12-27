@@ -5,10 +5,14 @@ import com.badlogic.gdx.math.Quaternion;
 import com.badlogic.gdx.math.Vector3;
 import com.google.gwt.core.client.ScriptInjector;
 import com.thelogicmaster.robot_recharge.*;
+import com.thelogicmaster.robot_recharge.blocks.Block;
+import com.thelogicmaster.robot_recharge.blocks.Interactable;
 
+@SuppressWarnings("unused")
 public class JavaScriptRobotController implements RobotController {
     // Static fields to circumvent weird js context issue or something
 
+    @SuppressWarnings("LibGDXStaticResource")
     private static Robot robot;
     private static RobotExecutionListener listener;
     private static boolean fastForward, paused, stopped;
@@ -37,10 +41,10 @@ public class JavaScriptRobotController implements RobotController {
                 "}\n" +
 
                 "async function move(distance) {\n" +
-                "   $wnd.Robot.playAnimation('Armature|MoveForward');\n" +
+                "   $wnd.Robot.loopAnimation('Armature|MoveForward');\n" +
                 "   for (let i = 0; i < Math.abs(distance); i++) {\n" +
                 "       if ($wnd.Robot.checkCrash(distance) || $wnd.Robot.checkFloor(distance)) {\n" +
-                "           $wnd.Robot.playAnimation(null);\n" +
+                "           $wnd.Robot.stopAnimation();\n" +
                 "           return;\n" +
                 "       }\n" +
                 "       let time = 1 / " + Robot.speed + ";\n" +
@@ -52,7 +56,7 @@ public class JavaScriptRobotController implements RobotController {
                 "       }\n" +
                 "       $wnd.Robot.move(distance);\n" +
                 "   }\n" +
-                "   $wnd.Robot.playAnimation(null);\n" +
+                "   $wnd.Robot.stopAnimation();\n" +
                 "}\n" +
 
                 "async function turn(distance) {\n" +
@@ -85,11 +89,14 @@ public class JavaScriptRobotController implements RobotController {
         var that = this;
         $wnd.Robot = new Object();
         $wnd.Robot.speak = $entry(that.@com.thelogicmaster.robot_recharge.client.JavaScriptRobotController::speak(Ljava/lang/String;));
+        $wnd.Robot.interact = $entry(that.@com.thelogicmaster.robot_recharge.client.JavaScriptRobotController::interact());
         $wnd.Robot.move = $entry(that.@com.thelogicmaster.robot_recharge.client.JavaScriptRobotController::move(I));
         $wnd.Robot.subMove = $entry(that.@com.thelogicmaster.robot_recharge.client.JavaScriptRobotController::subMove(I));
         $wnd.Robot.turn = $entry(that.@com.thelogicmaster.robot_recharge.client.JavaScriptRobotController::turn(I));
         $wnd.Robot.subTurn = $entry(that.@com.thelogicmaster.robot_recharge.client.JavaScriptRobotController::subTurn(I));
         $wnd.Robot.playAnimation = $entry(that.@com.thelogicmaster.robot_recharge.client.JavaScriptRobotController::playAnimation(Ljava/lang/String;));
+        $wnd.Robot.loopAnimation = $entry(that.@com.thelogicmaster.robot_recharge.client.JavaScriptRobotController::loopAnimation(Ljava/lang/String;));
+        $wnd.Robot.stopAnimation = $entry(that.@com.thelogicmaster.robot_recharge.client.JavaScriptRobotController::stopAnimation());
         $wnd.Robot.isFast = $entry(that.@com.thelogicmaster.robot_recharge.client.JavaScriptRobotController::isFast());
         $wnd.Robot.isStopped = $entry(that.@com.thelogicmaster.robot_recharge.client.JavaScriptRobotController::isStopped());
         $wnd.Robot.isPaused = $entry(that.@com.thelogicmaster.robot_recharge.client.JavaScriptRobotController::isPaused());
@@ -150,6 +157,14 @@ public class JavaScriptRobotController implements RobotController {
         robot.playAnimation(animation);
     }
 
+    public void loopAnimation(String animation) {
+        robot.loopAnimation(animation);
+    }
+
+    public void stopAnimation() {
+        robot.stopAnimation();
+    }
+
     public boolean checkCrash(int distance) {
         Position target = robot.getBlockPos().cpy().add(robot.getDirection().getVector().cpy().scl(Math.signum(distance)));
         boolean crash = robot.getLevel().getBlock(target) != null && robot.getLevel().getBlock(target).isSolid();
@@ -165,6 +180,12 @@ public class JavaScriptRobotController implements RobotController {
 
     public void speak(String message) {
         robot.textToSpeech(message);
+    }
+
+    public void interact() {
+        Block block = robot.getLevel().getBlock(robot.getBlockPos().cpy().add(robot.getDirection().getVector()));
+        if (block instanceof Interactable)
+            ((Interactable) block).interact(robot);
     }
 
     public boolean isFast() {
@@ -214,7 +235,7 @@ public class JavaScriptRobotController implements RobotController {
 
     public void setCode(String code) {
         code = code.replaceAll("(Robot\\.)((move|turn|sleep)\\(.+?\\))(;*)", "if (await $2) return true;");
-        code = code.replaceAll("(Robot\\.(speak)\\(.+?\\))", "\\$wnd.$1");
+        code = code.replaceAll("(Robot\\.(speak|interact)\\(.+?\\))", "\\$wnd.$1");
         this.code = code;
     }
 }

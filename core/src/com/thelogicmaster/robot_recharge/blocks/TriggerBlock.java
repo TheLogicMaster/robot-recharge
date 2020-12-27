@@ -6,16 +6,14 @@ import com.badlogic.gdx.graphics.g3d.Material;
 import com.badlogic.gdx.graphics.g3d.attributes.BlendingAttribute;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.utils.Array;
-import com.thelogicmaster.robot_recharge.Level;
-import com.thelogicmaster.robot_recharge.Position;
-import com.thelogicmaster.robot_recharge.Robot;
-import com.thelogicmaster.robot_recharge.RobotListenerAdaptor;
+import com.thelogicmaster.robot_recharge.*;
 
 public class TriggerBlock extends Block {
 
     private boolean destroy;
     private boolean oneShot;
     private Color triggeredColor;
+    private String name;
 
     private transient boolean triggered;
 
@@ -33,6 +31,7 @@ public class TriggerBlock extends Block {
         destroy = block.destroy;
         oneShot = block.oneShot;
         triggeredColor = block.triggeredColor;
+        name = block.name;
     }
 
     @Override
@@ -51,6 +50,8 @@ public class TriggerBlock extends Block {
                         return;
                     if (triggeredColor != null)
                         setColor(triggeredColor);
+                    if (name != null)
+                        level.emitLevelEvent(new LevelEvent(TriggerBlock.this, name, "trigger"));
                     if (oneShot)
                         triggered = true;
                     if (destroy)

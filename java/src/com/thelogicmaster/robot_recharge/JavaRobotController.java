@@ -3,6 +3,8 @@ package com.thelogicmaster.robot_recharge;
 import com.badlogic.gdx.math.Quaternion;
 import com.badlogic.gdx.math.Vector3;
 import com.thelogicmaster.robot_recharge.*;
+import com.thelogicmaster.robot_recharge.blocks.Block;
+import com.thelogicmaster.robot_recharge.blocks.Interactable;
 import com.thelogicmaster.robot_recharge.code.CodeEngine;
 import com.thelogicmaster.robot_recharge.code.ExecutionListener;
 
@@ -60,16 +62,16 @@ public class JavaRobotController implements RobotController, ExecutionListener, 
 
     @Override
     public void move(int distance) throws InterruptedException {
-        robot.playAnimation("Armature|MoveForward");
+        robot.loopAnimation("Armature|MoveForward");
         for (int i = 0; i < Math.abs(distance); i++) {
             Vector3 step = robot.getDirection().getVector().cpy().scl(Math.signum(distance) * Robot.speed * .01f);
             Position target = robot.getBlockPos().cpy().add(robot.getDirection().getVector().cpy().scl(Math.signum(distance)));
             if (robot.getLevel().isPositionInvalid(target) || (target.y > 0 && robot.getLevel().getBlock(target.cpy().add(0, -1, 0)) == null)) {
-                robot.playAnimation(null);
+                robot.stopAnimation();
                 // Todo: play almost falling off animation for ledges
                 return;
             } else if (robot.getLevel().getBlock(target) != null && robot.getLevel().getBlock(target).isSolid()) {
-                robot.playAnimation(null);
+                robot.stopAnimation();
                 robot.getLevel().onRobotCrash(robot, target);
                 // Todo: Play sound effect and crash animation
                 return;
@@ -86,7 +88,7 @@ public class JavaRobotController implements RobotController, ExecutionListener, 
             target.toVector(robot.getPosition());
             robot.getLevel().onRobotMove(robot);
         }
-        robot.playAnimation(null);
+        robot.stopAnimation();
     }
 
     @Override
@@ -102,6 +104,13 @@ public class JavaRobotController implements RobotController, ExecutionListener, 
     @Override
     public void speak(String message) {
         robot.textToSpeech(message);
+    }
+
+    @Override
+    public void interact() {
+        Block block = robot.getLevel().getBlock(robot.getBlockPos().cpy().add(robot.getDirection().getVector()));
+        if (block instanceof Interactable)
+            ((Interactable) block).interact(robot);
     }
 
     public void start() {

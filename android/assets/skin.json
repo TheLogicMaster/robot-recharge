@@ -202,7 +202,8 @@
 	"default": {
 		"checkboxOn": "checkedBox",
 		"checkboxOff": "uncheckedBox",
-		"font": "menuFont"
+		"font": "menuFont",
+		"fontColor": "Yellow"
 	}
 },
 "com.badlogic.gdx.scenes.scene2d.ui.ImageButton$ImageButtonStyle": {
@@ -267,7 +268,8 @@
 },
 "com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle": {
 	"default": {
-		"font": "menuFont"
+		"font": "menuFont",
+		"fontColor": "Yellow"
 	},
 	"large": {
 		"parent": "default",
@@ -277,8 +279,8 @@
 "com.badlogic.gdx.scenes.scene2d.ui.List$ListStyle": {
 	"default": {
 		"font": "menuFont",
-		"fontColorSelected": "Black",
-		"fontColorUnselected": "Black",
+		"fontColorSelected": "Yellow",
+		"fontColorUnselected": "Yellow",
 		"selection": "selection",
 		"background": "windowTen"
 	}
@@ -301,7 +303,7 @@
 "com.badlogic.gdx.scenes.scene2d.ui.SelectBox$SelectBoxStyle": {
 	"default": {
 		"font": "menuFont",
-		"fontColor": "Black",
+		"fontColor": "Yellow",
 		"background": "buttonTen",
 		"scrollStyle": "default",
 		"listStyle": "default"
@@ -310,6 +312,7 @@
 "com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle": {
 	"default": {
 		"font": "menuFont",
+		"fontColor": "Yellow",
 		"up": "buttonTen",
 		"down": "buttonPressedTen",
 		"disabled": "buttonDisabledTen"
@@ -336,7 +339,7 @@
 	"default": {
 		"background": "windowTen",
 		"titleFont": "titleFont",
-		"titleFontColor": "Black"
+		"titleFontColor": "Yellow"
 	}
 }
 }

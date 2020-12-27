@@ -28,8 +28,8 @@ public class AndroidLauncher extends AndroidApplication {
             }
 
             @Override
-            public RobotController createRobot(Robot controller, RobotExecutionListener listener, CodeEngine engine) {
-                return new JavaRobotController(controller, listener, engine);
+            public RobotController createRobotController(Robot robot, RobotExecutionListener listener, CodeEngine engine) {
+                return new JavaRobotController(robot, listener, engine);
             }
         }, new AndroidTTSEngine(getContext())), config);
         addContentView(editor, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));

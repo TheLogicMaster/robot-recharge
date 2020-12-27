@@ -5,7 +5,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextArea;
 
 public class CodeArea extends TextArea {
 
-
     public CodeArea(Skin skin) {
         super("", skin);
     }

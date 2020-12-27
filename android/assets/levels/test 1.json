@@ -12,6 +12,7 @@
         block: {
           class: TriggerBlock
           asset: blocks/test.png
+          name: trigger
           color: {
             r: 1
             a: 0.7
@@ -48,5 +49,12 @@
     }
   ]
   objectives: [
+    {
+      class: EventsObjective
+      events: [
+        "trigger:trigger"
+      ]
+      description: Trigger the trigger block
+    }
   ]
 }
