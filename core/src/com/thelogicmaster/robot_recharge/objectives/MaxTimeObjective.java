@@ -15,7 +15,7 @@ public class MaxTimeObjective implements Objective {
     }
 
     @Override
-    public boolean check(int length, float time, Array<LevelEvent> events) {
+    public boolean check(int length, int calls, float time, Array<LevelEvent> events) {
         return time < this.time;
     }
 

@@ -15,7 +15,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
-import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -28,7 +28,6 @@ public class GameScreen extends RobotScreen implements LevelExecutionListener {
 
     private static final int editorSidebarWidth = 128;
 
-    private Texture background;
     private Texture hud;
     private final EditorSidebar editorSidebar;
     private final GameControlPanel controlPanel;
@@ -36,8 +35,8 @@ public class GameScreen extends RobotScreen implements LevelExecutionListener {
     private final OrbitalCameraController controller;
     private final Viewport viewport;
     private final LevelSave levelSave;
-    private final LevelIntroDialog introDialog;
-    private final GameMenu settingsMenu;
+    private final LevelIntroDialog objectivesDialog;
+    private final GameMenu menu;
     private final Environment environment;
     private final ProgressBar loadingBar;
     private final CodeEditor codeEditor;
@@ -53,7 +52,6 @@ public class GameScreen extends RobotScreen implements LevelExecutionListener {
 
         // Load assets
         assetManager.load("robot.g3db", Model.class);
-        assetManager.load("background.jpg", Texture.class);
         assetManager.load("hud.png", Texture.class);
 
         // Setup camera and environment
@@ -74,6 +72,7 @@ public class GameScreen extends RobotScreen implements LevelExecutionListener {
         cam.lookAt(controller.target);
         cam.update();
         inputMultiplexer.addProcessor(controller);
+        controller.setDisabled(true);
 
         // Load level
         level = new Level(RobotUtils.json.fromJson(LevelData.class, Gdx.files.internal("levels/" + levelSave.getLevel() + ".json")),
@@ -86,7 +85,7 @@ public class GameScreen extends RobotScreen implements LevelExecutionListener {
         loadingBar.setBounds(uiViewport.getWorldWidth() / 2 - 500, uiViewport.getWorldHeight() / 2 - 200, 1000, 50);
 
         // Create settings menu
-        settingsMenu = new GameMenu(skin, new GameMenu.GameMenuListener() {
+        menu = new GameMenu(skin, new GameMenu.GameMenuListener() {
             @Override
             public void onExit() {
                 dispose();
@@ -101,7 +100,14 @@ public class GameScreen extends RobotScreen implements LevelExecutionListener {
             public void onGridCheckbox(boolean checked) {
                 level.showGrid(checked);
             }
+
+            @Override
+            public void onObjectives() {
+                objectivesDialog.setVisible(true);
+            }
         });
+        menu.setBounds(uiViewport.getWorldWidth() / 2 - 500, uiViewport.getWorldHeight() / 2 - 200, 1000, 400);
+        stage.addActor(menu);
 
         // Create main control panel
         controlPanel = new GameControlPanel(skin, new GameControlPanel.ControlPanelListener() {
@@ -138,7 +144,7 @@ public class GameScreen extends RobotScreen implements LevelExecutionListener {
 
             @Override
             public void onSettings() {
-                settingsMenu.show(stage);
+                menu.setVisible(true);
                 level.pause();
                 controller.setDisabled(true);
             }
@@ -211,7 +217,14 @@ public class GameScreen extends RobotScreen implements LevelExecutionListener {
         stage.addActor(catalog);
 
         // Create intro dialog
-        introDialog = new LevelIntroDialog(skin, levelSave.getLevel());
+        objectivesDialog = new LevelIntroDialog(skin, levelSave.getLevel(), level.getObjectives(), levelSave.usingBlocks(), new LevelIntroDialog.IntroListener() {
+            @Override
+            public void onClose() {
+                controller.setDisabled(false);
+            }
+        });
+        objectivesDialog.setBounds(uiViewport.getWorldWidth() / 2 - 500, uiViewport.getWorldHeight() / 2 - 200, 1000, 400);
+        stage.addActor(objectivesDialog);
 
         // Level Fail Dialog
         levelFailDialog = new LevelFailDialog(skin, level.getObjectives(), levelSave.usingBlocks());
@@ -232,7 +245,6 @@ public class GameScreen extends RobotScreen implements LevelExecutionListener {
     @Override
     protected void doneLoading() {
         // Get assets
-        background = assetManager.get("background.jpg");
         hud = assetManager.get("hud.png");
         level.assetsLoaded(assetManager);
 
@@ -257,7 +269,7 @@ public class GameScreen extends RobotScreen implements LevelExecutionListener {
         if (RobotRecharge.ttsEngine != null)
             RobotRecharge.ttsEngine.init();
 
-        //introDialog.show(stage);
+        objectivesDialog.setVisible(true);
     }
 
     @Override
@@ -283,7 +295,7 @@ public class GameScreen extends RobotScreen implements LevelExecutionListener {
 
         // Draw background
         spriteBatch.begin();
-        spriteBatch.draw(background, 0, 0, viewport.getWorldWidth(), viewport.getWorldHeight());
+        level.drawBackground(spriteBatch);
         spriteBatch.end();
 
         // Draw level
@@ -325,9 +337,9 @@ public class GameScreen extends RobotScreen implements LevelExecutionListener {
     }
 
     @Override
-    public void onLevelComplete(float completionTime) {
+    public void onLevelComplete(float completionTime, int length, int calls) {
         controlPanel.disablePlay();
-        levelCompleteDialog.show(completionTime);
+        levelCompleteDialog.show(completionTime, length, calls);
     }
 
     @Override
@@ -338,7 +350,6 @@ public class GameScreen extends RobotScreen implements LevelExecutionListener {
 
     @Override
     public void onLevelAbort() {
-
     }
 
     @Override
@@ -350,6 +361,7 @@ public class GameScreen extends RobotScreen implements LevelExecutionListener {
     public void resize(int width, int height) {
         super.resize(width, height);
         viewport.update(width, height);
-        RobotRecharge.blocksEditor.setWidth(Gdx.graphics.getWidth() - (int) uiViewport.project(new Vector2(editorSidebarWidth, 0)).x);
+        if (RobotRecharge.blocksEditor != null)
+            RobotRecharge.blocksEditor.setWidth(Gdx.graphics.getWidth() - (int) uiViewport.project(new Vector2(editorSidebarWidth, 0)).x);
     }
 }

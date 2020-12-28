@@ -1,10 +1,10 @@
 [
   {
     name: test 1
-    description: Level 2 description
+    description: Level 1 description
   }
   {
     name: test 2
-    description: Level 1 description
+    description: Level 2 description
   }
 ]

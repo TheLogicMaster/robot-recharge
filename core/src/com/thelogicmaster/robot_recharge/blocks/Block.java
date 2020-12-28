@@ -27,11 +27,12 @@ public class Block implements Renderable3D, Disposable, AssetConsumer {
     public Block() {
     }
 
-    public Block(Position position, boolean modeled, String asset) {
+    public Block(Position position, boolean modeled, String asset, float transparency, Color color) {
         this.position = position;
         this.modeled = modeled;
-        if (asset != null)
-            this.asset = "blocks/" + asset;
+        this.asset = asset;
+        this.transparency = transparency;
+        this.color = color;
     }
 
     public Block(Block block) {
@@ -41,7 +42,6 @@ public class Block implements Renderable3D, Disposable, AssetConsumer {
         transparency = block.transparency;
         if (block.model != null)
             model = new ModelInstance(block.model);
-        level = block.level;
         color = block.color;
     }
 
@@ -86,9 +86,9 @@ public class Block implements Renderable3D, Disposable, AssetConsumer {
         if (asset == null)
             return;
         if (modeled)
-            assetManager.load(asset, Model.class);
+            assetManager.load("blocks/" + asset, Model.class);
         else
-            assetManager.load(asset, Texture.class);
+            assetManager.load("blocks/" + asset, Texture.class);
     }
 
     @Override
@@ -96,9 +96,9 @@ public class Block implements Renderable3D, Disposable, AssetConsumer {
         if (asset == null)
             return;
         if (modeled)
-            model = new ModelInstance(assetManager.<Model>get(asset));
+            model = new ModelInstance(assetManager.<Model>get("blocks/" + asset));
         else {
-            modelSource = RobotUtils.createCubeModel(assetManager.<Texture>get(asset));
+            modelSource = RobotUtils.createCubeModel(assetManager.<Texture>get("blocks/" + asset));
             model = new ModelInstance(modelSource);
         }
         for (Material mat : new Array.ArrayIterator<>(model.materials)) {

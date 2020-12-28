@@ -5,7 +5,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.VertexAttributes;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g3d.*;
 import com.badlogic.gdx.graphics.g3d.decals.DecalBatch;
 import com.badlogic.gdx.graphics.g3d.particles.ParticleEffect;
@@ -23,8 +25,8 @@ import com.badlogic.gdx.utils.OrderedSet;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.thelogicmaster.robot_recharge.blocks.Block;
 import com.thelogicmaster.robot_recharge.code.CodeEngine;
-import com.thelogicmaster.robot_recharge.structures.Structure;
 import com.thelogicmaster.robot_recharge.objectives.Objective;
+import com.thelogicmaster.robot_recharge.structures.Structure;
 
 public class Level implements Disposable, Renderable3D, AssetConsumer, RobotListener, RobotExecutionListener {
 
@@ -32,7 +34,7 @@ public class Level implements Disposable, Renderable3D, AssetConsumer, RobotList
     private final float levelHeight;
     private final Array<Structure> structures;
     private final Array<Objective> objectives;
-    private final String levelModelName;
+    private final String levelModelName, backgroundName;
     private Robot robot;
     private final ParticleSystem particleSystem;
     private final OrderedSet<LevelEventListener> levelListeners = new OrderedSet<>();
@@ -40,14 +42,15 @@ public class Level implements Disposable, Renderable3D, AssetConsumer, RobotList
     private final Array<LevelEvent> events = new Array<>();
     private final Array<Block> realBlocks = new Array<>();
     private final LevelExecutionListener listener;
+    private final boolean useBlocks;
+    private final CodeEngine engine;
+    private final Viewport viewport;
+    private Texture background;
     private Block[][][] blocks;
     private ModelInstance level, grid;
     private Model gridModel;
     private boolean showingGrid;
-    private final boolean useBlocks;
-    private final CodeEngine engine;
     private String blocklyData, code;
-    private final Viewport viewport;
     private float runTime;
     private boolean setup; // If setup is in progress
 
@@ -56,9 +59,10 @@ public class Level implements Disposable, Renderable3D, AssetConsumer, RobotList
         this.ySize = levelData.getYSize();
         this.zSize = levelData.getZSize();
         this.levelHeight = levelData.getLevelHeight();
-        this.levelModelName = levelData.getLevelModelName();
+        this.levelModelName = levelData.getLevelModel();
         this.objectives = levelData.getObjectives();
         this.structures = levelData.getStructures();
+        this.backgroundName = levelData.getBackground();
         this.listener = listener;
         this.useBlocks = useBlocks;
         this.viewport = viewport;
@@ -84,6 +88,10 @@ public class Level implements Disposable, Renderable3D, AssetConsumer, RobotList
 
     public Array<Objective> getObjectives() {
         return objectives;
+    }
+
+    public void drawBackground(SpriteBatch batch) {
+        batch.draw(background, 0, 0, viewport.getWorldWidth(), viewport.getWorldHeight());
     }
 
     public void showGrid(boolean shown) {
@@ -297,14 +305,14 @@ public class Level implements Disposable, Renderable3D, AssetConsumer, RobotList
         if (useBlocks)
             length = blocklyData.split("robot_").length - 1;
         else
-            length = code.split("\n").length - 1;
+            length = code.split("Robot.").length - 1;
         Array<Objective> failed = new Array<>();
         for (Objective objective : new Array.ArrayIterator<>(objectives))
-            if (!objective.check(length, runTime, events))
+            if (!objective.check(length, robot.getCalls(), runTime, events))
                 failed.add(objective);
         robot.stop();
         if (failed.size == 0)
-            listener.onLevelComplete(runTime);
+            listener.onLevelComplete(runTime, length, robot.getCalls());
         else
             listener.onLevelFail(failed);
     }
@@ -318,6 +326,7 @@ public class Level implements Disposable, Renderable3D, AssetConsumer, RobotList
             structure.loadAssets(assetManager);
         assetManager.load("levels/" + levelModelName, Model.class);
         assetManager.load("robot.g3db", Model.class);
+        assetManager.load("levels/" + backgroundName, Texture.class);
     }
 
     @Override
@@ -328,6 +337,7 @@ public class Level implements Disposable, Renderable3D, AssetConsumer, RobotList
         level.transform.setTranslation(xSize / 2f, -levelHeight, zSize / 2f);
         robot = new Robot(new ModelInstance(RobotUtils.cleanModel(assetManager.<Model>get("robot.g3db"))), engine,
                 viewport, this);
+        background = assetManager.get("levels/" + backgroundName);
     }
 
     @Override

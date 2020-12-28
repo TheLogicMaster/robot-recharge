@@ -3,12 +3,11 @@ package com.thelogicmaster.robot_recharge.desktop;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.lwjgl.LwjglAWTCanvas;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
-import com.thelogicmaster.robot_recharge.*;
+import com.badlogic.gdx.utils.Array;
 import com.thelogicmaster.robot_recharge.Robot;
+import com.thelogicmaster.robot_recharge.*;
 import com.thelogicmaster.robot_recharge.code.CodeEngine;
 import com.thelogicmaster.robot_recharge.code.Language;
-import com.thelogicmaster.robot_recharge.LuaEngine;
-import com.thelogicmaster.robot_recharge.PhpEngine;
 import org.cef.CefApp;
 import org.cef.handler.CefAppHandlerAdapter;
 
@@ -27,6 +26,7 @@ public class JCEFDesktopLauncher implements PlatformUtils {
     private final JFrame jFrame;
     private final LwjglAWTCanvas lwjglAWTCanvas;
     private final DesktopBlocklyEditor blocklyEditor;
+    final Array<WindowMode> windowModes;
 
     private JCEFDesktopLauncher() {
         CefApp.addAppHandler(new CefAppHandlerAdapter(null) {
@@ -37,6 +37,10 @@ public class JCEFDesktopLauncher implements PlatformUtils {
             }
         });
 
+        windowModes = new Array<>(new WindowMode[]{
+                WindowMode.Windowed,
+                WindowMode.Fullscreen
+        });
         blocklyEditor = new DesktopBlocklyEditor();
         LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
         config.allowSoftwareMode = true;
@@ -119,6 +123,11 @@ public class JCEFDesktopLauncher implements PlatformUtils {
             }
         });
         return frame;
+    }
+
+    @Override
+    public Array<WindowMode> getWindowModes() {
+        return windowModes;
     }
 
     @Override

@@ -2,19 +2,20 @@ package com.thelogicmaster.robot_recharge.ui;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
-import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.thelogicmaster.robot_recharge.RobotRecharge;
 
-public class GameMenu extends Dialog {
+public class GameMenu extends Window {
     // Todo: switch to modal Window
     public GameMenu(Skin skin, final GameMenuListener listener) {
         super("Menu", skin);
-        padTop(90);
+        padTop(100);
         setMovable(false);
-        getContentTable().pad(50, 50, 0, 50);
+        setModal(true);
+        setVisible(false);
 
         final CheckBox gridCheckbox = new CheckBox("Show Grid", skin);
         gridCheckbox.addListener(new ChangeListener() {
@@ -24,7 +25,18 @@ public class GameMenu extends Dialog {
             }
         });
         gridCheckbox.setChecked(true);
-        getContentTable().add(gridCheckbox).padBottom(20).row();
+        add(gridCheckbox).padBottom(20).row();
+
+        TextButton objectivesButton = new TextButton("View Objectives", skin);
+        objectivesButton.getLabelCell().pad(0, 10, 0, 10);
+        objectivesButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                setVisible(false);
+                listener.onObjectives();
+            }
+        });
+        add(objectivesButton).padBottom(20).row();
 
         TextButton exitButton = new TextButton("Exit to Main Menu", skin);
         exitButton.getLabelCell().pad(0, 10, 0, 10);
@@ -35,18 +47,18 @@ public class GameMenu extends Dialog {
                 listener.onExit();
             }
         });
-        getContentTable().add(exitButton).row();
+        add(exitButton).padBottom(30).row();
 
         TextButton closeButton = new TextButton("Close", skin);
         closeButton.getLabelCell().pad(0, 10, 0, 10);
         closeButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                hide();
+                setVisible(false);
                 listener.onClose();
             }
         });
-        getContentTable().add(closeButton).padBottom(5);
+        add(closeButton).expand().bottom();
     }
 
     public interface GameMenuListener {
@@ -56,5 +68,7 @@ public class GameMenu extends Dialog {
         void onClose();
 
         void onGridCheckbox(boolean checked);
+
+        void onObjectives();
     }
 }

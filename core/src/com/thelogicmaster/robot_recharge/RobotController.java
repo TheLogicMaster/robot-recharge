@@ -13,4 +13,6 @@ public interface RobotController {
     void setCode(String code);
 
     boolean isRunning();
+
+    int getCalls();
 }

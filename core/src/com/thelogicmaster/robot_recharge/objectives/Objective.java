@@ -5,7 +5,7 @@ import com.thelogicmaster.robot_recharge.LevelEvent;
 
 public interface Objective {
 
-    boolean check(int length, float time, Array<LevelEvent> events);
+    boolean check(int length, int calls, float time, Array<LevelEvent> events);
 
     String getDescription(boolean useBlocks);
 }

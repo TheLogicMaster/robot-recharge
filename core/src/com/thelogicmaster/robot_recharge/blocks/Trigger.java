@@ -1,14 +1,9 @@
 package com.thelogicmaster.robot_recharge.blocks;
 
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g3d.Material;
-import com.badlogic.gdx.graphics.g3d.attributes.BlendingAttribute;
-import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
-import com.badlogic.gdx.utils.Array;
 import com.thelogicmaster.robot_recharge.*;
 
-public class TriggerBlock extends Block {
+public class Trigger extends Block {
 
     private boolean destroy;
     private boolean oneShot;
@@ -17,16 +12,16 @@ public class TriggerBlock extends Block {
 
     private transient boolean triggered;
 
-    public TriggerBlock() {
+    public Trigger() {
     }
 
-    public TriggerBlock(Position position, boolean cubic, String asset, boolean destroy, boolean oneShot) {
-        super(position, cubic, asset);
+    public Trigger(Position position, boolean cubic, String asset, float transparency, Color color, boolean destroy, boolean oneShot) {
+        super(position, cubic, asset, transparency, color);
         this.destroy = destroy;
         this.oneShot = oneShot;
     }
 
-    public TriggerBlock(TriggerBlock block) {
+    public Trigger(Trigger block) {
         super(block);
         destroy = block.destroy;
         oneShot = block.oneShot;
@@ -35,8 +30,8 @@ public class TriggerBlock extends Block {
     }
 
     @Override
-    public TriggerBlock copy() {
-        return new TriggerBlock(this);
+    public Trigger copy() {
+        return new Trigger(this);
     }
 
     @Override
@@ -51,11 +46,11 @@ public class TriggerBlock extends Block {
                     if (triggeredColor != null)
                         setColor(triggeredColor);
                     if (name != null)
-                        level.emitLevelEvent(new LevelEvent(TriggerBlock.this, name, "trigger"));
+                        level.emitLevelEvent(new LevelEvent(Trigger.this, name, "trigger"));
                     if (oneShot)
                         triggered = true;
                     if (destroy)
-                        level.removeBlock(TriggerBlock.this);
+                        level.removeBlock(Trigger.this);
                 }
             }
         });

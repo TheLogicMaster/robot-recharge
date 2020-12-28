@@ -8,7 +8,7 @@ import com.thelogicmaster.robot_recharge.code.Language;
 
 public class CodeEditor extends Table {
 
-    private CodeArea codeArea;
+    private final CodeArea codeArea;
 
     public CodeEditor(Skin skin, Language language, ChangeListener onCatalogButton) {
         super(skin);

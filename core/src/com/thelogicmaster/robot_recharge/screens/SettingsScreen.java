@@ -1,7 +1,5 @@
 package com.thelogicmaster.robot_recharge.screens;
 
-import com.badlogic.gdx.Application;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
@@ -21,9 +19,9 @@ public class SettingsScreen extends MenuScreen {
         settingsTable.pad(30, 10, 30, 10);
         settingsTable.add(new Label("Settings", skin, "large")).padBottom(30).growX().row();
 
-        if (Gdx.app.getType() == Application.ApplicationType.Desktop) {
+        if (RobotRecharge.platformUtils.getWindowModes().size > 0) {
             final SelectBox<WindowMode> windowModeSelect = new SelectBox<>(skin);
-            windowModeSelect.setItems(WindowMode.values());
+            windowModeSelect.setItems(RobotRecharge.platformUtils.getWindowModes());
             // Todo: Use preferences
             windowModeSelect.setSelected(WindowMode.Windowed);
             windowModeSelect.addListener(new ChangeListener() {

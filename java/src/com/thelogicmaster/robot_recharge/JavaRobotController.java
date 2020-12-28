@@ -2,7 +2,6 @@ package com.thelogicmaster.robot_recharge;
 
 import com.badlogic.gdx.math.Quaternion;
 import com.badlogic.gdx.math.Vector3;
-import com.thelogicmaster.robot_recharge.*;
 import com.thelogicmaster.robot_recharge.blocks.Block;
 import com.thelogicmaster.robot_recharge.blocks.Interactable;
 import com.thelogicmaster.robot_recharge.code.CodeEngine;
@@ -17,7 +16,8 @@ public class JavaRobotController implements RobotController, ExecutionListener, 
     private final RobotExecutionListener listener;
     private final Robot robot;
     private String code;
-    private boolean fastForward;
+    private volatile int calls;
+    private volatile boolean fastForward;
 
     public JavaRobotController(Robot robot, RobotExecutionListener listener, CodeEngine engine) {
         this.engine = engine;
@@ -27,6 +27,15 @@ public class JavaRobotController implements RobotController, ExecutionListener, 
 
     public void setFastForward(boolean fastForward) {
         this.fastForward = fastForward;
+    }
+
+    @Override
+    public int getCalls() {
+        return calls;
+    }
+
+    private synchronized void incrementCalls() {
+        calls++;
     }
 
     @Override
@@ -45,6 +54,7 @@ public class JavaRobotController implements RobotController, ExecutionListener, 
 
     @Override
     public void turn(int distance) throws InterruptedException {
+        incrementCalls();
         for (int i = 0; i < Math.abs(distance); i++) {
             Quaternion step = new Quaternion(Vector3.Y, Robot.rotationSpeed * .01f * -Math.signum(distance));
             double time = 90 / Robot.rotationSpeed;
@@ -62,6 +72,7 @@ public class JavaRobotController implements RobotController, ExecutionListener, 
 
     @Override
     public void move(int distance) throws InterruptedException {
+        incrementCalls();
         robot.loopAnimation("Armature|MoveForward");
         for (int i = 0; i < Math.abs(distance); i++) {
             Vector3 step = robot.getDirection().getVector().cpy().scl(Math.signum(distance) * Robot.speed * .01f);
@@ -93,6 +104,7 @@ public class JavaRobotController implements RobotController, ExecutionListener, 
 
     @Override
     public void sleep(double duration) throws InterruptedException {
+        incrementCalls();
         double time = duration * 1000;
         while (time > 0) {
             ensureRunning();
@@ -103,11 +115,13 @@ public class JavaRobotController implements RobotController, ExecutionListener, 
 
     @Override
     public void speak(String message) {
+        incrementCalls();
         robot.textToSpeech(message);
     }
 
     @Override
     public void interact() {
+        incrementCalls();
         Block block = robot.getLevel().getBlock(robot.getBlockPos().cpy().add(robot.getDirection().getVector()));
         if (block instanceof Interactable)
             ((Interactable) block).interact(robot);
@@ -119,8 +133,10 @@ public class JavaRobotController implements RobotController, ExecutionListener, 
             synchronized (lock) {
                 lock.notify();
             }
-        } else
+        } else {
+            calls = 0;
             thread = engine.run(this, code, this);
+        }
     }
 
     public void pause() {
@@ -139,22 +155,26 @@ public class JavaRobotController implements RobotController, ExecutionListener, 
         }
     }
 
+    private void reset() {
+        running = false;
+        thread = null;
+    }
+
     @Override
     public void onExecutionInterrupted() {
+        reset();
         listener.onExecutionInterrupted();
     }
 
     @Override
     public void onExecutionFinish() {
-        running = false;
-        thread = null;
+        reset();
         listener.onExecutionFinish();
     }
 
     @Override
     public void onExecutionError(Exception e) {
-        running = false;
-        thread = null;
+        reset();
         listener.onExecutionError(e);
     }
 }

@@ -9,6 +9,7 @@ public interface Interactable {
 
     /**
      * Interact with from robot
+     *
      * @param robot Robot that's interacting
      */
     void interact(Robot robot);

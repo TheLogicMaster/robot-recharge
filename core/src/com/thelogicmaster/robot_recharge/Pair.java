@@ -1,6 +1,6 @@
 package com.thelogicmaster.robot_recharge;
 
-public class Pair <T, V> {
+public class Pair<T, V> {
 
     private T first;
     private V second;

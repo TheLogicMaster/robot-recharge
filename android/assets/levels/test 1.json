@@ -3,15 +3,16 @@
   ySize: 30
   zSize: 30
   levelHeight: 30
-  levelModelName: level.g3db
+  levelModel: level.g3db
+  background: background0.png
   structures: [
     {
       class: BlockStructure
       position: {}
       templates: {
         block: {
-          class: TriggerBlock
-          asset: blocks/test.png
+          class: Trigger
+          asset: test.png
           name: trigger
           color: {
             r: 1
@@ -23,12 +24,16 @@
           }
         }
         teleporter: {
-          class: TeleporterBlock
+          class: Teleporter
           target: {
             z: 3
           }
           direction: NORTH
-          asset: blocks/test.png
+          asset: test.png
+        }
+        charger: {
+          class: Charger
+          asset: test.png
         }
       }
       blocks: [
@@ -45,6 +50,13 @@
             x: 3
           }
         }
+        {
+          block: charger
+          position: {
+            x: 6
+            z: 3
+          }
+        }
       ]
     }
   ]
@@ -55,6 +67,13 @@
         "trigger:trigger"
       ]
       description: Trigger the trigger block
+    }
+    {
+      class: EventsObjective
+      events: [
+        "charger:charge"
+      ]
+      description: Reach the charger
     }
   ]
 }

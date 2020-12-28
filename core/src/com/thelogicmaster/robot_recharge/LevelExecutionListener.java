@@ -7,7 +7,7 @@ public interface LevelExecutionListener {
 
     void onLevelFail(Array<Objective> failed);
 
-    void onLevelComplete(float completionTime);
+    void onLevelComplete(float completionTime, int length, int calls);
 
     void onLevelError(Exception e);
 

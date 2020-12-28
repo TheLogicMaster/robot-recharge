@@ -3,7 +3,8 @@
   ySize: 30
   zSize: 30
   levelHeight: 30
-  levelModelName: level.g3db
+  levelModel: level.g3db
+  background: background1.png
   structures: [
     {
       class: BlockStructure
@@ -11,10 +12,10 @@
       templates: {
         block: {
           position: {}
-          asset: blocks/test.png
+          asset: test.png
         }
         target: {
-          class: TriggerBlock
+          class: Trigger
           position: {}
         }
       }

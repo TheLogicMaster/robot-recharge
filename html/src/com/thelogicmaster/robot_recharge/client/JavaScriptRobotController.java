@@ -18,6 +18,7 @@ public class JavaScriptRobotController implements RobotController {
     private static boolean fastForward, paused, stopped;
     private static final Vector3 tempVec3 = new Vector3();
     private static final Quaternion tempQuaternion = new Quaternion();
+    private static int calls;
 
     private String code;
 
@@ -41,6 +42,7 @@ public class JavaScriptRobotController implements RobotController {
                 "}\n" +
 
                 "async function move(distance) {\n" +
+                "   $wnd.Robot.incrementCalls();\n" +
                 "   $wnd.Robot.loopAnimation('Armature|MoveForward');\n" +
                 "   for (let i = 0; i < Math.abs(distance); i++) {\n" +
                 "       if ($wnd.Robot.checkCrash(distance) || $wnd.Robot.checkFloor(distance)) {\n" +
@@ -60,6 +62,7 @@ public class JavaScriptRobotController implements RobotController {
                 "}\n" +
 
                 "async function turn(distance) {\n" +
+                "   $wnd.Robot.incrementCalls();\n" +
                 "   for (let i = 0; i < Math.abs(distance); i++) {\n" +
                 "       let time = 90 / " + Robot.rotationSpeed + ";\n" +
                 "       while (time > 0) {\n" +
@@ -73,6 +76,7 @@ public class JavaScriptRobotController implements RobotController {
                 "}\n" +
 
                 "async function sleep(duration) {\n" +
+                "   $wnd.Robot.incrementCalls();\n" +
                 "   await delayCheck(duration * 1000);\n" +
                 "}\n"
         ).inject();
@@ -105,6 +109,7 @@ public class JavaScriptRobotController implements RobotController {
         $wnd.Robot.onInterrupt = $entry(that.@com.thelogicmaster.robot_recharge.client.JavaScriptRobotController::onInterrupt());
         $wnd.Robot.checkFloor = $entry(that.@com.thelogicmaster.robot_recharge.client.JavaScriptRobotController::checkFloor(I));
         $wnd.Robot.checkCrash = $entry(that.@com.thelogicmaster.robot_recharge.client.JavaScriptRobotController::checkCrash(I));
+        $wnd.Robot.incrementCalls = $entry(that.@com.thelogicmaster.robot_recharge.client.JavaScriptRobotController::incrementCalls());
     }-*/;
 
     public void start() {
@@ -113,6 +118,7 @@ public class JavaScriptRobotController implements RobotController {
             return;
         }
         stopped = false;
+        calls = 0;
         try {
             ScriptInjector.fromString("" +
                     "(async function(){" +
@@ -165,6 +171,10 @@ public class JavaScriptRobotController implements RobotController {
         robot.stopAnimation();
     }
 
+    public void incrementCalls() {
+        calls++;
+    }
+
     public boolean checkCrash(int distance) {
         Position target = robot.getBlockPos().cpy().add(robot.getDirection().getVector().cpy().scl(Math.signum(distance)));
         boolean crash = robot.getLevel().getBlock(target) != null && robot.getLevel().getBlock(target).isSolid();
@@ -179,10 +189,12 @@ public class JavaScriptRobotController implements RobotController {
     }
 
     public void speak(String message) {
+        calls++;
         robot.textToSpeech(message);
     }
 
     public void interact() {
+        calls++;
         Block block = robot.getLevel().getBlock(robot.getBlockPos().cpy().add(robot.getDirection().getVector()));
         if (block instanceof Interactable)
             ((Interactable) block).interact(robot);
@@ -231,6 +243,11 @@ public class JavaScriptRobotController implements RobotController {
 
     public boolean isRunning() {
         return !stopped && !paused;
+    }
+
+    @Override
+    public int getCalls() {
+        return calls;
     }
 
     public void setCode(String code) {

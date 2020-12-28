@@ -13,16 +13,20 @@ import com.thelogicmaster.robot_recharge.screens.GameScreen;
 
 public class LevelCompleteDialog extends Window {
 
-    private final Label completionTime;
+    private final Label completionTime, completionLength, completionCalls;
+    private final boolean useBlocks;
 
     public LevelCompleteDialog(Skin skin, final LevelSave level, final LevelCompleteListener listener) {
         super("Level Complete", skin);
+        useBlocks = level.usingBlocks();
         padTop(100);
         setMovable(false);
         setModal(true);
         setVisible(false);
 
-        add(completionTime = new Label("Completion time: ", skin)).left().row();
+        add(completionTime = new Label("", skin)).left().row();
+        add(completionLength = new Label("", skin)).left().row();
+        add(completionCalls = new Label("", skin)).left().row();
 
         Table buttonTable = new Table(skin);
         TextButton closeButton = new TextButton("Close", skin);
@@ -65,9 +69,11 @@ public class LevelCompleteDialog extends Window {
         add(buttonTable).bottom().expand().fillX();
     }
 
-    public void show(float completionTime) {
+    public void show(float completionTime, int length, int calls) {
         setVisible(true);
-        this.completionTime.setText("Completion Time: " + ((int)completionTime) + " seconds");
+        this.completionTime.setText("Completion Time: " + ((int) completionTime) + " seconds");
+        this.completionLength.setText("Robot " + (useBlocks ? "Blocks: " : "References: ") + length);
+        this.completionCalls.setText("Robot Function Calls: " + calls);
     }
 
     public interface LevelCompleteListener {

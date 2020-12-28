@@ -18,7 +18,7 @@ public class TutorialDialog extends Dialog {
     public TutorialDialog(Skin skin, Array<TutorialPage> tutorial) {
         super("Tutorial", skin);
         stack = new IterativeStack();
-        for (TutorialPage page: new Array.ArrayIterator<>(tutorial)) {
+        for (TutorialPage page : new Array.ArrayIterator<>(tutorial)) {
             Table table = new Table();
             table.add(new Image(new TextureRegionDrawable(new TextureRegion(new Texture("tutorial/" + page.getImage()))))).row();
             table.add(new Label(page.getText(), skin)).fillX();

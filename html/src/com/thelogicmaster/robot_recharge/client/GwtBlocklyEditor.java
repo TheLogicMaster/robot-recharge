@@ -70,7 +70,7 @@ public class GwtBlocklyEditor implements BlocklyEditor {
 
     @Override
     public void setWidth(int width) {
-        this.width = (int)(width / GwtGraphics.getNativeScreenDensity());
+        this.width = (int) (width / GwtGraphics.getNativeScreenDensity());
         updateStyle();
     }
 

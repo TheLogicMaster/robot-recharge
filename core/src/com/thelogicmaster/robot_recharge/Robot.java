@@ -30,7 +30,7 @@ public class Robot implements Disposable, Renderable3D {
     private final Level level;
     private final TableDecal dialog;
     private final Label message;
-    private final RobotController robot;
+    private final RobotController controller;
 
     public static final float speed = 2;
     public static final float rotationSpeed = 180;
@@ -50,7 +50,7 @@ public class Robot implements Disposable, Renderable3D {
         table.getColor().a = 0;
         message = new Label("", RobotRecharge.assets.skin);
         table.add(message).grow();
-        robot = RobotRecharge.platformUtils.createRobotController(this, level, engine);
+        controller = RobotRecharge.platformUtils.createRobotController(this, level, engine);
         this.level = level;
     }
 
@@ -73,12 +73,12 @@ public class Robot implements Disposable, Renderable3D {
     }
 
     public void setCode(String code) {
-        robot.setCode(code);
+        controller.setCode(code);
     }
 
     public void setFastForward(boolean fast) {
         this.fastForward = fast;
-        robot.setFastForward(fast);
+        controller.setFastForward(fast);
     }
 
     public boolean isFastForward() {
@@ -86,7 +86,7 @@ public class Robot implements Disposable, Renderable3D {
     }
 
     public boolean isRunning() {
-        return robot.isRunning();
+        return controller.isRunning();
     }
 
     public Position getBlockPos() {
@@ -119,22 +119,22 @@ public class Robot implements Disposable, Renderable3D {
         this.position = blockPos.toVector(new Vector3());
         this.rotation = direction.getQuaternion().cpy();
         this.direction = direction;
-        robot.stop();
+        controller.stop();
         animator.setAnimation(null);
         dialog.getTable().clearActions();
         dialog.getTable().getColor().a = 0;
     }
 
     public void stop() {
-        robot.stop();
+        controller.stop();
     }
 
     public void pause() {
-        robot.pause();
+        controller.pause();
     }
 
     public void start() {
-        robot.start();
+        controller.start();
     }
 
     public void textToSpeech(final String message) {
@@ -174,9 +174,13 @@ public class Robot implements Disposable, Renderable3D {
         animator.setAnimation(null);
     }
 
+    public int getCalls() {
+        return controller.getCalls();
+    }
+
     @Override
     public void dispose() {
         dialog.dispose();
-        robot.stop();
+        controller.stop();
     }
 }

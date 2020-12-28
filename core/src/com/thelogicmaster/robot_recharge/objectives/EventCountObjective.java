@@ -25,7 +25,7 @@ public class EventCountObjective implements Objective {
     }
 
     @Override
-    public boolean check(int length, float time, Array<LevelEvent> events) {
+    public boolean check(int length, int calls, float time, Array<LevelEvent> events) {
         int number = 0;
         for (LevelEvent event : new Array.ArrayIterator<>(events))
             if (event.toString().equals(this.event))

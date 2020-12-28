@@ -7,7 +7,6 @@ import com.badlogic.gdx.graphics.GL20;
 import com.thelogicmaster.robot_recharge.code.BlocklyEditor;
 import com.thelogicmaster.robot_recharge.code.CodeEngine;
 import com.thelogicmaster.robot_recharge.code.Language;
-import com.thelogicmaster.robot_recharge.screens.GameScreen;
 import com.thelogicmaster.robot_recharge.screens.TitleScreen;
 
 import java.util.HashMap;
@@ -38,9 +37,6 @@ public class RobotRecharge extends Game {
     public void create() {
         assets = new RobotAssets();
         preferences = Gdx.app.getPreferences("RobotRecharge");
-
-        /*setScreen(new GameScreen(new LevelSave("test", false,
-                "while true do\n  Robot:sleep(1);\n  Robot:move(2);\n  Robot:turn(1);\n  end", Language.Lua)));*/
         titleScreen = new TitleScreen();
         setScreen(titleScreen);
     }

@@ -20,9 +20,9 @@ public class EventsObjective implements Objective {
     }
 
     @Override
-    public boolean check(int length, float time, Array<LevelEvent> events) {
+    public boolean check(int length, int calls, float time, Array<LevelEvent> events) {
         // Todo: switch to Array.containsAll and create equals method for LevelEvent that compares a string, if possible
-        for (String name: new Array.ArrayIterator<>(this.events)) {
+        for (String name : new Array.ArrayIterator<>(this.events)) {
             boolean found = false;
             for (LevelEvent event : new Array.ArrayIterator<>(events))
                 if (event.toString().equals(name)) {

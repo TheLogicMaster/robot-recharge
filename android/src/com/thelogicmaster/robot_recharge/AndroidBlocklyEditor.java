@@ -8,6 +8,7 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.FrameLayout;
+import com.badlogic.gdx.Gdx;
 import com.thelogicmaster.robot_recharge.code.BlocklyEditor;
 import com.thelogicmaster.robot_recharge.code.Language;
 import org.apache.commons.text.StringEscapeUtils;
@@ -43,21 +44,26 @@ public class AndroidBlocklyEditor extends WebView implements BlocklyEditor {
         });
     }
 
+    private void updateLayout() {
+        ((Activity) getContext()).runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) getLayoutParams();
+                params.leftMargin = Gdx.graphics.getWidth() - width;
+                setLayoutParams(params);
+            }
+        });
+    }
+
     @Override
     public void setWidth(final int width) {
         this.width = width;
+        updateLayout();
     }
 
     @Override
     public void resize(final int screenWidth, final int screenHeight) {
-        ((Activity) getContext()).runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(screenWidth, screenHeight);
-                layoutParams.setMargins(screenWidth - width, 0, 0, 0);
-                setLayoutParams(layoutParams);
-            }
-        });
+        updateLayout();
     }
 
     @Override
@@ -66,7 +72,6 @@ public class AndroidBlocklyEditor extends WebView implements BlocklyEditor {
             @Override
             public void run() {
                 setVisibility(INVISIBLE);
-
             }
         });
     }
