@@ -33,6 +33,7 @@ public class LevelCompleteDialog extends Window {
         closeButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
+                RobotUtils.playNavigationSound();
                 setVisible(false);
             }
         });
@@ -42,13 +43,14 @@ public class LevelCompleteDialog extends Window {
         exitButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
+                RobotUtils.playNavigationSound();
                 listener.onDispose();
                 RobotRecharge.instance.returnToTitle();
             }
         });
         buttonTable.add(exitButton).expandX();
 
-        Array<LevelInfo> levels = RobotUtils.json.fromJson(Array.class, LevelInfo.class, Gdx.files.internal("levels.json"));
+        Array<LevelInfo> levels = RobotRecharge.assets.levelInfo;
         int index = -1;
         for (int i = 0; i < levels.size; i++)
             if (levels.get(i).getName().equals(level.getLevel())) {
@@ -60,6 +62,7 @@ public class LevelCompleteDialog extends Window {
         nextButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
+                RobotUtils.playNavigationSound();
                 listener.onDispose();
                 RobotRecharge.instance.setScreen(new GameScreen(new LevelSave(next, level.usingBlocks(), "", level.getLanguage())));
             }

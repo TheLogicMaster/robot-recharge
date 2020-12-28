@@ -6,6 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.thelogicmaster.robot_recharge.RobotRecharge;
+import com.thelogicmaster.robot_recharge.RobotUtils;
 import com.thelogicmaster.robot_recharge.WindowMode;
 
 public class SettingsScreen extends MenuScreen {
@@ -27,6 +28,7 @@ public class SettingsScreen extends MenuScreen {
             windowModeSelect.addListener(new ChangeListener() {
                 @Override
                 public void changed(ChangeEvent event, Actor actor) {
+                    RobotUtils.playNavigationSound();
                     RobotRecharge.platformUtils.setWindowMode(windowModeSelect.getSelected());
                 }
             });

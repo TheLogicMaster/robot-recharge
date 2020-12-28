@@ -5,6 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.thelogicmaster.robot_recharge.RobotUtils;
 
 public class GameControlPanel extends Table {
 
@@ -20,6 +21,7 @@ public class GameControlPanel extends Table {
         programButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
+                RobotUtils.playNavigationSound();
                 listener.onProgram();
             }
         });
@@ -29,6 +31,7 @@ public class GameControlPanel extends Table {
         playButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
+                RobotUtils.playNavigationSound();
                 playPause.next();
                 programButton.setDisabled(true);
                 listener.onPlay();
@@ -38,6 +41,7 @@ public class GameControlPanel extends Table {
         pauseButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
+                RobotUtils.playNavigationSound();
                 listener.onPause();
             }
         });
@@ -48,6 +52,7 @@ public class GameControlPanel extends Table {
         resetButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
+                RobotUtils.playNavigationSound();
                 playPause.show(0);
                 programButton.setDisabled(false);
                 listener.onReset();
@@ -62,6 +67,7 @@ public class GameControlPanel extends Table {
         fastForwardButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
+                RobotUtils.playNavigationSound();
                 listener.onFastForward();
             }
         });
@@ -71,6 +77,7 @@ public class GameControlPanel extends Table {
         settingsButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
+                RobotUtils.playNavigationSound();
                 listener.onSettings();
             }
         });

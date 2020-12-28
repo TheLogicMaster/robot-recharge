@@ -7,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
+import com.thelogicmaster.robot_recharge.RobotUtils;
 import com.thelogicmaster.robot_recharge.TutorialPage;
 
 public class TutorialDialog extends Dialog {
@@ -35,18 +36,21 @@ public class TutorialDialog extends Dialog {
         backButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
+                RobotUtils.playNavigationSound();
                 stack.previous();
             }
         });
         nextButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
+                RobotUtils.playNavigationSound();
                 stack.next();
             }
         });
         skipButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
+                RobotUtils.playNavigationSound();
                 hide();
             }
         });

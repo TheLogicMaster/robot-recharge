@@ -298,7 +298,11 @@
 		"hScroll": "windowTen",
 		"hScrollKnob": "buttonTen",
 		"vScroll": "windowTen",
-		"vScrollKnob": "buttonPressedTen"
+		"vScrollKnob": "buttonTen"
+	},
+	"levelPane": {
+		"vScroll": "windowTen",
+		"vScrollKnob": "buttonTen"
 	}
 },
 "com.badlogic.gdx.scenes.scene2d.ui.SelectBox$SelectBoxStyle": {
@@ -321,6 +325,15 @@
 	"large": {
 		"parent": "default",
 		"font": "titleFont"
+	},
+	"levelLabel": {
+		"font": "titleFont",
+		"fontColor": "Yellow",
+		"checkedFontColor": "Black",
+		"up": "buttonTen",
+		"down": "buttonPressedTen",
+		"checked": "buttonPressedTen",
+		"disabled": "buttonDisabledTen"
 	}
 },
 "com.badlogic.gdx.scenes.scene2d.ui.TextField$TextFieldStyle": {

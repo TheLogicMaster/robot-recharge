@@ -1,0 +1,79 @@
+{
+  xSize: 30
+  ySize: 30
+  zSize: 30
+  levelHeight: 30
+  levelModel: level.g3db
+  background: background0.png
+  structures: [
+    {
+      class: BlockStructure
+      position: {}
+      templates: {
+        block: {
+          class: Trigger
+          asset: test.png
+          name: trigger
+          color: {
+            r: 1
+            a: 0.7
+          }
+          triggeredColor: {
+            g: 1
+            a: 0.7
+          }
+        }
+        teleporter: {
+          class: Teleporter
+          target: {
+            z: 3
+          }
+          direction: NORTH
+          asset: test.png
+        }
+        charger: {
+          class: Charger
+          asset: test.png
+        }
+      }
+      blocks: [
+        {
+          block: block
+          position: {
+            z: 3
+            x: 3
+          }
+        }
+        {
+          block: teleporter
+          position: {
+            x: 3
+          }
+        }
+        {
+          block: charger
+          position: {
+            x: 6
+            z: 3
+          }
+        }
+      ]
+    }
+  ]
+  objectives: [
+    {
+      class: EventsObjective
+      events: [
+        "trigger:trigger"
+      ]
+      description: Trigger the trigger block
+    }
+    {
+      class: EventsObjective
+      events: [
+        "charger:charge"
+      ]
+      description: Reach the charger
+    }
+  ]
+}

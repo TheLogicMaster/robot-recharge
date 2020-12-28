@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.thelogicmaster.robot_recharge.RobotRecharge;
+import com.thelogicmaster.robot_recharge.RobotUtils;
 
 public class TitleScreen extends RobotScreen {
 
@@ -38,24 +39,28 @@ public class TitleScreen extends RobotScreen {
         settingsButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
+                RobotUtils.playNavigationSound();
                 RobotRecharge.instance.setScreen(settingsScreen);
             }
         });
         playButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
+                RobotUtils.playNavigationSound();
                 RobotRecharge.instance.setScreen(levelScreen);
             }
         });
         examplesButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
+                RobotUtils.playNavigationSound();
                 RobotRecharge.instance.setScreen(examplesScreen);
             }
         });
         exitButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
+                RobotUtils.playNavigationSound();
                 Gdx.app.exit();
             }
         });

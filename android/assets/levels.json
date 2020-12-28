@@ -1,10 +1,42 @@
 [
   {
-    name: test 1
+    name: Level 1
     description: Level 1 description
   }
   {
-    name: test 2
+    name: Level 2
     description: Level 2 description
+  }
+  {
+    name: Level 3
+    description: Level 3 description
+  }
+  {
+    name: Level 4
+    description: Level 4 description
+  }
+  {
+    name: Level 5
+    description: Level 5 description
+  }
+  {
+    name: Level 6
+    description: Level 6 description
+  }
+  {
+    name: Level 7
+    description: Level 7 description
+  }
+  {
+    name: Level 8
+    description: Level 8 description
+  }
+  {
+    name: Level 9
+    description: Level 9 description
+  }
+  {
+    name: Level 10
+    description: Level 10 description
   }
 ]

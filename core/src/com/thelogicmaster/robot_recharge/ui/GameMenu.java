@@ -7,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.thelogicmaster.robot_recharge.RobotRecharge;
+import com.thelogicmaster.robot_recharge.RobotUtils;
 
 public class GameMenu extends Window {
     // Todo: switch to modal Window
@@ -21,6 +22,7 @@ public class GameMenu extends Window {
         gridCheckbox.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
+                RobotUtils.playNavigationSound();
                 listener.onGridCheckbox(gridCheckbox.isChecked());
             }
         });
@@ -32,6 +34,7 @@ public class GameMenu extends Window {
         objectivesButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
+                RobotUtils.playNavigationSound();
                 setVisible(false);
                 listener.onObjectives();
             }
@@ -43,6 +46,7 @@ public class GameMenu extends Window {
         exitButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
+                RobotUtils.playNavigationSound();
                 RobotRecharge.instance.returnToTitle();
                 listener.onExit();
             }
@@ -54,6 +58,7 @@ public class GameMenu extends Window {
         closeButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
+                RobotUtils.playNavigationSound();
                 setVisible(false);
                 listener.onClose();
             }

@@ -75,7 +75,7 @@ public class GameScreen extends RobotScreen implements LevelExecutionListener {
         controller.setDisabled(true);
 
         // Load level
-        level = new Level(RobotUtils.json.fromJson(LevelData.class, Gdx.files.internal("levels/" + levelSave.getLevel() + ".json")),
+        level = new Level(RobotAssets.json.fromJson(LevelData.class, Gdx.files.internal("levels/" + levelSave.getLevel() + ".json")),
                 this, viewport, RobotRecharge.codeEngines.get(levelSave.getLanguage()), levelSave.usingBlocks());
         addDisposable(level);
         level.loadAssets(assetManager);
@@ -316,8 +316,7 @@ public class GameScreen extends RobotScreen implements LevelExecutionListener {
     }
 
     private void saveLevel() {
-        RobotRecharge.preferences.putString("save/" + levelSave.getLevel(), RobotUtils.json.toJson(levelSave));
-        RobotRecharge.preferences.flush();
+        RobotRecharge.prefs.saveLevel(levelSave);
     }
 
     private void resetLevel() {
@@ -340,6 +339,7 @@ public class GameScreen extends RobotScreen implements LevelExecutionListener {
     public void onLevelComplete(float completionTime, int length, int calls) {
         controlPanel.disablePlay();
         levelCompleteDialog.show(completionTime, length, calls);
+        RobotRecharge.prefs.unlockLevel(RobotUtils.getLevelIndex(levelSave.getLevel()) + 1);
     }
 
     @Override

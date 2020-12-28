@@ -1,18 +1,30 @@
 package com.thelogicmaster.robot_recharge;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
+import com.badlogic.gdx.utils.Json;
 import com.kotcrab.vis.ui.VisUI;
 
 public class RobotAssets implements Disposable {
 
+    public static final Json json = RobotUtils.createJson();
+
     public final BitmapFont fontSmall, fontNormal, fontLarge, fontHuge;
     public final Skin skin;
+    public final Array<LevelInfo> levelInfo;
+    public final Music titleMusic;
+    public final Sound navigateSound;
+
+    private final AssetManager assets = RobotUtils.createAssetManager();
 
     public RobotAssets() {
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("monog.ttf"));
@@ -38,11 +50,26 @@ public class RobotAssets implements Disposable {
         skin.add("titleFont", fontLarge);
         skin.addRegions(new TextureAtlas("skin.atlas"));
         skin.load(Gdx.files.internal("skin.json"));
+
+        levelInfo = json.fromJson(Array.class, LevelInfo.class, Gdx.files.internal("levels.json"));
+
+        assets.load("menuNavigate.wav", Sound.class);
+        assets.load("titleMusic.wav", Music.class);
+        // Todo: create loading screen
+        assets.finishLoading();
+        navigateSound = assets.get("menuNavigate.wav");
+        titleMusic = assets.get("titleMusic.wav");
+        titleMusic.setLooping(true);
+        titleMusic.play();
     }
 
     @Override
     public void dispose() {
+        fontHuge.dispose();
         fontLarge.dispose();
         fontNormal.dispose();
+        fontSmall.dispose();
+        skin.dispose();
+        assets.dispose();
     }
 }

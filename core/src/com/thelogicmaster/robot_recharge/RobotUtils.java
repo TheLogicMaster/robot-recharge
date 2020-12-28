@@ -1,5 +1,6 @@
 package com.thelogicmaster.robot_recharge;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Camera;
@@ -30,8 +31,6 @@ import com.thelogicmaster.robot_recharge.structures.BlocksStructure;
 import com.thelogicmaster.robot_recharge.structures.Elevator;
 
 public class RobotUtils {
-
-    public static final Json json = createJson();
 
     public static Viewport createViewport(Camera camera) {
         return new FitViewport(Constants.worldWidth, Constants.worldHeight, camera);
@@ -116,6 +115,27 @@ public class RobotUtils {
         json.addClassTag("MaxLengthObjective", MaxLengthObjective.class);
         json.addClassTag("MaxTimeObjective", MaxTimeObjective.class);
         return json;
+    }
+
+    public static int getLevelIndex(String level) {
+        for (int i = 0; i < RobotRecharge.assets.levelInfo.size; i++) {
+            Gdx.app.log("a", RobotRecharge.assets.levelInfo.get(i).getName() + " " + level);
+            if (RobotRecharge.assets.levelInfo.get(i).getName().equals(level))
+                return i;
+        }
+        return -1;
+    }
+
+    public static void playSoundEffect(Sound sound) {
+        playSoundEffect(sound, 1f);
+    }
+
+    public static void playSoundEffect(Sound sound, float volume) {
+        sound.play(volume * RobotRecharge.prefs.getEffectsVolume());
+    }
+
+    public static void playNavigationSound() {
+        playSoundEffect(RobotRecharge.assets.navigateSound);
     }
 
     /**

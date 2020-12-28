@@ -21,7 +21,7 @@ public class RobotRecharge extends Game {
     public static Map<Language, CodeEngine> codeEngines = new HashMap<>();
     public static PlatformUtils platformUtils;
     public static TTSEngine ttsEngine;
-    public static Preferences preferences;
+    public static PreferencesHelper prefs;
 
     private TitleScreen titleScreen;
 
@@ -36,13 +36,14 @@ public class RobotRecharge extends Game {
     @Override
     public void create() {
         assets = new RobotAssets();
-        preferences = Gdx.app.getPreferences("RobotRecharge");
+        prefs = new PreferencesHelper();
         titleScreen = new TitleScreen();
         setScreen(titleScreen);
     }
 
     public void returnToTitle() {
         setScreen(titleScreen);
+        assets.titleMusic.play();
     }
 
     @Override

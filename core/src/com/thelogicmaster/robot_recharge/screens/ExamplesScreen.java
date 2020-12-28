@@ -6,8 +6,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Array;
 import com.thelogicmaster.robot_recharge.LevelSave;
+import com.thelogicmaster.robot_recharge.RobotAssets;
 import com.thelogicmaster.robot_recharge.RobotRecharge;
-import com.thelogicmaster.robot_recharge.RobotUtils;
 import com.thelogicmaster.robot_recharge.code.Example;
 import com.thelogicmaster.robot_recharge.code.Language;
 import com.thelogicmaster.robot_recharge.ui.IterativeStack;
@@ -21,7 +21,7 @@ public class ExamplesScreen extends MenuScreen {
         Table examplesTable = new Table(skin);
         examplesTable.setBackground("windowTen");
         examplesTable.setBounds(100, 300, 300, 400);
-        Array<Example> examples = RobotUtils.json.fromJson(Array.class, Example.class, Gdx.files.internal("examples.json"));
+        Array<Example> examples = RobotAssets.json.fromJson(Array.class, Example.class, Gdx.files.internal("examples.json"));
         final List<Example> list = new List<>(skin);
         list.setItems(examples);
         examplesTable.add(list).grow();

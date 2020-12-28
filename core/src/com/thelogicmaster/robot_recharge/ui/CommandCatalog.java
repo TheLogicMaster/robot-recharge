@@ -6,6 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
+import com.thelogicmaster.robot_recharge.RobotAssets;
 import com.thelogicmaster.robot_recharge.RobotUtils;
 import com.thelogicmaster.robot_recharge.code.Command;
 import com.thelogicmaster.robot_recharge.code.Language;
@@ -20,7 +21,7 @@ public class CommandCatalog extends Window {
         getTitleTable().add(catalogCloseButton).padRight(10).size(80, 80).right();
         final List<String> commandList = new List<>(skin);
         final IterativeStack commandInfoStack = new IterativeStack();
-        final Array<Command> commands = RobotUtils.json.fromJson(Array.class, Command.class,
+        final Array<Command> commands = RobotAssets.json.fromJson(Array.class, Command.class,
                 Gdx.files.internal("language/commands-" + language.name().toLowerCase() + ".json"));
         Array<String> commandLabels = new Array<>();
         for (Command command : new Array.ArrayIterable<>(commands)) {
@@ -58,12 +59,14 @@ public class CommandCatalog extends Window {
         commandList.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
+                RobotUtils.playNavigationSound();
                 commandInfoStack.show(commandList.getSelectedIndex());
             }
         });
         catalogCloseButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
+                RobotUtils.playNavigationSound();
                 setVisible(false);
             }
         });
