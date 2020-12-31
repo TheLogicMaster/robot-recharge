@@ -2,13 +2,15 @@ package com.thelogicmaster.robot_recharge;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
+import com.badlogic.gdx.utils.Array;
 
 public class PreferencesHelper {
 
     public final Preferences preferences;
 
     public PreferencesHelper() {
-        preferences = Gdx.app.getPreferences("RobotRecharge");;
+        preferences = Gdx.app.getPreferences("RobotRecharge");
+        ;
     }
 
     public int getUnlockedLevel() {
@@ -25,16 +27,31 @@ public class PreferencesHelper {
         preferences.flush();
     }
 
-    public LevelSave getSave(String level) {
+    public LevelSave getLevelSave(String level) {
         return RobotAssets.json.fromJson(LevelSave.class, preferences.getString("save/" + level));
     }
 
-    public boolean hasSave(String level) {
+    public boolean hasLevelSave(String level) {
         return preferences.contains("save/" + level);
+    }
+
+    public void loadGameSave(GameSave save) {
+        for (LevelSave levelSave : save.getLevelSaves())
+            saveLevel(levelSave);
+        unlockLevel(save.getUnlockedLevel());
+    }
+
+    public GameSave getGameSave() {
+        Array<LevelSave> levelSaves = new Array<>();
+        for (LevelInfo info : RobotRecharge.assets.levelInfo)
+            if (hasLevelSave(info.getName()))
+                levelSaves.add(getLevelSave(info.getName()));
+        return new GameSave(levelSaves, getUnlockedLevel());
     }
 
     /**
      * A helper method to get a preference or write a default value if it doesn't yet exist
+     *
      * @param key The preference key
      * @param val The default value
      * @return The preference or default value

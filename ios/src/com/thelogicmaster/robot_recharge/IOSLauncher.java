@@ -1,11 +1,11 @@
 package com.thelogicmaster.robot_recharge;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.iosrobovm.IOSApplication;
 import com.badlogic.gdx.backends.iosrobovm.IOSApplicationConfiguration;
 import com.badlogic.gdx.utils.Array;
 import com.thelogicmaster.robot_recharge.code.CodeEngine;
 import com.thelogicmaster.robot_recharge.code.Language;
-import de.golfgl.gdxgamesvcs.NoGameServiceClient;
 import org.robovm.apple.foundation.NSAutoreleasePool;
 import org.robovm.apple.uikit.UIApplication;
 
@@ -33,7 +33,13 @@ public class IOSLauncher extends IOSApplication.Delegate {
             public RobotController createRobotController(Robot robot, RobotExecutionListener listener, CodeEngine engine) {
                 return new JavaRobotController(robot, listener, engine);
             }
-        }, null, new NoGameServiceClient(), true), config);
+        }, null, null, true) {
+            @Override
+            public void create() {
+                RobotRecharge.gameServices = new IOSGameServices(((IOSApplication) Gdx.app).getUIViewController());
+                super.create();
+            }
+        }, config);
     }
 
     public static void main(String[] argv) {

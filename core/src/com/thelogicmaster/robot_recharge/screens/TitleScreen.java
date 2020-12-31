@@ -1,14 +1,17 @@
 package com.thelogicmaster.robot_recharge.screens;
 
+import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.thelogicmaster.robot_recharge.RobotRecharge;
 import com.thelogicmaster.robot_recharge.RobotUtils;
+import com.thelogicmaster.robot_recharge.ui.IterativeStack;
 import com.thelogicmaster.robot_recharge.ui.PaddedTextButton;
 
 public class TitleScreen extends RobotScreen {
@@ -16,6 +19,7 @@ public class TitleScreen extends RobotScreen {
     private final LevelScreen levelScreen;
     private final SettingsScreen settingsScreen;
     private final TutorialsScreen tutorialsScreen;
+    private final IterativeStack googleSignInStack;
 
     public TitleScreen() {
         setBackground(new Texture("titleScreen.png"));
@@ -36,6 +40,30 @@ public class TitleScreen extends RobotScreen {
         TextButton exitButton = new PaddedTextButton("Quit Game", skin, "large");
         table.add(exitButton);
         stage.addActor(table);
+
+        if (Gdx.app.getType() == Application.ApplicationType.Android) {
+            googleSignInStack = new IterativeStack();
+            Button signInButton = new Button(skin, "googleSignIn");
+            googleSignInStack.add(signInButton);
+            signInButton.addListener(new ChangeListener() {
+                @Override
+                public void changed(ChangeEvent event, Actor actor) {
+                    RobotRecharge.gameServices.logIn();
+                }
+            });
+            Button signOutButton = new Button(skin, "googleSignOut");
+            signOutButton.addListener(new ChangeListener() {
+                @Override
+                public void changed(ChangeEvent event, Actor actor) {
+                    RobotRecharge.gameServices.logOff();
+                }
+            });
+            googleSignInStack.add(signOutButton);
+            googleSignInStack.setPosition(10, 10);
+            googleSignInStack.pack();
+            stage.addActor(googleSignInStack);
+        } else
+            googleSignInStack = null;
 
         settingsButton.addListener(new ChangeListener() {
             @Override
@@ -65,6 +93,13 @@ public class TitleScreen extends RobotScreen {
                 Gdx.app.exit();
             }
         });
+    }
+
+    @Override
+    public void render(float delta) {
+        super.render(delta);
+        if (googleSignInStack != null)
+            googleSignInStack.show(RobotRecharge.gameServices.isSessionActive() ? 1 : 0);
     }
 
     @Override

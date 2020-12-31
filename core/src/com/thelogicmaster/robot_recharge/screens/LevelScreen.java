@@ -1,13 +1,11 @@
 package com.thelogicmaster.robot_recharge.screens;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
-import com.kotcrab.vis.ui.util.dialog.ConfirmDialogListener;
 import com.kotcrab.vis.ui.util.dialog.Dialogs;
 import com.kotcrab.vis.ui.util.dialog.OptionDialogAdapter;
 import com.thelogicmaster.robot_recharge.*;
@@ -80,8 +78,8 @@ public class LevelScreen extends MenuScreen {
                     for (int i = 0; i < levelButtons.size; i++)
                         levelButtons.get(i).setChecked(levelButtons.get(i).getText().toString().equals(levelInfo.getName()));
                     stack.show(levels.indexOf(levelInfo, true));
-                    updateButtons();
                     selected = levelInfo;
+                    updateButtons();
                 }
             });
         }
@@ -113,7 +111,7 @@ public class LevelScreen extends MenuScreen {
                         RobotUtils.playNavigationSound();
                     }
                 };
-                if (RobotRecharge.prefs.hasSave(selected.getName())) {
+                if (RobotRecharge.prefs.hasLevelSave(selected.getName())) {
                     Dialogs.showOptionDialog(stage, "Overwrite Existing Save?", "" +
                                     "Are you sure you want to create a new game? This will \n" +
                                     "overwrite your existing save for this level.",
@@ -126,7 +124,7 @@ public class LevelScreen extends MenuScreen {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 RobotUtils.playNavigationSound();
-                LevelSave save = RobotRecharge.prefs.getSave(selected.getName());
+                LevelSave save = RobotRecharge.prefs.getLevelSave(selected.getName());
                 if (RobotRecharge.blocksEditor == null && save.usingBlocks()) {
                     Dialogs.showErrorDialog(stage, "This save was created using Blockly, which isn't available");
                     return;
@@ -143,7 +141,7 @@ public class LevelScreen extends MenuScreen {
     }
 
     private void updateButtons() {
-        resumeButton.setDisabled(!RobotRecharge.prefs.hasSave(selected.getName()));
+        resumeButton.setDisabled(!RobotRecharge.prefs.hasLevelSave(selected.getName()));
         for (int i = 0; i < levelButtons.size; i++)
             levelButtons.get(i).setDisabled(i > RobotRecharge.prefs.getUnlockedLevel());
     }

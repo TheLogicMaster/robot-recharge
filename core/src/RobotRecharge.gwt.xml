@@ -16,6 +16,7 @@
     <extend-configuration-property name="gdx.reflect.include" value="com.thelogicmaster.robot_recharge.code.Language"/>
     <extend-configuration-property name="gdx.reflect.include" value="com.thelogicmaster.robot_recharge.objectives"/>
     <extend-configuration-property name="gdx.reflect.include" value="com.thelogicmaster.robot_recharge.LevelInfo"/>
+    <extend-configuration-property name="gdx.reflect.include" value="com.thelogicmaster.robot_recharge.GameSave"/>
     <extend-configuration-property name="gdx.reflect.include" value="com.thelogicmaster.robot_recharge.Direction"/>
     <extend-configuration-property name="gdx.reflect.include" value="com.thelogicmaster.robot_recharge.WindowMode"/>
 

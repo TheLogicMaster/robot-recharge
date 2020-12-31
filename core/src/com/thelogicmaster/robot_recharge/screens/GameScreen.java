@@ -18,12 +18,19 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.Base64Coder;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.kotcrab.vis.ui.util.dialog.Dialogs;
 import com.thelogicmaster.robot_recharge.*;
 import com.thelogicmaster.robot_recharge.code.Solution;
 import com.thelogicmaster.robot_recharge.objectives.Objective;
 import com.thelogicmaster.robot_recharge.ui.*;
+import de.golfgl.gdxgamesvcs.gamestate.IFetchGameStatesListResponseListener;
+import de.golfgl.gdxgamesvcs.gamestate.ILoadGameStateResponseListener;
+import de.golfgl.gdxgamesvcs.gamestate.ISaveGameStateResponseListener;
+
+import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 
 public class GameScreen extends RobotScreen implements LevelExecutionListener {
 
@@ -355,6 +362,28 @@ public class GameScreen extends RobotScreen implements LevelExecutionListener {
 
     private void saveLevel() {
         RobotRecharge.prefs.saveLevel(levelSave);
+        /*String save = Base64Coder.encodeString(RobotRecharge.prefs.preferences.getString("save/" + levelSave.getLevel()));
+        RobotRecharge.gameServices.saveGameState("save", save.getBytes(), RobotRecharge.prefs.getUnlockedLevel(), new ISaveGameStateResponseListener() {
+            @Override
+            public void onGameStateSaved(boolean success, String errorCode) {
+                Gdx.app.log("Save", "success: " + success);
+                RobotRecharge.gameServices.fetchGameStates(new IFetchGameStatesListResponseListener() {
+                    @Override
+                    public void onFetchGameStatesListResponse(Array<String> gameStates) {
+                        Gdx.app.log("states", gameStates.toString());
+                    }
+                });
+                RobotRecharge.gameServices.loadGameState("save", new ILoadGameStateResponseListener() {
+                    @Override
+                    public void gsGameStateLoaded(byte[] gameState) {
+                        if (gameState == null) {
+                            return;
+                        }
+                        Gdx.app.log("save", "" + new String(Base64Coder.decode(new String(gameState))));
+                    }
+                });
+            }
+        });*/
     }
 
     private void resetLevel() {

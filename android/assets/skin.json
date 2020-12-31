@@ -196,6 +196,14 @@
 		"up": "buttonTen",
 		"down": "buttonPressedTen",
 		"disabled": "buttonDisabledTen"
+	},
+	"googleSignIn": {
+		"up": "googleSignIn",
+		"pressedOffsetY": 3
+	},
+	"googleSignOut": {
+		"up": "googleSignOut",
+		"pressedOffsetY": 3
 	}
 },
 "com.badlogic.gdx.scenes.scene2d.ui.CheckBox$CheckBoxStyle": {

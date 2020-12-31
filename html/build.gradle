@@ -1,3 +1,17 @@
+plugins {
+    id 'de.fuerstenau.buildconfig' version '1.1.8'
+}
+apply plugin: 'idea'
+
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
+buildConfig {
+    version = project.version
+    clsName = 'BuildConfig'
+    packageName = 'com.thelogicmaster.robot_recharge'
+    buildConfigField 'String', 'GAME_JOLT_KEY', properties.getProperty('gameJoltKey')
+}
+
 gwt {
     gwtVersion='2.8.2' // Should match the gwt version used for building the gwt backend
     maxHeapSize="1G" // Default 256m is not enough for gwt compiler. GWT is HUNGRY

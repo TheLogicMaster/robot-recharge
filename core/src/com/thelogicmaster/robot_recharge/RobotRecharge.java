@@ -18,18 +18,17 @@ public class RobotRecharge extends Game {
 
     public static BlocklyEditor blocksEditor;
     public static RobotRecharge instance;
-    @SuppressWarnings("LibGDXStaticResource")
     public static RobotAssets assets;
     public static Map<Language, CodeEngine> codeEngines = new HashMap<>();
     public static PlatformUtils platformUtils;
     public static TTSEngine ttsEngine;
     public static PreferencesHelper prefs;
-    public static IGameServiceClient gameServices;
+    public static GameServices gameServices;
     public static boolean debug;
 
     private TitleScreen titleScreen;
 
-    public RobotRecharge(Map<Language, CodeEngine> codeEngines, BlocklyEditor blocksEditor, PlatformUtils platformUtils, TTSEngine ttsEngine, IGameServiceClient gameServices, boolean debug) {
+    public RobotRecharge(Map<Language, CodeEngine> codeEngines, BlocklyEditor blocksEditor, PlatformUtils platformUtils, TTSEngine ttsEngine, GameServices gameServices, boolean debug) {
         // Todo: switch to config object instead of countless constructor args
         RobotRecharge.blocksEditor = blocksEditor;
         RobotRecharge.codeEngines = codeEngines;
@@ -51,20 +50,22 @@ public class RobotRecharge extends Game {
         gameServices.setListener(new IGameServiceListener() {
             @Override
             public void gsOnSessionActive() {
-
+                Gdx.app.log("GameServices", "Active");
             }
 
             @Override
             public void gsOnSessionInactive() {
-
+                Gdx.app.log("GameServices", "Inactive");
             }
 
             @Override
             public void gsShowErrorToUser(GsErrorType et, String msg, Throwable t) {
-
+                Gdx.app.error("GameServices", "Error: " + et + " :" + msg, t);
             }
         });
-        gameServices.resumeSession();
+
+        if (Gdx.app.getType() == Application.ApplicationType.Android)
+            gameServices.resumeSession();
 
         setScreen(titleScreen);
     }

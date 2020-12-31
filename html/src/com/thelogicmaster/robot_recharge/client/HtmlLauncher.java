@@ -114,7 +114,7 @@ public class HtmlLauncher extends GwtApplication {
             public RobotController createRobotController(Robot robot, RobotExecutionListener listener, CodeEngine engine) {
                 return new JavaScriptRobotController(robot, listener);
             }
-        }, ttsSupported() ? new GwtTTSEngine() : null, new NoGameServiceClient(), !GWT.isProdMode()) {
+        }, ttsSupported() ? new GwtTTSEngine() : null, new GwtGameServices(), !GWT.isProdMode()) {
             @Override
             public void create() {
                 super.create();

@@ -330,7 +330,7 @@ public class Level implements Disposable, Renderable3D, AssetConsumer, RobotList
         ParticleEffectLoader.ParticleEffectLoadParameter particleParameter =
                 new ParticleEffectLoader.ParticleEffectLoadParameter(particleSystem.getBatches());
         assetManager.setLoader(ParticleEffect.class, new PreconfiguredParticleEffectLoader(particleParameter));
-        for (Structure structure : new Array.ArrayIterator<>(structures))
+        for (Structure structure : structures)
             structure.loadAssets(assetManager);
         assetManager.load("levels/" + levelModelName, Model.class);
         assetManager.load("robot.g3db", Model.class);
@@ -339,7 +339,7 @@ public class Level implements Disposable, Renderable3D, AssetConsumer, RobotList
 
     @Override
     public void assetsLoaded(AssetManager assetManager) {
-        for (Structure structure : new Array.ArrayIterator<>(structures))
+        for (Structure structure : structures)
             structure.assetsLoaded(assetManager);
         level = new ModelInstance(RobotUtils.cleanModel(assetManager.<Model>get("levels/" + levelModelName)));
         level.transform.setTranslation(xSize / 2f, -levelHeight, zSize / 2f);
@@ -354,9 +354,9 @@ public class Level implements Disposable, Renderable3D, AssetConsumer, RobotList
             delta = 0;
         runTime += delta;
         robot.render(modelBatch, decalBatch, environment, delta);
-        for (Block block : new Array.ArrayIterator<>(realBlocks))
+        for (Block block : realBlocks)
             block.render(modelBatch, decalBatch, environment, delta);
-        for (Structure structure : new Array.ArrayIterator<>(structures))
+        for (Structure structure : structures)
             structure.render(modelBatch, decalBatch, environment, delta);
         modelBatch.render(level, environment);
         if (delta > 0f)
@@ -371,7 +371,7 @@ public class Level implements Disposable, Renderable3D, AssetConsumer, RobotList
 
     @Override
     public void dispose() {
-        for (Structure structure : new Array.ArrayIterator<>(structures))
+        for (Structure structure : structures)
             structure.dispose();
         gridModel.dispose();
         robot.dispose();

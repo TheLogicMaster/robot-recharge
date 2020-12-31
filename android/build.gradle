@@ -30,7 +30,7 @@ android {
         applicationId "com.thelogicmaster.robot_recharge"
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 2
+        versionCode 3
         versionName "0.1"
 
         python {
