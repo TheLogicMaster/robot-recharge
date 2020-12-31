@@ -103,10 +103,10 @@ jobs:
       - name: Generate local.properties file
         run: |
           echo sdk.dir=$ANDROID_HOME >> ./local.properties
-          #echo KEY=\"$KEY\" >> ./local.properties
+          echo gameJoltKey=$GAME_JOLT_KEY >> ./local.properties
           cat ./local.properties
-        #env:
-          #KEY: ${{ secrets.KEY }}
+        env:
+          GAME_JOLT_KEY: ${{ secrets.GAME_JOLT_KEY }}
           
       - name: Package Linux release
         run: ./gradlew packageLinuxGHActions
@@ -207,23 +207,23 @@ jobs:
           hub release edit -a ./android-${{ steps.get_version.outputs.VERSION }}.apk -m "" ${{ steps.get_version.outputs.VERSION }}
           hub release edit -a ./html-${{ steps.get_version.outputs.VERSION }}.zip -m "" ${{ steps.get_version.outputs.VERSION }}
 
-      #- name: Sign Android bundle
-        #uses: r0adkll/sign-android-release@v1
-        #id: sign_bundle
-        #with:
-          #releaseDirectory: ./android/build/outputs/bundle/release
-          #signingKeyBase64: ${{ secrets.SIGNING_KEY }}
-          #alias: ${{ secrets.ALIAS }}
-          #keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
-          #keyPassword: ${{ secrets.KEY_PASSWORD }}
-        #env:
-          #BUILD_TOOLS_VERSION: "29.0.2"
+      - name: Sign Android bundle
+        uses: r0adkll/sign-android-release@v1
+        id: sign_bundle
+        with:
+          releaseDirectory: ./android/build/outputs/bundle/release
+          signingKeyBase64: ${{ secrets.SIGNING_KEY }}
+          alias: ${{ secrets.ALIAS }}
+          keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
+          keyPassword: ${{ secrets.KEY_PASSWORD }}
+        env:
+          BUILD_TOOLS_VERSION: "29.0.2"
 
-      #- name: Upload to Google Play
-        #uses: r0adkll/upload-google-play@v1
-        #with:
-          #serviceAccountJsonPlainText: ${{ secrets.SERVICE_ACCOUNT_JSON }}
-          #packageName: com.thelogicmaster.robot_recharge
-          #releaseFiles: ${{steps.sign_bundle.outputs.signedReleaseFile}}
-          #track: alpha
-          #whatsNewDirectory: ./android/whatsnew
+      - name: Upload to Google Play
+        uses: r0adkll/upload-google-play@v1
+        with:
+          serviceAccountJsonPlainText: ${{ secrets.SERVICE_ACCOUNT_JSON }}
+          packageName: com.thelogicmaster.robot_recharge
+          releaseFiles: ${{steps.sign_bundle.outputs.signedReleaseFile}}
+          track: alpha
+          whatsNewDirectory: ./android/whatsnew
