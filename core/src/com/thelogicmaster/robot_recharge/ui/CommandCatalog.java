@@ -15,16 +15,19 @@ public class CommandCatalog extends Window {
 
     public CommandCatalog(Skin skin, Language language) {
         super("Command Catalog", skin);
+
+        setVisible(false);
         padTop(100).padLeft(20);
         setSize(900, 300);
+
         ImageButton catalogCloseButton = new ImageButton(skin, "close");
         getTitleTable().add(catalogCloseButton).padRight(10).size(80, 80).right();
-        final List<String> commandList = new List<>(skin);
+        final List<String> commandList = new List<>(skin, "small");
         final IterativeStack commandInfoStack = new IterativeStack();
         final Array<Command> commands = RobotAssets.json.fromJson(Array.class, Command.class,
                 Gdx.files.internal("language/commands-" + language.name().toLowerCase() + ".json"));
         Array<String> commandLabels = new Array<>();
-        for (Command command : new Array.ArrayIterable<>(commands)) {
+        for (Command command: commands) {
             commandLabels.add(command.getName());
             Table infoTable = new Table(skin);
             infoTable.setBackground("windowTen");
@@ -36,13 +39,13 @@ public class CommandCatalog extends Window {
             if (command.getArgs().length > 0)
                 args.deleteCharAt(args.length() - 1);
             args.append(")");
-            Label argsLabel = new Label(args.toString(), skin);
+            Label argsLabel = new Label(args.toString(), skin, "small");
             argsLabel.setWrap(true);
             infoTable.add(argsLabel).growX().left().row();
-            Label descriptionLabel = new Label(command.getDescription(), skin);
+            Label descriptionLabel = new Label(command.getDescription(), skin, "small");
             descriptionLabel.setWrap(true);
             infoTable.add(descriptionLabel).growX().left().row();
-            Label exampleLabel = new Label("Ex: " + command.getExample(), skin);
+            Label exampleLabel = new Label("Ex: " + command.getExample(), skin, "small");
             exampleLabel.setWrap(true);
             infoTable.add(exampleLabel).growX().left();
             commandInfoStack.add(infoTable);
@@ -54,8 +57,7 @@ public class CommandCatalog extends Window {
         commandPane.setFadeScrollBars(false);
         add(commandPane).width(300).growY();
         add(commandInfoStack).grow();
-        setVisible(false);
-        setMovable(true);
+
         commandList.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {

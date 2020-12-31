@@ -25,6 +25,7 @@ import com.badlogic.gdx.utils.OrderedSet;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.thelogicmaster.robot_recharge.blocks.Block;
 import com.thelogicmaster.robot_recharge.code.CodeEngine;
+import com.thelogicmaster.robot_recharge.code.Solution;
 import com.thelogicmaster.robot_recharge.objectives.Objective;
 import com.thelogicmaster.robot_recharge.structures.Structure;
 
@@ -35,6 +36,8 @@ public class Level implements Disposable, Renderable3D, AssetConsumer, RobotList
     private final Array<Structure> structures;
     private final Array<Objective> objectives;
     private final String levelModelName, backgroundName;
+    private final Array<Solution> solutions;
+
     private Robot robot;
     private final ParticleSystem particleSystem;
     private final OrderedSet<LevelEventListener> levelListeners = new OrderedSet<>();
@@ -55,14 +58,15 @@ public class Level implements Disposable, Renderable3D, AssetConsumer, RobotList
     private boolean setup; // If setup is in progress
 
     public Level(LevelData levelData, LevelExecutionListener listener, Viewport viewport, CodeEngine engine, boolean useBlocks) {
-        this.xSize = levelData.getXSize();
-        this.ySize = levelData.getYSize();
-        this.zSize = levelData.getZSize();
-        this.levelHeight = levelData.getLevelHeight();
-        this.levelModelName = levelData.getLevelModel();
-        this.objectives = levelData.getObjectives();
-        this.structures = levelData.getStructures();
-        this.backgroundName = levelData.getBackground();
+        xSize = levelData.getXSize();
+        ySize = levelData.getYSize();
+        zSize = levelData.getZSize();
+        levelHeight = levelData.getLevelHeight();
+        levelModelName = levelData.getLevelModel();
+        objectives = levelData.getObjectives();
+        structures = levelData.getStructures();
+        backgroundName = levelData.getBackground();
+        solutions = levelData.getSolutions();
         this.listener = listener;
         this.useBlocks = useBlocks;
         this.viewport = viewport;
@@ -88,6 +92,10 @@ public class Level implements Disposable, Renderable3D, AssetConsumer, RobotList
 
     public Array<Objective> getObjectives() {
         return objectives;
+    }
+
+    public Array<Solution> getSolutions() {
+        return solutions;
     }
 
     public void drawBackground(SpriteBatch batch) {

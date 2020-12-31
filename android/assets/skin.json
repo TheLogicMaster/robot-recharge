@@ -271,6 +271,10 @@
 		"font": "menuFont",
 		"fontColor": "Yellow"
 	},
+	"small": {
+		"font": "infoFont",
+		"fontColor": "Yellow"
+	},
 	"large": {
 		"parent": "default",
 		"font": "titleFont",
@@ -284,6 +288,10 @@
 		"fontColorUnselected": "Yellow",
 		"selection": "selection",
 		"background": "windowTen"
+	},
+	"small": {
+		"parent": "default",
+		"font": "infoFont"
 	}
 },
 "com.badlogic.gdx.scenes.scene2d.ui.ProgressBar$ProgressBarStyle": {
@@ -314,6 +322,12 @@
 		"listStyle": "default"
 	}
 },
+"com.badlogic.gdx.scenes.scene2d.ui.Slider$SliderStyle": {
+	"default-horizontal": {
+		"background": "windowTen",
+		"knob": "buttonTen"
+	}
+},
 "com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle": {
 	"default": {
 		"font": "menuFont",
@@ -338,7 +352,7 @@
 },
 "com.badlogic.gdx.scenes.scene2d.ui.TextField$TextFieldStyle": {
 	"default": {
-		"font": "menuFont",
+		"font": "infoFont",
 		"fontColor": "Black",
 		"background": "windowTen",
 		"selection": "selection"

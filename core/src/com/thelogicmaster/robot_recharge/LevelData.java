@@ -1,14 +1,16 @@
 package com.thelogicmaster.robot_recharge;
 
 import com.badlogic.gdx.utils.Array;
+import com.thelogicmaster.robot_recharge.code.Solution;
 import com.thelogicmaster.robot_recharge.objectives.Objective;
 import com.thelogicmaster.robot_recharge.structures.Structure;
 
 public class LevelData {
     private int xSize, ySize, zSize;
     private float levelHeight;
-    private Array<Structure> structures = new Array<>();
-    private Array<Objective> objectives = new Array<>();
+    private Array<Structure> structures;
+    private Array<Objective> objectives;
+    private Array<Solution> solutions;
     private String levelModel;
     private String background;
 
@@ -74,5 +76,13 @@ public class LevelData {
 
     public void setBackground(String background) {
         this.background = background;
+    }
+
+    public Array<Solution> getSolutions() {
+        return solutions;
+    }
+
+    public void setSolutions(Array<Solution> solutions) {
+        this.solutions = solutions;
     }
 }

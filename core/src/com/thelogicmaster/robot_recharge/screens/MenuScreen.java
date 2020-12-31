@@ -6,6 +6,9 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.thelogicmaster.robot_recharge.RobotRecharge;
 import com.thelogicmaster.robot_recharge.RobotUtils;
 
+/**
+ * A screen that remembers the previous screen for menu navigation purposed
+ */
 public abstract class MenuScreen extends RobotScreen {
 
     private final RobotScreen previousScreen;

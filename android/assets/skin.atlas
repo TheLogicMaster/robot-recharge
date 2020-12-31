@@ -41,9 +41,9 @@ catalog
   index: -1
 checkedBox
   rotate: false
-  xy: 521, 593
-  size: 32, 32
-  orig: 32, 32
+  xy: 521, 561
+  size: 64, 64
+  orig: 64, 64
   offset: 0, 0
   index: -1
 closeIcon
@@ -181,9 +181,9 @@ titleMenu
   index: -1
 uncheckedBox
   rotate: false
-  xy: 933, 1713
-  size: 32, 32
-  orig: 32, 32
+  xy: 933, 1681
+  size: 64, 64
+  orig: 64, 64
   offset: 0, 0
   index: -1
 window

@@ -12,7 +12,14 @@ public class EditorSidebar extends Table {
     public EditorSidebar(Skin skin, final EditorSidebarListener listener) {
         super(skin);
         setBackground("editorSidebar");
+
         ImageButton closeEditorButton = new ImageButton(skin, "closeEditor");
+        add(closeEditorButton).padBottom(128).row();
+        ImageButton saveEditorButton = new ImageButton(skin, "saveEditor");
+        add(saveEditorButton).padBottom(128).row();
+        ImageButton revertEditorButton = new ImageButton(skin, "revertEditor");
+        add(revertEditorButton);
+
         closeEditorButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -20,8 +27,6 @@ public class EditorSidebar extends Table {
                 listener.onClose();
             }
         });
-        add(closeEditorButton).padBottom(128).row();
-        ImageButton saveEditorButton = new ImageButton(skin, "saveEditor");
         saveEditorButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -29,8 +34,6 @@ public class EditorSidebar extends Table {
                 listener.onSave();
             }
         });
-        add(saveEditorButton).padBottom(128).row();
-        ImageButton revertEditorButton = new ImageButton(skin, "revertEditor");
         revertEditorButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -38,7 +41,6 @@ public class EditorSidebar extends Table {
                 listener.onRevert();
             }
         });
-        add(revertEditorButton);
     }
 
     public interface EditorSidebarListener {

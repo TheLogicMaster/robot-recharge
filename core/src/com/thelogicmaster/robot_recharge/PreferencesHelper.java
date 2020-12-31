@@ -65,4 +65,13 @@ public class PreferencesHelper {
         preferences.putFloat("effectsVolume", volume);
         preferences.flush();
     }
+
+    public WindowMode getWindowMode() {
+        return WindowMode.valueOf(preferences.getString("windowMode", "Windowed"));
+    }
+
+    public void setWindowMode(WindowMode mode) {
+        preferences.putString("windowMode", mode.name());
+        preferences.flush();
+    }
 }

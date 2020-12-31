@@ -60,7 +60,6 @@ public abstract class RobotScreen implements Screen {
 
     protected final void setBackground(Texture background) {
         this.background = background;
-        addDisposable(background);
     }
 
     protected void doneLoading() {
@@ -141,5 +140,7 @@ public abstract class RobotScreen implements Screen {
         assetManager.dispose();
         stage.dispose();
         spriteBatch.dispose();
+        if (background != null)
+            background.dispose();
     }
 }

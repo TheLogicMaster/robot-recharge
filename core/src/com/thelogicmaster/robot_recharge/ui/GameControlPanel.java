@@ -18,6 +18,25 @@ public class GameControlPanel extends Table {
         left();
 
         programButton = new ImageButton(skin, "programmingGame");
+        add(programButton).padRight(10);
+
+        playButton = new ImageButton(skin, "playGame");
+        pauseButton = new ImageButton(skin, "pauseGame");
+        playPause = new IterativeStack(playButton, pauseButton);
+        add(playPause).padRight(10);
+
+        ImageButton resetButton = new ImageButton(skin, "resetGame");
+        add(resetButton);
+
+        Table rightTable = new Table();
+        rightTable.right().top();
+        ImageButton fastForwardButton = new ImageButton(skin, "fastForwardGame");
+        rightTable.add(fastForwardButton);
+        ImageButton settingsButton = new ImageButton(skin, "settingsGame");
+        rightTable.add(settingsButton).right().padLeft(10);
+        add(rightTable).grow();
+
+
         programButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -25,9 +44,6 @@ public class GameControlPanel extends Table {
                 listener.onProgram();
             }
         });
-        add(programButton).padRight(10);
-
-        playButton = new ImageButton(skin, "playGame");
         playButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -37,7 +53,6 @@ public class GameControlPanel extends Table {
                 listener.onPlay();
             }
         });
-        pauseButton = new ImageButton(skin, "pauseGame");
         pauseButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -45,10 +60,6 @@ public class GameControlPanel extends Table {
                 listener.onPause();
             }
         });
-        playPause = new IterativeStack(playButton, pauseButton);
-        add(playPause).padRight(10);
-
-        ImageButton resetButton = new ImageButton(skin, "resetGame");
         resetButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -58,12 +69,6 @@ public class GameControlPanel extends Table {
                 listener.onReset();
             }
         });
-        add(resetButton);
-
-        Table rightTable = new Table();
-        rightTable.right().top();
-
-        ImageButton fastForwardButton = new ImageButton(skin, "fastForwardGame");
         fastForwardButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -71,9 +76,6 @@ public class GameControlPanel extends Table {
                 listener.onFastForward();
             }
         });
-        rightTable.add(fastForwardButton);
-
-        ImageButton settingsButton = new ImageButton(skin, "settingsGame");
         settingsButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -81,9 +83,6 @@ public class GameControlPanel extends Table {
                 listener.onSettings();
             }
         });
-        rightTable.add(settingsButton).right().padLeft(10);
-
-        add(rightTable).grow();
     }
 
     public void disablePlay() {

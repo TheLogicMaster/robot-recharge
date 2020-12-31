@@ -8,6 +8,7 @@ import com.thelogicmaster.robot_recharge.Robot;
 import com.thelogicmaster.robot_recharge.*;
 import com.thelogicmaster.robot_recharge.code.CodeEngine;
 import com.thelogicmaster.robot_recharge.code.Language;
+import de.golfgl.gdxgamesvcs.NoGameServiceClient;
 import org.cef.CefApp;
 import org.cef.handler.CefAppHandlerAdapter;
 
@@ -36,7 +37,6 @@ public class JCEFDesktopLauncher implements PlatformUtils {
                     Gdx.app.exit();
             }
         });
-
         windowModes = new Array<>(new WindowMode[]{
                 WindowMode.Windowed,
                 WindowMode.Fullscreen
@@ -49,7 +49,8 @@ public class JCEFDesktopLauncher implements PlatformUtils {
         engines.put(Language.Python, new DesktopPythonEngine());
         engines.put(Language.Lua, new LuaEngine());
         engines.put(Language.PHP, new PhpEngine());
-        lwjglAWTCanvas = new LwjglAWTCanvas(new RobotRecharge(engines, blocklyEditor, this, new DesktopTTSEngine()), config) {
+        lwjglAWTCanvas = new LwjglAWTCanvas(new RobotRecharge(engines, blocklyEditor, this,
+                new DesktopTTSEngine(), new NoGameServiceClient(), System.getenv().get("DEBUG") != null), config) {
             // Graceful exit
             @Override
             public void exit() {

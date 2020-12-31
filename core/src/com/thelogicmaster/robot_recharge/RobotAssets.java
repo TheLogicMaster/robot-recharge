@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Slider;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.Json;
@@ -46,10 +47,12 @@ public class RobotAssets implements Disposable {
             VisUI.load(VisUI.SkinScale.X2);
 
         skin = new Skin();
-        skin.add("menuFont", fontSmall);
+        skin.add("infoFont", fontSmall);
+        skin.add("menuFont", fontNormal);
         skin.add("titleFont", fontLarge);
         skin.addRegions(new TextureAtlas("skin.atlas"));
         skin.load(Gdx.files.internal("skin.json"));
+        skin.get("default-horizontal", Slider.SliderStyle.class).knob.setMinHeight(50);
 
         levelInfo = json.fromJson(Array.class, LevelInfo.class, Gdx.files.internal("levels.json"));
 
@@ -59,6 +62,7 @@ public class RobotAssets implements Disposable {
         assets.finishLoading();
         navigateSound = assets.get("menuNavigate.wav");
         titleMusic = assets.get("titleMusic.wav");
+        titleMusic.setVolume(RobotRecharge.prefs.getMusicVolume());
         titleMusic.setLooping(true);
         titleMusic.play();
     }

@@ -8,11 +8,13 @@ import com.badlogic.gdx.backends.gwt.GwtGraphics;
 import com.badlogic.gdx.graphics.g2d.freetype.gwt.FreetypeInjector;
 import com.badlogic.gdx.graphics.g2d.freetype.gwt.inject.OnCompletion;
 import com.badlogic.gdx.utils.Array;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.dom.client.Element;
 import com.thelogicmaster.robot_recharge.*;
 import com.thelogicmaster.robot_recharge.code.CodeEngine;
 import com.thelogicmaster.robot_recharge.code.Language;
+import de.golfgl.gdxgamesvcs.NoGameServiceClient;
 
 import java.util.HashMap;
 
@@ -112,7 +114,7 @@ public class HtmlLauncher extends GwtApplication {
             public RobotController createRobotController(Robot robot, RobotExecutionListener listener, CodeEngine engine) {
                 return new JavaScriptRobotController(robot, listener);
             }
-        }, ttsSupported() ? new GwtTTSEngine() : null) {
+        }, ttsSupported() ? new GwtTTSEngine() : null, new NoGameServiceClient(), !GWT.isProdMode()) {
             @Override
             public void create() {
                 super.create();

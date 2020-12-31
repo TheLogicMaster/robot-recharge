@@ -33,6 +33,7 @@ allprojects {
         aiVersion = '1.8.2'
         gltfVersion = 'master-SNAPSHOT'
         freetypeGwtVersion = '1.9.10.1'
+        gamesvcsVersion = '1.0.2'
     }
 
     repositories {
@@ -145,6 +146,7 @@ project(":html") {
         implementation "com.github.intrigus.gdx-freetype-gwt:gdx-freetype-gwt:$freetypeGwtVersion"
         implementation "com.github.intrigus.gdx-freetype-gwt:gdx-freetype-gwt:$freetypeGwtVersion:sources"
         api "com.github.mgsx-dev.gdx-gltf:gltf:$gltfVersion:sources"
+        implementation "de.golfgl.gdxgamesvcs:gdx-gamesvcs-core:$gamesvcsVersion:sources"
     }
 }
 
@@ -168,6 +170,7 @@ project(":core") {
         implementation group: 'org.luaj', name: 'luaj-jse', version: '3.0.1'
         implementation group: 'com.caucho', name: 'quercus', version: '4.0.45'
         api "com.rafaskoberg.gdx:typing-label:1.2.0"
+        implementation "de.golfgl.gdxgamesvcs:gdx-gamesvcs-core:$gamesvcsVersion"
     }
 }
 

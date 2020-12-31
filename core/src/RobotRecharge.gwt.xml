@@ -8,18 +8,17 @@
     <extend-configuration-property name="gdx.reflect.include" value="com.thelogicmaster.robot_recharge.structures"/>
     <extend-configuration-property name="gdx.reflect.include" value="com.thelogicmaster.robot_recharge.objectives"/>
     <extend-configuration-property name="gdx.reflect.include" value="com.thelogicmaster.robot_recharge.Position"/>
-    <extend-configuration-property name="gdx.reflect.include"
-                                   value="com.thelogicmaster.robot_recharge.BlockPlaceholder"/>
+    <extend-configuration-property name="gdx.reflect.include" value="com.thelogicmaster.robot_recharge.BlockPlaceholder"/>
     <extend-configuration-property name="gdx.reflect.include" value="com.thelogicmaster.robot_recharge.LevelData"/>
     <extend-configuration-property name="gdx.reflect.include" value="com.thelogicmaster.robot_recharge.LevelSave"/>
     <extend-configuration-property name="gdx.reflect.include" value="com.thelogicmaster.robot_recharge.code.Command"/>
-    <extend-configuration-property name="gdx.reflect.include" value="com.thelogicmaster.robot_recharge.code.Example"/>
+    <extend-configuration-property name="gdx.reflect.include" value="com.thelogicmaster.robot_recharge.code.Solution"/>
     <extend-configuration-property name="gdx.reflect.include" value="com.thelogicmaster.robot_recharge.code.Language"/>
-    <extend-configuration-property name="gdx.reflect.include" value="com.thelogicmaster.robot_recharge.Objective"/>
+    <extend-configuration-property name="gdx.reflect.include" value="com.thelogicmaster.robot_recharge.objectives"/>
     <extend-configuration-property name="gdx.reflect.include" value="com.thelogicmaster.robot_recharge.LevelInfo"/>
     <extend-configuration-property name="gdx.reflect.include" value="com.thelogicmaster.robot_recharge.Direction"/>
     <extend-configuration-property name="gdx.reflect.include" value="com.thelogicmaster.robot_recharge.WindowMode"/>
-    <extend-configuration-property name="gdx.reflect.include" value="com.badlogic.gdx.utils.IntArray"/>
 
+    <extend-configuration-property name="gdx.reflect.include" value="com.badlogic.gdx.utils.IntArray"/>
     <extend-configuration-property name="gdx.reflect.include" value="com.badlogic.gdx.graphics.g3d.Attribute"/>
 </module>

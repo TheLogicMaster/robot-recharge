@@ -6,6 +6,7 @@
     <inherits name="com.badlogic.gdx.graphics.g2d.freetype.freetype-gwt"/>
     <inherits name='com.kotcrab.vis.vis-ui'/>
     <inherits name="com.ray3k.tenpatch.tenpatch"/>
+    <inherits name="de.golfgl.gdxgamesvcs.gdx_gamesvcs_gwt" />
 
     <inherits name='RobotRecharge'/>
     <entry-point class='com.thelogicmaster.robot_recharge.client.HtmlLauncher'/>

@@ -11,7 +11,7 @@ import com.thelogicmaster.robot_recharge.RobotRecharge;
 import com.thelogicmaster.robot_recharge.RobotUtils;
 import com.thelogicmaster.robot_recharge.screens.GameScreen;
 
-public class LevelCompleteDialog extends Window {
+public class LevelCompleteDialog extends RobotDialog {
 
     private final Label completionTime, completionLength, completionCalls;
     private final boolean useBlocks;
@@ -19,35 +19,16 @@ public class LevelCompleteDialog extends Window {
     public LevelCompleteDialog(Skin skin, final LevelSave level, final LevelCompleteListener listener) {
         super("Level Complete", skin);
         useBlocks = level.usingBlocks();
-        padTop(100);
-        setMovable(false);
-        setModal(true);
-        setVisible(false);
 
-        add(completionTime = new Label("", skin)).left().row();
-        add(completionLength = new Label("", skin)).left().row();
-        add(completionCalls = new Label("", skin)).left().row();
+        add(completionTime = new Label("", skin, "small")).left().row();
+        add(completionLength = new Label("", skin, "small")).left().row();
+        add(completionCalls = new Label("", skin, "small")).left().row();
 
-        Table buttonTable = new Table(skin);
         TextButton closeButton = new TextButton("Close", skin);
-        closeButton.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                RobotUtils.playNavigationSound();
-                setVisible(false);
-            }
-        });
+        Table buttonTable = new Table(skin);
         buttonTable.add(closeButton).expandX().left();
 
         TextButton exitButton = new TextButton("Exit", skin);
-        exitButton.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                RobotUtils.playNavigationSound();
-                listener.onDispose();
-                RobotRecharge.instance.returnToTitle();
-            }
-        });
         buttonTable.add(exitButton).expandX();
 
         Array<LevelInfo> levels = RobotRecharge.assets.levelInfo;
@@ -59,6 +40,25 @@ public class LevelCompleteDialog extends Window {
             }
         final String next = index >= levels.size || index == -1 ? null : levels.get(index).getName();
         TextButton nextButton = new TextButton("Next Level", skin);
+        nextButton.setDisabled(next == null);
+        buttonTable.add(nextButton).expandX().right();
+        add(buttonTable).bottom().expand().fillX();
+
+        closeButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                RobotUtils.playNavigationSound();
+                setVisible(false);
+            }
+        });
+        exitButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                RobotUtils.playNavigationSound();
+                listener.onDispose();
+                RobotRecharge.instance.returnToTitle();
+            }
+        });
         nextButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -67,9 +67,6 @@ public class LevelCompleteDialog extends Window {
                 RobotRecharge.instance.setScreen(new GameScreen(new LevelSave(next, level.usingBlocks(), "", level.getLanguage())));
             }
         });
-        nextButton.setDisabled(next == null);
-        buttonTable.add(nextButton).expandX().right();
-        add(buttonTable).bottom().expand().fillX();
     }
 
     public void show(float completionTime, int length, int calls) {

@@ -160,7 +160,7 @@ public class RobotUtils {
         if (RobotRecharge.ttsEngine != null) {
             Sound sound = RobotRecharge.ttsEngine.textToSpeech(text);
             if (sound != null)
-                sound.play();
+                sound.play(RobotRecharge.prefs.getEffectsVolume());
             return sound;
         }
         return null;

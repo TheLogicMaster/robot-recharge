@@ -21,6 +21,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.kotcrab.vis.ui.util.dialog.Dialogs;
 import com.thelogicmaster.robot_recharge.*;
+import com.thelogicmaster.robot_recharge.code.Solution;
 import com.thelogicmaster.robot_recharge.objectives.Objective;
 import com.thelogicmaster.robot_recharge.ui.*;
 
@@ -46,6 +47,7 @@ public class GameScreen extends RobotScreen implements LevelExecutionListener {
     private final ModelBatch modelBatch;
     private final LevelFailDialog levelFailDialog;
     private final LevelCompleteDialog levelCompleteDialog;
+    private final SolutionsDialog solutionsDialog;
 
     public GameScreen(final LevelSave levelSave) {
         this.levelSave = levelSave;
@@ -105,8 +107,13 @@ public class GameScreen extends RobotScreen implements LevelExecutionListener {
             public void onObjectives() {
                 objectivesDialog.setVisible(true);
             }
+
+            @Override
+            public void onSolutions() {
+                solutionsDialog.setVisible(true);
+            }
         });
-        menu.setBounds(uiViewport.getWorldWidth() / 2 - 500, uiViewport.getWorldHeight() / 2 - 200, 1000, 400);
+        menu.setBounds(uiViewport.getWorldWidth() / 2 - 500, uiViewport.getWorldHeight() / 2 - 250, 1000, 500);
         stage.addActor(menu);
 
         // Create main control panel
@@ -180,12 +187,14 @@ public class GameScreen extends RobotScreen implements LevelExecutionListener {
                     level.setCode(codeEditor.getCode());
                     levelSave.setCode(codeEditor.getCode());
                     saveLevel();
+                    Gdx.app.debug("Saved Code", codeEditor.getCode());
                 } else {
                     RobotRecharge.blocksEditor.save(new Consumer<String>() {
                         @Override
                         public void accept(String blocks) {
                             levelSave.setCode(blocks);
                             level.setBlocklyData(blocks);
+                            Gdx.app.debug("Saved Blocks", blocks);
                         }
                     });
                     RobotRecharge.blocksEditor.generateCode(levelSave.getLanguage(), new Consumer<String>() {
@@ -193,6 +202,7 @@ public class GameScreen extends RobotScreen implements LevelExecutionListener {
                         public void accept(String code) {
                             level.setCode(code);
                             saveLevel();
+                            Gdx.app.debug("Generated Code", code);
                         }
                     });
                 }
@@ -240,6 +250,35 @@ public class GameScreen extends RobotScreen implements LevelExecutionListener {
         });
         levelCompleteDialog.setBounds(uiViewport.getWorldWidth() / 2 - 500, uiViewport.getWorldHeight() / 2 - 200, 1000, 400);
         stage.addActor(levelCompleteDialog);
+
+        solutionsDialog = new SolutionsDialog(skin, level.getSolutions(), new SolutionsDialog.SolutionsListener() {
+            @Override
+            public void onClose() {
+                controller.setDisabled(false);
+            }
+
+            @Override
+            public void onLoad(Solution solution) {
+                if (!levelSave.usingBlocks()) {
+                    String code = solution.getCode().get(levelSave.getLanguage().name());
+                    levelSave.setCode(code);
+                    saveLevel();
+                    level.setCode(code);
+                    codeEditor.setCode(code);
+                } else {
+                    RobotRecharge.blocksEditor.load(solution.getBlocks());
+                    level.setBlocklyData(solution.getBlocks());
+                    RobotRecharge.blocksEditor.generateCode(levelSave.getLanguage(), new Consumer<String>() {
+                        @Override
+                        public void accept(String code) {
+                            level.setCode(code);
+                        }
+                    });
+                }
+            }
+        });
+        stage.addActor(solutionsDialog);
+        solutionsDialog.setBounds(uiViewport.getWorldWidth() / 2 - 500, uiViewport.getWorldHeight() / 2 - 200, 1000, 400);
     }
 
     @Override
@@ -249,7 +288,6 @@ public class GameScreen extends RobotScreen implements LevelExecutionListener {
         level.assetsLoaded(assetManager);
 
         // Setup level
-
         if (!levelSave.usingBlocks()) {
             level.setCode(levelSave.getCode());
             codeEditor.setCode(levelSave.getCode());

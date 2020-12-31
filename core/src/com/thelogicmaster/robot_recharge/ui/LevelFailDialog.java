@@ -8,27 +8,27 @@ import com.badlogic.gdx.utils.Array;
 import com.thelogicmaster.robot_recharge.RobotUtils;
 import com.thelogicmaster.robot_recharge.objectives.Objective;
 
-public class LevelFailDialog extends Window {
+public class LevelFailDialog extends RobotDialog {
 
     private final Array<Label> labels = new Array<>();
     private final boolean useBlocks;
 
     public LevelFailDialog(Skin skin, Array<Objective> objectives, boolean useBlocks) {
         super("Incomplete Objectives", skin);
+
         this.useBlocks = useBlocks;
-        padTop(100);
-        setMovable(false);
-        setModal(true);
-        setVisible(false);
+
         Table table = new Table(skin);
         table.setBackground("windowTen");
         for (Objective objective : objectives) {
-            Label label = new Label(objective.getDescription(useBlocks), skin);
+            Label label = new Label(objective.getDescription(useBlocks), skin, "small");
             table.add(label).row();
             labels.add(label);
         }
         add(table).row();
-        TextButton closeButton = new TextButton("Close", skin);
+        TextButton closeButton = new PaddedTextButton("Close", skin);
+        add(closeButton).expand().right().bottom();
+
         closeButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -36,7 +36,6 @@ public class LevelFailDialog extends Window {
                 setVisible(false);
             }
         });
-        add(closeButton).expand().right().bottom();
     }
 
     public void show(Array<Objective> failed) {

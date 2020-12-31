@@ -1,5 +1,6 @@
 package com.thelogicmaster.robot_recharge;
 
+import android.content.pm.ApplicationInfo;
 import android.os.Bundle;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -8,6 +9,7 @@ import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 import com.badlogic.gdx.utils.Array;
 import com.thelogicmaster.robot_recharge.code.CodeEngine;
 import com.thelogicmaster.robot_recharge.code.Language;
+import de.golfgl.gdxgamesvcs.NoGameServiceClient;
 
 import java.util.HashMap;
 
@@ -40,7 +42,7 @@ public class AndroidLauncher extends AndroidApplication {
             public RobotController createRobotController(Robot robot, RobotExecutionListener listener, CodeEngine engine) {
                 return new JavaRobotController(robot, listener, engine);
             }
-        }, new AndroidTTSEngine(getContext())), config);
+        }, new AndroidTTSEngine(getContext()), new NoGameServiceClient(), 0 != (getApplicationInfo().flags & ApplicationInfo.FLAG_DEBUGGABLE)), config);
 
         addContentView(editor, new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
     }

@@ -18,6 +18,7 @@ public class TutorialDialog extends Dialog {
 
     public TutorialDialog(Skin skin, Array<TutorialPage> tutorial) {
         super("Tutorial", skin);
+
         stack = new IterativeStack();
         for (TutorialPage page : new Array.ArrayIterator<>(tutorial)) {
             Table table = new Table();
@@ -27,12 +28,13 @@ public class TutorialDialog extends Dialog {
         }
         padTop(50);
         setMovable(false);
-        backButton = new TextButton("Back", skin);
-        nextButton = new TextButton("Next", skin);
-        TextButton skipButton = new TextButton("Skip", skin);
+        backButton = new PaddedTextButton("Back", skin);
+        nextButton = new PaddedTextButton("Next", skin);
+        TextButton skipButton = new PaddedTextButton("Skip", skin);
         getButtonTable().add(backButton).padRight(20);
         getButtonTable().add(nextButton).padRight(20);
         getButtonTable().add(skipButton);
+
         backButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -54,6 +56,7 @@ public class TutorialDialog extends Dialog {
                 hide();
             }
         });
+
         updateButtons();
     }
 

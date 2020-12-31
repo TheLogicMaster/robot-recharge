@@ -1,6 +1,7 @@
 package com.thelogicmaster.robot_recharge.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
@@ -12,6 +13,8 @@ import com.kotcrab.vis.ui.util.dialog.OptionDialogAdapter;
 import com.thelogicmaster.robot_recharge.*;
 import com.thelogicmaster.robot_recharge.code.Language;
 import com.thelogicmaster.robot_recharge.ui.IterativeStack;
+import com.thelogicmaster.robot_recharge.ui.LanguageSelect;
+import com.thelogicmaster.robot_recharge.ui.PaddedTextButton;
 
 public class LevelScreen extends MenuScreen {
 
@@ -21,6 +24,7 @@ public class LevelScreen extends MenuScreen {
 
     public LevelScreen(RobotScreen previousScreen) {
         super(previousScreen);
+        setBackground(new Texture("levelScreen.png"));
 
         final Array<LevelInfo> levels = RobotRecharge.assets.levelInfo;
 
@@ -29,9 +33,8 @@ public class LevelScreen extends MenuScreen {
         for (LevelInfo level: levels) {
             Table table = new Table(skin);
             table.setBackground("buttonTen");
-            Label levelInfo = new Label("", skin);
+            Label levelInfo = new Label(level.getDescription(), skin);
             levelInfo.setWrap(true);
-            levelInfo.setText(level.getDescription());
             table.pad(10);
             table.align(Align.top);
             table.add(levelInfo).growX();
@@ -45,19 +48,14 @@ public class LevelScreen extends MenuScreen {
         controlsTable.setBackground("buttonTen");
         controlsTable.setBounds(uiViewport.getWorldWidth() - 1000, uiViewport.getWorldHeight() - 590,
                 800, 350);
-        final SelectBox<Language> languageSelect = new SelectBox<>(skin);
-        Array<Language> languages = new Array<>();
-        for (Language language : Language.values())
-            if (RobotRecharge.codeEngines.containsKey(language))
-                languages.add(language);
-        languageSelect.setItems(languages);
+        final SelectBox<Language> languageSelect = new LanguageSelect(skin);
         controlsTable.add(languageSelect).fillX().padBottom(10).row();
         final CheckBox blocksCheckbox = new CheckBox("Use Blocks", skin);
         blocksCheckbox.setDisabled(RobotRecharge.blocksEditor == null);
         controlsTable.add(blocksCheckbox).fillX().padBottom(10).row();
         TextButton playButton = new TextButton("New Game", skin);
         controlsTable.add(playButton).fillX().padBottom(10).row();
-        resumeButton = new TextButton("Resume Game", skin);
+        resumeButton = new PaddedTextButton("Resume Game", skin);
         controlsTable.add(resumeButton).fillX();
         stage.addActor(controlsTable);
 
@@ -67,7 +65,7 @@ public class LevelScreen extends MenuScreen {
         levelButtonTable.pad(0, 10, 0, 10);
         levelButtons = new Array<>();
         for (final LevelInfo levelInfo: levels) {
-            TextButton button = new TextButton(levelInfo.getName(), skin, "levelLabel");
+            TextButton button = new PaddedTextButton(levelInfo.getName(), skin, "levelLabel");
             button.setProgrammaticChangeEvents(false);
             levelButtons.add(button);
             levelButtonTable.add(button).growX().padBottom(10).row();
@@ -128,7 +126,12 @@ public class LevelScreen extends MenuScreen {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 RobotUtils.playNavigationSound();
-                RobotRecharge.instance.setScreen(new GameScreen(RobotRecharge.prefs.getSave(selected.getName())));
+                LevelSave save = RobotRecharge.prefs.getSave(selected.getName());
+                if (RobotRecharge.blocksEditor == null && save.usingBlocks()) {
+                    Dialogs.showErrorDialog(stage, "This save was created using Blockly, which isn't available");
+                    return;
+                }
+                RobotRecharge.instance.setScreen(new GameScreen(save));
             }
         });
     }
