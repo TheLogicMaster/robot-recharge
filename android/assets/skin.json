@@ -19,6 +19,17 @@
 		"a": 1
 	}
 },
+"com.badlogic.gdx.scenes.scene2d.ui.Skin$TintedDrawable": {
+	"cloudSavePressed": {
+		"name": "cloudSave",
+		"color": {
+			"r": 0.5133333,
+			"g": 0.5133333,
+			"b": 0.5133333,
+			"a": 1
+		}
+	}
+},
 "com.ray3k.tenpatch.TenPatchDrawable": {
 	"windowTen": {
 		"region": "window",
@@ -198,8 +209,7 @@
 		"disabled": "buttonDisabledTen"
 	},
 	"googleSignIn": {
-		"up": "googleSignIn",
-		"pressedOffsetY": 3
+		"up": "googleSignIn"
 	},
 	"googleSignOut": {
 		"up": "googleSignOut",
@@ -272,6 +282,10 @@
 	"close": {
 		"imageUp": "closeIcon",
 		"pressedOffsetY": 3
+	},
+	"cloudSave": {
+		"imageUp": "cloudSave",
+		"imageDown": "cloudSavePressed"
 	}
 },
 "com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle": {

@@ -4,10 +4,7 @@ import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.ui.Button;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.thelogicmaster.robot_recharge.RobotRecharge;
 import com.thelogicmaster.robot_recharge.RobotUtils;
@@ -20,12 +17,14 @@ public class TitleScreen extends RobotScreen {
     private final SettingsScreen settingsScreen;
     private final TutorialsScreen tutorialsScreen;
     private final IterativeStack googleSignInStack;
+    private final CloudScreen cloudScreen;
 
     public TitleScreen() {
         setBackground(new Texture("titleScreen.png"));
         levelScreen = new LevelScreen(this);
         settingsScreen = new SettingsScreen(this);
         tutorialsScreen = new TutorialsScreen(this);
+        cloudScreen = new CloudScreen(this);
 
         Table table = new Table(skin);
         table.setBounds(uiViewport.getWorldWidth() / 2 - 400, 20, 800, uiViewport.getWorldHeight() - 40);
@@ -40,6 +39,11 @@ public class TitleScreen extends RobotScreen {
         TextButton exitButton = new PaddedTextButton("Quit Game", skin, "large");
         table.add(exitButton);
         stage.addActor(table);
+
+        ImageButton cloudButton = new ImageButton(skin, "cloudSave");
+        cloudButton.setPosition(uiViewport.getWorldWidth() - 138, uiViewport.getWorldHeight() - 138);
+        cloudButton.pack();
+        stage.addActor(cloudButton);
 
         if (Gdx.app.getType() == Application.ApplicationType.Android) {
             googleSignInStack = new IterativeStack();
@@ -91,6 +95,13 @@ public class TitleScreen extends RobotScreen {
             public void changed(ChangeEvent event, Actor actor) {
                 RobotUtils.playNavigationSound();
                 Gdx.app.exit();
+            }
+        });
+        cloudButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                RobotUtils.playNavigationSound();
+                RobotRecharge.instance.setScreen(cloudScreen);
             }
         });
     }

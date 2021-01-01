@@ -1,10 +1,81 @@
 package com.thelogicmaster.robot_recharge.screens;
 
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.utils.Base64Coder;
+import com.thelogicmaster.robot_recharge.GameSave;
+import com.thelogicmaster.robot_recharge.RobotAssets;
+import com.thelogicmaster.robot_recharge.RobotRecharge;
+import com.thelogicmaster.robot_recharge.ui.PaddedTextButton;
+import de.golfgl.gdxgamesvcs.gamestate.ILoadGameStateResponseListener;
+import de.golfgl.gdxgamesvcs.gamestate.ISaveGameStateResponseListener;
+
 public class CloudScreen extends MenuScreen {
+
+    private final Label userLabel;
+    private final TextButton loadButton, saveButton;
 
     public CloudScreen(RobotScreen previousScreen) {
         super(previousScreen);
 
+        Table cloudTable = new Table(skin);
+        cloudTable.setBackground("windowTen");
+        cloudTable.setBounds(uiViewport.getWorldWidth() / 2 - 700, uiViewport.getWorldHeight() / 2 - 400, 1400, 800);
+        cloudTable.pad(30);
 
+        userLabel = new Label("Not Connected", skin);
+        cloudTable.add(userLabel).padBottom(20).row();
+
+        loadButton = new PaddedTextButton("Load Cloud Save", skin);
+        cloudTable.add(loadButton).padBottom(10).row();
+
+        saveButton = new PaddedTextButton("Create Cloud Save", skin);
+        cloudTable.add(saveButton).padBottom(10).row();
+
+        loadButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                RobotRecharge.gameServices.loadGameState("save", new ILoadGameStateResponseListener() {
+                    @Override
+                    public void gsGameStateLoaded(byte[] gameState) {
+                        if (gameState != null)
+                            RobotRecharge.prefs.loadGameSave(RobotAssets.json.fromJson(GameSave.class, Base64Coder.decodeString(new String(gameState))));
+                    }
+                });
+            }
+        });
+        saveButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                // Encode save to base64 to ensure that blockly xml data doesn't break everything
+                RobotRecharge.gameServices.saveGameState("save",
+                        Base64Coder.encodeString(RobotAssets.json.toJson(RobotRecharge.prefs.getGameSave())).getBytes(),
+                        RobotRecharge.prefs.getUnlockedLevel(), new ISaveGameStateResponseListener() {
+                            @Override
+                            public void onGameStateSaved(boolean success, String errorCode) {
+
+                            }
+                        });
+            }
+        });
+
+        stage.addActor(cloudTable);
+    }
+
+    @Override
+    public void render(float delta) {
+        if (RobotRecharge.gameServices.isSessionActive()) {
+            userLabel.setText("Username: " + RobotRecharge.gameServices.getPlayerDisplayName());
+            saveButton.setDisabled(false);
+            loadButton.setDisabled(false);
+        } else {
+            saveButton.setDisabled(true);
+            loadButton.setDisabled(true);
+            userLabel.setText("Not Connected");
+        }
+        super.render(delta);
     }
 }

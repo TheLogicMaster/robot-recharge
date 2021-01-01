@@ -1,5 +1,12 @@
 apply plugin: 'com.chaquo.python'
 
+configurations {
+    all {
+        exclude module: 'httpclient'
+        exclude module: 'commons-logging'
+    }
+}
+
 android {
     buildToolsVersion "29.0.2"
     compileSdkVersion 29
@@ -17,6 +24,7 @@ android {
     }
     packagingOptions {
         exclude 'META-INF/robovm/ios/robovm.xml'
+        exclude 'lib/armeabi-v7a/libjniopencv_highgui.so'
     }
     defaultConfig {
         multiDexEnabled true
@@ -26,11 +34,12 @@ android {
             exclude 'META-INF/LICENSE'
             exclude 'META-INF/NOTICE'
             exclude 'META-INF/DEPENDENCIES'
+            exclude 'lib/armeabi-v7a/libopencv_highgui.so'
         }
         applicationId "com.thelogicmaster.robot_recharge"
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 3
+        versionCode 4
         versionName "0.1"
 
         python {

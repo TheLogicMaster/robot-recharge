@@ -1,5 +1,7 @@
 [![Get it on Google Play](https://badgen.net/badge/icon/googleplay?icon=googleplay&label)](https://play.google.com/store/apps/details?id=com.thelogicmaster.robot_recharge)
 
+[GameJolt Page](https://gamejolt.com/games/robot-recharge/570956)
+
 # Robot Recharge
 A programming game where the goal is to guide a robot through various levels.
 Google Blockly, Python, Lua, PHP, and JavaScript are all implemented as ways to
