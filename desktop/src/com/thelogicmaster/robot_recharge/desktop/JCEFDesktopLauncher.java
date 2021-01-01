@@ -21,6 +21,7 @@ import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+// Todo: Look into Applet performance
 public class JCEFDesktopLauncher implements PlatformUtils {
 
     private final JFrame jFrame;
@@ -43,13 +44,20 @@ public class JCEFDesktopLauncher implements PlatformUtils {
         blocklyEditor = new DesktopBlocklyEditor();
         LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
         config.allowSoftwareMode = true;
+        final DesktopGameServices desktopGameServices = new DesktopGameServices();
         HashMap<Language, CodeEngine> engines = new HashMap<>();
         engines.put(Language.JavaScript, new DesktopJavaScriptEngine());
         engines.put(Language.Python, new DesktopPythonEngine());
         engines.put(Language.Lua, new LuaEngine());
         engines.put(Language.PHP, new PhpEngine());
         lwjglAWTCanvas = new LwjglAWTCanvas(new RobotRecharge(engines, blocklyEditor, this,
-                new DesktopTTSEngine(), new DesktopGameServices(), System.getenv().get("DEBUG") != null), config) {
+                new DesktopTTSEngine(), desktopGameServices, System.getenv().get("DEBUG") != null) {
+            @Override
+            public void create() {
+
+                super.create();
+            }
+        }, config) {
             // Graceful exit
             @Override
             public void exit() {
@@ -151,6 +159,7 @@ public class JCEFDesktopLauncher implements PlatformUtils {
     }
 
     public static void main(String[] args) {
+        // Todo: Move to initial loading screen to prevent initial startup delay
         if (!CefApp.startup(args)) {
             System.out.println("Startup initialization failed!");
             return;

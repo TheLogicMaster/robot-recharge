@@ -64,7 +64,7 @@ public class RobotRecharge extends Game {
             }
         });
 
-        if (Gdx.app.getType() == Application.ApplicationType.Android)
+        if (Gdx.app.getType() == Application.ApplicationType.Android || (RobotUtils.usesGameJolt() && !gameServices.needsCredentials()))
             gameServices.resumeSession();
 
         setScreen(titleScreen);

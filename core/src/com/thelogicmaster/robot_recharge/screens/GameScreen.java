@@ -362,28 +362,6 @@ public class GameScreen extends RobotScreen implements LevelExecutionListener {
 
     private void saveLevel() {
         RobotRecharge.prefs.saveLevel(levelSave);
-        /*String save = Base64Coder.encodeString(RobotRecharge.prefs.preferences.getString("save/" + levelSave.getLevel()));
-        RobotRecharge.gameServices.saveGameState("save", save.getBytes(), RobotRecharge.prefs.getUnlockedLevel(), new ISaveGameStateResponseListener() {
-            @Override
-            public void onGameStateSaved(boolean success, String errorCode) {
-                Gdx.app.log("Save", "success: " + success);
-                RobotRecharge.gameServices.fetchGameStates(new IFetchGameStatesListResponseListener() {
-                    @Override
-                    public void onFetchGameStatesListResponse(Array<String> gameStates) {
-                        Gdx.app.log("states", gameStates.toString());
-                    }
-                });
-                RobotRecharge.gameServices.loadGameState("save", new ILoadGameStateResponseListener() {
-                    @Override
-                    public void gsGameStateLoaded(byte[] gameState) {
-                        if (gameState == null) {
-                            return;
-                        }
-                        Gdx.app.log("save", "" + new String(Base64Coder.decode(new String(gameState))));
-                    }
-                });
-            }
-        });*/
     }
 
     private void resetLevel() {

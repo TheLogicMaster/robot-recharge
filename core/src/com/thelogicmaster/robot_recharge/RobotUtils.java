@@ -1,5 +1,6 @@
 package com.thelogicmaster.robot_recharge;
 
+import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Sound;
@@ -164,5 +165,11 @@ public class RobotUtils {
             return sound;
         }
         return null;
+    }
+
+    public static boolean usesGameJolt() {
+        return Gdx.app.getType() == Application.ApplicationType.Desktop
+                || Gdx.app.getType() == Application.ApplicationType.WebGL
+                || Gdx.app.getType() == Application.ApplicationType.Applet;
     }
 }

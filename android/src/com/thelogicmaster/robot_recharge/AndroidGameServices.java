@@ -7,4 +7,9 @@ public class AndroidGameServices extends GpgsClient implements GameServices {
     @Override
     public void setCredentials(String user, String token) {
     }
+
+    @Override
+    public boolean needsCredentials() {
+        return false;
+    }
 }

@@ -4,14 +4,12 @@ import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
-import com.badlogic.gdx.scenes.scene2d.ui.Slider;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.thelogicmaster.robot_recharge.RobotRecharge;
-import com.thelogicmaster.robot_recharge.RobotUtils;
-import com.thelogicmaster.robot_recharge.WindowMode;
+import com.badlogic.gdx.utils.Base64Coder;
+import com.thelogicmaster.robot_recharge.*;
+import de.golfgl.gdxgamesvcs.gamestate.ILoadGameStateResponseListener;
+import de.golfgl.gdxgamesvcs.gamestate.ISaveGameStateResponseListener;
 
 public class SettingsScreen extends MenuScreen {
 
@@ -55,6 +53,38 @@ public class SettingsScreen extends MenuScreen {
         });
         settingsTable.add(effectsSlider).padBottom(10).padRight(20).left();
         settingsTable.add(effectsPercent).padBottom(10).minWidth(50).row();
+
+        TextButton loadSaveButton = new TextButton("Load Cloud Save", skin);
+        loadSaveButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                RobotRecharge.gameServices.loadGameState("save", new ILoadGameStateResponseListener() {
+                    @Override
+                    public void gsGameStateLoaded(byte[] gameState) {
+                        if (gameState != null)
+                            RobotRecharge.prefs.loadGameSave(RobotAssets.json.fromJson(GameSave.class, Base64Coder.decodeString(new String(gameState))));
+                    }
+                });
+            }
+        });
+        settingsTable.add(loadSaveButton).colspan(3).padBottom(10).row();
+
+        TextButton createSaveButton = new TextButton("Create Cloud Save", skin);
+        createSaveButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                // Encode save to base64 to ensure that blockly xml data doesn't break everything
+                RobotRecharge.gameServices.saveGameState("save",
+                        Base64Coder.encodeString(RobotAssets.json.toJson(RobotRecharge.prefs.getGameSave())).getBytes(),
+                        RobotRecharge.prefs.getUnlockedLevel(), new ISaveGameStateResponseListener() {
+                    @Override
+                    public void onGameStateSaved(boolean success, String errorCode) {
+
+                    }
+                });
+            }
+        });
+        settingsTable.add(createSaveButton).colspan(3).padBottom(10).row();
 
         if (RobotRecharge.platformUtils.getWindowModes().size > 0) {
             settingsTable.add(new Label("Window Mode", skin)).padBottom(300);

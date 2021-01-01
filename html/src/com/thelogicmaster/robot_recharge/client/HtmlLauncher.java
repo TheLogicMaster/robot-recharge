@@ -11,9 +11,11 @@ import com.badlogic.gdx.utils.Array;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.dom.client.Element;
+import com.google.gwt.user.client.Window;
 import com.thelogicmaster.robot_recharge.*;
 import com.thelogicmaster.robot_recharge.code.CodeEngine;
 import com.thelogicmaster.robot_recharge.code.Language;
+import de.golfgl.gdxgamesvcs.GameJoltClient;
 import de.golfgl.gdxgamesvcs.NoGameServiceClient;
 
 import java.util.HashMap;
@@ -32,6 +34,7 @@ public class HtmlLauncher extends GwtApplication {
         return 'speechSynthesis' in $wnd;
     }-*/;
 
+    // Copied to bypass access level
     private native boolean setFullscreen(GwtGraphics graphics, Element element, int screenWidth, int screenHeight)/*-{
 		// Attempt to use the non-prefixed standard API (https://fullscreen.spec.whatwg.org)
 		if (element.requestFullscreen) {
@@ -90,12 +93,17 @@ public class HtmlLauncher extends GwtApplication {
     @Override
     public ApplicationListener createApplicationListener() {
         final GwtBlocklyEditor editor = new GwtBlocklyEditor();
+
         HashMap<Language, CodeEngine> engines = new HashMap<>();
         engines.put(Language.JavaScript, null);
+
+        final GwtGameServices gwtGameServices = new GwtGameServices();
+
         final Array<WindowMode> windowModes = new Array<>(new WindowMode[]{
                 WindowMode.Windowed,
                 WindowMode.Fullscreen
         });
+
         return new RobotRecharge(engines, editor, new PlatformUtils() {
             @Override
             public void setWindowMode(WindowMode windowMode) {
@@ -114,7 +122,7 @@ public class HtmlLauncher extends GwtApplication {
             public RobotController createRobotController(Robot robot, RobotExecutionListener listener, CodeEngine engine) {
                 return new JavaScriptRobotController(robot, listener);
             }
-        }, ttsSupported() ? new GwtTTSEngine() : null, new GwtGameServices(), !GWT.isProdMode()) {
+        }, ttsSupported() ? new GwtTTSEngine() : null, gwtGameServices, !GWT.isProdMode()) {
             @Override
             public void create() {
                 super.create();

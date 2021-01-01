@@ -83,18 +83,20 @@ javapackager {
     }
 
     macConfig {
-        vmArgs = ['-Djava.library.path=../Java']
+
     }
 }
 
 task packageMacGHActions(type: PackageTask, dependsOn: build) {
     jrePath = new File(System.getProperty("user.dir") + '/jre_mac')
     platform = 'mac'
+    vmArgs = ['-Djava.library.path=../Java']
 }
 
 // Put Mac JCEF app Contents directory contents into <project>/Libraries/mac64/jcef
 task packageMac(type: PackageTask, dependsOn: build) {
     platform = 'mac'
+    vmArgs = ['-Djava.library.path=../Java']
     doLast {
         // Ensure app manifest file isn't overwritten
         delete {
@@ -119,7 +121,7 @@ task packageWindows(type: PackageTask, dependsOn: build) {
     platform = 'windows'
     doLast {
         project.exec {
-            commandLine('cp', '-r', project.rootDir.path + '/Libraries/jcef/win64/', project.buildDir.path + '/RobotGame/jcef')
+            commandLine('cp', '-r', project.rootDir.path + '/Libraries/jcef/win64/', project.buildDir.path + '/RobotRecharge/jcef')
         }
     }
 }
@@ -134,7 +136,7 @@ task packageLinux(type: PackageTask, dependsOn: build) {
     platform = 'linux'
     doLast {
         project.exec {
-            commandLine('cp', '-r', project.rootDir.path + '/Libraries/jcef/linux64/', project.buildDir.path + '/RobotGame/jcef')
+            commandLine('cp', '-r', project.rootDir.path + '/Libraries/jcef/linux64/', project.buildDir.path + '/RobotRecharge/jcef')
         }
     }
 }
