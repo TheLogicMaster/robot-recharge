@@ -99,7 +99,10 @@ public class Block implements Renderable3D, Disposable, AssetConsumer {
     public void loadAssets(AssetManager assetManager) {
         if (asset == null)
             return;
-        assetManager.load("blocks/" + asset, modeled ? Model.class : Texture.class);
+        if (modeled) // Ternary compressed version causes GWT compilation issue
+            assetManager.load("blocks/" + asset,  Model.class);
+        else
+            assetManager.load("blocks/" + asset, Texture.class);
     }
 
     @Override
