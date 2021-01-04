@@ -30,7 +30,7 @@ public class AndroidGameServices extends GpgsClient implements GameServices {
         loadRewardedAd();
         purchaseManager = new PurchaseManagerGoogleBilling(context);
         PurchaseManagerConfig purchaseConfig = new PurchaseManagerConfig();
-        purchaseConfig.addOffer(new Offer().setType(OfferType.CONSUMABLE).setIdentifier("solutions"));
+        purchaseConfig.addOffer(new Offer().setType(OfferType.ENTITLEMENT).setIdentifier("solutions"));
         purchaseManager.install(new PurchaseObserver() {
             @Override
             public void handleInstall() {
