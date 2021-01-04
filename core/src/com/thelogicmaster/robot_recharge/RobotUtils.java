@@ -24,6 +24,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.thelogicmaster.robot_recharge.blocks.Charger;
 import com.thelogicmaster.robot_recharge.blocks.Teleporter;
 import com.thelogicmaster.robot_recharge.blocks.Trigger;
+import com.thelogicmaster.robot_recharge.blocks.TurnTable;
 import com.thelogicmaster.robot_recharge.objectives.EventCountObjective;
 import com.thelogicmaster.robot_recharge.objectives.EventsObjective;
 import com.thelogicmaster.robot_recharge.objectives.MaxLengthObjective;
@@ -111,6 +112,7 @@ public class RobotUtils {
         json.addClassTag("Trigger", Trigger.class);
         json.addClassTag("Teleporter", Teleporter.class);
         json.addClassTag("Charger", Charger.class);
+        json.addClassTag("TurnTable", TurnTable.class);
         json.addClassTag("EventsObjective", EventsObjective.class);
         json.addClassTag("EventCountObjective", EventCountObjective.class);
         json.addClassTag("MaxLengthObjective", MaxLengthObjective.class);
@@ -119,11 +121,9 @@ public class RobotUtils {
     }
 
     public static int getLevelIndex(String level) {
-        for (int i = 0; i < RobotRecharge.assets.levelInfo.size; i++) {
-            Gdx.app.log("a", RobotRecharge.assets.levelInfo.get(i).getName() + " " + level);
+        for (int i = 0; i < RobotRecharge.assets.levelInfo.size; i++)
             if (RobotRecharge.assets.levelInfo.get(i).getName().equals(level))
                 return i;
-        }
         return -1;
     }
 

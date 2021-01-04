@@ -12,10 +12,9 @@ import com.thelogicmaster.robot_recharge.blocks.Interactable;
 public class JavaScriptRobotController implements RobotController {
     // Static fields to circumvent weird js context issue or something
 
-    @SuppressWarnings("LibGDXStaticResource")
     private static Robot robot;
     private static RobotExecutionListener listener;
-    private static boolean fastForward, paused, stopped;
+    private static boolean fastForward, paused, stopped, waiting;
     private static final Vector3 tempVec3 = new Vector3();
     private static final Quaternion tempQuaternion = new Quaternion();
     private static int calls;
@@ -33,9 +32,10 @@ public class JavaScriptRobotController implements RobotController {
                 "       await delay($wnd.Robot.isFast() ? 10 : 20);\n" +
                 "       if ($wnd.Robot.isStopped())\n" +
                 "           return true;\n" +
-                "       if (!$wnd.Robot.isPaused())\n" +
-                "           time -= 20;\n" +
-                "       else if (!isPaused)\n" +
+                "       if (!$wnd.Robot.isPaused()) {\n" +
+                "           if (!$wnd.Robot.isWaiting())\n" +
+                "               time -= 20;\n" +
+                "       } else if (!isPaused)\n" +
                 "           $wnd.Robot.onPause();\n" +
                 "       isPaused = $wnd.Robot.isPaused();\n" +
                 "   }\n" +
@@ -45,6 +45,8 @@ public class JavaScriptRobotController implements RobotController {
                 "   $wnd.Robot.incrementCalls();\n" +
                 "   $wnd.Robot.loopAnimation('Armature|MoveForward');\n" +
                 "   for (let i = 0; i < Math.abs(distance); i++) {\n" +
+                "       if (await delayCheck(1))\n" +
+                "           return true;\n" +
                 "       if ($wnd.Robot.checkCrash(distance) || $wnd.Robot.checkFloor(distance)) {\n" +
                 "           $wnd.Robot.stopAnimation();\n" +
                 "           return;\n" +
@@ -103,6 +105,7 @@ public class JavaScriptRobotController implements RobotController {
         $wnd.Robot.stopAnimation = $entry(that.@com.thelogicmaster.robot_recharge.client.JavaScriptRobotController::stopAnimation());
         $wnd.Robot.isFast = $entry(that.@com.thelogicmaster.robot_recharge.client.JavaScriptRobotController::isFast());
         $wnd.Robot.isStopped = $entry(that.@com.thelogicmaster.robot_recharge.client.JavaScriptRobotController::isStopped());
+        $wnd.Robot.isWaiting = $entry(that.@com.thelogicmaster.robot_recharge.client.JavaScriptRobotController::isWaiting());
         $wnd.Robot.isPaused = $entry(that.@com.thelogicmaster.robot_recharge.client.JavaScriptRobotController::isPaused());
         $wnd.Robot.onDone = $entry(that.@com.thelogicmaster.robot_recharge.client.JavaScriptRobotController::onDone());
         $wnd.Robot.onPause = $entry(that.@com.thelogicmaster.robot_recharge.client.JavaScriptRobotController::onPause());
@@ -112,6 +115,7 @@ public class JavaScriptRobotController implements RobotController {
         $wnd.Robot.incrementCalls = $entry(that.@com.thelogicmaster.robot_recharge.client.JavaScriptRobotController::incrementCalls());
     }-*/;
 
+    @Override
     public void start() {
         if (paused) {
             paused = false;
@@ -119,16 +123,17 @@ public class JavaScriptRobotController implements RobotController {
         }
         stopped = false;
         calls = 0;
+        waiting = false;
         try {
             ScriptInjector.fromString("" +
-                    "(async function(){" +
+                    "(async function(){\n" +
                     code + "\n" +
-                    "})().then(interrupted => {" +
-                    "   if (interrupted)" +
-                    "       $wnd.Robot.onInterrupt();" +
-                    "   else" +
-                    "       $wnd.Robot.onDone();" +
-                    "})").inject();
+                    "})().then(interrupted => {\n" +
+                    "   if (interrupted)\n" +
+                    "       $wnd.Robot.onInterrupt();\n" +
+                    "   else\n" +
+                    "       $wnd.Robot.onDone();\n" +
+                    "})\n").inject();
         } catch (Exception e) {
             Gdx.app.error("JavaScriptRobotController", "Execution error", e);
             listener.onExecutionError(e);
@@ -139,17 +144,17 @@ public class JavaScriptRobotController implements RobotController {
         Position target = robot.getBlockPos().cpy().add(robot.getDirection().getVector().cpy().scl(Math.signum(distance)));
         robot.getBlockPos().set(target);
         target.toVector(robot.getPosition());
-        robot.getLevel().onRobotMove(robot);
+        robot.getLevel().onRobotMove();
     }
 
     public void subMove(int distance) {
         Vector3 step = tempVec3.set(robot.getDirection().getVector()).scl(Math.signum(distance) * Robot.speed * .02f);
         robot.getPosition().add(step);
-        robot.getLevel().onRobotSubMove(robot);
+        robot.getLevel().onRobotSubMove();
     }
 
     public void turn(int distance) {
-        Direction target = Direction.fromYaw(robot.getDirection().getQuaternion().getYaw() - distance * 90);
+        Direction target = Direction.fromYaw(robot.getDirection().getQuaternion().getYaw() - Math.signum(distance) * 90);
         robot.setDirection(target);
         robot.getRotation().set(robot.getDirection().getQuaternion().cpy());
     }
@@ -179,7 +184,7 @@ public class JavaScriptRobotController implements RobotController {
         Position target = robot.getBlockPos().cpy().add(robot.getDirection().getVector().cpy().scl(Math.signum(distance)));
         boolean crash = robot.getLevel().getBlock(target) != null && robot.getLevel().getBlock(target).isSolid();
         if (crash)
-            robot.getLevel().onRobotCrash(robot, target);
+            robot.getLevel().onRobotCrash(target);
         return crash;
     }
 
@@ -228,19 +233,33 @@ public class JavaScriptRobotController implements RobotController {
         listener.onExecutionPaused();
     }
 
+    @Override
     public void stop() {
         stopped = true;
         paused = false;
     }
 
+    @Override
+    public void setWaiting(boolean waiting) {
+        JavaScriptRobotController.waiting = waiting;
+    }
+
+    @Override
+    public boolean isWaiting() {
+        return waiting;
+    }
+
+    @Override
     public void pause() {
         paused = true;
     }
 
+    @Override
     public void setFastForward(boolean fastForward) {
         JavaScriptRobotController.fastForward = fastForward;
     }
 
+    @Override
     public boolean isRunning() {
         return !stopped && !paused;
     }
@@ -250,6 +269,7 @@ public class JavaScriptRobotController implements RobotController {
         return calls;
     }
 
+    @Override
     public void setCode(String code) {
         code = code.replaceAll("(Robot\\.)((move|turn|sleep)\\(.+?\\))(;*)", "if (await $2) return true;");
         code = code.replaceAll("(Robot\\.(speak|interact)\\(.+?\\))", "\\$wnd.$1");

@@ -16,8 +16,8 @@ public class Teleporter extends Block {
     public Teleporter() {
     }
 
-    public Teleporter(Position position, boolean cubic, String asset, float transparency, Color color, Position target) {
-        super(position, cubic, asset, transparency, color);
+    public Teleporter(Position position, Direction direction, boolean cubic, String asset, float transparency, Color color, Position target) {
+        super(position, direction, cubic, asset, transparency, color);
         this.target = target;
     }
 

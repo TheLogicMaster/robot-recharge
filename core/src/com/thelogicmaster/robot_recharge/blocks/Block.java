@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g3d.*;
 import com.badlogic.gdx.graphics.g3d.attributes.BlendingAttribute;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.decals.DecalBatch;
+import com.badlogic.gdx.math.Quaternion;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
@@ -18,17 +19,20 @@ public class Block implements Renderable3D, Disposable, AssetConsumer {
     private String asset;
     private float transparency;
     private Color color;
+    private Direction direction = Direction.NORTH;
 
     protected transient ModelInstance model;
     protected transient Model modelSource;
     protected transient Level level;
-    protected final transient Vector3 tempVec3 = new Vector3();
+    protected transient Quaternion rotation;
+    private final transient Vector3 tempVec3 = new Vector3();
 
     public Block() {
     }
 
-    public Block(Position position, boolean modeled, String asset, float transparency, Color color) {
+    public Block(Position position, Direction direction, boolean modeled, String asset, float transparency, Color color) {
         this.position = position;
+        this.direction = direction;
         this.modeled = modeled;
         this.asset = asset;
         this.transparency = transparency;
@@ -43,6 +47,7 @@ public class Block implements Renderable3D, Disposable, AssetConsumer {
         if (block.model != null)
             model = new ModelInstance(block.model);
         color = block.color;
+        direction = block.direction;
     }
 
     public Block copy() {
@@ -55,6 +60,14 @@ public class Block implements Renderable3D, Disposable, AssetConsumer {
 
     public Position getPosition() {
         return position;
+    }
+
+    public Direction getDirection() {
+        return direction;
+    }
+
+    public void setDirection(Direction direction) {
+        this.direction = direction;
     }
 
     public boolean isModeled() {
@@ -75,6 +88,7 @@ public class Block implements Renderable3D, Disposable, AssetConsumer {
 
     public void setup(Level level) {
         this.level = level;
+        rotation = direction.getQuaternion().cpy();
     }
 
     public boolean isSolid() {
@@ -85,10 +99,7 @@ public class Block implements Renderable3D, Disposable, AssetConsumer {
     public void loadAssets(AssetManager assetManager) {
         if (asset == null)
             return;
-        if (modeled)
-            assetManager.load("blocks/" + asset, Model.class);
-        else
-            assetManager.load("blocks/" + asset, Texture.class);
+        assetManager.load("blocks/" + asset, modeled ? Model.class : Texture.class);
     }
 
     @Override
@@ -126,7 +137,7 @@ public class Block implements Renderable3D, Disposable, AssetConsumer {
     @Override
     public void render(ModelBatch modelBatch, DecalBatch decalBatch, Environment environment, float delta) {
         if (model != null) {
-            model.transform.setToTranslation(position.toVector(tempVec3).add(Constants.blockOffset));
+            model.transform.set(position.toVector(tempVec3).add(Constants.blockOffset), rotation);
             modelBatch.render(model, environment);
         }
     }

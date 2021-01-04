@@ -11,12 +11,9 @@ import com.badlogic.gdx.utils.Array;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.dom.client.Element;
-import com.google.gwt.user.client.Window;
 import com.thelogicmaster.robot_recharge.*;
 import com.thelogicmaster.robot_recharge.code.CodeEngine;
 import com.thelogicmaster.robot_recharge.code.Language;
-import de.golfgl.gdxgamesvcs.GameJoltClient;
-import de.golfgl.gdxgamesvcs.NoGameServiceClient;
 
 import java.util.HashMap;
 

@@ -8,7 +8,8 @@
     <extend-configuration-property name="gdx.reflect.include" value="com.thelogicmaster.robot_recharge.structures"/>
     <extend-configuration-property name="gdx.reflect.include" value="com.thelogicmaster.robot_recharge.objectives"/>
     <extend-configuration-property name="gdx.reflect.include" value="com.thelogicmaster.robot_recharge.Position"/>
-    <extend-configuration-property name="gdx.reflect.include" value="com.thelogicmaster.robot_recharge.BlockPlaceholder"/>
+    <extend-configuration-property name="gdx.reflect.include"
+                                   value="com.thelogicmaster.robot_recharge.BlockPlaceholder"/>
     <extend-configuration-property name="gdx.reflect.include" value="com.thelogicmaster.robot_recharge.LevelData"/>
     <extend-configuration-property name="gdx.reflect.include" value="com.thelogicmaster.robot_recharge.LevelSave"/>
     <extend-configuration-property name="gdx.reflect.include" value="com.thelogicmaster.robot_recharge.code.Command"/>

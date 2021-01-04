@@ -10,7 +10,6 @@ import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 import com.badlogic.gdx.utils.Array;
 import com.thelogicmaster.robot_recharge.code.CodeEngine;
 import com.thelogicmaster.robot_recharge.code.Language;
-import de.golfgl.gdxgamesvcs.NoGameServiceClient;
 
 import java.util.HashMap;
 

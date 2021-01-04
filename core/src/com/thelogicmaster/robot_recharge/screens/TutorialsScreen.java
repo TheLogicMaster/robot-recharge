@@ -2,12 +2,13 @@ package com.thelogicmaster.robot_recharge.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
+import com.badlogic.gdx.scenes.scene2d.ui.List;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Array;
 import com.thelogicmaster.robot_recharge.*;
-import com.thelogicmaster.robot_recharge.code.Language;
-import com.thelogicmaster.robot_recharge.ui.IterativeStack;
 import com.thelogicmaster.robot_recharge.ui.LanguageSelect;
 import com.thelogicmaster.robot_recharge.ui.PaddedTextButton;
 

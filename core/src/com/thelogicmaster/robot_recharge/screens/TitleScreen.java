@@ -16,8 +16,8 @@ public class TitleScreen extends RobotScreen {
     private final LevelScreen levelScreen;
     private final SettingsScreen settingsScreen;
     private final TutorialsScreen tutorialsScreen;
-    private final IterativeStack googleSignInStack;
     private final CloudScreen cloudScreen;
+    private final IterativeStack googleSignInStack;
 
     public TitleScreen() {
         setBackground(new Texture("titleScreen.png"));
@@ -118,5 +118,7 @@ public class TitleScreen extends RobotScreen {
         super.dispose();
         settingsScreen.dispose();
         levelScreen.dispose();
+        tutorialsScreen.dispose();
+        cloudScreen.dispose();
     }
 }

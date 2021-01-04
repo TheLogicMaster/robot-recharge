@@ -29,7 +29,7 @@ import com.thelogicmaster.robot_recharge.code.Solution;
 import com.thelogicmaster.robot_recharge.objectives.Objective;
 import com.thelogicmaster.robot_recharge.structures.Structure;
 
-public class Level implements Disposable, Renderable3D, AssetConsumer, RobotListener, RobotExecutionListener {
+public class Level implements Disposable, Renderable3D, AssetConsumer, RobotExecutionListener {
 
     private final int xSize, ySize, zSize;
     private final float levelHeight;
@@ -257,20 +257,17 @@ public class Level implements Disposable, Renderable3D, AssetConsumer, RobotList
         events.add(event);
     }
 
-    @Override
-    public void onRobotMove(Robot robot) {
+    public void onRobotMove() {
         for (RobotListener listener : new OrderedSet.OrderedSetIterator<>(robotListeners))
             listener.onRobotMove(robot);
     }
 
-    @Override
-    public void onRobotSubMove(Robot robot) {
+    public void onRobotSubMove() {
         for (RobotListener listener : new OrderedSet.OrderedSetIterator<>(robotListeners))
             listener.onRobotSubMove(robot);
     }
 
-    @Override
-    public void onRobotCrash(Robot robot, Position crash) {
+    public void onRobotCrash(Position crash) {
         for (RobotListener listener : new OrderedSet.OrderedSetIterator<>(robotListeners))
             listener.onRobotCrash(robot, crash);
     }
@@ -383,7 +380,12 @@ public class Level implements Disposable, Renderable3D, AssetConsumer, RobotList
                 "xSize=" + xSize +
                 ", ySize=" + ySize +
                 ", zSize=" + zSize +
+                ", levelHeight=" + levelHeight +
                 ", structures=" + structures +
+                ", objectives=" + objectives +
+                ", levelModelName='" + levelModelName + '\'' +
+                ", backgroundName='" + backgroundName + '\'' +
+                ", solutions=" + solutions +
                 '}';
     }
 }

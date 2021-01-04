@@ -8,7 +8,10 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 import com.kotcrab.vis.ui.util.dialog.Dialogs;
 import com.kotcrab.vis.ui.util.dialog.OptionDialogAdapter;
-import com.thelogicmaster.robot_recharge.*;
+import com.thelogicmaster.robot_recharge.LevelInfo;
+import com.thelogicmaster.robot_recharge.LevelSave;
+import com.thelogicmaster.robot_recharge.RobotRecharge;
+import com.thelogicmaster.robot_recharge.RobotUtils;
 import com.thelogicmaster.robot_recharge.code.Language;
 import com.thelogicmaster.robot_recharge.ui.IterativeStack;
 import com.thelogicmaster.robot_recharge.ui.LanguageSelect;
@@ -28,7 +31,7 @@ public class LevelScreen extends MenuScreen {
 
         // Level description
         final IterativeStack stack = new IterativeStack();
-        for (LevelInfo level: levels) {
+        for (LevelInfo level : levels) {
             Table table = new Table(skin);
             table.setBackground("buttonTen");
             Label levelInfo = new Label(level.getDescription(), skin);
@@ -62,7 +65,7 @@ public class LevelScreen extends MenuScreen {
         Table levelButtonTable = new Table(skin);
         levelButtonTable.pad(0, 10, 0, 10);
         levelButtons = new Array<>();
-        for (final LevelInfo levelInfo: levels) {
+        for (final LevelInfo levelInfo : levels) {
             TextButton button = new PaddedTextButton(levelInfo.getName(), skin, "levelLabel");
             button.setProgrammaticChangeEvents(false);
             levelButtons.add(button);

@@ -1,8 +1,10 @@
 package com.thelogicmaster.robot_recharge.ui;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.List;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Array;
 import com.thelogicmaster.robot_recharge.code.Solution;
@@ -15,7 +17,7 @@ public class SolutionsDialog extends RobotDialog {
         setBackground("windowTen");
 
         final IterativeStack descriptionStack = new IterativeStack();
-        for (Solution solution: solutions) {
+        for (Solution solution : solutions) {
             Label label = new Label(solution.getDescription(), skin, "small");
             label.setWrap(true);
             descriptionStack.add(label);

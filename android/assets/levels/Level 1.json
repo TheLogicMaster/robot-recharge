@@ -1,6 +1,6 @@
 {
   xSize: 30
-  ySize: 30
+  ySize: 1
   zSize: 30
   levelHeight: 30
   levelModel: level.g3db

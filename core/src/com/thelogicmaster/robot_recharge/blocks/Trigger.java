@@ -15,8 +15,8 @@ public class Trigger extends Block {
     public Trigger() {
     }
 
-    public Trigger(Position position, boolean cubic, String asset, float transparency, Color color, boolean destroy, boolean oneShot) {
-        super(position, cubic, asset, transparency, color);
+    public Trigger(Position position, Direction direction, boolean cubic, String asset, float transparency, Color color, boolean destroy, boolean oneShot) {
+        super(position, direction, cubic, asset, transparency, color);
         this.destroy = destroy;
         this.oneShot = oneShot;
     }

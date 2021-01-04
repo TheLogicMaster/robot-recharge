@@ -50,6 +50,7 @@ public class RobotAssets implements Disposable {
         skin.add("infoFont", fontSmall);
         skin.add("menuFont", fontNormal);
         skin.add("titleFont", fontLarge);
+        skin.add("hugeFont", fontHuge);
         skin.addRegions(new TextureAtlas("skin.atlas"));
         skin.load(Gdx.files.internal("skin.json"));
         skin.get("default-horizontal", Slider.SliderStyle.class).knob.setMinHeight(50);
@@ -69,10 +70,7 @@ public class RobotAssets implements Disposable {
 
     @Override
     public void dispose() {
-        fontHuge.dispose();
-        fontLarge.dispose();
-        fontNormal.dispose();
-        fontSmall.dispose();
+        // Fonts are managed by skin
         skin.dispose();
         assets.dispose();
     }

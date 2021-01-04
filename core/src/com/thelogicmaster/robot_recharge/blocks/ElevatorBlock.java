@@ -2,6 +2,9 @@ package com.thelogicmaster.robot_recharge.blocks;
 
 import com.thelogicmaster.robot_recharge.structures.Elevator;
 
+/**
+ * Represents one block of an elevator shaft
+ */
 public class ElevatorBlock extends Block {
     private final Elevator elevator;
 
@@ -11,6 +14,6 @@ public class ElevatorBlock extends Block {
 
     @Override
     public boolean isSolid() {
-        return super.isSolid();
+        return elevator.getFloor() != getPosition().y;
     }
 }

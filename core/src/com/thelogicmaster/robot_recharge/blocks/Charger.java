@@ -8,8 +8,8 @@ public class Charger extends Block {
     public Charger() {
     }
 
-    public Charger(Position position, boolean modeled, String asset, float transparency, Color color) {
-        super(position, modeled, asset, transparency, color);
+    public Charger(Position position, Direction direction, boolean modeled, String asset, float transparency, Color color) {
+        super(position, direction, modeled, asset, transparency, color);
     }
 
     public Charger(Charger charger) {

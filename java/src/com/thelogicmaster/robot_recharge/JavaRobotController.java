@@ -7,9 +7,11 @@ import com.thelogicmaster.robot_recharge.blocks.Interactable;
 import com.thelogicmaster.robot_recharge.code.CodeEngine;
 import com.thelogicmaster.robot_recharge.code.ExecutionListener;
 
+@SuppressWarnings("BusyWait")
 public class JavaRobotController implements RobotController, ExecutionListener, IRobot {
 
-    private volatile boolean running;
+    private volatile boolean running; // Code is currently running
+    private volatile boolean waiting; // Waiting for something in the level like an elevator
     private final Object lock = new Object();
     private volatile Thread thread;
     private final CodeEngine engine;
@@ -25,6 +27,7 @@ public class JavaRobotController implements RobotController, ExecutionListener, 
         this.robot = robot;
     }
 
+    @Override
     public void setFastForward(boolean fastForward) {
         this.fastForward = fastForward;
     }
@@ -44,12 +47,11 @@ public class JavaRobotController implements RobotController, ExecutionListener, 
     }
 
     private void ensureRunning() throws InterruptedException {
-        if (running)
+        if (running && !waiting)
             return;
-        listener.onExecutionPaused();
-        synchronized (lock) {
-            lock.wait();
-        }
+        if (!running)
+            listener.onExecutionPaused();
+        lockThread();
     }
 
     @Override
@@ -58,7 +60,7 @@ public class JavaRobotController implements RobotController, ExecutionListener, 
         for (int i = 0; i < Math.abs(distance); i++) {
             Quaternion step = new Quaternion(Vector3.Y, Robot.rotationSpeed * .01f * -Math.signum(distance));
             double time = 90 / Robot.rotationSpeed;
-            Direction target = Direction.fromYaw(robot.getDirection().getQuaternion().getYaw() - distance * 90);
+            Direction target = Direction.fromYaw(robot.getDirection().getQuaternion().getYaw() - Math.signum(distance) * 90);
             while (time > 0) {
                 ensureRunning();
                 robot.getRotation().mul(step);
@@ -75,6 +77,7 @@ public class JavaRobotController implements RobotController, ExecutionListener, 
         incrementCalls();
         robot.loopAnimation("Armature|MoveForward");
         for (int i = 0; i < Math.abs(distance); i++) {
+            ensureRunning();
             Vector3 step = robot.getDirection().getVector().cpy().scl(Math.signum(distance) * Robot.speed * .01f);
             Position target = robot.getBlockPos().cpy().add(robot.getDirection().getVector().cpy().scl(Math.signum(distance)));
             if (robot.getLevel().isPositionInvalid(target) || (target.y > 0 && robot.getLevel().getBlock(target.cpy().add(0, -1, 0)) == null)) {
@@ -83,7 +86,7 @@ public class JavaRobotController implements RobotController, ExecutionListener, 
                 return;
             } else if (robot.getLevel().getBlock(target) != null && robot.getLevel().getBlock(target).isSolid()) {
                 robot.stopAnimation();
-                robot.getLevel().onRobotCrash(robot, target);
+                robot.getLevel().onRobotCrash(target);
                 // Todo: Play sound effect and crash animation
                 return;
             }
@@ -91,13 +94,11 @@ public class JavaRobotController implements RobotController, ExecutionListener, 
             while (time > 0) {
                 ensureRunning();
                 robot.getPosition().add(step);
-                robot.getLevel().onRobotSubMove(robot);
+                robot.getLevel().onRobotSubMove();
                 Thread.sleep(fastForward ? 5 : 10);
                 time -= .01f;
             }
-            robot.getBlockPos().set(target);
-            target.toVector(robot.getPosition());
-            robot.getLevel().onRobotMove(robot);
+            robot.setPosition(target);
         }
         robot.stopAnimation();
     }
@@ -127,20 +128,48 @@ public class JavaRobotController implements RobotController, ExecutionListener, 
             ((Interactable) block).interact(robot);
     }
 
-    public void start() {
-        running = true;
-        if (thread != null) {
-            synchronized (lock) {
-                lock.notify();
-            }
-        } else {
-            calls = 0;
-            thread = engine.run(this, code, this);
+    private void lockThread() throws InterruptedException {
+        synchronized (lock) {
+            lock.wait();
         }
     }
 
+    private void unlockThread() {
+        synchronized (lock) {
+            lock.notify();
+        }
+    }
+
+    @Override
+    public void start() {
+        running = true;
+        if (thread != null) {
+            if (!waiting)
+                unlockThread();
+        } else {
+            calls = 0;
+            thread = engine.run(this, code, this);
+            waiting = false;
+        }
+    }
+
+    @Override
     public void pause() {
         running = false;
+        if (waiting)
+            listener.onExecutionPaused();
+    }
+
+    @Override
+    public void setWaiting(boolean waiting) {
+        this.waiting = waiting;
+        if (!waiting)
+            unlockThread();
+    }
+
+    @Override
+    public boolean isWaiting() {
+        return waiting;
     }
 
     @Override
@@ -148,6 +177,7 @@ public class JavaRobotController implements RobotController, ExecutionListener, 
         return running;
     }
 
+    @Override
     public void stop() {
         if (thread != null) {
             thread.interrupt();

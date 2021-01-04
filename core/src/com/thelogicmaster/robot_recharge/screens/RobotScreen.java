@@ -133,6 +133,10 @@ public abstract class RobotScreen implements Screen {
         return disposable;
     }
 
+    public Stage getStage() {
+        return stage;
+    }
+
     @Override
     public void dispose() {
         for (Disposable disposable : disposables)

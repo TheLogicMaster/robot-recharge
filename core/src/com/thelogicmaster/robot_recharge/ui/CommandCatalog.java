@@ -27,7 +27,7 @@ public class CommandCatalog extends Window {
         final Array<Command> commands = RobotAssets.json.fromJson(Array.class, Command.class,
                 Gdx.files.internal("language/commands-" + language.name().toLowerCase() + ".json"));
         Array<String> commandLabels = new Array<>();
-        for (Command command: commands) {
+        for (Command command : commands) {
             commandLabels.add(command.getName());
             Table infoTable = new Table(skin);
             infoTable.setBackground("windowTen");

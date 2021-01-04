@@ -24,6 +24,7 @@ android {
     }
     packagingOptions {
         exclude 'META-INF/robovm/ios/robovm.xml'
+        // Contains outdated libpng library that prevents Play Store approval
         exclude 'lib/armeabi-v7a/libjniopencv_highgui.so'
     }
     defaultConfig {

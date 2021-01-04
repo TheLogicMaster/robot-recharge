@@ -1,6 +1,5 @@
 package com.thelogicmaster.robot_recharge.client;
 
-import com.badlogic.gdx.Gdx;
 import com.google.gwt.user.client.Window;
 import com.thelogicmaster.robot_recharge.BuildConfig;
 import com.thelogicmaster.robot_recharge.GameServices;

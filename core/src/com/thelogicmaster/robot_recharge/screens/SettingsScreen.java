@@ -4,12 +4,14 @@ import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
+import com.badlogic.gdx.scenes.scene2d.ui.Slider;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.badlogic.gdx.utils.Base64Coder;
-import com.thelogicmaster.robot_recharge.*;
-import de.golfgl.gdxgamesvcs.gamestate.ILoadGameStateResponseListener;
-import de.golfgl.gdxgamesvcs.gamestate.ISaveGameStateResponseListener;
+import com.thelogicmaster.robot_recharge.RobotRecharge;
+import com.thelogicmaster.robot_recharge.RobotUtils;
+import com.thelogicmaster.robot_recharge.WindowMode;
 
 public class SettingsScreen extends MenuScreen {
 
@@ -58,9 +60,10 @@ public class SettingsScreen extends MenuScreen {
             settingsTable.add(new Label("Window Mode", skin)).padBottom(300);
             final SelectBox<WindowMode> windowModeSelect = new SelectBox<>(skin);
             windowModeSelect.setItems(RobotRecharge.platformUtils.getWindowModes());
-            windowModeSelect.setSelected(RobotRecharge.prefs.getWindowMode());
-            if (Gdx.app.getType() != Application.ApplicationType.WebGL)
+            if (Gdx.app.getType() != Application.ApplicationType.WebGL) {
                 RobotRecharge.platformUtils.setWindowMode(windowModeSelect.getSelected());
+                windowModeSelect.setSelected(RobotRecharge.prefs.getWindowMode());
+            }
             windowModeSelect.addListener(new ChangeListener() {
                 @Override
                 public void changed(ChangeEvent event, Actor actor) {

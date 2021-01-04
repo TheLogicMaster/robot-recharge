@@ -14,7 +14,7 @@ public class DesktopGameServices extends GameJoltClient implements GameServices 
     public DesktopGameServices() {
         initialize("570956", BuildConfig.GAME_JOLT_KEY);
         File credentialsFile = new File(".gj-credentials");
-        try(BufferedReader reader = new BufferedReader(new FileReader(credentialsFile))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(credentialsFile))) {
             reader.readLine();
             setCredentials(reader.readLine(), reader.readLine());
         } catch (IOException e) {

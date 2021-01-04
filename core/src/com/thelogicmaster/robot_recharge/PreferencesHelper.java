@@ -10,7 +10,6 @@ public class PreferencesHelper {
 
     public PreferencesHelper() {
         preferences = Gdx.app.getPreferences("RobotRecharge");
-        ;
     }
 
     public int getUnlockedLevel() {
@@ -90,5 +89,30 @@ public class PreferencesHelper {
     public void setWindowMode(WindowMode mode) {
         preferences.putString("windowMode", mode.name());
         preferences.flush();
+    }
+
+    public boolean hasGameJoltCredentials() {
+        return !preferences.getString("gameJoltUsername").equals("")
+                && !preferences.getString("gameJoltToken").equals("");
+    }
+
+    public void setGameJoltCredentials(String username, String token) {
+        preferences.putString("gameJoltUsername", username);
+        preferences.putString("gameJoltToken", token);
+        preferences.flush();
+    }
+
+    public void clearGameJoltCredentials() {
+        preferences.remove("gameJoltUsername");
+        preferences.remove("gameJoltToken");
+        preferences.flush();
+    }
+
+    public String getGameJoltUsername() {
+        return preferences.getString("gameJoltUsername");
+    }
+
+    public String getGameJoltToken() {
+        return preferences.getString("gameJoltToken");
     }
 }

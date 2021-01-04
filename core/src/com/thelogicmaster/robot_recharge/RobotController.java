@@ -15,4 +15,8 @@ public interface RobotController {
     boolean isRunning();
 
     int getCalls();
+
+    void setWaiting(boolean waiting);
+
+    boolean isWaiting();
 }

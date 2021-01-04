@@ -16,6 +16,9 @@ public abstract class Structure implements AssetConsumer, Renderable3D, Disposab
     protected Position position;
     protected int rotation;
 
+    public Structure() {
+    }
+
     public Structure(Position position, int rotation) {
         this.position = position;
         this.rotation = rotation;
