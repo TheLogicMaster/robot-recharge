@@ -17,4 +17,21 @@ public class IOSGameServices extends GameCenterClient implements GameServices {
     public boolean needsCredentials() {
         return false;
     }
+
+    @Override
+    public void showRewardAd(RewardAdListener listener) {
+    }
+
+    @Override
+    public String getInAppPrice(String id) {
+        return null;
+    }
+
+    @Override
+    public void inAppPurchase(String id, InAppPurchaseListener listener) {
+    }
+
+    @Override
+    public void restorePurchases(RestorePurchasesListener listener) {
+    }
 }

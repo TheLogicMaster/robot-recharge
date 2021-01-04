@@ -25,4 +25,21 @@ public class GwtGameServices extends GameJoltClient implements GameServices {
     public boolean needsCredentials() {
         return userToken == null || userName == null;
     }
+
+    @Override
+    public void showRewardAd(RewardAdListener listener) {
+    }
+
+    @Override
+    public String getInAppPrice(String id) {
+        return null;
+    }
+
+    @Override
+    public void inAppPurchase(String id, InAppPurchaseListener listener) {
+    }
+
+    @Override
+    public void restorePurchases(RestorePurchasesListener listener) {
+    }
 }

@@ -115,4 +115,19 @@ public class PreferencesHelper {
     public String getGameJoltToken() {
         return preferences.getString("gameJoltToken");
     }
+
+    public boolean hasUnlockedSolutions() {
+        return preferences.contains("purchases/solutions");
+    }
+
+    public void unlockSolutions() {
+        preferences.putBoolean("purchases/solutions", true);
+        preferences.flush();
+    }
+
+    public void restorePurchases(Array<String> purchases) {
+        for (String purchase: purchases)
+            preferences.putBoolean("purchases/" + purchase, true);
+        preferences.flush();
+    }
 }

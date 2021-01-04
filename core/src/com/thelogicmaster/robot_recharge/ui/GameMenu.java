@@ -1,17 +1,26 @@
 package com.thelogicmaster.robot_recharge.ui;
 
+import com.badlogic.gdx.Application;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.kotcrab.vis.ui.util.dialog.Dialogs;
+import com.kotcrab.vis.ui.util.dialog.OptionDialogAdapter;
+import com.thelogicmaster.robot_recharge.GameServices;
 import com.thelogicmaster.robot_recharge.RobotRecharge;
 import com.thelogicmaster.robot_recharge.RobotUtils;
 
 public class GameMenu extends RobotDialog {
 
+    private boolean unlockedSolution;
+    private final GameMenuListener listener;
+
     public GameMenu(Skin skin, final GameMenuListener listener) {
         super("Menu", skin);
+        this.listener = listener;
 
         final CheckBox gridCheckbox = new CheckBox("Show Grid", skin);
         add(gridCheckbox).padBottom(20).fillX().row();
@@ -46,9 +55,30 @@ public class GameMenu extends RobotDialog {
         solutionsButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
+                if (Gdx.app.getType() == Application.ApplicationType.Android && !unlockedSolution)
+                    Dialogs.showOptionDialog(getStage(), "View Solutions", "Watch an ad to view the level solutions?",
+                            Dialogs.OptionDialogType.YES_CANCEL, new OptionDialogAdapter() {
+                                @Override
+                                public void yes() {
+                                    RobotUtils.playNavigationSound();
+                                    RobotRecharge.gameServices.showRewardAd(new GameServices.RewardAdListener() {
+                                        @Override
+                                        public void onAdReward() {
+                                            showSolution();
+                                            unlockedSolution = true;
+                                        }
+                                    });
+                                }
+
+                                @Override
+                                public void cancel() {
+                                    RobotUtils.playNavigationSound();
+                                }
+                            });
+                else
+                    showSolution();
                 RobotUtils.playNavigationSound();
-                setVisible(false);
-                listener.onSolutions();
+
             }
         });
         exitButton.addListener(new ChangeListener() {
@@ -69,6 +99,11 @@ public class GameMenu extends RobotDialog {
         });
 
         gridCheckbox.setChecked(true);
+    }
+
+    private void showSolution() {
+        setVisible(false);
+        listener.onSolutions();
     }
 
     public interface GameMenuListener {

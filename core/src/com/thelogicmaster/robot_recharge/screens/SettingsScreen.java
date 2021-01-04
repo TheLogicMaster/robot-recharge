@@ -4,14 +4,14 @@ import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
-import com.badlogic.gdx.scenes.scene2d.ui.Slider;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.utils.Array;
+import com.thelogicmaster.robot_recharge.GameServices;
 import com.thelogicmaster.robot_recharge.RobotRecharge;
 import com.thelogicmaster.robot_recharge.RobotUtils;
 import com.thelogicmaster.robot_recharge.WindowMode;
+import com.thelogicmaster.robot_recharge.ui.PaddedTextButton;
 
 public class SettingsScreen extends MenuScreen {
 
@@ -56,6 +56,38 @@ public class SettingsScreen extends MenuScreen {
         settingsTable.add(effectsSlider).padBottom(10).padRight(20).left();
         settingsTable.add(effectsPercent).padBottom(10).minWidth(50).row();
 
+        if (Gdx.app.getType() == Application.ApplicationType.Android) {
+            final TextButton buySolutionsButton = new PaddedTextButton("Unlock All Level Solutions", skin);
+            buySolutionsButton.addListener(new ChangeListener() {
+                @Override
+                public void changed(ChangeEvent event, Actor actor) {
+                    RobotRecharge.gameServices.inAppPurchase("solutions", new GameServices.InAppPurchaseListener() {
+                        @Override
+                        public void onPurchase() {
+                            RobotRecharge.prefs.unlockSolutions();
+                            buySolutionsButton.setDisabled(true);
+                        }
+                    });
+                }
+            });
+            buySolutionsButton.setDisabled(RobotRecharge.prefs.hasUnlockedSolutions());
+            settingsTable.add(buySolutionsButton).colspan(3).padBottom(10).row();
+
+            TextButton restoreButton = new PaddedTextButton("Restore Purchases", skin);
+            restoreButton.addListener(new ChangeListener() {
+                @Override
+                public void changed(ChangeEvent event, Actor actor) {
+                    RobotRecharge.gameServices.restorePurchases(new GameServices.RestorePurchasesListener() {
+                        @Override
+                        public void onRestorePurchases(Array<String> purchases) {
+                            RobotRecharge.prefs.restorePurchases(purchases);
+                        }
+                    });
+                }
+            });
+            settingsTable.add(restoreButton).colspan(3).padBottom(10).row();
+        }
+
         if (RobotRecharge.platformUtils.getWindowModes().size > 0) {
             settingsTable.add(new Label("Window Mode", skin)).padBottom(300);
             final SelectBox<WindowMode> windowModeSelect = new SelectBox<>(skin);
@@ -72,8 +104,10 @@ public class SettingsScreen extends MenuScreen {
                     RobotRecharge.prefs.setWindowMode(windowModeSelect.getSelected());
                 }
             });
-            settingsTable.add(windowModeSelect).padBottom(300).growX().colspan(2).row();
+            settingsTable.add(windowModeSelect).growX().colspan(2).row();
         }
+
+        settingsTable.add().padBottom(300).row();
 
         stage.addActor(settingsTable);
     }
