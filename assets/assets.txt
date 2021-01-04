@@ -11,6 +11,7 @@ d:blocks:blocks:0:application/unknown:1
 i:blocks/test.png:blocks/test-725dafd660ba4f15ce7f3c2f07df13e8.png:450:image/png:1
 i:particle.png:particle-80cd2ffbc5f91c261029362bd8e97f65.png:1821:image/png:1
 i:settingsScreen.png:settingsScreen-5cf362271ae9336ec2b24a6b966e85ad.png:204447:image/png:1
+i:Elevator.png:Elevator-4adca1efa55dbe5bf467ca85f404dfdc.png:12651:image/png:1
 i:icon128.png:icon128-c0820b07c36a2c0f502b83fc3d592d41.png:7157:image/png:1
 i:titleScreen.png:titleScreen-2eb553f42f8db963fc31477e4ee50d9c.png:223196:image/png:1
 d:language:language:0:application/unknown:1
@@ -21,6 +22,7 @@ t:language/commands-python.json:language/commands-python-8ac63426f61ac92192fb30e
 a:menuNavigate.wav:menuNavigate-de76e2b289507f54e16486fb49d4d6d9.wav:10532:audio/x-wav:1
 b:robot.g3db:robot-68c682efa39c84d87e522ecc1d643534.g3db:196846:application/unknown:1
 b:monog.ttf:monog-548d0c410759e24267c2fbcf42087d36.ttf:40388:application/unknown:1
+b:Elevator.g3db:Elevator-afb970e877a5db8327010fbf838c408e.g3db:1380:application/unknown:1
 i:skin.png:skin-8b48f1cbaf9a6585769c904e0dc9db05.png:153376:image/png:1
 i:icon32.png:icon32-be994bf2e3958e215c92e032d493256d.png:1187:image/png:1
 i:hud.png:hud-577eb2241f8da4aa2f3ad1cc063b5a49.png:10891:image/png:1
@@ -28,11 +30,14 @@ i:levelScreen.png:levelScreen-59178ae08fa101826d324f1ec07abe44.png:265377:image/
 a:titleMusic.wav:titleMusic-aa699a94ef5cfc6dc82b17edf1b368d5.wav:6196714:audio/x-wav:1
 d:levels:levels:0:application/unknown:1
 b:levels/level.g3db:levels/level-aa049f86ee6f51aed15fcc5a00511bd5.g3db:1388:application/unknown:1
+t:levels/Tutorial 2.json:levels/Tutorial 2-061abec054cbc2fc7a143bcbad7af335.json:1865:application/unknown:1
 i:levels/background0.png:levels/background0-6b14e182cd51b78fe38df71e0e18012d.png:172593:image/png:1
 t:levels/Tutorial 1.json:levels/Tutorial 1-061abec054cbc2fc7a143bcbad7af335.json:1865:application/unknown:1
+t:levels/Level 3.json:levels/Level 3-5317b4ad3144243ef5cb337a7c16abd7.json:1003:application/unknown:1
 i:levels/Material Base Color.png:levels/Material Base Color-cd6f8de5e843d0d0df42000f461b2a24.png:146687:image/png:1
-t:levels/Level 2.json:levels/Level 2-c31b26022dd6463cf411cdc09db1f8d4.json:1003:application/unknown:1
-t:levels/Level 1.json:levels/Level 1-b424ae103e059077ebc3bcdd96ab0802.json:1850:application/unknown:1
+t:levels/Level 2.json:levels/Level 2-e7e98f6d96b6b414929a7c4eeda35812.json:1274:application/unknown:1
+t:levels/Level 1.json:levels/Level 1-f0a052636d47ec5d9def9e020ca521ad.json:1849:application/unknown:1
+t:levels/Tutorial 3.json:levels/Tutorial 3-061abec054cbc2fc7a143bcbad7af335.json:1865:application/unknown:1
 i:levels/background1.png:levels/background1-1e05c43c397ed4a6f60a4155e81b96e8.png:149147:image/png:1
 i:Antenna.png:Antenna-950e549130d2a47071c5c119b8ba3e8f.png:20566:image/png:1
 t:tutorials.json:tutorials-ebde2e5b85a157fb70b5116643e081e7.json:210:application/unknown:1
