@@ -18,6 +18,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.utils.Disableable;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.Base64Coder;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -31,6 +32,7 @@ import com.thelogicmaster.robot_recharge.objectives.MaxLengthObjective;
 import com.thelogicmaster.robot_recharge.objectives.MaxTimeObjective;
 import com.thelogicmaster.robot_recharge.structures.BlocksStructure;
 import com.thelogicmaster.robot_recharge.structures.Elevator;
+import de.golfgl.gdxgamesvcs.gamestate.ILoadGameStateResponseListener;
 
 public class RobotUtils {
 
@@ -171,5 +173,24 @@ public class RobotUtils {
         return Gdx.app.getType() == Application.ApplicationType.Desktop
                 || Gdx.app.getType() == Application.ApplicationType.WebGL
                 || Gdx.app.getType() == Application.ApplicationType.Applet;
+    }
+
+    public static void restorePurchases() {
+        RobotRecharge.gameServices.restorePurchases(new GameServices.RestorePurchasesListener() {
+            @Override
+            public void onRestorePurchases(Array<String> purchases) {
+                RobotRecharge.prefs.restorePurchases(purchases);
+            }
+        });
+    }
+
+    public static void loadCloudSave() {
+        RobotRecharge.gameServices.loadGameState("save", new ILoadGameStateResponseListener() {
+            @Override
+            public void gsGameStateLoaded(byte[] gameState) {
+                if (gameState != null)
+                    RobotRecharge.prefs.loadGameSave(RobotAssets.json.fromJson(GameSave.class, Base64Coder.decodeString(new String(gameState))));
+            }
+        });
     }
 }

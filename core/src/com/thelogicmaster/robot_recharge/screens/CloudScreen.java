@@ -52,13 +52,7 @@ public class CloudScreen extends MenuScreen {
         loadButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                RobotRecharge.gameServices.loadGameState("save", new ILoadGameStateResponseListener() {
-                    @Override
-                    public void gsGameStateLoaded(byte[] gameState) {
-                        if (gameState != null)
-                            RobotRecharge.prefs.loadGameSave(RobotAssets.json.fromJson(GameSave.class, Base64Coder.decodeString(new String(gameState))));
-                    }
-                });
+                RobotUtils.loadCloudSave();
             }
         });
         saveButton.addListener(new ChangeListener() {

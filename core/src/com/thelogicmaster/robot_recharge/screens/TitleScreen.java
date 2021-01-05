@@ -63,7 +63,7 @@ public class TitleScreen extends RobotScreen {
                 }
             });
             googleSignInStack.add(signOutButton);
-            googleSignInStack.setPosition(10, 10);
+            googleSignInStack.setPosition(10, uiViewport.getWorldHeight() - 138);
             googleSignInStack.pack();
             stage.addActor(googleSignInStack);
         } else

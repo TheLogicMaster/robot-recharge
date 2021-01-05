@@ -104,9 +104,11 @@ jobs:
         run: |
           echo sdk.dir=$ANDROID_HOME >> ./local.properties
           echo gameJoltKey=$GAME_JOLT_KEY >> ./local.properties
+          echo chaquopy.license=$CHAQUOPY_KEY >> ./local.properties
           cat ./local.properties
         env:
           GAME_JOLT_KEY: ${{ secrets.GAME_JOLT_KEY }}
+          CHAQUOPY_KEY: ${{ secrets.CHAQUOPY_KEY }}
           
       - name: Package Linux release
         run: ./gradlew packageLinuxGHActions

@@ -15,6 +15,8 @@ import com.thelogicmaster.robot_recharge.ui.PaddedTextButton;
 
 public class SettingsScreen extends MenuScreen {
 
+    private final Label solutionsPrice;
+
     public SettingsScreen(RobotScreen previousScreen) {
         super(previousScreen);
         setBackground(new Texture("settingsScreen.png"));
@@ -71,22 +73,21 @@ public class SettingsScreen extends MenuScreen {
                 }
             });
             buySolutionsButton.setDisabled(RobotRecharge.prefs.hasUnlockedSolutions());
-            settingsTable.add(buySolutionsButton).colspan(3).padBottom(10).row();
+            settingsTable.add(buySolutionsButton).colspan(2).padBottom(10).padRight(5);
+            solutionsPrice = new Label(RobotRecharge.gameServices.getInAppPrice("solutions"), skin);
+            settingsTable.add(solutionsPrice).padBottom(10).row();
 
             TextButton restoreButton = new PaddedTextButton("Restore Purchases", skin);
             restoreButton.addListener(new ChangeListener() {
                 @Override
                 public void changed(ChangeEvent event, Actor actor) {
-                    RobotRecharge.gameServices.restorePurchases(new GameServices.RestorePurchasesListener() {
-                        @Override
-                        public void onRestorePurchases(Array<String> purchases) {
-                            RobotRecharge.prefs.restorePurchases(purchases);
-                        }
-                    });
+                    RobotUtils.restorePurchases();
                 }
             });
             settingsTable.add(restoreButton).colspan(3).padBottom(10).row();
         }
+        else
+            solutionsPrice = null;
 
         if (RobotRecharge.platformUtils.getWindowModes().size > 0) {
             settingsTable.add(new Label("Window Mode", skin)).padBottom(300);
@@ -110,5 +111,12 @@ public class SettingsScreen extends MenuScreen {
         settingsTable.add().padBottom(300).row();
 
         stage.addActor(settingsTable);
+    }
+
+    @Override
+    public void render(float delta) {
+        super.render(delta);
+        if (solutionsPrice != null)
+            solutionsPrice.setText(RobotRecharge.gameServices.getInAppPrice("solutions") + "$");
     }
 }

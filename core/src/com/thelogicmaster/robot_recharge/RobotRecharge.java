@@ -4,17 +4,20 @@ import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.utils.Array;
 import com.kotcrab.vis.ui.util.dialog.Dialogs;
+import com.kotcrab.vis.ui.util.dialog.OptionDialogAdapter;
 import com.thelogicmaster.robot_recharge.code.BlocklyEditor;
 import com.thelogicmaster.robot_recharge.code.CodeEngine;
 import com.thelogicmaster.robot_recharge.code.Language;
 import com.thelogicmaster.robot_recharge.screens.RobotScreen;
 import com.thelogicmaster.robot_recharge.screens.TitleScreen;
 import de.golfgl.gdxgamesvcs.IGameServiceListener;
+import de.golfgl.gdxgamesvcs.gamestate.IFetchGameStatesListResponseListener;
 
 import java.util.Map;
 
-public class RobotRecharge extends Game {
+public class RobotRecharge extends Game implements IGameServiceListener {
 
     public static RobotRecharge instance;
     public static BlocklyEditor blocksEditor;
@@ -29,7 +32,7 @@ public class RobotRecharge extends Game {
     private TitleScreen titleScreen;
 
     public RobotRecharge(Map<Language, CodeEngine> codeEngines, BlocklyEditor blocksEditor, PlatformUtils platformUtils, TTSEngine ttsEngine, GameServices gameServices, boolean debug) {
-        // Todo: switch to config object instead of countless constructor args
+        // Todo: switch to config object instead of countless constructor args, or directly setting fields from platforms
         RobotRecharge.blocksEditor = blocksEditor;
         RobotRecharge.codeEngines = codeEngines;
         RobotRecharge.platformUtils = platformUtils;
@@ -46,23 +49,7 @@ public class RobotRecharge extends Game {
         assets = new RobotAssets();
         titleScreen = new TitleScreen();
 
-        gameServices.setListener(new IGameServiceListener() {
-            @Override
-            public void gsOnSessionActive() {
-                Gdx.app.log("GameServices", "Active");
-            }
-
-            @Override
-            public void gsOnSessionInactive() {
-                Gdx.app.log("GameServices", "Inactive");
-            }
-
-            @Override
-            public void gsShowErrorToUser(GsErrorType et, String msg, Throwable t) {
-                Gdx.app.error("GameServices", "Error: " + et + " :" + msg, t);
-                Dialogs.showErrorDialog(((RobotScreen) getScreen()).getStage(), msg, t);
-            }
-        });
+        gameServices.setListener(this);
 
         if (RobotUtils.usesGameJolt() && gameServices.needsCredentials() && prefs.hasGameJoltCredentials())
             gameServices.setCredentials(prefs.getGameJoltUsername(), prefs.getGameJoltToken());
@@ -109,5 +96,47 @@ public class RobotRecharge extends Game {
         super.dispose();
         assets.dispose();
         titleScreen.dispose();
+    }
+
+    @Override
+    public void gsOnSessionActive() {
+        if (prefs.hasRestoredSave())
+            return;
+        gameServices.fetchGameStates(new IFetchGameStatesListResponseListener() {
+            @Override
+            public void onFetchGameStatesListResponse(Array<String> gameStates) {
+                prefs.setRestoredSave();
+                if (gameStates.size == 0)
+                    return;
+                boolean purchases = Gdx.app.getType() == Application.ApplicationType.Android;
+                Dialogs.showOptionDialog(((RobotScreen) getScreen()).getStage(),
+                        "Restore " + (purchases ? "Purchases and " : "") + "Save Data?",
+                        "It looks like you have played before, \nattempt to restore " +
+                                (purchases ? "purchases and" : "") + " save data?",
+                        Dialogs.OptionDialogType.YES_CANCEL, new OptionDialogAdapter() {
+                            @Override
+                            public void yes() {
+                                RobotUtils.playNavigationSound();
+                                RobotUtils.restorePurchases();
+                                RobotUtils.loadCloudSave();
+                            }
+
+                            @Override
+                            public void cancel() {
+                                RobotUtils.playNavigationSound();
+                            }
+                        });
+            }
+        });
+    }
+
+    @Override
+    public void gsOnSessionInactive() {
+    }
+
+    @Override
+    public void gsShowErrorToUser(GsErrorType et, String msg, Throwable t) {
+        Gdx.app.error("GameServices", "Error: " + et + " :" + msg, t);
+        Dialogs.showErrorDialog(((RobotScreen) getScreen()).getStage(), msg, t);
     }
 }

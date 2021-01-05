@@ -117,7 +117,7 @@ public class PreferencesHelper {
     }
 
     public boolean hasUnlockedSolutions() {
-        return preferences.contains("purchases/solutions");
+        return preferences.getBoolean("purchases/solutions");
     }
 
     public void unlockSolutions() {
@@ -126,8 +126,17 @@ public class PreferencesHelper {
     }
 
     public void restorePurchases(Array<String> purchases) {
-        for (String purchase: purchases)
+        for (String purchase : purchases)
             preferences.putBoolean("purchases/" + purchase, true);
+        preferences.flush();
+    }
+
+    public boolean hasRestoredSave() {
+        return preferences.getBoolean("hasRestoredSave");
+    }
+
+    public void setRestoredSave() {
+        preferences.putBoolean("hasRestoredSave", true);
         preferences.flush();
     }
 }

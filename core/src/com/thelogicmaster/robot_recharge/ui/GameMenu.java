@@ -55,7 +55,7 @@ public class GameMenu extends RobotDialog {
         solutionsButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                if (Gdx.app.getType() == Application.ApplicationType.Android && !unlockedSolution)
+                if (Gdx.app.getType() == Application.ApplicationType.Android && !unlockedSolution && !RobotRecharge.prefs.hasUnlockedSolutions())
                     Dialogs.showOptionDialog(getStage(), "View Solutions", "Watch an ad to view the level solutions?",
                             Dialogs.OptionDialogType.YES_CANCEL, new OptionDialogAdapter() {
                                 @Override
