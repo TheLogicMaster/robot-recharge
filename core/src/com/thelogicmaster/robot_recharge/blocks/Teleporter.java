@@ -1,6 +1,5 @@
 package com.thelogicmaster.robot_recharge.blocks;
 
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g3d.particles.ParticleEffect;
 import com.badlogic.gdx.math.Vector3;
@@ -57,14 +56,14 @@ public class Teleporter extends Block {
     }
 
     @Override
-    public void loadAssets(AssetManager assetManager) {
+    public void loadAssets(AssetMultiplexer assetManager) {
         super.loadAssets(assetManager);
         assetManager.load("teleportOut.pfx", ParticleEffect.class);
         assetManager.load("teleportIn.pfx", ParticleEffect.class);
     }
 
     @Override
-    public void assetsLoaded(AssetManager assetManager) {
+    public void assetsLoaded(AssetMultiplexer assetManager) {
         super.assetsLoaded(assetManager);
         effectIn = assetManager.get("teleportIn.pfx");
         effectOut = assetManager.get("teleportOut.pfx");

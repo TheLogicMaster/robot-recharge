@@ -40,7 +40,7 @@ public class TurnTable extends Block {
             public void onRobotMove(Robot robot) {
                 if (robot.getBlockPos().equals(getPosition()) && robot.getDirection() != getDirection()) {
                     robot.setWaiting(true);
-                    clockWise = (robot.getDirection().getAngle() + 90) % 360 == getDirection().getAngle();
+                    clockWise = (robot.getDirection().getYaw() + 90) % 360 == getDirection().getYaw();
                     turning = true;
                 }
             }
@@ -54,7 +54,7 @@ public class TurnTable extends Block {
         if (!turning)
             return;
         progress += delta * speed;
-        float robotAngle = level.getRobot().getDirection().getAngle();
+        float robotAngle = level.getRobot().getDirection().getYaw();
         level.getRobot().getRotation().set(Vector3.Y, robotAngle + progress * (clockWise ? 90f : -90f));
         if (progress > 1f) {
             progress = 0;

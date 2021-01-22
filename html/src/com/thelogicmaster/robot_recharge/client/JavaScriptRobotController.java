@@ -47,8 +47,16 @@ public class JavaScriptRobotController implements RobotController {
                 "   for (let i = 0; i < Math.abs(distance); i++) {\n" +
                 "       if (await delayCheck(1))\n" +
                 "           return true;\n" +
-                "       if ($wnd.Robot.checkCrash(distance) || $wnd.Robot.checkFloor(distance)) {\n" +
-                "           $wnd.Robot.stopAnimation();\n" +
+                "       if ($wnd.Robot.checkFloor(distance)) {\n" +
+                "           $wnd.Robot.playAnimationSpeed('Armature|Ledge', 0.3);\n" +
+                "           await delayCheck(1500);\n" +
+                "           return;\n" +
+                "       }\n" +
+                "       if ($wnd.Robot.checkCrash(distance)) {\n" +
+                "           $wnd.Robot.playAnimationSpeed('Armature|Crash', 1);\n" +
+                "           await delayCheck(100);\n" +
+                "           $wnd.Robot.onCrash(distance);\n" +
+                "           await delayCheck(500);\n" +
                 "           return;\n" +
                 "       }\n" +
                 "       let time = 1 / " + Robot.speed + ";\n" +
@@ -101,6 +109,7 @@ public class JavaScriptRobotController implements RobotController {
         $wnd.Robot.turn = $entry(that.@com.thelogicmaster.robot_recharge.client.JavaScriptRobotController::turn(I));
         $wnd.Robot.subTurn = $entry(that.@com.thelogicmaster.robot_recharge.client.JavaScriptRobotController::subTurn(I));
         $wnd.Robot.playAnimation = $entry(that.@com.thelogicmaster.robot_recharge.client.JavaScriptRobotController::playAnimation(Ljava/lang/String;));
+        $wnd.Robot.playAnimationSpeed = $entry(that.@com.thelogicmaster.robot_recharge.client.JavaScriptRobotController::playAnimationSpeed(Ljava/lang/String;F));
         $wnd.Robot.loopAnimation = $entry(that.@com.thelogicmaster.robot_recharge.client.JavaScriptRobotController::loopAnimation(Ljava/lang/String;));
         $wnd.Robot.stopAnimation = $entry(that.@com.thelogicmaster.robot_recharge.client.JavaScriptRobotController::stopAnimation());
         $wnd.Robot.isFast = $entry(that.@com.thelogicmaster.robot_recharge.client.JavaScriptRobotController::isFast());
@@ -112,6 +121,7 @@ public class JavaScriptRobotController implements RobotController {
         $wnd.Robot.onInterrupt = $entry(that.@com.thelogicmaster.robot_recharge.client.JavaScriptRobotController::onInterrupt());
         $wnd.Robot.checkFloor = $entry(that.@com.thelogicmaster.robot_recharge.client.JavaScriptRobotController::checkFloor(I));
         $wnd.Robot.checkCrash = $entry(that.@com.thelogicmaster.robot_recharge.client.JavaScriptRobotController::checkCrash(I));
+        $wnd.Robot.onCrash = $entry(that.@com.thelogicmaster.robot_recharge.client.JavaScriptRobotController::onCrash(I));
         $wnd.Robot.incrementCalls = $entry(that.@com.thelogicmaster.robot_recharge.client.JavaScriptRobotController::incrementCalls());
     }-*/;
 
@@ -168,6 +178,10 @@ public class JavaScriptRobotController implements RobotController {
         robot.playAnimation(animation);
     }
 
+    public void playAnimationSpeed(String animation, float speed) {
+        robot.playAnimation(animation, 1, speed);
+    }
+
     public void loopAnimation(String animation) {
         robot.loopAnimation(animation);
     }
@@ -180,26 +194,29 @@ public class JavaScriptRobotController implements RobotController {
         calls++;
     }
 
+    public void onCrash(int distance) {
+        Position target = robot.getBlockPos().cpy().add(robot.getDirection(), (int) Math.signum(distance));
+        robot.getLevel().onRobotCrash(target);
+    }
+
     public boolean checkCrash(int distance) {
-        Position target = robot.getBlockPos().cpy().add(robot.getDirection().getVector().cpy().scl(Math.signum(distance)));
-        boolean crash = robot.getLevel().getBlock(target) != null && robot.getLevel().getBlock(target).isSolid();
-        if (crash)
-            robot.getLevel().onRobotCrash(target);
-        return crash;
+        Position target = robot.getBlockPos().cpy().add(robot.getDirection(), (int) Math.signum(distance));
+        return robot.getLevel().getBlock(target) != null && robot.getLevel().getBlock(target).isSolid();
     }
 
     public boolean checkFloor(int distance) {
-        Position target = robot.getBlockPos().cpy().add(robot.getDirection().getVector().cpy().scl(Math.signum(distance)));
-        return robot.getLevel().isPositionInvalid(target) || (target.y > 0 && robot.getLevel().getBlock(target.cpy().add(0, -1, 0)) == null);
+        Position target = robot.getBlockPos().cpy().add(robot.getDirection(), (int) Math.signum(distance));
+        Block floor = robot.getLevel().getBlock(target.cpy().add(0, -1, 0));
+        return robot.getLevel().isPositionInvalid(target) || (target.y > 0 && (floor == null || !floor.isSolid()));
     }
 
     public void speak(String message) {
-        calls++;
+        incrementCalls();
         robot.textToSpeech(message);
     }
 
     public void interact() {
-        calls++;
+        incrementCalls();
         Block block = robot.getLevel().getBlock(robot.getBlockPos().cpy().add(robot.getDirection().getVector()));
         if (block instanceof Interactable)
             ((Interactable) block).interact(robot);

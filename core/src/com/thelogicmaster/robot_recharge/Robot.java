@@ -111,7 +111,7 @@ public class Robot implements Disposable, Renderable3D {
         if (!isRunning())
             delta = 0;
         if (!controller.isWaiting())
-            animator.update(fastForward ? 2 * delta : delta);
+            animator.update(delta);
         rotation.nor();
         model.transform.set(tempVec3.set(position).add(Constants.blockOffset), tempRot.set(rotation).mul(rotOffset));
         modelBatch.render(model, environment);
@@ -158,13 +158,17 @@ public class Robot implements Disposable, Renderable3D {
         });
     }
 
-    public void playAnimation(final String animation, final int loopCount) {
+    public void playAnimation(final String animation, final int loopCount, final float speed) {
         Gdx.app.postRunnable(new Runnable() {
             @Override
             public void run() {
-                animator.setAnimation(animation, loopCount);
+                animator.setAnimation(animation, loopCount, speed, null);
             }
         });
+    }
+
+    public void playAnimation(final String animation, final int loopCount) {
+        playAnimation(animation, loopCount, 1);
     }
 
     public void playAnimation(String animation) {
@@ -175,8 +179,21 @@ public class Robot implements Disposable, Renderable3D {
         playAnimation(animation, -1);
     }
 
+    public void blendAnimation(final String animation, final float blendTime) {
+        Gdx.app.postRunnable(new Runnable() {
+            @Override
+            public void run() {
+                animator.animate(animation, blendTime);
+            }
+        });
+    }
+
     public void stopAnimation() {
         animator.setAnimation(null);
+    }
+
+    public AnimationController getAnimator() {
+        return animator;
     }
 
     public int getCalls() {

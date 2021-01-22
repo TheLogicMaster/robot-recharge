@@ -5,7 +5,9 @@ import com.thelogicmaster.robot_recharge.objectives.Objective;
 
 public interface LevelExecutionListener {
 
-    void onLevelFail(Array<Objective> failed);
+    void onLevelIncomplete(Array<Objective> failed);
+
+    void onLevelFail(String reason);
 
     void onLevelComplete(float completionTime, int length, int calls);
 

@@ -10,6 +10,12 @@ import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.decals.CameraGroupStrategy;
 import com.badlogic.gdx.graphics.g3d.decals.DecalBatch;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
+import com.badlogic.gdx.graphics.g3d.particles.ParticleEffect;
+import com.badlogic.gdx.graphics.g3d.particles.ParticleEffectLoader;
+import com.badlogic.gdx.graphics.g3d.particles.ParticleSystem;
+import com.badlogic.gdx.graphics.g3d.particles.batches.BillboardParticleBatch;
+import com.badlogic.gdx.graphics.g3d.particles.batches.ModelInstanceParticleBatch;
+import com.badlogic.gdx.graphics.g3d.particles.batches.PointSpriteParticleBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -45,7 +51,7 @@ public class GameScreen extends RobotScreen implements LevelExecutionListener {
     private final Level level;
     private final DecalBatch decalBatch;
     private final ModelBatch modelBatch;
-    private final LevelFailDialog levelFailDialog;
+    private final LevelIncompleteDialog levelIncompleteDialog;
     private final LevelCompleteDialog levelCompleteDialog;
     private final SolutionsDialog solutionsDialog;
 
@@ -53,8 +59,8 @@ public class GameScreen extends RobotScreen implements LevelExecutionListener {
         this.levelSave = levelSave;
 
         // Load assets
-        assetManager.load("robot.g3db", Model.class);
-        assetManager.load("hud.png", Texture.class);
+        assets.load("robot.g3db", Model.class);
+        assets.load("hud.png", Texture.class);
 
         // Setup camera and environment
         modelBatch = new ModelBatch();
@@ -76,11 +82,23 @@ public class GameScreen extends RobotScreen implements LevelExecutionListener {
         inputMultiplexer.addProcessor(controller);
         controller.setDisabled(true);
 
+        ParticleSystem particleSystem = new ParticleSystem();
+        PointSpriteParticleBatch pointSpriteBatch = new PointSpriteParticleBatch();
+        pointSpriteBatch.setCamera(viewport.getCamera());
+        particleSystem.add(pointSpriteBatch);
+        BillboardParticleBatch billboardBatch = new BillboardParticleBatch();
+        billboardBatch.setCamera(viewport.getCamera());
+        particleSystem.add(billboardBatch);
+        particleSystem.add(new ModelInstanceParticleBatch());
+        ParticleEffectLoader.ParticleEffectLoadParameter particleParameter =
+                new ParticleEffectLoader.ParticleEffectLoadParameter(particleSystem.getBatches());
+        assets.getManager(0).setLoader(ParticleEffect.class, new PreconfiguredParticleEffectLoader(particleParameter));
+
         // Load level
         level = new Level(RobotAssets.json.fromJson(LevelData.class, Gdx.files.internal("levels/" + levelSave.getLevel() + ".json")),
-                this, viewport, RobotRecharge.codeEngines.get(levelSave.getLanguage()), levelSave.usingBlocks());
+                this, viewport, particleSystem, RobotRecharge.codeEngines.get(levelSave.getLanguage()), levelSave.usingBlocks());
         addDisposable(level);
-        level.loadAssets(assetManager);
+        level.loadAssets(assets);
 
         // Create loading bar
         loadingBar = new ProgressBar(-20f, 100f, 1f, false, skin);
@@ -237,9 +255,9 @@ public class GameScreen extends RobotScreen implements LevelExecutionListener {
         stage.addActor(objectivesDialog);
 
         // Level Fail Dialog
-        levelFailDialog = new LevelFailDialog(skin, level.getObjectives(), levelSave.usingBlocks());
-        levelFailDialog.setBounds(uiViewport.getWorldWidth() / 2 - 500, uiViewport.getWorldHeight() / 2 - 200, 1000, 400);
-        stage.addActor(levelFailDialog);
+        levelIncompleteDialog = new LevelIncompleteDialog(skin, level.getObjectives(), levelSave.usingBlocks());
+        levelIncompleteDialog.setBounds(uiViewport.getWorldWidth() / 2 - 500, uiViewport.getWorldHeight() / 2 - 200, 1000, 400);
+        stage.addActor(levelIncompleteDialog);
 
         // Level Completion Dialog
         levelCompleteDialog = new LevelCompleteDialog(skin, levelSave, new LevelCompleteDialog.LevelCompleteListener() {
@@ -284,8 +302,8 @@ public class GameScreen extends RobotScreen implements LevelExecutionListener {
     @Override
     protected void doneLoading() {
         // Get assets
-        hud = assetManager.get("hud.png");
-        level.assetsLoaded(assetManager);
+        hud = assets.get("hud.png");
+        level.assetsLoaded(assets);
 
         // Setup level
         if (!levelSave.usingBlocks()) {
@@ -315,7 +333,7 @@ public class GameScreen extends RobotScreen implements LevelExecutionListener {
         spriteBatch.begin();
         RobotRecharge.assets.fontHuge.draw(spriteBatch, "Loading...", uiViewport.getWorldWidth() / 2 - 300,
                 uiViewport.getWorldHeight() / 2 + 100);
-        loadingBar.setValue(assetManager.getProgress() * 100);
+        loadingBar.setValue(assets.getProgress() * 100);
         loadingBar.act(delta);
         loadingBar.draw(spriteBatch, 1);
         spriteBatch.end();
@@ -368,9 +386,15 @@ public class GameScreen extends RobotScreen implements LevelExecutionListener {
     }
 
     @Override
-    public void onLevelFail(Array<Objective> failed) {
+    public void onLevelIncomplete(Array<Objective> failed) {
         controlPanel.disablePlay();
-        levelFailDialog.show(failed);
+        levelIncompleteDialog.show(failed);
+    }
+
+    @Override
+    public void onLevelFail(String reason) {
+        controlPanel.disablePlay();
+        // Todo: show dialog with reason
     }
 
     @Override

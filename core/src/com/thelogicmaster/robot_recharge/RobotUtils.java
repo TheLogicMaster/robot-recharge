@@ -31,7 +31,7 @@ import com.thelogicmaster.robot_recharge.objectives.EventsObjective;
 import com.thelogicmaster.robot_recharge.objectives.MaxLengthObjective;
 import com.thelogicmaster.robot_recharge.objectives.MaxTimeObjective;
 import com.thelogicmaster.robot_recharge.structures.BlocksStructure;
-import com.thelogicmaster.robot_recharge.structures.Elevator;
+import com.thelogicmaster.robot_recharge.structures.MovingPlatform;
 import de.golfgl.gdxgamesvcs.gamestate.ILoadGameStateResponseListener;
 
 public class RobotUtils {
@@ -110,7 +110,7 @@ public class RobotUtils {
     public static Json createJson() {
         Json json = new Json();
         json.addClassTag("BlockStructure", BlocksStructure.class);
-        json.addClassTag("Elevator", Elevator.class);
+        json.addClassTag("MovingPlatform", MovingPlatform.class);
         json.addClassTag("Trigger", Trigger.class);
         json.addClassTag("Teleporter", Teleporter.class);
         json.addClassTag("Charger", Charger.class);

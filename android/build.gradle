@@ -62,6 +62,9 @@ android {
             applicationIdSuffix ".debug"
             debuggable true
         }
+        debug_release {
+            debuggable true
+        }
     }
 }
 

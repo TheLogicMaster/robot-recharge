@@ -13,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.thelogicmaster.robot_recharge.AssetMultiplexer;
 import com.thelogicmaster.robot_recharge.Pair;
 import com.thelogicmaster.robot_recharge.RobotRecharge;
 import com.thelogicmaster.robot_recharge.RobotUtils;
@@ -26,7 +27,7 @@ public abstract class RobotScreen implements Screen {
     protected final Stage stage;
     protected final Viewport uiViewport;
     protected final SpriteBatch spriteBatch;
-    protected final AssetManager assetManager;
+    protected final AssetMultiplexer assets;
     protected final Skin skin;
     private final Array<Pair<String, Object>> debugValues;
     private final ArrayList<Disposable> disposables;
@@ -36,7 +37,8 @@ public abstract class RobotScreen implements Screen {
 
     public RobotScreen() {
         skin = RobotRecharge.assets.skin;
-        assetManager = RobotUtils.createAssetManager();
+        assets = new AssetMultiplexer();
+        assets.add(RobotUtils.createAssetManager());
         spriteBatch = new SpriteBatch();
         inputMultiplexer = new InputMultiplexer();
         uiCamera = new OrthographicCamera();
@@ -87,7 +89,7 @@ public abstract class RobotScreen implements Screen {
     }
 
     protected boolean isDoneLoading() {
-        return assetManager.update();
+        return assets.update();
     }
 
     @Override
@@ -141,7 +143,7 @@ public abstract class RobotScreen implements Screen {
     public void dispose() {
         for (Disposable disposable : disposables)
             disposable.dispose();
-        assetManager.dispose();
+        assets.dispose();
         stage.dispose();
         spriteBatch.dispose();
         if (background != null)

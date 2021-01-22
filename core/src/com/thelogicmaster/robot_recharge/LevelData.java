@@ -8,6 +8,8 @@ import com.thelogicmaster.robot_recharge.structures.Structure;
 public class LevelData {
     private int xSize, ySize, zSize;
     private float levelHeight;
+    private Direction startDirection;
+    private Position startPosition;
     private Array<Structure> structures;
     private Array<Objective> objectives;
     private Array<Solution> solutions;
@@ -44,6 +46,22 @@ public class LevelData {
 
     public void setLevelHeight(float levelHeight) {
         this.levelHeight = levelHeight;
+    }
+
+    public Direction getStartDirection() {
+        return startDirection;
+    }
+
+    public void setStartDirection(Direction startDirection) {
+        this.startDirection = startDirection;
+    }
+
+    public Position getStartPosition() {
+        return startPosition;
+    }
+
+    public void setStartPosition(Position startPosition) {
+        this.startPosition = startPosition;
     }
 
     public String getLevelModel() {

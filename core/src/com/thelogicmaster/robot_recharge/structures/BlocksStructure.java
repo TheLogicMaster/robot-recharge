@@ -1,12 +1,9 @@
 package com.thelogicmaster.robot_recharge.structures;
 
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
 import com.badlogic.gdx.utils.OrderedMap;
-import com.thelogicmaster.robot_recharge.BlockPlaceholder;
-import com.thelogicmaster.robot_recharge.Level;
-import com.thelogicmaster.robot_recharge.Position;
+import com.thelogicmaster.robot_recharge.*;
 import com.thelogicmaster.robot_recharge.blocks.Block;
 
 public class BlocksStructure extends Structure {
@@ -17,8 +14,8 @@ public class BlocksStructure extends Structure {
     public BlocksStructure() {
     }
 
-    public BlocksStructure(Position position, int rotation, OrderedMap<String, Block> templates, Array<BlockPlaceholder> blocks) {
-        super(position, rotation);
+    public BlocksStructure(Position position, Direction direction, OrderedMap<String, Block> templates, Array<BlockPlaceholder> blocks) {
+        super(position, direction);
         this.templates = templates;
         this.blocks = blocks;
     }
@@ -31,13 +28,13 @@ public class BlocksStructure extends Structure {
     }
 
     @Override
-    public void loadAssets(AssetManager assetManager) {
+    public void loadAssets(AssetMultiplexer assetManager) {
         for (ObjectMap.Entry<String, Block> entry : new OrderedMap.OrderedMapEntries<>(templates))
             entry.value.loadAssets(assetManager);
     }
 
     @Override
-    public void assetsLoaded(AssetManager assetManager) {
+    public void assetsLoaded(AssetMultiplexer assetManager) {
         for (ObjectMap.Entry<String, Block> entry : new OrderedMap.OrderedMapEntries<>(templates))
             entry.value.assetsLoaded(assetManager);
     }

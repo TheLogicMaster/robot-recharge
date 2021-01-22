@@ -64,7 +64,6 @@ public class CloudScreen extends MenuScreen {
                         RobotRecharge.prefs.getUnlockedLevel(), new ISaveGameStateResponseListener() {
                             @Override
                             public void onGameStateSaved(boolean success, String errorCode) {
-
                             }
                         });
             }

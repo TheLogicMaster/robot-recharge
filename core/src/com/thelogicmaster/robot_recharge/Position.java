@@ -6,6 +6,8 @@ public class Position {
 
     public int x, y, z;
 
+    private final Vector3 tempVector = new Vector3();
+
     public Position() {
     }
 
@@ -58,6 +60,10 @@ public class Position {
         return this;
     }
 
+    public Position add(Direction direction, int distance) {
+        return add(tempVector.set(direction.getVector()).scl(distance));
+    }
+
     public Position cpy() {
         return new Position(this);
     }
@@ -69,6 +75,10 @@ public class Position {
                 ", y=" + y +
                 ", z=" + z +
                 '}';
+    }
+
+    public boolean equalsVector(Vector3 vector) {
+        return x == (int)vector.x && y == (int)vector.y && z == (int)vector.z;
     }
 
     @Override

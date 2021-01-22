@@ -4,6 +4,8 @@
   zSize: 30
   levelHeight: 30
   levelModel: level.g3db
+  startDirection: NORTH
+  startPosition: {}
   background: background0.png
   structures: [
     {

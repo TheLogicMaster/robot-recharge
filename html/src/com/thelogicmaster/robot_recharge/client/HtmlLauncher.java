@@ -11,6 +11,8 @@ import com.badlogic.gdx.utils.Array;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.dom.client.Element;
+import com.google.gwt.dom.client.Style;
+import com.google.gwt.user.client.ui.Panel;
 import com.thelogicmaster.robot_recharge.*;
 import com.thelogicmaster.robot_recharge.code.CodeEngine;
 import com.thelogicmaster.robot_recharge.code.Language;
@@ -135,5 +137,17 @@ public class HtmlLauncher extends GwtApplication {
                 HtmlLauncher.super.onModuleLoad();
             }
         });
+    }
+
+    /*@Override
+    public Preloader.PreloaderCallback getPreloaderCallback() {
+        return createPreloaderPanel(GWT.getHostPageBaseURL() + "preload.png");
+    }*/
+
+    @Override
+    protected void adjustMeterPanel(Panel meterPanel, Style meterStyle) {
+        meterPanel.setStyleName("gdx-meter");
+        meterStyle.setProperty("backgroundColor", "#00ffff");
+        meterStyle.setProperty("backgroundImage", "none");
     }
 }

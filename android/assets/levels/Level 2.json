@@ -4,6 +4,10 @@
   zSize: 30
   levelHeight: 30
   levelModel: level.g3db
+  startDirection: NORTH
+  startPosition: {
+    y: 1
+  }
   background: background1.png
   structures: [
     {
@@ -37,14 +41,49 @@
             y: 2
           }
         }
+        {
+          block: block
+          position: {
+            x: 10
+            y: 2
+          }
+        }
+        {
+          block: block
+          position: {
+            x: 0
+          }
+        }
+        {
+          block: block
+          position: {
+            x: 1
+          }
+        }
+        {
+          block: block
+          position: {
+            x: 2
+          }
+        }
       ]
     }
     {
-      class: Elevator
+      class: MovingPlatform
       position: {
         x: 3
       }
-      height: 3
+      direction: UP
+      length: 3
+    }
+    {
+      class: MovingPlatform
+      position: {
+        x: 7
+        y: 2
+      }
+      direction: NORTH
+      length: 3
     }
   ]
   objectives: [

@@ -4,24 +4,21 @@ import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.decals.DecalBatch;
 import com.badlogic.gdx.utils.Disposable;
-import com.thelogicmaster.robot_recharge.AssetConsumer;
-import com.thelogicmaster.robot_recharge.Level;
-import com.thelogicmaster.robot_recharge.Position;
-import com.thelogicmaster.robot_recharge.Renderable3D;
+import com.thelogicmaster.robot_recharge.*;
 
 public abstract class Structure implements AssetConsumer, Renderable3D, Disposable {
 
-    private transient Level level;
+    protected transient Level level;
 
     protected Position position;
-    protected int rotation;
+    protected Direction direction;
 
     public Structure() {
     }
 
-    public Structure(Position position, int rotation) {
+    public Structure(Position position, Direction direction) {
         this.position = position;
-        this.rotation = rotation;
+        this.direction = direction;
     }
 
     @Override
@@ -57,11 +54,11 @@ public abstract class Structure implements AssetConsumer, Renderable3D, Disposab
         this.position = position;
     }
 
-    public int getRotation() {
-        return rotation;
+    public Direction getDirection() {
+        return direction;
     }
 
-    public void setRotation(int rotation) {
-        this.rotation = rotation;
+    public void setDirection(Direction direction) {
+        this.direction = direction;
     }
 }

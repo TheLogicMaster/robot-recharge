@@ -1,5 +1,6 @@
 package com.thelogicmaster.robot_recharge;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Quaternion;
 import com.badlogic.gdx.math.Vector3;
 import com.thelogicmaster.robot_recharge.blocks.Block;
@@ -72,6 +73,15 @@ public class JavaRobotController implements RobotController, ExecutionListener, 
         }
     }
 
+    private void delay(double duration) throws InterruptedException {
+        double time = duration * 1000;
+        while (time > 0) {
+            ensureRunning();
+            Thread.sleep(fastForward ? 5 : 10);
+            time -= 10;
+        }
+    }
+
     @Override
     public void move(int distance) throws InterruptedException {
         incrementCalls();
@@ -80,14 +90,21 @@ public class JavaRobotController implements RobotController, ExecutionListener, 
             ensureRunning();
             Vector3 step = robot.getDirection().getVector().cpy().scl(Math.signum(distance) * Robot.speed * .01f);
             Position target = robot.getBlockPos().cpy().add(robot.getDirection().getVector().cpy().scl(Math.signum(distance)));
-            if (robot.getLevel().isPositionInvalid(target) || (target.y > 0 && robot.getLevel().getBlock(target.cpy().add(0, -1, 0)) == null)) {
-                robot.stopAnimation();
-                // Todo: play almost falling off animation for ledges
+            Block floor = robot.getLevel().getBlock(target.cpy().add(0, -1, 0));
+            if (robot.getLevel().isPositionInvalid(target) || (target.y > 0 && (floor == null || !floor.isSolid()))) {
+                robot.playAnimation("Armature|Ledge");
+                delay(1);
+                // Todo: play sound effect
                 return;
             } else if (robot.getLevel().getBlock(target) != null && robot.getLevel().getBlock(target).isSolid()) {
-                robot.stopAnimation();
+                if (i == 0)
+                    robot.playAnimation("Armature|Crash");
+                else
+                    robot.getAnimator().animate("Armature|Crash", .05f);
+                delay(0.1);
                 robot.getLevel().onRobotCrash(target);
-                // Todo: Play sound effect and crash animation
+                delay(0.5);
+                // Todo: Play sound effect and fix animation blending
                 return;
             }
             double time = 1 / Robot.speed;
@@ -106,12 +123,7 @@ public class JavaRobotController implements RobotController, ExecutionListener, 
     @Override
     public void sleep(double duration) throws InterruptedException {
         incrementCalls();
-        double time = duration * 1000;
-        while (time > 0) {
-            ensureRunning();
-            Thread.sleep(fastForward ? 5 : 10);
-            time -= 10;
-        }
+        delay(duration);
     }
 
     @Override

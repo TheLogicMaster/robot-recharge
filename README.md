@@ -33,3 +33,5 @@ control the robot.
 - Tab to double space functionality in editor
 - IOS port of MaryTTS or Android MaryTTS
 - Make the UI not terrible
+- Infinite loop watchdogs using code regex expressions and throwing errors
+- Mobile HTML custom keyboard

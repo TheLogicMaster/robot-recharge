@@ -11,12 +11,12 @@ import com.badlogic.gdx.utils.Array;
 import com.thelogicmaster.robot_recharge.RobotUtils;
 import com.thelogicmaster.robot_recharge.objectives.Objective;
 
-public class LevelFailDialog extends RobotDialog {
+public class LevelIncompleteDialog extends RobotDialog {
 
     private final Array<Label> labels = new Array<>();
     private final boolean useBlocks;
 
-    public LevelFailDialog(Skin skin, Array<Objective> objectives, boolean useBlocks) {
+    public LevelIncompleteDialog(Skin skin, Array<Objective> objectives, boolean useBlocks) {
         super("Incomplete Objectives", skin);
 
         this.useBlocks = useBlocks;

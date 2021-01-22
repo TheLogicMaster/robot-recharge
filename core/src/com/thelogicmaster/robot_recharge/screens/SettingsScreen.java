@@ -6,7 +6,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.badlogic.gdx.utils.Array;
 import com.thelogicmaster.robot_recharge.GameServices;
 import com.thelogicmaster.robot_recharge.RobotRecharge;
 import com.thelogicmaster.robot_recharge.RobotUtils;
@@ -16,6 +15,7 @@ import com.thelogicmaster.robot_recharge.ui.PaddedTextButton;
 public class SettingsScreen extends MenuScreen {
 
     private final Label solutionsPrice;
+    private final TextButton buySolutionsButton;
 
     public SettingsScreen(RobotScreen previousScreen) {
         super(previousScreen);
@@ -59,7 +59,7 @@ public class SettingsScreen extends MenuScreen {
         settingsTable.add(effectsPercent).padBottom(10).minWidth(50).row();
 
         if (Gdx.app.getType() == Application.ApplicationType.Android) {
-            final TextButton buySolutionsButton = new PaddedTextButton("Unlock All Level Solutions", skin);
+            buySolutionsButton = new PaddedTextButton("Unlock All Level Solutions", skin);
             buySolutionsButton.addListener(new ChangeListener() {
                 @Override
                 public void changed(ChangeEvent event, Actor actor) {
@@ -67,14 +67,13 @@ public class SettingsScreen extends MenuScreen {
                         @Override
                         public void onPurchase() {
                             RobotRecharge.prefs.unlockSolutions();
-                            buySolutionsButton.setDisabled(true);
                         }
                     });
                 }
             });
-            buySolutionsButton.setDisabled(RobotRecharge.prefs.hasUnlockedSolutions());
+
             settingsTable.add(buySolutionsButton).colspan(2).padBottom(10).padRight(5);
-            solutionsPrice = new Label(RobotRecharge.gameServices.getInAppPrice("solutions"), skin);
+            solutionsPrice = new Label("", skin);
             settingsTable.add(solutionsPrice).padBottom(10).row();
 
             TextButton restoreButton = new PaddedTextButton("Restore Purchases", skin);
@@ -85,9 +84,10 @@ public class SettingsScreen extends MenuScreen {
                 }
             });
             settingsTable.add(restoreButton).colspan(3).padBottom(10).row();
-        }
-        else
+        } else {
             solutionsPrice = null;
+            buySolutionsButton = null;
+        }
 
         if (RobotRecharge.platformUtils.getWindowModes().size > 0) {
             settingsTable.add(new Label("Window Mode", skin)).padBottom(300);
@@ -116,7 +116,9 @@ public class SettingsScreen extends MenuScreen {
     @Override
     public void render(float delta) {
         super.render(delta);
-        if (solutionsPrice != null)
-            solutionsPrice.setText(RobotRecharge.gameServices.getInAppPrice("solutions") + "$");
+        if (solutionsPrice != null) {
+            solutionsPrice.setText(RobotRecharge.gameServices.getInAppPrice("solutions"));
+            buySolutionsButton.setDisabled(RobotRecharge.prefs.hasUnlockedSolutions());
+        }
     }
 }

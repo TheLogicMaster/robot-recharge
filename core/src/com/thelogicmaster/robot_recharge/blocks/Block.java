@@ -1,6 +1,5 @@
 package com.thelogicmaster.robot_recharge.blocks;
 
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g3d.*;
@@ -96,7 +95,7 @@ public class Block implements Renderable3D, Disposable, AssetConsumer {
     }
 
     @Override
-    public void loadAssets(AssetManager assetManager) {
+    public void loadAssets(AssetMultiplexer assetManager) {
         if (asset == null)
             return;
         if (modeled) // Ternary compressed version causes GWT compilation issue
@@ -106,7 +105,7 @@ public class Block implements Renderable3D, Disposable, AssetConsumer {
     }
 
     @Override
-    public void assetsLoaded(AssetManager assetManager) {
+    public void assetsLoaded(AssetMultiplexer assetManager) {
         if (asset == null)
             return;
         if (modeled)
@@ -119,7 +118,7 @@ public class Block implements Renderable3D, Disposable, AssetConsumer {
             if (color != null)
                 mat.set(ColorAttribute.createDiffuse(color));
             if (transparency > 0f)
-                mat.set(new BlendingAttribute(1 - transparency));
+                mat.set(new BlendingAttribute(1f - transparency));
         }
     }
 
@@ -127,7 +126,7 @@ public class Block implements Renderable3D, Disposable, AssetConsumer {
         this.transparency = transparency;
         if (model != null)
             for (Material mat : new Array.ArrayIterator<>(model.materials))
-                mat.set(new BlendingAttribute(1 - transparency));
+                mat.set(new BlendingAttribute(1f - transparency));
     }
 
     public void setColor(Color color) {

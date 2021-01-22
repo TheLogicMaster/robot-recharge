@@ -8,16 +8,24 @@ public enum Direction {
     NORTH(0, new Vector3(1, 0, 0)),
     WEST(90, new Vector3(0, 0, -1)),
     SOUTH(180, new Vector3(-1, 0, 0)),
-    EAST(270, new Vector3(0, 0, 1));
+    EAST(270, new Vector3(0, 0, 1)),
+    UP(new Vector3(0, 1, 0)),
+    DOWN(new Vector3(0, -1, 0));
 
     private final Quaternion quaternion;
     private final Vector3 vector;
-    private final int angle;
+    private final int yaw;
 
-    Direction(int angle, Vector3 vector) {
-        this.quaternion = new Quaternion(Vector3.Y, angle);
+    Direction(Vector3 vector) {
+        this.quaternion = new Quaternion();
         this.vector = vector;
-        this.angle = angle;
+        yaw = 0;
+    }
+
+    Direction(int yaw, Vector3 vector) {
+        this.quaternion = new Quaternion(Vector3.Y, yaw);
+        this.vector = vector;
+        this.yaw = yaw;
     }
 
     public Quaternion getQuaternion() {
@@ -28,8 +36,8 @@ public enum Direction {
         return vector;
     }
 
-    public int getAngle() {
-        return angle;
+    public int getYaw() {
+        return yaw;
     }
 
     public static Direction fromYaw(float yaw) {

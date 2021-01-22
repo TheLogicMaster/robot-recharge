@@ -26,11 +26,11 @@ public class LevelCompleteDialog extends RobotDialog {
         add(completionLength = new Label("", skin, "small")).left().row();
         add(completionCalls = new Label("", skin, "small")).left().row();
 
-        TextButton closeButton = new TextButton("Close", skin);
+        TextButton closeButton = new PaddedTextButton("Close", skin);
         Table buttonTable = new Table(skin);
         buttonTable.add(closeButton).expandX().left();
 
-        TextButton exitButton = new TextButton("Exit", skin);
+        TextButton exitButton = new PaddedTextButton("Exit", skin);
         buttonTable.add(exitButton).expandX();
 
         Array<LevelInfo> levels = RobotRecharge.assets.levelInfo;
@@ -41,7 +41,7 @@ public class LevelCompleteDialog extends RobotDialog {
                 break;
             }
         final String next = index >= levels.size || index == -1 ? null : levels.get(index).getName();
-        TextButton nextButton = new TextButton("Next Level", skin);
+        TextButton nextButton = new PaddedTextButton("Next Level", skin);
         nextButton.setDisabled(next == null);
         buttonTable.add(nextButton).expandX().right();
         add(buttonTable).bottom().expand().fillX();

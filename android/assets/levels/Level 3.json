@@ -4,24 +4,35 @@
   zSize: 30
   levelHeight: 30
   levelModel: level.g3db
+  startDirection: NORTH
+  startPosition: {}
   background: background1.png
   structures: [
     {
       class: BlockStructure
       position: {}
       templates: {
-        block: {
+        turntable: {
           class: TurnTable
           asset: test.png
           transparency: .6
           direction: EAST
         }
+        block: {
+          asset: test.png
+        }
       }
       blocks: [
         {
-          block: block
+          block: turntable
           position: {
             x: 3
+          }
+        }
+        {
+          block: block
+          position: {
+            x: 2
           }
         }
       ]

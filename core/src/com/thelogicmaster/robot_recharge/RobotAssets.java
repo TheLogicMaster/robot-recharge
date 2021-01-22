@@ -43,9 +43,6 @@ public class RobotAssets implements Disposable {
         fontHuge = generator.generateFont(parameter);
         generator.dispose();
 
-        if (!VisUI.isLoaded())
-            VisUI.load(VisUI.SkinScale.X2);
-
         skin = new Skin();
         skin.add("infoFont", fontSmall);
         skin.add("menuFont", fontNormal);
@@ -54,6 +51,11 @@ public class RobotAssets implements Disposable {
         skin.addRegions(new TextureAtlas("skin.atlas"));
         skin.load(Gdx.files.internal("skin.json"));
         skin.get("default-horizontal", Slider.SliderStyle.class).knob.setMinHeight(50);
+
+        if (!VisUI.isLoaded()) {
+            VisUI.load(VisUI.SkinScale.X2);
+            //VisUI.load(skin);
+        }
 
         levelInfo = json.fromJson(Array.class, LevelInfo.class, Gdx.files.internal("levels.json"));
 

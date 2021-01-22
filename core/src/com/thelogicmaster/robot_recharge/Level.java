@@ -2,7 +2,6 @@ package com.thelogicmaster.robot_recharge;
 
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
@@ -33,6 +32,8 @@ public class Level implements Disposable, Renderable3D, AssetConsumer, RobotExec
 
     private final int xSize, ySize, zSize;
     private final float levelHeight;
+    private final Position startPosition;
+    private final Direction startDirection;
     private final Array<Structure> structures;
     private final Array<Objective> objectives;
     private final String levelModelName, backgroundName;
@@ -57,7 +58,7 @@ public class Level implements Disposable, Renderable3D, AssetConsumer, RobotExec
     private float runTime;
     private boolean setup; // If setup is in progress
 
-    public Level(LevelData levelData, LevelExecutionListener listener, Viewport viewport, CodeEngine engine, boolean useBlocks) {
+    public Level(LevelData levelData, LevelExecutionListener listener, Viewport viewport, ParticleSystem particleSystem, CodeEngine engine, boolean useBlocks) {
         xSize = levelData.getXSize();
         ySize = levelData.getYSize();
         zSize = levelData.getZSize();
@@ -67,19 +68,13 @@ public class Level implements Disposable, Renderable3D, AssetConsumer, RobotExec
         structures = levelData.getStructures();
         backgroundName = levelData.getBackground();
         solutions = levelData.getSolutions();
+        startDirection = levelData.getStartDirection();
+        startPosition = levelData.getStartPosition();
         this.listener = listener;
         this.useBlocks = useBlocks;
         this.viewport = viewport;
+        this.particleSystem = particleSystem;
         this.engine = engine;
-
-        particleSystem = new ParticleSystem();
-        PointSpriteParticleBatch pointSpriteBatch = new PointSpriteParticleBatch();
-        pointSpriteBatch.setCamera(viewport.getCamera());
-        particleSystem.add(pointSpriteBatch);
-        BillboardParticleBatch billboardBatch = new BillboardParticleBatch();
-        billboardBatch.setCamera(viewport.getCamera());
-        particleSystem.add(billboardBatch);
-        particleSystem.add(new ModelInstanceParticleBatch());
     }
 
     public Robot getRobot() {
@@ -137,7 +132,7 @@ public class Level implements Disposable, Renderable3D, AssetConsumer, RobotExec
      * Completely resets and regenerates the level
      */
     public void reset() {
-        robot.reset(new Position(), Direction.NORTH);
+        robot.reset(startPosition.cpy(), startDirection);
         realBlocks.clear();
         levelListeners.clear();
         robotListeners.clear();
@@ -319,14 +314,20 @@ public class Level implements Disposable, Renderable3D, AssetConsumer, RobotExec
         if (failed.size == 0)
             listener.onLevelComplete(runTime, length, robot.getCalls());
         else
-            listener.onLevelFail(failed);
+            listener.onLevelIncomplete(failed);
+    }
+
+    /**
+     * Call when the level has been failed
+     * @param reason The reason for level failure
+     */
+    public void failLevel(String reason) {
+        robot.stop();
+        listener.onLevelFail(reason);
     }
 
     @Override
-    public void loadAssets(AssetManager assetManager) {
-        ParticleEffectLoader.ParticleEffectLoadParameter particleParameter =
-                new ParticleEffectLoader.ParticleEffectLoadParameter(particleSystem.getBatches());
-        assetManager.setLoader(ParticleEffect.class, new PreconfiguredParticleEffectLoader(particleParameter));
+    public void loadAssets(AssetMultiplexer assetManager) {
         for (Structure structure : structures)
             structure.loadAssets(assetManager);
         assetManager.load("levels/" + levelModelName, Model.class);
@@ -335,7 +336,7 @@ public class Level implements Disposable, Renderable3D, AssetConsumer, RobotExec
     }
 
     @Override
-    public void assetsLoaded(AssetManager assetManager) {
+    public void assetsLoaded(AssetMultiplexer assetManager) {
         for (Structure structure : structures)
             structure.assetsLoaded(assetManager);
         level = new ModelInstance(RobotUtils.cleanModel(assetManager.<Model>get("levels/" + levelModelName)));
@@ -349,6 +350,8 @@ public class Level implements Disposable, Renderable3D, AssetConsumer, RobotExec
     public void render(ModelBatch modelBatch, DecalBatch decalBatch, Environment environment, float delta) {
         if (!robot.isRunning())
             delta = 0;
+        else if (robot.isFastForward())
+            delta *= 2;
         runTime += delta;
         robot.render(modelBatch, decalBatch, environment, delta);
         for (Block block : realBlocks)
