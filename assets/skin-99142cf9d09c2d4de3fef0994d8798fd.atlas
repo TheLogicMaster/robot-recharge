@@ -1,0 +1,223 @@
+
+skin.png
+size: 2048,2048
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+backIcon
+  rotate: false
+  xy: 933, 1575
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: -1
+button
+  rotate: false
+  xy: 1, 171
+  size: 100, 100
+  orig: 100, 100
+  offset: 0, 0
+  index: -1
+buttonDisabled
+  rotate: false
+  xy: 261, 431
+  size: 100, 100
+  orig: 100, 100
+  offset: 0, 0
+  index: -1
+buttonPressed
+  rotate: false
+  xy: 389, 561
+  size: 100, 100
+  orig: 100, 100
+  offset: 0, 0
+  index: -1
+catalog
+  rotate: false
+  xy: 803, 1575
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: -1
+checkedBox
+  rotate: false
+  xy: 1193, 1509
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+closeIcon
+  rotate: false
+  xy: 1193, 1575
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: -1
+cloudSave
+  rotate: false
+  xy: 1707, 1705
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: -1
+downloadIcon
+  rotate: false
+  xy: 1447, 1705
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: -1
+editorSidebar
+  rotate: false
+  xy: 803, 493
+  size: 128, 1080
+  orig: 128, 1080
+  offset: 0, 0
+  index: -1
+fastForwardCheckedIcon
+  rotate: false
+  xy: 933, 1445
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: -1
+fastForwardIcon
+  rotate: false
+  xy: 933, 1315
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: -1
+googleSignIn
+  rotate: false
+  xy: 803, 1705
+  size: 512, 128
+  orig: 512, 128
+  offset: 0, 0
+  index: -1
+googleSignOut
+  rotate: false
+  xy: 1, 663
+  size: 512, 128
+  orig: 512, 128
+  offset: 0, 0
+  index: -1
+pauseDisabledIcon
+  rotate: false
+  xy: 259, 533
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: -1
+pauseIcon
+  rotate: false
+  xy: 1, 273
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: -1
+playDisabledIcon
+  rotate: false
+  xy: 1, 403
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: -1
+playIcon
+  rotate: false
+  xy: 1577, 1705
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: -1
+programmingDisabledIcon
+  rotate: false
+  xy: 1317, 1705
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: -1
+programmingIcon
+  rotate: false
+  xy: 1063, 1575
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: -1
+progressBack
+  rotate: false
+  xy: 515, 689
+  size: 81, 50
+  orig: 81, 50
+  offset: 0, 0
+  index: -1
+progressBar
+  rotate: false
+  xy: 515, 741
+  size: 153, 50
+  orig: 153, 50
+  offset: 0, 0
+  index: -1
+rewindIcon
+  rotate: false
+  xy: 131, 403
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: -1
+robotDialog
+  rotate: false
+  xy: 1, 533
+  size: 256, 128
+  orig: 256, 128
+  offset: 0, 0
+  index: -1
+selection
+  rotate: false
+  xy: 1323, 1701
+  size: 2, 2
+  orig: 2, 2
+  offset: 0, 0
+  index: -1
+settingsIcon
+  rotate: false
+  xy: 1063, 1445
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: -1
+tintableCursor
+  rotate: false
+  xy: 670, 781
+  size: 3, 10
+  orig: 3, 10
+  offset: 0, 0
+  index: -1
+tintablePanel
+  rotate: false
+  xy: 933, 1213
+  size: 100, 100
+  orig: 100, 100
+  offset: 0, 0
+  index: -1
+titleMenu
+  rotate: false
+  xy: 1, 793
+  size: 800, 1040
+  orig: 800, 1040
+  offset: 0, 0
+  index: -1
+uncheckedBox
+  rotate: false
+  xy: 1063, 1379
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+window
+  rotate: false
+  xy: 131, 301
+  size: 100, 100
+  orig: 100, 100
+  offset: 0, 0
+  index: -1
