@@ -10,7 +10,7 @@ buildConfig {
     clsName = 'BuildConfig'
     packageName = 'com.thelogicmaster.robot_recharge'
     buildConfigField 'String', 'GAME_JOLT_KEY', properties.getProperty('gameJoltKey')
-    buildConfigField 'boolean', 'DEBUG', properties.getProperty('debug')
+    buildConfigField 'boolean', 'DEBUG', properties.getProperty('debug') == null ? 'false' : properties.getProperty('debug')
 }
 
 configurations {
