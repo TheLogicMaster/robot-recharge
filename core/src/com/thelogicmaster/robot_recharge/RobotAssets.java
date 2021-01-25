@@ -93,7 +93,6 @@ public class RobotAssets implements Disposable {
         titleMusic = assets.get("titleMusic.wav");
         titleMusic.setVolume(RobotRecharge.prefs.getMusicVolume());
         titleMusic.setLooping(true);
-        titleMusic.play();
     }
 
     @Override

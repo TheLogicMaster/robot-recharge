@@ -52,14 +52,19 @@ public class RobotRecharge extends Game implements IGameServiceListener {
 
         gameServices.setListener(this);
 
+        // Load saved GameJolt credentials
         if (RobotUtils.usesGameJolt() && gameServices.needsCredentials() && prefs.hasGameJoltCredentials())
             gameServices.setCredentials(prefs.getGameJoltUsername(), prefs.getGameJoltToken());
 
+        // Initialize Game Services if credentials are available
         if (Gdx.app.getType() == Application.ApplicationType.Android || (RobotUtils.usesGameJolt() && !gameServices.needsCredentials()))
             gameServices.resumeSession();
 
-        if (Gdx.app.getType() != Application.ApplicationType.WebGL)
+        // Non-HTML init code
+        if (Gdx.app.getType() != Application.ApplicationType.WebGL) {
             RobotRecharge.platformUtils.setWindowMode(RobotRecharge.prefs.getWindowMode());
+            assets.titleMusic.play();
+        }
 
         setScreen(titleScreen);
     }

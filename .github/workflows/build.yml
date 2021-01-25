@@ -154,7 +154,7 @@ jobs:
         with:
           args: zip -qq -r mac64-${{ steps.get_version.outputs.VERSION }}.zip ./RobotRecharge/
 
-      - name: Rename Release JAR
+      - name: Create Release JAR
         run: |
           ./gradlew dist
           mv ./desktop/build/libs/*.jar ./RobotRecharge-${{ steps.get_version.outputs.VERSION }}.jar

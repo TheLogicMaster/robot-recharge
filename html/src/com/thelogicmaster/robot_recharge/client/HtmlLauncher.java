@@ -17,7 +17,6 @@ import com.thelogicmaster.robot_recharge.code.Language;
 
 import java.util.HashMap;
 
-// Method references break everything
 @SuppressWarnings("Convert2MethodRef")
 public class HtmlLauncher extends GwtApplication {
 
@@ -32,62 +31,6 @@ public class HtmlLauncher extends GwtApplication {
     private native boolean ttsSupported()/*-{
         return 'speechSynthesis' in $wnd;
     }-*/;
-
-    // Copied to bypass access level
-    private native boolean setFullscreen(GwtGraphics graphics, Element element, int screenWidth, int screenHeight)/*-{
-		// Attempt to use the non-prefixed standard API (https://fullscreen.spec.whatwg.org)
-		if (element.requestFullscreen) {
-			element.width = screenWidth;
-			element.height = screenHeight;
-			element.requestFullscreen();
-			$doc
-					.addEventListener(
-							"fullscreenchange",
-							function() {
-								graphics.@com.badlogic.gdx.backends.gwt.GwtGraphics::fullscreenChanged()();
-							}, false);
-			return true;
-		}
-		// Attempt to the vendor specific variants of the API
-		if (element.webkitRequestFullScreen) {
-			element.width = screenWidth;
-			element.height = screenHeight;
-			element.webkitRequestFullScreen(Element.ALLOW_KEYBOARD_INPUT);
-			$doc
-					.addEventListener(
-							"webkitfullscreenchange",
-							function() {
-								graphics.@com.badlogic.gdx.backends.gwt.GwtGraphics::fullscreenChanged()();
-							}, false);
-			return true;
-		}
-		if (element.mozRequestFullScreen) {
-			element.width = screenWidth;
-			element.height = screenHeight;
-			element.mozRequestFullScreen();
-			$doc
-					.addEventListener(
-							"mozfullscreenchange",
-							function() {
-								graphics.@com.badlogic.gdx.backends.gwt.GwtGraphics::fullscreenChanged()();
-							}, false);
-			return true;
-		}
-		if (element.msRequestFullscreen) {
-			element.width = screenWidth;
-			element.height = screenHeight;
-			element.msRequestFullscreen();
-			$doc
-					.addEventListener(
-							"msfullscreenchange",
-							function() {
-								graphics.@com.badlogic.gdx.backends.gwt.GwtGraphics::fullscreenChanged()();
-							}, false);
-			return true;
-		}
-
-		return false;
-	}-*/;
 
     @Override
     public ApplicationListener createApplicationListener() {
@@ -109,7 +52,7 @@ public class HtmlLauncher extends GwtApplication {
                 if (windowMode == WindowMode.Windowed)
                     Gdx.graphics.setWindowedMode(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
                 else
-                    setFullscreen((GwtGraphics) getGraphics(), Document.get().getBody(), Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+                    Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode());
             }
 
             @Override

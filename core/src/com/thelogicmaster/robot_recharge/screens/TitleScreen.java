@@ -74,6 +74,7 @@ public class TitleScreen extends RobotScreen {
             public void changed(ChangeEvent event, Actor actor) {
                 RobotUtils.playNavigationSound();
                 RobotRecharge.instance.setScreen(settingsScreen);
+                ensureMusicPlaying();
             }
         });
         playButton.addListener(new ChangeListener() {
@@ -81,6 +82,7 @@ public class TitleScreen extends RobotScreen {
             public void changed(ChangeEvent event, Actor actor) {
                 RobotUtils.playNavigationSound();
                 RobotRecharge.instance.setScreen(levelScreen);
+                ensureMusicPlaying();
             }
         });
         tutorialsButton.addListener(new ChangeListener() {
@@ -88,6 +90,7 @@ public class TitleScreen extends RobotScreen {
             public void changed(ChangeEvent event, Actor actor) {
                 RobotUtils.playNavigationSound();
                 RobotRecharge.instance.setScreen(tutorialsScreen);
+                ensureMusicPlaying();
             }
         });
         exitButton.addListener(new ChangeListener() {
@@ -102,8 +105,18 @@ public class TitleScreen extends RobotScreen {
             public void changed(ChangeEvent event, Actor actor) {
                 RobotUtils.playNavigationSound();
                 RobotRecharge.instance.setScreen(cloudScreen);
+                ensureMusicPlaying();
             }
         });
+    }
+
+    /**
+     * Ensure title music plays after clicking on HTML platform
+     */
+    private void ensureMusicPlaying() {
+        if (Gdx.app.getType() != Application.ApplicationType.WebGL || RobotRecharge.assets.titleMusic.isPlaying())
+            return;
+        RobotRecharge.assets.titleMusic.play();
     }
 
     @Override

@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.utils.Timer;
 import com.thelogicmaster.robot_recharge.RobotRecharge;
 import com.thelogicmaster.robot_recharge.RobotUtils;
 import com.thelogicmaster.robot_recharge.WindowMode;
@@ -15,6 +16,7 @@ public class SettingsScreen extends MenuScreen {
 
     private final Label solutionsPrice;
     private final TextButton buySolutionsButton;
+    private final SelectBox<WindowMode> windowModeSelect;
 
     public SettingsScreen(RobotScreen previousScreen) {
         super(previousScreen);
@@ -86,7 +88,7 @@ public class SettingsScreen extends MenuScreen {
 
         if (RobotRecharge.platformUtils.getWindowModes().size > 0) {
             settingsTable.add(new Label("Window Mode", skin));
-            final SelectBox<WindowMode> windowModeSelect = new SelectBox<>(skin);
+            windowModeSelect = new SelectBox<>(skin);
             windowModeSelect.setItems(RobotRecharge.platformUtils.getWindowModes());
             if (Gdx.app.getType() != Application.ApplicationType.WebGL)
                 windowModeSelect.setSelected(RobotRecharge.prefs.getWindowMode());
@@ -99,7 +101,8 @@ public class SettingsScreen extends MenuScreen {
                 }
             });
             settingsTable.add(windowModeSelect).growX().colspan(2).row();
-        }
+        } else
+            windowModeSelect = null;
 
         settingsTable.add().padBottom(300).row();
 
@@ -113,5 +116,20 @@ public class SettingsScreen extends MenuScreen {
             solutionsPrice.setText(RobotRecharge.gameServices.getInAppPrice("solutions"));
             buySolutionsButton.setDisabled(RobotRecharge.prefs.hasUnlockedSolutions());
         }
+    }
+
+    @Override
+    public void resize(int width, int height) {
+        super.resize(width, height);
+
+        // Change window mode on HTML manual escape
+        if (windowModeSelect != null && Gdx.app.getType() == Application.ApplicationType.WebGL)
+            Timer.schedule(new Timer.Task() {
+                @Override
+                public void run() {
+                    if (!Gdx.graphics.isFullscreen() && windowModeSelect.getSelected() == WindowMode.Fullscreen)
+                        windowModeSelect.setSelected(WindowMode.Windowed);
+                }
+            }, 0.1f);
     }
 }

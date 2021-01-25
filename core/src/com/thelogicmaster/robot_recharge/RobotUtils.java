@@ -33,7 +33,6 @@ import com.thelogicmaster.robot_recharge.objectives.MaxLengthObjective;
 import com.thelogicmaster.robot_recharge.objectives.MaxTimeObjective;
 import com.thelogicmaster.robot_recharge.structures.BlocksStructure;
 import com.thelogicmaster.robot_recharge.structures.MovingPlatform;
-import de.golfgl.gdxgamesvcs.gamestate.ILoadGameStateResponseListener;
 
 public class RobotUtils {
 
