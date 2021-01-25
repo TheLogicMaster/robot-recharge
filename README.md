@@ -14,6 +14,7 @@ control the robot.
 
 <img src="media/screenshot1.png?raw=true" height="336" width="598">
 <img src="media/screenshot2.png?raw=true" height="336" width="598">
+<img src="media/screenshot3.png?raw=true" height="336" width="598">
 
 ## Technical Info
 ### Utilized Libraries
@@ -34,5 +35,5 @@ control the robot.
 - Tab to double space functionality in editor
 - IOS port of MaryTTS or Android MaryTTS
 - Make the UI not terrible
-- Infinite loop watchdogs using code regex expressions and throwing errors
 - Mobile HTML custom keyboard
+- Unit tests (JS code transformations, for instance)

@@ -6,5 +6,5 @@ public interface ExecutionListener {
 
     void onExecutionInterrupted();
 
-    void onExecutionError(Exception e);
+    void onExecutionError(String error);
 }

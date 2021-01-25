@@ -23,7 +23,7 @@ public class DesktopJavaScriptEngine implements CodeEngine {
                         return;
                     }
                     Gdx.app.error("Duktape", e.toString());
-                    listener.onExecutionError(e);
+                    listener.onExecutionError(e.getMessage());
                 }
             }
         });

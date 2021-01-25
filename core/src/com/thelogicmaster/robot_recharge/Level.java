@@ -10,11 +10,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g3d.*;
 import com.badlogic.gdx.graphics.g3d.decals.DecalBatch;
 import com.badlogic.gdx.graphics.g3d.particles.ParticleEffect;
-import com.badlogic.gdx.graphics.g3d.particles.ParticleEffectLoader;
 import com.badlogic.gdx.graphics.g3d.particles.ParticleSystem;
-import com.badlogic.gdx.graphics.g3d.particles.batches.BillboardParticleBatch;
-import com.badlogic.gdx.graphics.g3d.particles.batches.ModelInstanceParticleBatch;
-import com.badlogic.gdx.graphics.g3d.particles.batches.PointSpriteParticleBatch;
 import com.badlogic.gdx.graphics.g3d.utils.MeshPartBuilder;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.math.Vector3;
@@ -283,8 +279,8 @@ public class Level implements Disposable, Renderable3D, AssetConsumer, RobotExec
     }
 
     @Override
-    public void onExecutionError(Exception e) {
-        listener.onLevelError(e);
+    public void onExecutionError(String error) {
+        listener.onLevelError(error);
     }
 
     public void playParticleEffect(ParticleEffect effect, Vector3 position) {

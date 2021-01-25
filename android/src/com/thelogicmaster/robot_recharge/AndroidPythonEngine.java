@@ -21,22 +21,19 @@ public class AndroidPythonEngine implements CodeEngine {
     @Override
     public Thread run(final IRobot robot, final String code, final ExecutionListener listener) {
         AndroidPythonEngine.robot = robot;
-        Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Python py = Python.getInstance();
-                    PyObject engine = py.getModule("engine");
-                    engine.callAttr("run", code);
-                    listener.onExecutionFinish();
-                } catch (PyException e) {
-                    if (e.getCause() instanceof InterruptedException) {
-                        listener.onExecutionInterrupted();
-                        return;
-                    }
-                    Gdx.app.error("Python", "PyException", e);
-                    listener.onExecutionError(e);
+        Thread thread = new Thread(() -> {
+            try {
+                Python py = Python.getInstance();
+                PyObject engine = py.getModule("engine");
+                engine.callAttr("run", code);
+                listener.onExecutionFinish();
+            } catch (PyException e) {
+                if (e.getCause() instanceof InterruptedException) {
+                    listener.onExecutionInterrupted();
+                    return;
                 }
+                Gdx.app.error("Python", "PyException", e);
+                listener.onExecutionError(e.getMessage());
             }
         });
         thread.start();

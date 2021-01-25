@@ -1,6 +1,5 @@
 package com.thelogicmaster.robot_recharge;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Quaternion;
 import com.badlogic.gdx.math.Vector3;
 import com.thelogicmaster.robot_recharge.blocks.Block;
@@ -215,8 +214,8 @@ public class JavaRobotController implements RobotController, ExecutionListener, 
     }
 
     @Override
-    public void onExecutionError(Exception e) {
+    public void onExecutionError(String error) {
         reset();
-        listener.onExecutionError(e);
+        listener.onExecutionError(error);
     }
 }

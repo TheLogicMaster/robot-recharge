@@ -12,6 +12,9 @@ import com.thelogicmaster.robot_recharge.blocks.Interactable;
 public class JavaScriptRobotController implements RobotController {
     // Static fields to circumvent weird js context issue or something
 
+    private static final int watchdogValue = 10000000;
+    private static final String watchdogMessage = "Infinite Loop Detected (" + watchdogValue + " cycles exceeded)";
+
     private static Robot robot;
     private static RobotExecutionListener listener;
     private static boolean fastForward, paused, stopped, waiting;
@@ -117,6 +120,7 @@ public class JavaScriptRobotController implements RobotController {
         $wnd.Robot.isWaiting = $entry(that.@com.thelogicmaster.robot_recharge.client.JavaScriptRobotController::isWaiting());
         $wnd.Robot.isPaused = $entry(that.@com.thelogicmaster.robot_recharge.client.JavaScriptRobotController::isPaused());
         $wnd.Robot.onDone = $entry(that.@com.thelogicmaster.robot_recharge.client.JavaScriptRobotController::onDone());
+        $wnd.Robot.onError = $entry(that.@com.thelogicmaster.robot_recharge.client.JavaScriptRobotController::onError(Ljava/lang/String;));
         $wnd.Robot.onPause = $entry(that.@com.thelogicmaster.robot_recharge.client.JavaScriptRobotController::onPause());
         $wnd.Robot.onInterrupt = $entry(that.@com.thelogicmaster.robot_recharge.client.JavaScriptRobotController::onInterrupt());
         $wnd.Robot.checkFloor = $entry(that.@com.thelogicmaster.robot_recharge.client.JavaScriptRobotController::checkFloor(I));
@@ -134,20 +138,19 @@ public class JavaScriptRobotController implements RobotController {
         stopped = false;
         calls = 0;
         waiting = false;
-        try {
-            ScriptInjector.fromString("" +
-                    "(async function(){\n" +
-                    code + "\n" +
-                    "})().then(interrupted => {\n" +
-                    "   if (interrupted)\n" +
-                    "       $wnd.Robot.onInterrupt();\n" +
-                    "   else\n" +
-                    "       $wnd.Robot.onDone();\n" +
-                    "})\n").inject();
-        } catch (Exception e) {
-            Gdx.app.error("JavaScriptRobotController", "Execution error", e);
-            listener.onExecutionError(e);
-        }
+        // Todo: Catch syntax errors somehow, possibly using eval around the whole thing
+        ScriptInjector.fromString("" +
+                "$wnd._watchdog = 0;\n" +
+                "(async function(){\n" +
+                code + "\n" +
+                "})().then(interrupted => {\n" +
+                "   if (interrupted)\n" +
+                "       $wnd.Robot.onInterrupt();\n" +
+                "   else\n" +
+                "       $wnd.Robot.onDone();\n" +
+                "}).catch(e => {\n" +
+                "   $wnd.Robot.onError(e.toString());\n" +
+                "});\n").inject();
     }
 
     public void move(int distance) {
@@ -235,21 +238,28 @@ public class JavaScriptRobotController implements RobotController {
     }
 
     public void onDone() {
-        listener.onExecutionFinish();
         stopped = true;
         paused = false;
+        listener.onExecutionFinish();
     }
 
     public void onInterrupt() {
-        listener.onExecutionInterrupted();
         stopped = true;
         paused = false;
+        listener.onExecutionInterrupted();
+    }
+
+    public void onError(String error) {
+        stopped = true;
+        paused = false;
+        listener.onExecutionError(error);
     }
 
     public void onPause() {
         listener.onExecutionPaused();
     }
 
+    // Calling this function from onError and onInterrupt causes weird errors
     @Override
     public void stop() {
         stopped = true;
@@ -286,10 +296,38 @@ public class JavaScriptRobotController implements RobotController {
         return calls;
     }
 
+    private String transformForLoops(String code, boolean initializer, boolean incrementer) {
+        return code.replaceAll("(?<=^|\\W)(for\\s*?\\(" + (initializer ? ".*?\\b.*?" : "\\s*?") + ")(;.*?;" +
+                (incrementer ? ".*?\\b.*?" : "\\s*?") + ")(\\))", "$1" + (initializer ? "," : "") +
+                "_watchdog=0$2" + (incrementer ? "," : "") + "(()=>{if(++_watchdog>" + watchdogValue + ")throw'" +
+                watchdogMessage + "';})()$3");
+    }
+
     @Override
     public void setCode(String code) {
-        code = code.replaceAll("(Robot\\.)((move|turn|sleep)\\(.+?\\))(;*)", "if (await $2) return true;");
-        code = code.replaceAll("(Robot\\.(speak|interact)\\(.+?\\))", "\\$wnd.$1");
+        // Asynchronous functions
+        code = code.replaceAll("(?<=^|\\W)(Robot\\.)((move|turn|sleep)\\(.+?\\))(;*)", "if(await $2){return true;}");
+
+        // Synchronous functions
+        code = code.replaceAll("(?<=^|\\W)(Robot\\.(speak|interact)\\(.+?\\))", "\\$wnd.$1");
+
+        // for (var i = 0;; i < 10)
+        code = transformForLoops(code, true, true);
+
+        // for (var i = 0;;)
+        code = transformForLoops(code, true, false);
+
+        // for (;; i < 10)
+        code = transformForLoops(code, false, true);
+
+        // for (;;)
+        code = transformForLoops(code, false, false);
+
+        // While loops
+        code = code.replaceAll("(?<=^|\\W)(while\\s*\\()(.*?)(\\))", "$1(($2)&&(()=>{if(++$wnd._watchdog>" + watchdogValue + ")throw'" +
+                watchdogMessage + "';return true;})())||(()=>$wnd._watchdog=0)()$3");
+
+        Gdx.app.debug("Generated Code", code);
         this.code = code;
     }
 }

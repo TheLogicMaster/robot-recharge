@@ -24,7 +24,7 @@ public class DesktopPythonEngine implements CodeEngine {
                         return;
                     }
                     Gdx.app.error("Python", "PyException", e);
-                    listener.onExecutionError(e);
+                    listener.onExecutionError(e.getMessage());
                 }
             }
         });

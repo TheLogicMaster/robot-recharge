@@ -384,8 +384,8 @@ public class GameScreen extends RobotScreen implements LevelExecutionListener {
     }
 
     @Override
-    public void onLevelError(Exception e) {
-        Dialogs.showErrorDialog(stage, e.getMessage()).setMovable(false);
+    public void onLevelError(String error) {
+        Dialogs.showErrorDialog(stage, error).setMovable(false);
         controlPanel.disablePlay();
     }
 

@@ -11,7 +11,7 @@ public interface LevelExecutionListener {
 
     void onLevelComplete(float completionTime, int length, int calls);
 
-    void onLevelError(Exception e);
+    void onLevelError(String error);
 
     void onLevelAbort();
 
