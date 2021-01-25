@@ -2,22 +2,19 @@ package com.thelogicmaster.robot_recharge.objectives;
 
 import com.badlogic.gdx.utils.Array;
 import com.thelogicmaster.robot_recharge.LevelEvent;
+import lombok.*;
 
 /**
  * An objective that requires all specified events to be called at least once
  */
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class EventsObjective implements Objective {
 
     private Array<String> events = new Array<>();
+    @Getter(AccessLevel.NONE)
     private String description;
-
-    public EventsObjective() {
-    }
-
-    public EventsObjective(Array<String> events, String description) {
-        this.events = events;
-        this.description = description;
-    }
 
     @Override
     public boolean check(int length, int calls, float time, Array<LevelEvent> events) {

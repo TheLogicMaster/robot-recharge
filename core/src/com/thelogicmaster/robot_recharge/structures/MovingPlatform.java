@@ -8,9 +8,17 @@ import com.badlogic.gdx.graphics.g3d.decals.DecalBatch;
 import com.badlogic.gdx.math.Vector3;
 import com.thelogicmaster.robot_recharge.*;
 import com.thelogicmaster.robot_recharge.blocks.MovingPlatformBlock;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
+@ToString(exclude = {"platform", "platformIndicator", "tempVector1", "tempVector2"}, callSuper = true)
+@NoArgsConstructor
 public class MovingPlatform extends Structure {
 
+    @Getter
+    @Setter
     private int length;
 
     private transient volatile Position platformPosition;
@@ -21,9 +29,6 @@ public class MovingPlatform extends Structure {
     private final transient Vector3 tempVector1 = new Vector3(), tempVector2 = new Vector3();
 
     private static final float speed = 2f;
-
-    public MovingPlatform() {
-    }
 
     public MovingPlatform(Position position, Direction direction, int length) {
         super(position, direction);
@@ -87,19 +92,11 @@ public class MovingPlatform extends Structure {
 
     @Override
     public void assetsLoaded(AssetMultiplexer assetManager) {
-        platform = new ModelInstance(RobotUtils.cleanModel(assetManager.<Model>get("Elevator.g3db")));
-        platformIndicator = RobotUtils.cleanModel(assetManager.<Model>get("PlatformPosition.g3db"));
+        platform = new ModelInstance(RobotUtils.cleanModel(assetManager.get("Elevator.g3db")));
+        platformIndicator = RobotUtils.cleanModel(assetManager.get("PlatformPosition.g3db"));
     }
 
     @Override
     public void dispose() {
-    }
-
-    public int getLength() {
-        return length;
-    }
-
-    public void setLength(int length) {
-        this.length = length;
     }
 }

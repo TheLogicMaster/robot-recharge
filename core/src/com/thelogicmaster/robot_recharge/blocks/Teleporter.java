@@ -4,20 +4,25 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g3d.particles.ParticleEffect;
 import com.badlogic.gdx.math.Vector3;
 import com.thelogicmaster.robot_recharge.*;
+import lombok.*;
 
+@NoArgsConstructor
+@Getter
+@Setter
+@ToString(callSuper = true, exclude = {"effectIn", "effectOut"})
 public class Teleporter extends Block {
 
     private Position target;
-    private Direction direction;
+    private Direction face;
 
+    @Getter(AccessLevel.NONE)
+    @Setter(AccessLevel.NONE)
     private transient ParticleEffect effectIn, effectOut;
 
-    public Teleporter() {
-    }
-
-    public Teleporter(Position position, Direction direction, boolean cubic, String asset, float transparency, Color color, Position target) {
+    public Teleporter(Position position, Direction direction, boolean cubic, String asset, float transparency, Color color, Position target, Direction face) {
         super(position, direction, cubic, asset, transparency, color);
         this.target = target;
+        this.face = face;
     }
 
     public Teleporter(Teleporter block) {
@@ -25,7 +30,7 @@ public class Teleporter extends Block {
         target = block.target;
         effectIn = block.effectIn.copy();
         effectOut = block.effectOut.copy();
-        direction = block.direction;
+        face = block.face;
     }
 
     @Override
@@ -41,8 +46,8 @@ public class Teleporter extends Block {
             public void onRobotMove(Robot robot) {
                 if (robot.getBlockPos().equals(getPosition())) {
                     robot.setPosition(target.cpy());
-                    if (direction != null)
-                        robot.setDirection(direction);
+                    if (face != null)
+                        robot.setDirection(face);
                     level.playParticleEffect(effectIn, getPosition().toVector(new Vector3()).add(Constants.blockOffset));
                     level.playParticleEffect(effectOut, target.toVector(new Vector3()).add(Constants.blockOffset));
                 }

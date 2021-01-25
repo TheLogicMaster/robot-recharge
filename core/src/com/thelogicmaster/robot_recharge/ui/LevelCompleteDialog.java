@@ -20,7 +20,7 @@ public class LevelCompleteDialog extends RobotDialog {
 
     public LevelCompleteDialog(Skin skin, final LevelSave level, final LevelCompleteListener listener) {
         super("Level Complete", skin);
-        useBlocks = level.usingBlocks();
+        useBlocks = level.isUsingBlocks();
 
         add(completionTime = new Label("", skin, "small")).left().row();
         add(completionLength = new Label("", skin, "small")).left().row();
@@ -66,7 +66,7 @@ public class LevelCompleteDialog extends RobotDialog {
             public void changed(ChangeEvent event, Actor actor) {
                 RobotUtils.playNavigationSound();
                 listener.onDispose();
-                RobotRecharge.instance.setScreen(new GameScreen(new LevelSave(next, level.usingBlocks(), "", level.getLanguage())));
+                RobotRecharge.instance.setScreen(new GameScreen(new LevelSave(level.isUsingBlocks(), "", next, level.getLanguage())));
             }
         });
     }

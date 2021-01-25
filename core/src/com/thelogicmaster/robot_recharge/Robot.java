@@ -143,28 +143,20 @@ public class Robot implements Disposable, Renderable3D {
     }
 
     public void textToSpeech(final String message) {
-        Gdx.app.postRunnable(new Runnable() {
-            @Override
-            public void run() {
-                RobotUtils.textToSpeech(message);
-                Robot.this.message.setText(message);
-                dialog.getTable().clearActions();
-                dialog.getTable().getColor().a = 1;
-                dialog.getTable().addAction(Actions.sequence(
-                        Actions.delay(3),
-                        Actions.alpha(0, 0.25f))
-                );
-            }
+        Gdx.app.postRunnable(() -> {
+            RobotUtils.textToSpeech(message);
+            Robot.this.message.setText(message);
+            dialog.getTable().clearActions();
+            dialog.getTable().getColor().a = 1;
+            dialog.getTable().addAction(Actions.sequence(
+                    Actions.delay(3),
+                    Actions.alpha(0, 0.25f))
+            );
         });
     }
 
     public void playAnimation(final String animation, final int loopCount, final float speed) {
-        Gdx.app.postRunnable(new Runnable() {
-            @Override
-            public void run() {
-                animator.setAnimation(animation, loopCount, speed, null);
-            }
-        });
+        Gdx.app.postRunnable(() -> animator.setAnimation(animation, loopCount, speed, null));
     }
 
     public void playAnimation(final String animation, final int loopCount) {
@@ -180,12 +172,7 @@ public class Robot implements Disposable, Renderable3D {
     }
 
     public void blendAnimation(final String animation, final float blendTime) {
-        Gdx.app.postRunnable(new Runnable() {
-            @Override
-            public void run() {
-                animator.animate(animation, blendTime);
-            }
-        });
+        Gdx.app.postRunnable(() -> animator.animate(animation, blendTime));
     }
 
     public void stopAnimation() {

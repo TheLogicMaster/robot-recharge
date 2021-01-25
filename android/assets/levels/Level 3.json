@@ -29,12 +29,6 @@
             x: 3
           }
         }
-        {
-          block: block
-          position: {
-            x: 2
-          }
-        }
       ]
     }
   ]

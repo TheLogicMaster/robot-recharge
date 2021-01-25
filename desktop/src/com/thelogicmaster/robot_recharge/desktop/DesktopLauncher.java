@@ -57,7 +57,7 @@ public class DesktopLauncher {
             public RobotController createRobotController(Robot robot, RobotExecutionListener listener, CodeEngine engine) {
                 return new JavaRobotController(robot, listener, engine);
             }
-        }, new DesktopTTSEngine(), new DesktopGameServices(), System.getenv().containsKey("DEBUG")), config) {
+        }, new DesktopTTSEngine(), new DesktopGameServices(), new JavaCodeEditorUtils(), System.getenv().containsKey("DEBUG")), config) {
             @Override
             protected void mainLoop() {
                 try {

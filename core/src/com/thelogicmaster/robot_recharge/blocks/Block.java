@@ -11,13 +11,26 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
 import com.thelogicmaster.robot_recharge.*;
+import lombok.*;
 
+@NoArgsConstructor
+@ToString(exclude = {"model", "modelSource", "level", "rotation", "tempVec3"})
 public class Block implements Renderable3D, Disposable, AssetConsumer {
+    @Getter
+    @Setter
     private Position position;
+    @Getter
+    @Setter
     private boolean modeled;
+    @Getter
+    @Setter
     private String asset;
+    @Getter
     private float transparency;
+    @Getter
     private Color color;
+    @Getter
+    @Setter
     private Direction direction = Direction.NORTH;
 
     protected transient ModelInstance model;
@@ -26,16 +39,13 @@ public class Block implements Renderable3D, Disposable, AssetConsumer {
     protected transient Quaternion rotation;
     private final transient Vector3 tempVec3 = new Vector3();
 
-    public Block() {
-    }
-
     public Block(Position position, Direction direction, boolean modeled, String asset, float transparency, Color color) {
         this.position = position;
-        this.direction = direction;
         this.modeled = modeled;
         this.asset = asset;
         this.transparency = transparency;
         this.color = color;
+        this.direction = direction;
     }
 
     public Block(Block block) {
@@ -51,38 +61,6 @@ public class Block implements Renderable3D, Disposable, AssetConsumer {
 
     public Block copy() {
         return new Block(this);
-    }
-
-    public void setPosition(Position position) {
-        this.position = position;
-    }
-
-    public Position getPosition() {
-        return position;
-    }
-
-    public Direction getDirection() {
-        return direction;
-    }
-
-    public void setDirection(Direction direction) {
-        this.direction = direction;
-    }
-
-    public boolean isModeled() {
-        return modeled;
-    }
-
-    public void setModeled(boolean modeled) {
-        this.modeled = modeled;
-    }
-
-    public String getAsset() {
-        return asset;
-    }
-
-    public void setAsset(String asset) {
-        this.asset = asset;
     }
 
     public void setup(Level level) {
@@ -111,7 +89,7 @@ public class Block implements Renderable3D, Disposable, AssetConsumer {
         if (modeled)
             model = new ModelInstance(assetManager.<Model>get("blocks/" + asset));
         else {
-            modelSource = RobotUtils.createCubeModel(assetManager.<Texture>get("blocks/" + asset));
+            modelSource = RobotUtils.createCubeModel(assetManager.get("blocks/" + asset));
             model = new ModelInstance(modelSource);
         }
         for (Material mat : new Array.ArrayIterator<>(model.materials)) {

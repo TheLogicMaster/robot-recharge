@@ -30,7 +30,7 @@
           target: {
             z: 3
           }
-          direction: NORTH
+          face: NORTH
           asset: test.png
         }
         charger: {

@@ -4,11 +4,11 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.utils.Array;
 
-public class PreferencesHelper {
+public class RobotPreferences {
 
     public final Preferences preferences;
 
-    public PreferencesHelper() {
+    public RobotPreferences() {
         preferences = Gdx.app.getPreferences("RobotRecharge");
     }
 

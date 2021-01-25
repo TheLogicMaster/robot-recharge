@@ -6,6 +6,7 @@ import com.thelogicmaster.robot_recharge.TTSEngine;
 import marytts.LocalMaryInterface;
 import marytts.exceptions.MaryConfigurationException;
 import marytts.exceptions.SynthesisException;
+import marytts.server.MaryProperties;
 
 public class DesktopTTSEngine implements TTSEngine {
 
@@ -13,6 +14,7 @@ public class DesktopTTSEngine implements TTSEngine {
 
     public DesktopTTSEngine() {
         try {
+            System.setProperty("log4j.logger.marytts", "OFF");
             mary = new LocalMaryInterface();
             mary.setAudioEffects("Robot amount:100.0;");
         } catch (MaryConfigurationException e) {

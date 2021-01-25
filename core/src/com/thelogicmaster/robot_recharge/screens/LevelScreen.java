@@ -45,19 +45,20 @@ public class LevelScreen extends MenuScreen {
         stage.addActor(stack);
 
         // Controls
+        // Todo: Save last used language config using custom language select and blockly checkbox components
         Table controlsTable = new Table(skin);
         controlsTable.setBackground("buttonTen");
         controlsTable.setBounds(uiViewport.getWorldWidth() - 1000, uiViewport.getWorldHeight() - 590,
                 800, 350);
-        final SelectBox<Language> languageSelect = new LanguageSelect(skin);
-        controlsTable.add(languageSelect).fillX().padBottom(10).row();
-        final CheckBox blocksCheckbox = new CheckBox("Use Blocks", skin);
-        blocksCheckbox.setDisabled(RobotRecharge.blocksEditor == null);
-        controlsTable.add(blocksCheckbox).fillX().padBottom(10).row();
-        TextButton playButton = new TextButton("New Game", skin);
-        controlsTable.add(playButton).fillX().padBottom(10).row();
         resumeButton = new PaddedTextButton("Resume Game", skin);
-        controlsTable.add(resumeButton).fillX();
+        controlsTable.add(resumeButton).fillX().padBottom(30).row();
+        final SelectBox<Language> languageSelect = new LanguageSelect(skin);
+        controlsTable.add(languageSelect).fillX().padBottom(5).row();
+        final CheckBox blocksCheckbox = new CheckBox(" Use Blockly", skin);
+        blocksCheckbox.setDisabled(RobotRecharge.blocksEditor == null);
+        controlsTable.add(blocksCheckbox).fillX().padBottom(5).row();
+        TextButton playButton = new TextButton("New Game", skin);
+        controlsTable.add(playButton).fillX().padBottom(5).row();
         stage.addActor(controlsTable);
 
         // Todo: Add completion/locked icons next to buttons using probably tables
@@ -103,8 +104,7 @@ public class LevelScreen extends MenuScreen {
                     @Override
                     public void yes() {
                         RobotUtils.playNavigationSound();
-                        LevelSave save = new LevelSave(selected.getName(), blocksCheckbox.isChecked(), "",
-                                languageSelect.getSelected());
+                        LevelSave save = new LevelSave(blocksCheckbox.isChecked(), "", selected.getName(), languageSelect.getSelected());
                         RobotRecharge.instance.setScreen(new GameScreen(save));
                         RobotRecharge.assets.titleMusic.stop();
                     }
@@ -128,7 +128,7 @@ public class LevelScreen extends MenuScreen {
             public void changed(ChangeEvent event, Actor actor) {
                 RobotUtils.playNavigationSound();
                 LevelSave save = RobotRecharge.prefs.getLevelSave(selected.getName());
-                if (RobotRecharge.blocksEditor == null && save.usingBlocks()) {
+                if (RobotRecharge.blocksEditor == null && save.isUsingBlocks()) {
                     Dialogs.showErrorDialog(stage, "This save was created using Blockly, which isn't available");
                     return;
                 }

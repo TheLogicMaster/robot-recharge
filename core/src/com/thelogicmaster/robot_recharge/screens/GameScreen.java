@@ -58,6 +58,7 @@ public class GameScreen extends RobotScreen implements LevelExecutionListener {
     public GameScreen(final LevelSave levelSave) {
         this.levelSave = levelSave;
 
+        // Todo: load assets from external sources such as zip files
         // Load assets
         assets.load("robot.g3db", Model.class);
         assets.load("hud.png", Texture.class);
@@ -96,13 +97,15 @@ public class GameScreen extends RobotScreen implements LevelExecutionListener {
 
         // Load level
         level = new Level(RobotAssets.json.fromJson(LevelData.class, Gdx.files.internal("levels/" + levelSave.getLevel() + ".json")),
-                this, viewport, particleSystem, RobotRecharge.codeEngines.get(levelSave.getLanguage()), levelSave.usingBlocks());
+                this, viewport, particleSystem, RobotRecharge.codeEngines.get(levelSave.getLanguage()), levelSave.isUsingBlocks());
         addDisposable(level);
         level.loadAssets(assets);
 
         // Create loading bar
         loadingBar = new ProgressBar(-20f, 100f, 1f, false, skin);
         loadingBar.setBounds(uiViewport.getWorldWidth() / 2 - 500, uiViewport.getWorldHeight() / 2 - 200, 1000, 50);
+
+        // Todo: Create display for progressive objectives like Energy and Actions
 
         // Create settings menu
         menu = new GameMenu(skin, new GameMenu.GameMenuListener() {
@@ -156,7 +159,7 @@ public class GameScreen extends RobotScreen implements LevelExecutionListener {
                 controlPanel.setTouchable(Touchable.disabled);
                 controller.setDisabled(true);
                 editorSidebar.addAction(Actions.moveTo(0, 0, 0.25f));
-                if (!levelSave.usingBlocks())
+                if (!levelSave.isUsingBlocks())
                     codeEditor.setVisible(true);
                 else
                     RobotRecharge.blocksEditor.show();
@@ -184,7 +187,7 @@ public class GameScreen extends RobotScreen implements LevelExecutionListener {
                 controlPanel.setTouchable(Touchable.childrenOnly);
                 controller.setDisabled(false);
                 editorSidebar.addAction(Actions.moveTo(-editorSidebarWidth, 0, 0.25f));
-                if (!levelSave.usingBlocks()) {
+                if (!levelSave.isUsingBlocks()) {
                     codeEditor.setVisible(false);
                     catalog.setVisible(false);
                 } else
@@ -193,7 +196,7 @@ public class GameScreen extends RobotScreen implements LevelExecutionListener {
 
             @Override
             public void onRevert() {
-                if (!levelSave.usingBlocks())
+                if (!levelSave.isUsingBlocks())
                     codeEditor.setCode(levelSave.getCode());
                 else
                     RobotRecharge.blocksEditor.load(levelSave.getCode());
@@ -201,27 +204,21 @@ public class GameScreen extends RobotScreen implements LevelExecutionListener {
 
             @Override
             public void onSave() {
-                if (!levelSave.usingBlocks()) {
+                if (!levelSave.isUsingBlocks()) {
                     level.setCode(codeEditor.getCode());
                     levelSave.setCode(codeEditor.getCode());
                     saveLevel();
                     Gdx.app.debug("Saved Code", codeEditor.getCode());
                 } else {
-                    RobotRecharge.blocksEditor.save(new Consumer<String>() {
-                        @Override
-                        public void accept(String blocks) {
-                            levelSave.setCode(blocks);
-                            level.setBlocklyData(blocks);
-                            Gdx.app.debug("Saved Blocks", blocks);
-                        }
+                    RobotRecharge.blocksEditor.save(blocks -> {
+                        levelSave.setCode(blocks);
+                        level.setBlocklyData(blocks);
+                        Gdx.app.debug("Saved Blocks", blocks);
                     });
-                    RobotRecharge.blocksEditor.generateCode(levelSave.getLanguage(), new Consumer<String>() {
-                        @Override
-                        public void accept(String code) {
-                            level.setCode(code);
-                            saveLevel();
-                            Gdx.app.debug("Generated Code", code);
-                        }
+                    RobotRecharge.blocksEditor.generateCode(levelSave.getLanguage(), code -> {
+                        level.setCode(code);
+                        saveLevel();
+                        Gdx.app.debug("Generated Code", code);
                     });
                 }
             }
@@ -245,27 +242,19 @@ public class GameScreen extends RobotScreen implements LevelExecutionListener {
         stage.addActor(catalog);
 
         // Create intro dialog
-        objectivesDialog = new LevelIntroDialog(skin, levelSave.getLevel(), level.getObjectives(), levelSave.usingBlocks(), new LevelIntroDialog.IntroListener() {
-            @Override
-            public void onClose() {
-                controller.setDisabled(false);
-            }
-        });
+        objectivesDialog = new LevelIntroDialog(skin, levelSave.getLevel(), level.getObjectives(), levelSave.isUsingBlocks(),
+                () -> controller.setDisabled(false)
+        );
         objectivesDialog.setBounds(uiViewport.getWorldWidth() / 2 - 500, uiViewport.getWorldHeight() / 2 - 200, 1000, 400);
         stage.addActor(objectivesDialog);
 
         // Level Fail Dialog
-        levelIncompleteDialog = new LevelIncompleteDialog(skin, level.getObjectives(), levelSave.usingBlocks());
+        levelIncompleteDialog = new LevelIncompleteDialog(skin, level.getObjectives(), levelSave.isUsingBlocks());
         levelIncompleteDialog.setBounds(uiViewport.getWorldWidth() / 2 - 500, uiViewport.getWorldHeight() / 2 - 200, 1000, 400);
         stage.addActor(levelIncompleteDialog);
 
         // Level Completion Dialog
-        levelCompleteDialog = new LevelCompleteDialog(skin, levelSave, new LevelCompleteDialog.LevelCompleteListener() {
-            @Override
-            public void onDispose() {
-                dispose();
-            }
-        });
+        levelCompleteDialog = new LevelCompleteDialog(skin, levelSave, this::dispose);
         levelCompleteDialog.setBounds(uiViewport.getWorldWidth() / 2 - 500, uiViewport.getWorldHeight() / 2 - 200, 1000, 400);
         stage.addActor(levelCompleteDialog);
 
@@ -277,7 +266,7 @@ public class GameScreen extends RobotScreen implements LevelExecutionListener {
 
             @Override
             public void onLoad(Solution solution) {
-                if (!levelSave.usingBlocks()) {
+                if (!levelSave.isUsingBlocks()) {
                     String code = solution.getCode().get(levelSave.getLanguage().name());
                     levelSave.setCode(code);
                     saveLevel();
@@ -286,12 +275,7 @@ public class GameScreen extends RobotScreen implements LevelExecutionListener {
                 } else {
                     RobotRecharge.blocksEditor.load(solution.getBlocks());
                     level.setBlocklyData(solution.getBlocks());
-                    RobotRecharge.blocksEditor.generateCode(levelSave.getLanguage(), new Consumer<String>() {
-                        @Override
-                        public void accept(String code) {
-                            level.setCode(code);
-                        }
-                    });
+                    RobotRecharge.blocksEditor.generateCode(levelSave.getLanguage(), level::setCode);
                 }
             }
         });
@@ -306,18 +290,13 @@ public class GameScreen extends RobotScreen implements LevelExecutionListener {
         level.assetsLoaded(assets);
 
         // Setup level
-        if (!levelSave.usingBlocks()) {
+        if (!levelSave.isUsingBlocks()) {
             level.setCode(levelSave.getCode());
             codeEditor.setCode(levelSave.getCode());
         } else {
             RobotRecharge.blocksEditor.load(levelSave.getCode());
             level.setBlocklyData(levelSave.getCode());
-            RobotRecharge.blocksEditor.generateCode(levelSave.getLanguage(), new Consumer<String>() {
-                @Override
-                public void accept(String code) {
-                    level.setCode(code);
-                }
-            });
+            RobotRecharge.blocksEditor.generateCode(levelSave.getLanguage(), level::setCode);
         }
 
         resetLevel();
@@ -380,7 +359,7 @@ public class GameScreen extends RobotScreen implements LevelExecutionListener {
     }
 
     private boolean isEditorLoaded() {
-        if (levelSave.usingBlocks())
+        if (levelSave.isUsingBlocks())
             return RobotRecharge.blocksEditor.isLoaded();
         return true;
     }

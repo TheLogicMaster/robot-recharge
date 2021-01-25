@@ -6,7 +6,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.thelogicmaster.robot_recharge.GameServices;
 import com.thelogicmaster.robot_recharge.RobotRecharge;
 import com.thelogicmaster.robot_recharge.RobotUtils;
 import com.thelogicmaster.robot_recharge.WindowMode;
@@ -58,17 +57,13 @@ public class SettingsScreen extends MenuScreen {
         settingsTable.add(effectsSlider).padBottom(10).padRight(20).left();
         settingsTable.add(effectsPercent).padBottom(10).minWidth(50).row();
 
+        // Todo: Dedicated purchases screen
         if (Gdx.app.getType() == Application.ApplicationType.Android) {
             buySolutionsButton = new PaddedTextButton("Unlock All Level Solutions", skin);
             buySolutionsButton.addListener(new ChangeListener() {
                 @Override
                 public void changed(ChangeEvent event, Actor actor) {
-                    RobotRecharge.gameServices.inAppPurchase("solutions", new GameServices.InAppPurchaseListener() {
-                        @Override
-                        public void onPurchase() {
-                            RobotRecharge.prefs.unlockSolutions();
-                        }
-                    });
+                    RobotRecharge.gameServices.inAppPurchase("solutions", () -> RobotRecharge.prefs.unlockSolutions());
                 }
             });
 
@@ -90,13 +85,11 @@ public class SettingsScreen extends MenuScreen {
         }
 
         if (RobotRecharge.platformUtils.getWindowModes().size > 0) {
-            settingsTable.add(new Label("Window Mode", skin)).padBottom(300);
+            settingsTable.add(new Label("Window Mode", skin));
             final SelectBox<WindowMode> windowModeSelect = new SelectBox<>(skin);
             windowModeSelect.setItems(RobotRecharge.platformUtils.getWindowModes());
-            if (Gdx.app.getType() != Application.ApplicationType.WebGL) {
-                RobotRecharge.platformUtils.setWindowMode(windowModeSelect.getSelected());
+            if (Gdx.app.getType() != Application.ApplicationType.WebGL)
                 windowModeSelect.setSelected(RobotRecharge.prefs.getWindowMode());
-            }
             windowModeSelect.addListener(new ChangeListener() {
                 @Override
                 public void changed(ChangeEvent event, Actor actor) {

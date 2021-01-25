@@ -1,6 +1,5 @@
 buildscript {
 
-
     repositories {
         mavenLocal()
         mavenCentral()
@@ -50,7 +49,6 @@ allprojects {
 project(":desktop") {
     apply plugin: "java-library"
     apply plugin: 'io.github.fvarrui.javapackager.plugin'
-
 
     dependencies {
         implementation project(":core")
@@ -110,7 +108,6 @@ project(":ios") {
     apply plugin: "java-library"
     apply plugin: "robovm"
 
-
     dependencies {
         implementation project(":core")
         implementation project(":java")
@@ -132,7 +129,6 @@ project(":html") {
     apply plugin: "gwt"
     apply plugin: "war"
     apply plugin: "org.gretty"
-
 
     dependencies {
         implementation project(":core")
@@ -162,7 +158,6 @@ project(":html") {
 project(":core") {
     apply plugin: "java-library"
 
-
     dependencies {
         api "com.badlogicgames.gdx:gdx:$gdxVersion"
         api "com.badlogicgames.gdx:gdx-bullet:$gdxVersion"
@@ -180,6 +175,8 @@ project(":core") {
         implementation group: 'com.caucho', name: 'quercus', version: '4.0.45'
         api "com.rafaskoberg.gdx:typing-label:1.2.0"
         implementation "de.golfgl.gdxgamesvcs:gdx-gamesvcs-core:$gamesvcsVersion"
+        compileOnly 'org.projectlombok:lombok:1.18.16'
+        annotationProcessor 'org.projectlombok:lombok:1.18.16'
     }
 }
 
@@ -190,5 +187,7 @@ project(":java") {
         implementation project(":core")
         implementation group: 'org.luaj', name: 'luaj-jse', version: '3.0.1'
         implementation group: 'com.caucho', name: 'quercus', version: '4.0.45'
+        compileOnly 'org.projectlombok:lombok:1.18.16'
+        annotationProcessor 'org.projectlombok:lombok:1.18.16'
     }
 }

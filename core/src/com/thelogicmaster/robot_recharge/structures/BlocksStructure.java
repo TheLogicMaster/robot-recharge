@@ -5,14 +5,16 @@ import com.badlogic.gdx.utils.ObjectMap;
 import com.badlogic.gdx.utils.OrderedMap;
 import com.thelogicmaster.robot_recharge.*;
 import com.thelogicmaster.robot_recharge.blocks.Block;
+import lombok.*;
 
+@Getter
+@Setter
+@ToString(callSuper = true)
+@NoArgsConstructor
 public class BlocksStructure extends Structure {
 
     private OrderedMap<String, Block> templates;
     private Array<BlockPlaceholder> blocks;
-
-    public BlocksStructure() {
-    }
 
     public BlocksStructure(Position position, Direction direction, OrderedMap<String, Block> templates, Array<BlockPlaceholder> blocks) {
         super(position, direction);
@@ -43,21 +45,5 @@ public class BlocksStructure extends Structure {
     public void dispose() {
         for (ObjectMap.Entry<String, Block> entry : new OrderedMap.OrderedMapEntries<>(templates))
             entry.value.dispose();
-    }
-
-    public OrderedMap<String, Block> getTemplates() {
-        return templates;
-    }
-
-    public Array<BlockPlaceholder> getBlocks() {
-        return blocks;
-    }
-
-    public void setTemplates(OrderedMap<String, Block> templates) {
-        this.templates = templates;
-    }
-
-    public void setBlocks(Array<BlockPlaceholder> blocks) {
-        this.blocks = blocks;
     }
 }

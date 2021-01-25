@@ -27,6 +27,7 @@ control the robot.
 - duktape4j (Desktop JavaScript)
 - [MaryTTS](https://github.com/marytts/marytts) (Desktop text to speech)
 - Android MaryTTS (Android text to speech)
+- Project Lombok (Boilerplate generation)
 
 ## Todo
 - Debug/step through mode

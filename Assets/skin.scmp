@@ -79,25 +79,6 @@ atlasData: {
 			hidden: false
 		}
 		{
-			file: "/home/justin/Programming/robot-recharge/Assets/skin_data/cursor.png"
-			bgColor: {
-				r: 1
-				g: 1
-				b: 1
-				a: 1
-			}
-			tint: null
-			tintName: null
-			name: cursor
-			tiled: false
-			minWidth: -1
-			minHeight: -1
-			customized: false
-			tenPatchData: null
-			type: TEXTURE
-			hidden: false
-		}
-		{
 			file: "/home/justin/Programming/robot-recharge/Assets/skin_data/buttonPressed.png"
 			bgColor: {
 				r: 1
@@ -925,6 +906,157 @@ atlasData: {
 			type: TINTED
 			hidden: false
 		}
+		{
+			file: "/home/justin/Programming/robot-recharge/Assets/skin_data/tintablePanel.png"
+			bgColor: {
+				r: 1
+				g: 1
+				b: 1
+				a: 1
+			}
+			tint: null
+			tintName: null
+			name: tintablePanel
+			tiled: false
+			minWidth: -1
+			minHeight: -1
+			customized: false
+			tenPatchData: null
+			type: TEXTURE
+			hidden: false
+		}
+		{
+			file: "/home/justin/Programming/robot-recharge/Assets/skin_data/window.png"
+			bgColor: {
+				r: 1
+				g: 1
+				b: 1
+				a: 1
+			}
+			tint: null
+			tintName: null
+			name: codePanel
+			tiled: false
+			minWidth: 18
+			minHeight: 18
+			customized: false
+			tenPatchData: {
+				horizontalStretchAreas: {
+					items: [ 9, 90 ]
+					size: 2
+					ordered: true
+				}
+				verticalStretchAreas: {
+					items: [ 9, 90 ]
+					size: 2
+					ordered: true
+				}
+				contentLeft: 0
+				contentRight: 0
+				contentTop: 0
+				contentBottom: 0
+				tile: false
+				colorName: codePanel
+				color1Name: null
+				color2Name: null
+				color3Name: null
+				color4Name: null
+				offsetX: 0
+				offsetY: 0
+				offsetXspeed: 0
+				offsetYspeed: 0
+				frameDuration: 0.03
+				regionNames: []
+				playMode: 2
+			}
+			type: TENPATCH
+			hidden: false
+		}
+		{
+			file: "/home/justin/Programming/robot-recharge/Assets/skin_data/window.png"
+			bgColor: {
+				r: 1
+				g: 1
+				b: 1
+				a: 1
+			}
+			tint: null
+			tintName: null
+			name: codeNumbersPanel
+			tiled: false
+			minWidth: 32
+			minHeight: 18
+			customized: false
+			tenPatchData: {
+				horizontalStretchAreas: {
+					items: [ 9, 90 ]
+					size: 2
+					ordered: true
+				}
+				verticalStretchAreas: {
+					items: [ 9, 90 ]
+					size: 2
+					ordered: true
+				}
+				contentLeft: 0
+				contentRight: 0
+				contentTop: 0
+				contentBottom: 0
+				tile: false
+				colorName: codeNumbersPanel
+				color1Name: null
+				color2Name: null
+				color3Name: null
+				color4Name: null
+				offsetX: 0
+				offsetY: 0
+				offsetXspeed: 0
+				offsetYspeed: 0
+				frameDuration: 0.03
+				regionNames: []
+				playMode: 2
+			}
+			type: TENPATCH
+			hidden: false
+		}
+		{
+			file: "/home/justin/Programming/robot-recharge/Assets/skin_data/tintableCursor.png"
+			bgColor: {
+				r: 0
+				g: 0
+				b: 0
+				a: 1
+			}
+			tint: null
+			tintName: null
+			name: tintableCursor
+			tiled: false
+			minWidth: -1
+			minHeight: -1
+			customized: false
+			tenPatchData: null
+			type: TEXTURE
+			hidden: false
+		}
+		{
+			file: "/home/justin/Programming/robot-recharge/Assets/skin_data/tintableCursor.png"
+			bgColor: {
+				r: 0
+				g: 0
+				b: 0
+				a: 1
+			}
+			tint: null
+			tintName: cursor
+			name: cursor
+			tiled: false
+			minWidth: -1
+			minHeight: -1
+			customized: false
+			tenPatchData: null
+			type: TINTED_FROM_COLOR_DATA
+			hidden: false
+		}
 	]
 	fontDrawables: []
 }
@@ -939,6 +1071,46 @@ jsonData: {
 				a: 1
 			}
 			name: Black
+		}
+		{
+			class: com.ray3k.skincomposer.data.ColorData
+			color: {
+				r: 0.73
+				g: 0.73
+				b: 0.73
+				a: 1
+			}
+			name: code
+		}
+		{
+			class: com.ray3k.skincomposer.data.ColorData
+			color: {
+				r: 0.3605556
+				g: 0.7438397
+				b: 0.91666675
+				a: 1
+			}
+			name: codeNumbersPanel
+		}
+		{
+			class: com.ray3k.skincomposer.data.ColorData
+			color: {
+				r: 0.09542221
+				g: 0.68008614
+				b: 0.75333345
+				a: 1
+			}
+			name: codePanel
+		}
+		{
+			class: com.ray3k.skincomposer.data.ColorData
+			color: {
+				r: 1
+				g: 1
+				b: 1
+				a: 1
+			}
+			name: cursor
 		}
 		{
 			class: com.ray3k.skincomposer.data.ColorData
@@ -963,6 +1135,34 @@ jsonData: {
 	]
 	fonts: []
 	freeTypeFonts: [
+		{
+			class: com.ray3k.skincomposer.data.FreeTypeFontData
+			name: codeFont
+			previewTTF: SourceSansPro-Regular
+			useCustomSerializer: false
+			size: 16
+			mono: false
+			hinting: AutoMedium
+			color: null
+			gamma: 1.8
+			renderCount: 2
+			borderWidth: 0
+			borderColor: null
+			borderStraight: false
+			borderGamma: 1.8
+			shadowOffsetX: 0
+			shadowOffsetY: 0
+			shadowColor: null
+			spaceX: 0
+			spaceY: 0
+			characters: ""
+			kerning: true
+			flip: false
+			genMipMaps: false
+			minFilter: Nearest
+			magFilter: Nearest
+			incremental: false
+		}
 		{
 			class: com.ray3k.skincomposer.data.FreeTypeFontData
 			name: infoFont
@@ -2366,7 +2566,7 @@ jsonData: {
 						type: com.badlogic.gdx.scenes.scene2d.utils.Drawable
 						name: background
 						optional: true
-						value: windowTen
+						value: null
 					}
 					corner: {
 						type: com.badlogic.gdx.scenes.scene2d.utils.Drawable
@@ -5273,6 +5473,156 @@ jsonData: {
 						name: selection
 						optional: true
 						value: null
+					}
+					messageFont: {
+						type: com.badlogic.gdx.graphics.g2d.BitmapFont
+						name: messageFont
+						optional: true
+						value: null
+					}
+					messageFontColor: {
+						type: com.badlogic.gdx.graphics.Color
+						name: messageFontColor
+						optional: true
+						value: null
+					}
+				}
+				deletable: true
+				parent: null
+			}
+			{
+				class: com.ray3k.skincomposer.data.StyleData
+				name: code
+				clazz: com.badlogic.gdx.scenes.scene2d.ui.TextField
+				properties: {
+					font: {
+						type: com.badlogic.gdx.graphics.g2d.BitmapFont
+						name: font
+						optional: false
+						value: codeFont
+					}
+					fontColor: {
+						type: com.badlogic.gdx.graphics.Color
+						name: fontColor
+						optional: false
+						value: code
+					}
+					focusedFontColor: {
+						type: com.badlogic.gdx.graphics.Color
+						name: focusedFontColor
+						optional: true
+						value: null
+					}
+					disabledFontColor: {
+						type: com.badlogic.gdx.graphics.Color
+						name: disabledFontColor
+						optional: true
+						value: null
+					}
+					background: {
+						type: com.badlogic.gdx.scenes.scene2d.utils.Drawable
+						name: background
+						optional: true
+						value: codePanel
+					}
+					focusedBackground: {
+						type: com.badlogic.gdx.scenes.scene2d.utils.Drawable
+						name: focusedBackground
+						optional: true
+						value: null
+					}
+					disabledBackground: {
+						type: com.badlogic.gdx.scenes.scene2d.utils.Drawable
+						name: disabledBackground
+						optional: true
+						value: null
+					}
+					cursor: {
+						type: com.badlogic.gdx.scenes.scene2d.utils.Drawable
+						name: cursor
+						optional: true
+						value: cursor
+					}
+					selection: {
+						type: com.badlogic.gdx.scenes.scene2d.utils.Drawable
+						name: selection
+						optional: true
+						value: selection
+					}
+					messageFont: {
+						type: com.badlogic.gdx.graphics.g2d.BitmapFont
+						name: messageFont
+						optional: true
+						value: null
+					}
+					messageFontColor: {
+						type: com.badlogic.gdx.graphics.Color
+						name: messageFontColor
+						optional: true
+						value: null
+					}
+				}
+				deletable: true
+				parent: null
+			}
+			{
+				class: com.ray3k.skincomposer.data.StyleData
+				name: codeNumbers
+				clazz: com.badlogic.gdx.scenes.scene2d.ui.TextField
+				properties: {
+					font: {
+						type: com.badlogic.gdx.graphics.g2d.BitmapFont
+						name: font
+						optional: false
+						value: codeFont
+					}
+					fontColor: {
+						type: com.badlogic.gdx.graphics.Color
+						name: fontColor
+						optional: false
+						value: code
+					}
+					focusedFontColor: {
+						type: com.badlogic.gdx.graphics.Color
+						name: focusedFontColor
+						optional: true
+						value: null
+					}
+					disabledFontColor: {
+						type: com.badlogic.gdx.graphics.Color
+						name: disabledFontColor
+						optional: true
+						value: null
+					}
+					background: {
+						type: com.badlogic.gdx.scenes.scene2d.utils.Drawable
+						name: background
+						optional: true
+						value: codeNumbersPanel
+					}
+					focusedBackground: {
+						type: com.badlogic.gdx.scenes.scene2d.utils.Drawable
+						name: focusedBackground
+						optional: true
+						value: null
+					}
+					disabledBackground: {
+						type: com.badlogic.gdx.scenes.scene2d.utils.Drawable
+						name: disabledBackground
+						optional: true
+						value: null
+					}
+					cursor: {
+						type: com.badlogic.gdx.scenes.scene2d.utils.Drawable
+						name: cursor
+						optional: true
+						value: cursor
+					}
+					selection: {
+						type: com.badlogic.gdx.scenes.scene2d.utils.Drawable
+						name: selection
+						optional: true
+						value: selection
 					}
 					messageFont: {
 						type: com.badlogic.gdx.graphics.g2d.BitmapFont

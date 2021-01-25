@@ -48,7 +48,7 @@ public class AndroidLauncher extends AndroidApplication {
             public RobotController createRobotController(Robot robot, RobotExecutionListener listener, CodeEngine engine) {
                 return new JavaRobotController(robot, listener, engine);
             }
-        }, new AndroidTTSEngine(getContext()), gameServices, 0 != (getApplicationInfo().flags & ApplicationInfo.FLAG_DEBUGGABLE)), config);
+        }, new AndroidTTSEngine(getContext()), gameServices, new JavaCodeEditorUtils(), 0 != (getApplicationInfo().flags & ApplicationInfo.FLAG_DEBUGGABLE)), config);
 
         addContentView(editor, new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
     }

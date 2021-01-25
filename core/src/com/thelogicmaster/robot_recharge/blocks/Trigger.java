@@ -2,7 +2,12 @@ package com.thelogicmaster.robot_recharge.blocks;
 
 import com.badlogic.gdx.graphics.Color;
 import com.thelogicmaster.robot_recharge.*;
+import lombok.*;
 
+@NoArgsConstructor
+@ToString(callSuper = true)
+@Getter
+@Setter
 public class Trigger extends Block {
 
     private boolean destroy;
@@ -10,10 +15,8 @@ public class Trigger extends Block {
     private Color triggeredColor;
     private String name;
 
+    @Setter(AccessLevel.NONE)
     private transient boolean triggered;
-
-    public Trigger() {
-    }
 
     public Trigger(Position position, Direction direction, boolean cubic, String asset, float transparency, Color color, boolean destroy, boolean oneShot) {
         super(position, direction, cubic, asset, transparency, color);

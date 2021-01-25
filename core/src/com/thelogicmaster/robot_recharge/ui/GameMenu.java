@@ -9,7 +9,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.kotcrab.vis.ui.util.dialog.Dialogs;
 import com.kotcrab.vis.ui.util.dialog.OptionDialogAdapter;
-import com.thelogicmaster.robot_recharge.GameServices;
 import com.thelogicmaster.robot_recharge.RobotRecharge;
 import com.thelogicmaster.robot_recharge.RobotUtils;
 
@@ -55,18 +54,16 @@ public class GameMenu extends RobotDialog {
         solutionsButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
+                // Todo: Don't show ad for tutorials
                 if (Gdx.app.getType() == Application.ApplicationType.Android && !unlockedSolution && !RobotRecharge.prefs.hasUnlockedSolutions())
                     Dialogs.showOptionDialog(getStage(), "View Solutions", "Watch an ad to view the level solutions?",
                             Dialogs.OptionDialogType.YES_CANCEL, new OptionDialogAdapter() {
                                 @Override
                                 public void yes() {
                                     RobotUtils.playNavigationSound();
-                                    RobotRecharge.gameServices.showRewardAd(new GameServices.RewardAdListener() {
-                                        @Override
-                                        public void onAdReward() {
-                                            showSolution();
-                                            unlockedSolution = true;
-                                        }
+                                    RobotRecharge.gameServices.showRewardAd(() -> {
+                                        showSolution();
+                                        unlockedSolution = true;
                                     });
                                 }
 

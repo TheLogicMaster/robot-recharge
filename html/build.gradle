@@ -10,6 +10,15 @@ buildConfig {
     clsName = 'BuildConfig'
     packageName = 'com.thelogicmaster.robot_recharge'
     buildConfigField 'String', 'GAME_JOLT_KEY', properties.getProperty('gameJoltKey')
+    buildConfigField 'boolean', 'DEBUG', properties.getProperty('debug')
+}
+
+configurations {
+    lombok
+}
+
+dependencies {
+    lombok 'org.projectlombok:lombok:1.18.16'
 }
 
 gwt {
@@ -97,6 +106,18 @@ task dist(dependsOn: [clean, compileGwt]) {
     }
 }
 
+draftCompileGwt {
+    doFirst {
+        jvmArgs "-javaagent:${configurations.lombok.asPath}=ECJ"
+    }
+}
+
+compileGwt {
+    doFirst {
+        jvmArgs "-javaagent:${configurations.lombok.asPath}=ECJ"
+    }
+}
+
 task addSource {
     doLast {
         sourceSets.main.compileClasspath += files(project(':core').sourceSets.main.allJava.srcDirs)
@@ -106,7 +127,7 @@ task addSource {
 tasks.compileGwt.dependsOn(addSource)
 tasks.draftCompileGwt.dependsOn(addSource)
 
-sourceCompatibility = 1.7
+sourceCompatibility = 1.8
 sourceSets.main.java.srcDirs = [ "src/" ]
 
 eclipse.project.name = appName + "-html"

@@ -51,7 +51,7 @@ public class JCEFDesktopLauncher implements PlatformUtils {
         engines.put(Language.Lua, new LuaEngine());
         engines.put(Language.PHP, new PhpEngine());
         lwjglAWTCanvas = new LwjglAWTCanvas(new RobotRecharge(engines, blocklyEditor, this,
-                new DesktopTTSEngine(), desktopGameServices, System.getenv().get("DEBUG") != null) {
+                new DesktopTTSEngine(), desktopGameServices, new JavaCodeEditorUtils(), System.getenv().get("DEBUG") != null) {
             @Override
             public void create() {
 

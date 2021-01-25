@@ -301,6 +301,8 @@ public class Level implements Disposable, Renderable3D, AssetConsumer, RobotExec
      * Call when the level has been completed
      */
     public void completeLevel() {
+        // Todo: add a separate "Energy" objective for movements
+        // Todo: Rename MaxCalls Objective to MaxActions or so
         int length;
         if (useBlocks)
             length = blocklyData.split("robot_").length - 1;
@@ -339,9 +341,9 @@ public class Level implements Disposable, Renderable3D, AssetConsumer, RobotExec
     public void assetsLoaded(AssetMultiplexer assetManager) {
         for (Structure structure : structures)
             structure.assetsLoaded(assetManager);
-        level = new ModelInstance(RobotUtils.cleanModel(assetManager.<Model>get("levels/" + levelModelName)));
+        level = new ModelInstance(RobotUtils.cleanModel(assetManager.get("levels/" + levelModelName)));
         level.transform.setTranslation(xSize / 2f, -levelHeight, zSize / 2f);
-        robot = new Robot(new ModelInstance(RobotUtils.cleanModel(assetManager.<Model>get("robot.g3db"))), engine,
+        robot = new Robot(new ModelInstance(RobotUtils.cleanModel(assetManager.get("robot.g3db"))), engine,
                 viewport, this);
         background = assetManager.get("levels/" + backgroundName);
     }
@@ -384,11 +386,21 @@ public class Level implements Disposable, Renderable3D, AssetConsumer, RobotExec
                 ", ySize=" + ySize +
                 ", zSize=" + zSize +
                 ", levelHeight=" + levelHeight +
+                ", startPosition=" + startPosition +
+                ", startDirection=" + startDirection +
                 ", structures=" + structures +
                 ", objectives=" + objectives +
                 ", levelModelName='" + levelModelName + '\'' +
                 ", backgroundName='" + backgroundName + '\'' +
                 ", solutions=" + solutions +
+                ", robot=" + robot +
+                ", realBlocks=" + realBlocks +
+                ", useBlocks=" + useBlocks +
+                ", showingGrid=" + showingGrid +
+                ", blocklyData='" + blocklyData + '\'' +
+                ", code='" + code + '\'' +
+                ", runTime=" + runTime +
+                ", setup=" + setup +
                 '}';
     }
 }

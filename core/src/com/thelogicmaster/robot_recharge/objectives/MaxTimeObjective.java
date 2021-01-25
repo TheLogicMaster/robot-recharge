@@ -2,17 +2,16 @@ package com.thelogicmaster.robot_recharge.objectives;
 
 import com.badlogic.gdx.utils.Array;
 import com.thelogicmaster.robot_recharge.LevelEvent;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class MaxTimeObjective implements Objective {
 
     private int time;
-
-    public MaxTimeObjective() {
-    }
-
-    public MaxTimeObjective(int time) {
-        this.time = time;
-    }
 
     @Override
     public boolean check(int length, int calls, float time, Array<LevelEvent> events) {

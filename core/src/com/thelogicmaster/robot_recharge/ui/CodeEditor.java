@@ -17,14 +17,10 @@ public class CodeEditor extends Table {
         add(catalogButton).padLeft(10).padTop(10).padRight(100).left();
         add(new Label(language.name() + " Editor", skin, "large")).left().expandX().row();
         final Table codeTable = new Table();
-        final TextArea lineNumbers = new TextArea("", skin);
+        final TextArea lineNumbers = new TextArea("", skin, "codeNumbers");
         lineNumbers.setDisabled(true);
-        codeTable.add(lineNumbers).width(70).fillY();
-        codeArea = new CodeArea(skin);
-        codeArea.getStyle().background.setLeftWidth(10);
-        codeArea.getStyle().background.setTopHeight(10);
-        codeArea.getStyle().background.setRightWidth(10);
-        codeArea.getStyle().background.setBottomHeight(10);
+        codeTable.add(lineNumbers).width(80).fillY();
+        codeArea = new CodeArea(skin, language);
         codeArea.setProgrammaticChangeEvents(true);
         codeTable.add(codeArea).grow();
         final ScrollPane codeScrollPane = new ScrollPane(codeTable, skin);
@@ -37,21 +33,17 @@ public class CodeEditor extends Table {
         codeArea.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                Gdx.app.postRunnable(new Runnable() {
-                    @Override
-                    public void run() {
-                        // Todo: Fix initial line count
-                        codeArea.updateLines();
-                        //Gdx.app.log("Lines", "" + codeArea.getLines());
-                        codeArea.setPrefRows(codeArea.getLines() + 1);
-                        codeArea.invalidateHierarchy();
-                        if (Math.abs(-codeScrollPane.getHeight() / 2 - codeArea.getCursorY() - codeScrollPane.getScrollY()) > codeScrollPane.getHeight() / 2)
-                            codeScrollPane.setScrollY(-codeScrollPane.getHeight() / 2 - codeArea.getCursorY());
-                        StringBuilder numbers = new StringBuilder();
-                        for (int i = 1; i <= codeArea.getLines(); i++)
-                            numbers.append(" ").append(i).append("\n");
-                        lineNumbers.setText(numbers.toString());
-                    }
+                Gdx.app.postRunnable(() -> {
+                    // Todo: Fix initial line count
+                    codeArea.updateLines();
+                    codeArea.setPrefRows(codeArea.getLines() + 1);
+                    codeArea.invalidateHierarchy();
+                    if (Math.abs(-codeScrollPane.getHeight() / 2 - codeArea.getCursorY() - codeScrollPane.getScrollY()) > codeScrollPane.getHeight() / 2)
+                        codeScrollPane.setScrollY(-codeScrollPane.getHeight() / 2 - codeArea.getCursorY());
+                    StringBuilder numbers = new StringBuilder();
+                    for (int i = 1; i <= codeArea.getLines(); i++)
+                        numbers.append(i).append("\n");
+                    lineNumbers.setText(numbers.toString());
                 });
             }
         });

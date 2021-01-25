@@ -6,9 +6,7 @@ import com.badlogic.gdx.backends.gwt.GwtApplication;
 import com.badlogic.gdx.backends.gwt.GwtApplicationConfiguration;
 import com.badlogic.gdx.backends.gwt.GwtGraphics;
 import com.badlogic.gdx.graphics.g2d.freetype.gwt.FreetypeInjector;
-import com.badlogic.gdx.graphics.g2d.freetype.gwt.inject.OnCompletion;
 import com.badlogic.gdx.utils.Array;
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.Style;
@@ -19,6 +17,8 @@ import com.thelogicmaster.robot_recharge.code.Language;
 
 import java.util.HashMap;
 
+// Method references break everything
+@SuppressWarnings("Convert2MethodRef")
 public class HtmlLauncher extends GwtApplication {
 
     @Override
@@ -121,7 +121,7 @@ public class HtmlLauncher extends GwtApplication {
             public RobotController createRobotController(Robot robot, RobotExecutionListener listener, CodeEngine engine) {
                 return new JavaScriptRobotController(robot, listener);
             }
-        }, ttsSupported() ? new GwtTTSEngine() : null, gwtGameServices, !GWT.isProdMode()) {
+        }, ttsSupported() ? new GwtTTSEngine() : null, gwtGameServices, new HtmlCodeEditorUtils(), BuildConfig.DEBUG) {
             @Override
             public void create() {
                 super.create();
@@ -132,11 +132,7 @@ public class HtmlLauncher extends GwtApplication {
 
     @Override
     public void onModuleLoad() {
-        FreetypeInjector.inject(new OnCompletion() {
-            public void run() {
-                HtmlLauncher.super.onModuleLoad();
-            }
-        });
+        FreetypeInjector.inject(() -> HtmlLauncher.super.onModuleLoad());
     }
 
     /*@Override

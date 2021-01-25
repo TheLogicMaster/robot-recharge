@@ -17,6 +17,7 @@ import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.utils.Disableable;
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Base64Coder;
 import com.badlogic.gdx.utils.Json;
@@ -176,21 +177,20 @@ public class RobotUtils {
     }
 
     public static void restorePurchases() {
-        RobotRecharge.gameServices.restorePurchases(new GameServices.RestorePurchasesListener() {
-            @Override
-            public void onRestorePurchases(Array<String> purchases) {
-                RobotRecharge.prefs.restorePurchases(purchases);
-            }
-        });
+        RobotRecharge.gameServices.restorePurchases(purchases -> RobotRecharge.prefs.restorePurchases(purchases));
     }
 
     public static void loadCloudSave() {
-        RobotRecharge.gameServices.loadGameState("save", new ILoadGameStateResponseListener() {
-            @Override
-            public void gsGameStateLoaded(byte[] gameState) {
-                if (gameState != null)
-                    RobotRecharge.prefs.loadGameSave(RobotAssets.json.fromJson(GameSave.class, Base64Coder.decodeString(new String(gameState))));
-            }
+        RobotRecharge.gameServices.loadGameState("save", gameState -> {
+            if (gameState != null)
+                RobotRecharge.prefs.loadGameSave(RobotAssets.json.fromJson(GameSave.class, Base64Coder.decodeString(new String(gameState))));
         });
+    }
+
+    public static void padDrawable(Drawable drawable, float padding) {
+        drawable.setLeftWidth(padding);
+        drawable.setRightWidth(padding);
+        drawable.setTopHeight(padding);
+        drawable.setBottomHeight(padding);
     }
 }

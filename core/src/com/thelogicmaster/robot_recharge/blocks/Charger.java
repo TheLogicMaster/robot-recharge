@@ -2,11 +2,10 @@ package com.thelogicmaster.robot_recharge.blocks;
 
 import com.badlogic.gdx.graphics.Color;
 import com.thelogicmaster.robot_recharge.*;
+import lombok.NoArgsConstructor;
 
+@NoArgsConstructor
 public class Charger extends Block {
-
-    public Charger() {
-    }
 
     public Charger(Position position, Direction direction, boolean modeled, String asset, float transparency, Color color) {
         super(position, direction, modeled, asset, transparency, color);

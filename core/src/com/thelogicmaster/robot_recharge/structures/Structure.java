@@ -5,16 +5,18 @@ import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.decals.DecalBatch;
 import com.badlogic.gdx.utils.Disposable;
 import com.thelogicmaster.robot_recharge.*;
+import lombok.*;
 
+@Getter
+@Setter
+@ToString(exclude = "level")
+@NoArgsConstructor
 public abstract class Structure implements AssetConsumer, Renderable3D, Disposable {
-
+    @Setter(AccessLevel.NONE)
     protected transient Level level;
 
     protected Position position;
     protected Direction direction;
-
-    public Structure() {
-    }
 
     public Structure(Position position, Direction direction) {
         this.position = position;
@@ -44,21 +46,5 @@ public abstract class Structure implements AssetConsumer, Renderable3D, Disposab
     protected Position transformPosition(Position position) {
         // Todo: Transform based on position and rotation
         return position;
-    }
-
-    public Position getPosition() {
-        return position;
-    }
-
-    public void setPosition(Position position) {
-        this.position = position;
-    }
-
-    public Direction getDirection() {
-        return direction;
-    }
-
-    public void setDirection(Direction direction) {
-        this.direction = direction;
     }
 }

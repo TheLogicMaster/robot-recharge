@@ -6,7 +6,11 @@ import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.decals.DecalBatch;
 import com.badlogic.gdx.math.Vector3;
 import com.thelogicmaster.robot_recharge.*;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
+@NoArgsConstructor
+@ToString(callSuper = true, exclude = "level")
 public class TurnTable extends Block {
 
     private transient Level level;
@@ -14,9 +18,6 @@ public class TurnTable extends Block {
     private transient boolean clockWise, turning;
 
     private final static float speed = 2; // Turns/second
-
-    public TurnTable() {
-    }
 
     public TurnTable(Position position, Direction direction, boolean modeled, String asset, float transparency, Color color) {
         super(position, direction, modeled, asset, transparency, color);

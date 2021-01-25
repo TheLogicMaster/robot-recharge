@@ -38,8 +38,7 @@ public class TutorialsScreen extends MenuScreen {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 RobotUtils.playNavigationSound();
-                LevelSave save = new LevelSave(list.getSelected().getName(), blocklyCheckbox.isChecked(), "",
-                        languageSelect.getSelected());
+                LevelSave save = new LevelSave(blocklyCheckbox.isChecked(), "", list.getSelected().getName(), languageSelect.getSelected());
                 RobotRecharge.instance.setScreen(new GameScreen(save));
                 RobotRecharge.assets.titleMusic.stop();
             }

@@ -6,7 +6,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Base64Coder;
-import com.thelogicmaster.robot_recharge.GameSave;
 import com.thelogicmaster.robot_recharge.RobotAssets;
 import com.thelogicmaster.robot_recharge.RobotRecharge;
 import com.thelogicmaster.robot_recharge.RobotUtils;
@@ -14,8 +13,6 @@ import com.thelogicmaster.robot_recharge.ui.GameJoltLoginDialog;
 import com.thelogicmaster.robot_recharge.ui.IterativeStack;
 import com.thelogicmaster.robot_recharge.ui.PaddedTextButton;
 import de.golfgl.gdxgamesvcs.IGameServiceClient;
-import de.golfgl.gdxgamesvcs.gamestate.ILoadGameStateResponseListener;
-import de.golfgl.gdxgamesvcs.gamestate.ISaveGameStateResponseListener;
 
 public class CloudScreen extends MenuScreen {
 
@@ -61,10 +58,7 @@ public class CloudScreen extends MenuScreen {
                 // Encode save to base64 to ensure that blockly xml data doesn't break everything
                 RobotRecharge.gameServices.saveGameState("save",
                         Base64Coder.encodeString(RobotAssets.json.toJson(RobotRecharge.prefs.getGameSave())).getBytes(),
-                        RobotRecharge.prefs.getUnlockedLevel(), new ISaveGameStateResponseListener() {
-                            @Override
-                            public void onGameStateSaved(boolean success, String errorCode) {
-                            }
+                        RobotRecharge.prefs.getUnlockedLevel(), (success, errorCode) -> {
                         });
             }
         });
