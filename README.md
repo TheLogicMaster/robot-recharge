@@ -33,8 +33,9 @@ control the robot.
 ## Todo
 - Debug/step through mode
 - Tab to double space functionality in editor
-- IOS port of MaryTTS or Android MaryTTS, some RoboVM implementation
+- IOS port of MaryTTS or Android MaryTTS, or some RoboVM implementation
 - Make the UI not terrible
-- Mobile HTML custom keyboard
-- Unit tests (JS code transformations, for instance)
+- Mobile HTML custom keyboard (Or not if it's not worth it and just disable JS on mobile browsers)
+- Code testing (JS code transformations, for instance)
 - Level editor
+- Trim HTML reflection cache of unused components like most of VisUI

@@ -7,7 +7,6 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@EqualsAndHashCode
 public class Theme {
     private Color function, field, keyword, comment;
     private Color code, cursor, text;

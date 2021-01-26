@@ -1,13 +1,10 @@
 package com.thelogicmaster.robot_recharge.code;
 
 import com.badlogic.gdx.utils.ObjectMap;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
+@Getter
+@Setter
 public class Solution {
 
     private ObjectMap<String, String> code;

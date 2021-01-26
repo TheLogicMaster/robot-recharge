@@ -5,7 +5,6 @@ import com.thelogicmaster.robot_recharge.*;
 import lombok.*;
 
 @NoArgsConstructor
-@ToString(callSuper = true)
 @Getter
 @Setter
 public class Trigger extends Block {

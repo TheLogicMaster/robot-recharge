@@ -2,13 +2,10 @@ package com.thelogicmaster.robot_recharge.objectives;
 
 import com.badlogic.gdx.utils.Array;
 import com.thelogicmaster.robot_recharge.LevelEvent;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
+@Getter
+@Setter
 public class MaxCallsObjective implements Objective {
 
     private int calls;

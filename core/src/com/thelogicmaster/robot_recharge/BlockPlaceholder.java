@@ -1,12 +1,9 @@
 package com.thelogicmaster.robot_recharge;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
+@Getter
+@Setter
 public class BlockPlaceholder {
     private String block;
     private Position position;

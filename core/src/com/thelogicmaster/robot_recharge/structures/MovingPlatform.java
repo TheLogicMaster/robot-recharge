@@ -11,9 +11,7 @@ import com.thelogicmaster.robot_recharge.blocks.MovingPlatformBlock;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 
-@ToString(exclude = {"platform", "platformIndicator", "tempVector1", "tempVector2"}, callSuper = true)
 @NoArgsConstructor
 public class MovingPlatform extends Structure {
 

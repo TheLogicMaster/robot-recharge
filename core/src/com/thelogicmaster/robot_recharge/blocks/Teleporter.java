@@ -9,7 +9,6 @@ import lombok.*;
 @NoArgsConstructor
 @Getter
 @Setter
-@ToString(callSuper = true, exclude = {"effectIn", "effectOut"})
 public class Teleporter extends Block {
 
     private Position target;

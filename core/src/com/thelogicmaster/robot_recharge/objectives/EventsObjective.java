@@ -7,9 +7,8 @@ import lombok.*;
 /**
  * An objective that requires all specified events to be called at least once
  */
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
+@Getter
+@Setter
 public class EventsObjective implements Objective {
 
     private Array<String> events = new Array<>();

@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @NoArgsConstructor
-@ToString(callSuper = true, exclude = "level")
 public class TurnTable extends Block {
 
     private transient Level level;

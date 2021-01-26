@@ -9,7 +9,6 @@ import lombok.*;
 
 @Getter
 @Setter
-@ToString(exclude = "level")
 @NoArgsConstructor
 public abstract class Structure implements AssetConsumer, Renderable3D, Disposable {
     @Setter(AccessLevel.NONE)

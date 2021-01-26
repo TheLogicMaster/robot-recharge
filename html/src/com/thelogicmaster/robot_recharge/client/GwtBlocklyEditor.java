@@ -41,12 +41,10 @@ public class GwtBlocklyEditor implements BlocklyEditor {
     }-*/;
 
     private native void setThemeBlockly(String theme)/*-{
-        $wnd.workspace.setTheme(JSON.parse(theme));
+        var theme = JSON.parse(theme);
+        theme['base'] = $wnd.Blockly.Themes.Dark;
+        $wnd.workspace.setTheme($wnd.Blockly.Theme.defineTheme('theme', theme));
     }-*/;
-
-    void init() {
-
-    }
 
     private void updateStyle() {
         blockly.setAttribute("style", "" +

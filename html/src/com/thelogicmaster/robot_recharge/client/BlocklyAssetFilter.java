@@ -6,7 +6,7 @@ public class BlocklyAssetFilter extends DefaultAssetFilter {
 
     @Override
     public boolean accept(String file, boolean isDirectory) {
-        if (file.contains("blockly"))
+        if (file.matches("assets/blockly"))
             return false;
         return super.accept(file, isDirectory);
     }

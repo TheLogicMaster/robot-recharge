@@ -1,14 +1,13 @@
 package com.thelogicmaster.robot_recharge;
 
 import com.badlogic.gdx.utils.Array;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 /**
  * Represents an entire cloud save
  */
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class GameSave {

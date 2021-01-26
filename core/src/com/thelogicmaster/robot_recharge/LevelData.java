@@ -4,9 +4,11 @@ import com.badlogic.gdx.utils.Array;
 import com.thelogicmaster.robot_recharge.code.Solution;
 import com.thelogicmaster.robot_recharge.objectives.Objective;
 import com.thelogicmaster.robot_recharge.structures.Structure;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 public class LevelData {
     private int xSize, ySize, zSize;
     private float levelHeight;

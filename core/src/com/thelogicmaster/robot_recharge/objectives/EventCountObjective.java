@@ -8,9 +8,8 @@ import lombok.*;
  * An objective that requires a certain number of occurrences of a specified event
  * Can require exactly that many occurrences or greater than or equal
  */
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
+@Getter
+@Setter
 public class EventCountObjective implements Objective {
 
     private String event;

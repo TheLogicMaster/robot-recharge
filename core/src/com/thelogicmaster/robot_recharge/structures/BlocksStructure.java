@@ -9,7 +9,6 @@ import lombok.*;
 
 @Getter
 @Setter
-@ToString(callSuper = true)
 @NoArgsConstructor
 public class BlocksStructure extends Structure {
 

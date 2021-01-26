@@ -108,12 +108,13 @@ public class DesktopBlocklyEditor implements BlocklyEditor, ActionListener {
     @Override
     public void setWidth(int width) {
         this.width = width;
+        browser.getUIComponent().setBounds(screenWidth - (int) (progress * width), 0, width, Gdx.graphics.getHeight());
     }
 
     @Override
     public void resize(int screenWidth, int screenHeight) {
         this.screenWidth = screenWidth;
-        browser.getUIComponent().setBounds(screenWidth - (int) (progress * width), 0, screenWidth, screenHeight);
+        browser.getUIComponent().setBounds(screenWidth - (int) (progress * width), 0, width, screenHeight);
     }
 
     @Override

@@ -402,6 +402,7 @@ public class GameScreen extends RobotScreen implements LevelExecutionListener {
 
     @Override
     public void resize(int width, int height) {
+
         super.resize(width, height);
         viewport.update(width, height);
         if (RobotRecharge.blocksEditor != null)

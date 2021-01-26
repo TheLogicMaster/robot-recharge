@@ -14,7 +14,6 @@ import com.thelogicmaster.robot_recharge.*;
 import lombok.*;
 
 @NoArgsConstructor
-@ToString(exclude = {"model", "modelSource", "level", "rotation", "tempVec3"})
 public class Block implements Renderable3D, Disposable, AssetConsumer {
     @Getter
     @Setter
