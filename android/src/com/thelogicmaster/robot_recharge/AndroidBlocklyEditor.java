@@ -36,22 +36,14 @@ public class AndroidBlocklyEditor extends WebView implements BlocklyEditor {
 
     @Override
     public void show() {
-        ((Activity) getContext()).runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                setVisibility(VISIBLE);
-            }
-        });
+        ((Activity) getContext()).runOnUiThread(() -> setVisibility(VISIBLE));
     }
 
     private void updateLayout() {
-        ((Activity) getContext()).runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) getLayoutParams();
-                params.leftMargin = Gdx.graphics.getWidth() - width;
-                setLayoutParams(params);
-            }
+        ((Activity) getContext()).runOnUiThread(() -> {
+            FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) getLayoutParams();
+            params.leftMargin = Gdx.graphics.getWidth() - width;
+            setLayoutParams(params);
         });
     }
 
@@ -68,12 +60,7 @@ public class AndroidBlocklyEditor extends WebView implements BlocklyEditor {
 
     @Override
     public void hide() {
-        ((Activity) getContext()).runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                setVisibility(INVISIBLE);
-            }
-        });
+        ((Activity) getContext()).runOnUiThread(() -> setVisibility(INVISIBLE));
     }
 
     @Override
@@ -82,12 +69,7 @@ public class AndroidBlocklyEditor extends WebView implements BlocklyEditor {
     }
 
     private void runJavascript(final String code, final ValueCallback<String> callback) {
-        ((Activity) getContext()).runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                evaluateJavascript(code, callback);
-            }
-        });
+        ((Activity) getContext()).runOnUiThread(() -> evaluateJavascript(code, callback));
     }
 
     @Override
@@ -107,12 +89,9 @@ public class AndroidBlocklyEditor extends WebView implements BlocklyEditor {
     public void save(final Consumer<String> callback) {
         runJavascript("(function() {" +
                 "return Blockly.Xml.domToText(Blockly.Xml.workspaceToDom(workspace));" +
-                "})();", new ValueCallback<String>() {
-            @Override
-            public void onReceiveValue(String value) {
-                value = value.substring(1, value.length() - 1);
-                callback.accept(value);
-            }
+                "})();", value -> {
+            value = value.substring(1, value.length() - 1);
+            callback.accept(value);
         });
     }
 
@@ -120,18 +99,20 @@ public class AndroidBlocklyEditor extends WebView implements BlocklyEditor {
     public void generateCode(Language language, final Consumer<String> callback) {
         runJavascript("(function() {" +
                 "return Blockly." + language.name() + ".workspaceToCode(workspace);" +
-                "})();", new ValueCallback<String>() {
-            @Override
-            public void onReceiveValue(String value) {
-                if (value.length() > 2)
-                    value = value.substring(1, value.length() - 2);
-                callback.accept(StringEscapeUtils.unescapeJson(value));
-            }
+                "})();", value -> {
+            if (value.length() > 2)
+                value = value.substring(1, value.length() - 2);
+            callback.accept(StringEscapeUtils.unescapeJson(value));
         });
     }
 
     @Override
     public boolean isLoaded() {
         return loaded;
+    }
+
+    @Override
+    public void setTheme(String theme) {
+        runJavascript("workspace.setTheme(JSON.parse('" + theme + "'));", null);
     }
 }

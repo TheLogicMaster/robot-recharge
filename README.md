@@ -33,7 +33,8 @@ control the robot.
 ## Todo
 - Debug/step through mode
 - Tab to double space functionality in editor
-- IOS port of MaryTTS or Android MaryTTS
+- IOS port of MaryTTS or Android MaryTTS, some RoboVM implementation
 - Make the UI not terrible
 - Mobile HTML custom keyboard
 - Unit tests (JS code transformations, for instance)
+- Level editor

@@ -33,7 +33,7 @@ public class LevelScreen extends MenuScreen {
         final IterativeStack stack = new IterativeStack();
         for (LevelInfo level : levels) {
             Table table = new Table(skin);
-            table.setBackground("buttonTen");
+            table.setBackground("secondaryPanel");
             Label levelInfo = new Label(level.getDescription(), skin);
             levelInfo.setWrap(true);
             table.pad(10);
@@ -47,7 +47,7 @@ public class LevelScreen extends MenuScreen {
         // Controls
         // Todo: Save last used language config using custom language select and blockly checkbox components
         Table controlsTable = new Table(skin);
-        controlsTable.setBackground("buttonTen");
+        controlsTable.setBackground("secondaryPanel");
         controlsTable.setBounds(uiViewport.getWorldWidth() - 1000, uiViewport.getWorldHeight() - 590,
                 800, 350);
         resumeButton = new PaddedTextButton("Resume Game", skin);
@@ -88,7 +88,7 @@ public class LevelScreen extends MenuScreen {
             });
         }
         Table levelTable = new Table(skin);
-        levelTable.setBackground("windowTen");
+        levelTable.setBackground("secondaryPanel");
         levelTable.pad(10);
         levelTable.setBounds(200, 50, 600, 800);
         ScrollPane levelPane = new ScrollPane(levelButtonTable, skin, "levelPane");

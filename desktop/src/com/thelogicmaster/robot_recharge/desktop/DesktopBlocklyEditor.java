@@ -171,4 +171,12 @@ public class DesktopBlocklyEditor implements BlocklyEditor, ActionListener {
                 "console.log('Code:' + Blockly." + language.name() + ".workspaceToCode(workspace));" +
                 "})();", "", 0);
     }
+
+    @Override
+    public void setTheme(String theme) {
+        browser.executeJavaScript("" +
+                "let theme = JSON.parse(`" + theme + "`);\n" +
+                "theme['base'] = Blockly.Themes.Dark;\n" +
+                "workspace.setTheme(Blockly.Theme.defineTheme('theme', theme));\n", "", 0);
+    }
 }

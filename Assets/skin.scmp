@@ -926,100 +926,6 @@ atlasData: {
 			hidden: false
 		}
 		{
-			file: "/home/justin/Programming/robot-recharge/Assets/skin_data/window.png"
-			bgColor: {
-				r: 1
-				g: 1
-				b: 1
-				a: 1
-			}
-			tint: null
-			tintName: null
-			name: codePanel
-			tiled: false
-			minWidth: 18
-			minHeight: 18
-			customized: false
-			tenPatchData: {
-				horizontalStretchAreas: {
-					items: [ 9, 90 ]
-					size: 2
-					ordered: true
-				}
-				verticalStretchAreas: {
-					items: [ 9, 90 ]
-					size: 2
-					ordered: true
-				}
-				contentLeft: 0
-				contentRight: 0
-				contentTop: 0
-				contentBottom: 0
-				tile: false
-				colorName: codePanel
-				color1Name: null
-				color2Name: null
-				color3Name: null
-				color4Name: null
-				offsetX: 0
-				offsetY: 0
-				offsetXspeed: 0
-				offsetYspeed: 0
-				frameDuration: 0.03
-				regionNames: []
-				playMode: 2
-			}
-			type: TENPATCH
-			hidden: false
-		}
-		{
-			file: "/home/justin/Programming/robot-recharge/Assets/skin_data/window.png"
-			bgColor: {
-				r: 1
-				g: 1
-				b: 1
-				a: 1
-			}
-			tint: null
-			tintName: null
-			name: codeNumbersPanel
-			tiled: false
-			minWidth: 32
-			minHeight: 18
-			customized: false
-			tenPatchData: {
-				horizontalStretchAreas: {
-					items: [ 9, 90 ]
-					size: 2
-					ordered: true
-				}
-				verticalStretchAreas: {
-					items: [ 9, 90 ]
-					size: 2
-					ordered: true
-				}
-				contentLeft: 0
-				contentRight: 0
-				contentTop: 0
-				contentBottom: 0
-				tile: false
-				colorName: codeNumbersPanel
-				color1Name: null
-				color2Name: null
-				color3Name: null
-				color4Name: null
-				offsetX: 0
-				offsetY: 0
-				offsetXspeed: 0
-				offsetYspeed: 0
-				frameDuration: 0.03
-				regionNames: []
-				playMode: 2
-			}
-			type: TENPATCH
-			hidden: false
-		}
-		{
 			file: "/home/justin/Programming/robot-recharge/Assets/skin_data/tintableCursor.png"
 			bgColor: {
 				r: 0
@@ -1057,11 +963,209 @@ atlasData: {
 			type: TINTED_FROM_COLOR_DATA
 			hidden: false
 		}
+		{
+			file: "/home/justin/Programming/robot-recharge/Assets/skin_data/tintablePanel.png"
+			bgColor: {
+				r: 1
+				g: 1
+				b: 1
+				a: 1
+			}
+			tint: null
+			tintName: null
+			name: primaryPanel
+			tiled: false
+			minWidth: -1
+			minHeight: -1
+			customized: false
+			tenPatchData: {
+				horizontalStretchAreas: {
+					items: [ 9, 90 ]
+					size: 2
+					ordered: true
+				}
+				verticalStretchAreas: {
+					items: [ 9, 90 ]
+					size: 2
+					ordered: true
+				}
+				contentLeft: 0
+				contentRight: 0
+				contentTop: 0
+				contentBottom: 0
+				tile: false
+				colorName: primary
+				color1Name: null
+				color2Name: null
+				color3Name: null
+				color4Name: null
+				offsetX: 0
+				offsetY: 0
+				offsetXspeed: 0
+				offsetYspeed: 0
+				frameDuration: 0.03
+				regionNames: []
+				playMode: 2
+			}
+			type: TENPATCH
+			hidden: false
+		}
+		{
+			file: "/home/justin/Programming/robot-recharge/Assets/skin_data/tintablePanel.png"
+			bgColor: {
+				r: 1
+				g: 1
+				b: 1
+				a: 1
+			}
+			tint: null
+			tintName: null
+			name: accentPanel
+			tiled: false
+			minWidth: -1
+			minHeight: -1
+			customized: false
+			tenPatchData: {
+				horizontalStretchAreas: {
+					items: [ 9, 90 ]
+					size: 2
+					ordered: true
+				}
+				verticalStretchAreas: {
+					items: [ 9, 90 ]
+					size: 2
+					ordered: true
+				}
+				contentLeft: 0
+				contentRight: 0
+				contentTop: 0
+				contentBottom: 0
+				tile: false
+				colorName: accent
+				color1Name: null
+				color2Name: null
+				color3Name: null
+				color4Name: null
+				offsetX: 0
+				offsetY: 0
+				offsetXspeed: 0
+				offsetYspeed: 0
+				frameDuration: 0.03
+				regionNames: []
+				playMode: 2
+			}
+			type: TENPATCH
+			hidden: false
+		}
+		{
+			file: "/home/justin/Programming/robot-recharge/Assets/skin_data/tintablePanel.png"
+			bgColor: {
+				r: 1
+				g: 1
+				b: 1
+				a: 1
+			}
+			tint: null
+			tintName: null
+			name: secondaryPanel
+			tiled: false
+			minWidth: -1
+			minHeight: -1
+			customized: false
+			tenPatchData: {
+				horizontalStretchAreas: {
+					items: [ 9, 90 ]
+					size: 2
+					ordered: true
+				}
+				verticalStretchAreas: {
+					items: [ 9, 90 ]
+					size: 2
+					ordered: true
+				}
+				contentLeft: 0
+				contentRight: 0
+				contentTop: 0
+				contentBottom: 0
+				tile: false
+				colorName: secondary
+				color1Name: null
+				color2Name: null
+				color3Name: null
+				color4Name: null
+				offsetX: 0
+				offsetY: 0
+				offsetXspeed: 0
+				offsetYspeed: 0
+				frameDuration: 0.03
+				regionNames: []
+				playMode: 2
+			}
+			type: TENPATCH
+			hidden: false
+		}
+		{
+			file: "/home/justin/Programming/robot-recharge/Assets/skin_data/tintablePanel.png"
+			bgColor: {
+				r: 1
+				g: 1
+				b: 1
+				a: 1
+			}
+			tint: null
+			tintName: null
+			name: windowPanel
+			tiled: false
+			minWidth: -1
+			minHeight: -1
+			customized: false
+			tenPatchData: {
+				horizontalStretchAreas: {
+					items: [ 9, 90 ]
+					size: 2
+					ordered: true
+				}
+				verticalStretchAreas: {
+					items: [ 9, 90 ]
+					size: 2
+					ordered: true
+				}
+				contentLeft: 0
+				contentRight: 0
+				contentTop: 0
+				contentBottom: 0
+				tile: false
+				colorName: secondary
+				color1Name: null
+				color2Name: null
+				color3Name: null
+				color4Name: null
+				offsetX: 0
+				offsetY: 0
+				offsetXspeed: 0
+				offsetYspeed: 0
+				frameDuration: 0.03
+				regionNames: []
+				playMode: 2
+			}
+			type: TENPATCH
+			hidden: false
+		}
 	]
 	fontDrawables: []
 }
 jsonData: {
 	colors: [
+		{
+			class: com.ray3k.skincomposer.data.ColorData
+			color: {
+				r: 0.2475
+				g: 0.99
+				b: 0.8801513
+				a: 1
+			}
+			name: accent
+		}
 		{
 			class: com.ray3k.skincomposer.data.ColorData
 			color: {
@@ -1085,32 +1189,42 @@ jsonData: {
 		{
 			class: com.ray3k.skincomposer.data.ColorData
 			color: {
-				r: 0.3605556
-				g: 0.7438397
-				b: 0.91666675
-				a: 1
-			}
-			name: codeNumbersPanel
-		}
-		{
-			class: com.ray3k.skincomposer.data.ColorData
-			color: {
-				r: 0.09542221
-				g: 0.68008614
-				b: 0.75333345
-				a: 1
-			}
-			name: codePanel
-		}
-		{
-			class: com.ray3k.skincomposer.data.ColorData
-			color: {
 				r: 1
 				g: 1
 				b: 1
 				a: 1
 			}
 			name: cursor
+		}
+		{
+			class: com.ray3k.skincomposer.data.ColorData
+			color: {
+				r: 0
+				g: 0.44988847
+				b: 1
+				a: 1
+			}
+			name: primary
+		}
+		{
+			class: com.ray3k.skincomposer.data.ColorData
+			color: {
+				r: 0
+				g: 0.6892221
+				b: 1
+				a: 1
+			}
+			name: secondary
+		}
+		{
+			class: com.ray3k.skincomposer.data.ColorData
+			color: {
+				r: 0.51
+				g: 0.51
+				b: 0.51
+				a: 1
+			}
+			name: text
 		}
 		{
 			class: com.ray3k.skincomposer.data.ColorData
@@ -1690,7 +1804,7 @@ jsonData: {
 						type: com.badlogic.gdx.scenes.scene2d.utils.Drawable
 						name: background
 						optional: true
-						value: windowTen
+						value: windowPanel
 					}
 					titleFont: {
 						type: com.badlogic.gdx.graphics.g2d.BitmapFont
@@ -2578,7 +2692,7 @@ jsonData: {
 						type: com.badlogic.gdx.scenes.scene2d.utils.Drawable
 						name: hScroll
 						optional: true
-						value: windowTen
+						value: secondaryPanel
 					}
 					hScrollKnob: {
 						type: com.badlogic.gdx.scenes.scene2d.utils.Drawable
@@ -2590,7 +2704,7 @@ jsonData: {
 						type: com.badlogic.gdx.scenes.scene2d.utils.Drawable
 						name: vScroll
 						optional: true
-						value: windowTen
+						value: secondaryPanel
 					}
 					vScrollKnob: {
 						type: com.badlogic.gdx.scenes.scene2d.utils.Drawable
@@ -5281,7 +5395,7 @@ jsonData: {
 						type: com.badlogic.gdx.scenes.scene2d.utils.Drawable
 						name: background
 						optional: true
-						value: windowTen
+						value: primaryPanel
 					}
 				}
 				deletable: false
@@ -5373,7 +5487,7 @@ jsonData: {
 						type: com.badlogic.gdx.scenes.scene2d.utils.Drawable
 						name: background
 						optional: true
-						value: windowTen
+						value: primaryPanel
 					}
 					focusedBackground: {
 						type: com.badlogic.gdx.scenes.scene2d.utils.Drawable
@@ -5523,7 +5637,7 @@ jsonData: {
 						type: com.badlogic.gdx.scenes.scene2d.utils.Drawable
 						name: background
 						optional: true
-						value: codePanel
+						value: primaryPanel
 					}
 					focusedBackground: {
 						type: com.badlogic.gdx.scenes.scene2d.utils.Drawable
@@ -5598,7 +5712,7 @@ jsonData: {
 						type: com.badlogic.gdx.scenes.scene2d.utils.Drawable
 						name: background
 						optional: true
-						value: codeNumbersPanel
+						value: accentPanel
 					}
 					focusedBackground: {
 						type: com.badlogic.gdx.scenes.scene2d.utils.Drawable

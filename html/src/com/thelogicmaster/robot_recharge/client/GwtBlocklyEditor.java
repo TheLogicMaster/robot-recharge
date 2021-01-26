@@ -40,6 +40,10 @@ public class GwtBlocklyEditor implements BlocklyEditor {
         return $wnd.Blockly[language].workspaceToCode($wnd.workspace);
     }-*/;
 
+    private native void setThemeBlockly(String theme)/*-{
+        $wnd.workspace.setTheme(JSON.parse(theme));
+    }-*/;
+
     void init() {
 
     }
@@ -113,5 +117,10 @@ public class GwtBlocklyEditor implements BlocklyEditor {
     @Override
     public boolean isLoaded() {
         return true;
+    }
+
+    @Override
+    public void setTheme(String theme) {
+        setThemeBlockly(theme);
     }
 }

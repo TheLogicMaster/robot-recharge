@@ -23,4 +23,6 @@ public interface BlocklyEditor {
     void generateCode(Language language, Consumer<String> callback);
 
     boolean isLoaded();
+
+    void setTheme(String theme);
 }

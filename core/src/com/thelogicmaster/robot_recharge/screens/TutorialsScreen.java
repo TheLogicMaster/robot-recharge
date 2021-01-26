@@ -18,7 +18,7 @@ public class TutorialsScreen extends MenuScreen {
         super(previousScreen);
 
         Table tutorialsTable = new Table(skin);
-        tutorialsTable.setBackground("windowTen");
+        tutorialsTable.setBackground("secondaryPanel");
         tutorialsTable.setBounds(uiViewport.getWorldWidth() / 2 - 400, uiViewport.getWorldHeight() / 2 - 300, 800, 600);
 
         final List<LevelInfo> list = new List<>(skin);

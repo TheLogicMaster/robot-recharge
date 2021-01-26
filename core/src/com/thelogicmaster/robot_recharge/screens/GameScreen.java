@@ -24,6 +24,7 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.kotcrab.vis.ui.util.dialog.Dialogs;
 import com.thelogicmaster.robot_recharge.*;
@@ -294,6 +295,7 @@ public class GameScreen extends RobotScreen implements LevelExecutionListener {
             level.setCode(levelSave.getCode());
             codeEditor.setCode(levelSave.getCode());
         } else {
+            RobotRecharge.assets.updateBlocklyTheme();
             RobotRecharge.blocksEditor.load(levelSave.getCode());
             level.setBlocklyData(levelSave.getCode());
             RobotRecharge.blocksEditor.generateCode(levelSave.getLanguage(), level::setCode);

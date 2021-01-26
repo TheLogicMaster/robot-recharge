@@ -1,5 +1,11 @@
 {
 "com.badlogic.gdx.graphics.Color": {
+	"accent": {
+		"r": 0.2475,
+		"g": 0.99,
+		"b": 0.8801513,
+		"a": 1
+	},
 	"Black": {
 		"r": 0,
 		"g": 0,
@@ -12,22 +18,28 @@
 		"b": 0.73,
 		"a": 1
 	},
-	"codeNumbersPanel": {
-		"r": 0.3605556,
-		"g": 0.7438397,
-		"b": 0.91666675,
-		"a": 1
-	},
-	"codePanel": {
-		"r": 0.09542221,
-		"g": 0.68008614,
-		"b": 0.75333345,
-		"a": 1
-	},
 	"cursor": {
 		"r": 1,
 		"g": 1,
 		"b": 1,
+		"a": 1
+	},
+	"primary": {
+		"r": 0,
+		"g": 0.44988847,
+		"b": 1,
+		"a": 1
+	},
+	"secondary": {
+		"r": 0,
+		"g": 0.6892221,
+		"b": 1,
+		"a": 1
+	},
+	"text": {
+		"r": 0.51,
+		"g": 0.51,
+		"b": 0.51,
 		"a": 1
 	},
 	"White": {
@@ -192,14 +204,14 @@
 		"regions": [],
 		"playMode": 2
 	},
-	"codePanel": {
-		"region": "window",
-		"color": "codePanel",
+	"primaryPanel": {
+		"region": "tintablePanel",
+		"color": "primary",
 		"horizontalStretchAreas": [ 9, 90 ],
 		"verticalStretchAreas": [ 9, 90 ],
 		"tiling": false,
-		"minWidth": 18,
-		"minHeight": 18,
+		"minWidth": 100,
+		"minHeight": 100,
 		"rightWidth": 0,
 		"leftWidth": 0,
 		"bottomHeight": 0,
@@ -212,14 +224,54 @@
 		"regions": [],
 		"playMode": 2
 	},
-	"codeNumbersPanel": {
-		"region": "window",
-		"color": "codeNumbersPanel",
+	"accentPanel": {
+		"region": "tintablePanel",
+		"color": "accent",
 		"horizontalStretchAreas": [ 9, 90 ],
 		"verticalStretchAreas": [ 9, 90 ],
 		"tiling": false,
-		"minWidth": 32,
-		"minHeight": 18,
+		"minWidth": 100,
+		"minHeight": 100,
+		"rightWidth": 0,
+		"leftWidth": 0,
+		"bottomHeight": 0,
+		"topHeight": 0,
+		"offsetX": 0,
+		"offsetY": 0,
+		"offsetXspeed": 0,
+		"offsetYspeed": 0,
+		"frameDuration": 0.03,
+		"regions": [],
+		"playMode": 2
+	},
+	"secondaryPanel": {
+		"region": "tintablePanel",
+		"color": "secondary",
+		"horizontalStretchAreas": [ 9, 90 ],
+		"verticalStretchAreas": [ 9, 90 ],
+		"tiling": false,
+		"minWidth": 100,
+		"minHeight": 100,
+		"rightWidth": 0,
+		"leftWidth": 0,
+		"bottomHeight": 0,
+		"topHeight": 0,
+		"offsetX": 0,
+		"offsetY": 0,
+		"offsetXspeed": 0,
+		"offsetYspeed": 0,
+		"frameDuration": 0.03,
+		"regions": [],
+		"playMode": 2
+	},
+	"windowPanel": {
+		"region": "tintablePanel",
+		"color": "secondary",
+		"horizontalStretchAreas": [ 9, 90 ],
+		"verticalStretchAreas": [ 9, 90 ],
+		"tiling": false,
+		"minWidth": 100,
+		"minHeight": 100,
 		"rightWidth": 0,
 		"leftWidth": 0,
 		"bottomHeight": 0,
@@ -377,7 +429,7 @@
 		"fontColorSelected": "Yellow",
 		"fontColorUnselected": "Yellow",
 		"selection": "selection",
-		"background": "windowTen"
+		"background": "primaryPanel"
 	},
 	"small": {
 		"parent": "default",
@@ -392,9 +444,9 @@
 },
 "com.badlogic.gdx.scenes.scene2d.ui.ScrollPane$ScrollPaneStyle": {
 	"default": {
-		"hScroll": "windowTen",
+		"hScroll": "secondaryPanel",
 		"hScrollKnob": "buttonTen",
-		"vScroll": "windowTen",
+		"vScroll": "secondaryPanel",
 		"vScrollKnob": "buttonTen"
 	},
 	"levelPane": {
@@ -443,20 +495,20 @@
 	"default": {
 		"font": "infoFont",
 		"fontColor": "Black",
-		"background": "windowTen",
+		"background": "primaryPanel",
 		"selection": "selection"
 	},
 	"code": {
 		"font": "codeFont",
 		"fontColor": "code",
-		"background": "codePanel",
+		"background": "primaryPanel",
 		"cursor": "cursor",
 		"selection": "selection"
 	},
 	"codeNumbers": {
 		"font": "codeFont",
 		"fontColor": "code",
-		"background": "codeNumbersPanel",
+		"background": "accentPanel",
 		"cursor": "cursor",
 		"selection": "selection"
 	}
@@ -468,7 +520,7 @@
 },
 "com.badlogic.gdx.scenes.scene2d.ui.Window$WindowStyle": {
 	"default": {
-		"background": "windowTen",
+		"background": "windowPanel",
 		"titleFont": "titleFont",
 		"titleFontColor": "Yellow"
 	}

@@ -25,7 +25,7 @@ public class SettingsScreen extends MenuScreen {
         Table settingsTable = new Table(skin);
         settingsTable.columnDefaults(0).padRight(40).left();
         settingsTable.columnDefaults(1).growX().fillY();
-        settingsTable.setBackground("windowTen");
+        settingsTable.setBackground("secondaryPanel");
         settingsTable.setBounds(uiViewport.getWorldWidth() / 2 - 700, uiViewport.getWorldHeight() / 2 - 400, 1400, 800);
         settingsTable.pad(30);
         settingsTable.add(new Label("Settings", skin, "large")).padBottom(30).growX().expandY().top().colspan(3).row();

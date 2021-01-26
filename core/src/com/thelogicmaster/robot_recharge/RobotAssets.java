@@ -28,6 +28,8 @@ public class RobotAssets implements Disposable {
 
     private final AssetManager assets = RobotUtils.createAssetManager();
 
+    private String blocklyTheme;
+
     public RobotAssets() {
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("monog.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
@@ -64,24 +66,17 @@ public class RobotAssets implements Disposable {
         skin.load(Gdx.files.internal("skin.json"));
         skin.get("default-horizontal", Slider.SliderStyle.class).knob.setMinHeight(50);
         skin.get("default", CheckBox.CheckBoxStyle.class).checkboxOff.setRightWidth(10);
-        RobotUtils.padDrawable(skin.getDrawable("codePanel"), 10);
-        RobotUtils.padDrawable(skin.getDrawable("codeNumbersPanel"), 10);
-        RobotUtils.padDrawable(skin.getDrawable("windowTen"), 20);
-
-        // Todo: Theme loading system
-        Colors.put("FUNCTION", new Color(.929f, .898f, .451f, 1f));
-        Colors.put("FIELD", new Color(.996f, .318f, .333f, 1f));
-        Colors.put("KEYWORD", new Color(.988f, .569f, .224f, 1f));
-        Colors.put("COMMENT", new Color(.467f, .467f, .467f, 1f));
-        skin.getColor("code").set(new Color(.89f, .89f, .882f, 1f));
-        skin.getColor("cursor").set(new Color(.89f, .89f, .882f, 1f));
-        skin.getColor("codePanel").set(new Color(.133f, .133f, .133f, 1f));
-        skin.getColor("codeNumbersPanel").set(new Color(.114f, .114f, .114f, 1f));
+        RobotUtils.padDrawable(skin.getDrawable("primaryPanel"), 10);
+        RobotUtils.padDrawable(skin.getDrawable("secondaryPanel"), 10);
+        RobotUtils.padDrawable(skin.getDrawable("accentPanel"), 10);
+        RobotUtils.padDrawable(skin.getDrawable("windowPanel"), 20);
 
         if (!VisUI.isLoaded()) {
             VisUI.load(VisUI.SkinScale.X2);
             //VisUI.load(skin);
         }
+
+        setTheme(json.fromJson(Theme.class, Gdx.files.internal("theme/default.json")));
 
         levelInfo = json.fromJson(Array.class, LevelInfo.class, Gdx.files.internal("levels.json"));
 
@@ -93,6 +88,32 @@ public class RobotAssets implements Disposable {
         titleMusic = assets.get("titleMusic.wav");
         titleMusic.setVolume(RobotRecharge.prefs.getMusicVolume());
         titleMusic.setLooping(true);
+    }
+
+    public void setTheme(Theme theme) {
+        blocklyTheme = Gdx.files.internal("theme/blocklyTemplate.json").readString()
+                .replaceAll("WORKSPACE", theme.getPrimary().toString())
+                .replaceAll("TOOLBOX", theme.getAccent().toString())
+                .replaceAll("FLYOUT", theme.getSecondary().toString())
+                .replaceAll("TEXT", theme.getText().toString());
+
+        Colors.put("FUNCTION", theme.getFunction());
+        Colors.put("FIELD", theme.getField());
+        Colors.put("KEYWORD", theme.getKeyword());
+        Colors.put("COMMENT", theme.getComment());
+        skin.getColor("code").set(theme.getCode());
+        skin.getColor("cursor").set(theme.getCursor());
+        skin.getColor("primary").set(theme.getPrimary());
+        skin.getColor("accent").set(theme.getAccent());
+        skin.getColor("secondary").set(theme.getSecondary());
+        skin.getColor("text").set(theme.getText());
+    }
+
+    /**
+     * Updates the Blockly Workspace theme
+     */
+    public void updateBlocklyTheme() {
+        RobotRecharge.blocksEditor.setTheme(blocklyTheme);
     }
 
     @Override

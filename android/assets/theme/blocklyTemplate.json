@@ -1,0 +1,15 @@
+{
+  "componentStyles": {
+    "workspaceBackgroundColour": "#WORKSPACE",
+    "toolboxBackgroundColour": "#TOOLBOX",
+    "toolboxForegroundColour": "#TEXT",
+    "flyoutBackgroundColour": "#FLYOUT",
+    "flyoutForegroundColour": "#TEXT",
+    "flyoutOpacity": 1,
+    "scrollbarColour": "#797979",
+    "insertionMarkerColour": "#ffffff",
+    "insertionMarkerOpacity": 0.3,
+    "scrollbarOpacity": 0.4,
+    "cursorColour": "#d0d0d0"
+  }
+}
