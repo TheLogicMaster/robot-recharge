@@ -7,10 +7,10 @@ import io.github.fvarrui.javapackager.gradle.PackageTask
 
 sourceCompatibility = 1.8
 sourceSets.main.java.srcDirs = [ "src/" ]
-sourceSets.main.resources.srcDirs = ["../android/assets"]
+sourceSets.main.resources.srcDirs = ["../assets"]
 
 project.ext.mainClassName = "com.thelogicmaster.robot_recharge.desktop.DesktopLauncher"
-project.ext.assetsDir = new File("../android/assets")
+project.ext.assetsDir = new File("../assets")
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
@@ -74,7 +74,7 @@ javapackager {
     vmArgs = ['-Djava.library.path=./jcef']
 
     linuxConfig {
-        pngFile = new File(project.rootDir.path + '/android/assets/icon32.png')
+        pngFile = new File(project.rootDir.path + '/assets/icon32.png')
     }
 
     winConfig {

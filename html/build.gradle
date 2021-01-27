@@ -78,7 +78,7 @@ task superDev (type: GwtSuperDev) {
     doFirst {
         gwt.modules = gwt.devModules
         copy {
-            from "../android/assets/blockly"
+            from "../assets/blockly"
             into "build/gwt/draftOut/blockly"
         }
     }
@@ -100,7 +100,7 @@ task dist(dependsOn: [clean, compileGwt]) {
             into "build/dist"
         }
         copy {
-            from "../android/assets/blockly"
+            from "../assets/blockly"
             into "build/dist/blockly"
         }
     }

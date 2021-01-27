@@ -113,6 +113,9 @@ public class AndroidBlocklyEditor extends WebView implements BlocklyEditor {
 
     @Override
     public void setTheme(String theme) {
-        runJavascript("workspace.setTheme(JSON.parse('" + theme + "'));", null);
+        runJavascript("" +
+                "var theme = JSON.parse('" + theme + "');\n" +
+                "theme['base'] = Blockly.Themes.Dark;\n" +
+                "workspace.setTheme(theme);\n", null);
     }
 }

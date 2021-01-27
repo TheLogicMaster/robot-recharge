@@ -8,7 +8,7 @@
     <treeShaker>conservative</treeShaker>
     <resources>
         <resource>
-            <directory>../android/assets</directory>
+            <directory>../assets</directory>
             <includes>
                 <include>**</include>
             </includes>
