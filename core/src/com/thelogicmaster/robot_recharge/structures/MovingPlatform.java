@@ -83,18 +83,14 @@ public class MovingPlatform extends Structure {
     }
 
     @Override
-    public void loadAssets(AssetMultiplexer assetManager) {
-        assetManager.load("Elevator.g3db", Model.class);
-        assetManager.load("PlatformPosition.g3db", Model.class);
+    public void loadAssets(AssetMultiplexer assetMultiplexer) {
+        assetMultiplexer.load("Elevator.g3db", Model.class);
+        assetMultiplexer.load("PlatformPosition.g3db", Model.class);
     }
 
     @Override
-    public void assetsLoaded(AssetMultiplexer assetManager) {
-        platform = new ModelInstance(RobotUtils.cleanModel(assetManager.get("Elevator.g3db")));
-        platformIndicator = RobotUtils.cleanModel(assetManager.get("PlatformPosition.g3db"));
-    }
-
-    @Override
-    public void dispose() {
+    public void assetsLoaded(AssetMultiplexer assetMultiplexer) {
+        platform = new ModelInstance(RobotUtils.cleanModel(assetMultiplexer.get("Elevator.g3db")));
+        platformIndicator = RobotUtils.cleanModel(assetMultiplexer.get("PlatformPosition.g3db"));
     }
 }

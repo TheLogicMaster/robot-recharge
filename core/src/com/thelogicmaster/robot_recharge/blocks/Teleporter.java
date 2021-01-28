@@ -60,16 +60,16 @@ public class Teleporter extends Block {
     }
 
     @Override
-    public void loadAssets(AssetMultiplexer assetManager) {
-        super.loadAssets(assetManager);
-        assetManager.load("teleportOut.pfx", ParticleEffect.class);
-        assetManager.load("teleportIn.pfx", ParticleEffect.class);
+    public void loadAssets(AssetMultiplexer assetMultiplexer) {
+        super.loadAssets(assetMultiplexer);
+        assetMultiplexer.load("teleportOut.pfx", ParticleEffect.class);
+        assetMultiplexer.load("teleportIn.pfx", ParticleEffect.class);
     }
 
     @Override
-    public void assetsLoaded(AssetMultiplexer assetManager) {
-        super.assetsLoaded(assetManager);
-        effectIn = assetManager.get("teleportIn.pfx");
-        effectOut = assetManager.get("teleportOut.pfx");
+    public void assetsLoaded(AssetMultiplexer assetMultiplexer) {
+        super.assetsLoaded(assetMultiplexer);
+        effectIn = assetMultiplexer.get("teleportIn.pfx");
+        effectOut = assetMultiplexer.get("teleportOut.pfx");
     }
 }

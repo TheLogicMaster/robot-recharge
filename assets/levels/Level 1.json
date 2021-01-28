@@ -12,7 +12,7 @@
       class: BlockStructure
       position: {}
       templates: {
-        block: {
+        trigger: {
           class: Trigger
           asset: test.png
           name: trigger
@@ -24,6 +24,11 @@
             g: 1
             a: 0.7
           }
+        }
+        plate: {
+          class: PressurePlate
+          asset: test.png
+          id: plate
         }
         teleporter: {
           class: Teleporter
@@ -40,10 +45,17 @@
       }
       blocks: [
         {
-          block: block
+          block: plate
           position: {
             z: 3
             x: 3
+          }
+        }
+        {
+          block: trigger
+          position: {
+            z: 3
+            x: 4
           }
         }
         {
@@ -58,6 +70,31 @@
             x: 6
             z: 3
           }
+        }
+      ]
+    }
+    {
+      class: Wire
+      id: plate
+      color: {
+        r: 0.5
+        a: 1
+      }
+      path: [
+        {
+          x: 3.5
+          y: 0
+          z: 4
+        }
+        {
+          x: 3.5
+          y: 0
+          z: 5.5
+        }
+        {
+          x: 2
+          y: 0
+          z: 5.5
         }
       ]
     }

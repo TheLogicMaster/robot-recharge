@@ -23,16 +23,14 @@ import com.badlogic.gdx.utils.Base64Coder;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.thelogicmaster.robot_recharge.blocks.Charger;
-import com.thelogicmaster.robot_recharge.blocks.Teleporter;
-import com.thelogicmaster.robot_recharge.blocks.Trigger;
-import com.thelogicmaster.robot_recharge.blocks.TurnTable;
+import com.thelogicmaster.robot_recharge.blocks.*;
 import com.thelogicmaster.robot_recharge.objectives.EventCountObjective;
 import com.thelogicmaster.robot_recharge.objectives.EventsObjective;
 import com.thelogicmaster.robot_recharge.objectives.MaxLengthObjective;
 import com.thelogicmaster.robot_recharge.objectives.MaxTimeObjective;
 import com.thelogicmaster.robot_recharge.structures.BlocksStructure;
 import com.thelogicmaster.robot_recharge.structures.MovingPlatform;
+import com.thelogicmaster.robot_recharge.structures.Wire;
 
 public class RobotUtils {
 
@@ -111,7 +109,9 @@ public class RobotUtils {
         Json json = new Json();
         json.addClassTag("BlockStructure", BlocksStructure.class);
         json.addClassTag("MovingPlatform", MovingPlatform.class);
+        json.addClassTag("Wire", Wire.class);
         json.addClassTag("Trigger", Trigger.class);
+        json.addClassTag("PressurePlate", PressurePlate.class);
         json.addClassTag("Teleporter", Teleporter.class);
         json.addClassTag("Charger", Charger.class);
         json.addClassTag("TurnTable", TurnTable.class);

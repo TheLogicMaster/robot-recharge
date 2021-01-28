@@ -14,8 +14,8 @@ public abstract class Structure implements AssetConsumer, Renderable3D, Disposab
     @Setter(AccessLevel.NONE)
     protected transient Level level;
 
-    protected Position position;
-    protected Direction direction;
+    protected Position position = new Position();
+    protected Direction direction = Direction.NORTH;
 
     public Structure(Position position, Direction direction) {
         this.position = position;
@@ -45,5 +45,17 @@ public abstract class Structure implements AssetConsumer, Renderable3D, Disposab
     protected Position transformPosition(Position position) {
         // Todo: Transform based on position and rotation
         return position;
+    }
+
+    @Override
+    public void dispose() {
+    }
+
+    @Override
+    public void loadAssets(AssetMultiplexer assetMultiplexer) {
+    }
+
+    @Override
+    public void assetsLoaded(AssetMultiplexer assetMultiplexer) {
     }
 }

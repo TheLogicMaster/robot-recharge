@@ -29,15 +29,15 @@ public class BlocksStructure extends Structure {
     }
 
     @Override
-    public void loadAssets(AssetMultiplexer assetManager) {
+    public void loadAssets(AssetMultiplexer assetMultiplexer) {
         for (ObjectMap.Entry<String, Block> entry : new OrderedMap.OrderedMapEntries<>(templates))
-            entry.value.loadAssets(assetManager);
+            entry.value.loadAssets(assetMultiplexer);
     }
 
     @Override
-    public void assetsLoaded(AssetMultiplexer assetManager) {
+    public void assetsLoaded(AssetMultiplexer assetMultiplexer) {
         for (ObjectMap.Entry<String, Block> entry : new OrderedMap.OrderedMapEntries<>(templates))
-            entry.value.assetsLoaded(assetManager);
+            entry.value.assetsLoaded(assetMultiplexer);
     }
 
     @Override

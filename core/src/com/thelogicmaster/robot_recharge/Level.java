@@ -100,6 +100,7 @@ public class Level implements Disposable, Renderable3D, AssetConsumer, RobotExec
     private void createGrid() {
         if (gridModel != null)
             gridModel.dispose();
+        // Todo: switch to ModelBuilder.createLineGrid()
         ModelBuilder modelBuilder = new ModelBuilder();
         modelBuilder.begin();
         MeshPartBuilder builder = modelBuilder.part("grid", GL20.GL_LINES, VertexAttributes.Usage.Position
@@ -243,6 +244,7 @@ public class Level implements Disposable, Renderable3D, AssetConsumer, RobotExec
     }
 
     public void emitLevelEvent(LevelEvent event) {
+        Gdx.app.debug("LevelEvent", event.toString());
         for (LevelEventListener listener : new OrderedSet.OrderedSetIterator<>(levelListeners))
             listener.onEvent(event);
         events.add(event);
@@ -325,23 +327,23 @@ public class Level implements Disposable, Renderable3D, AssetConsumer, RobotExec
     }
 
     @Override
-    public void loadAssets(AssetMultiplexer assetManager) {
+    public void loadAssets(AssetMultiplexer assetMultiplexer) {
         for (Structure structure : structures)
-            structure.loadAssets(assetManager);
-        assetManager.load("levels/" + levelModelName, Model.class);
-        assetManager.load("robot.g3db", Model.class);
-        assetManager.load("levels/" + backgroundName, Texture.class);
+            structure.loadAssets(assetMultiplexer);
+        assetMultiplexer.load("levels/" + levelModelName, Model.class);
+        assetMultiplexer.load("robot.g3db", Model.class);
+        assetMultiplexer.load("levels/" + backgroundName, Texture.class);
     }
 
     @Override
-    public void assetsLoaded(AssetMultiplexer assetManager) {
+    public void assetsLoaded(AssetMultiplexer assetMultiplexer) {
         for (Structure structure : structures)
-            structure.assetsLoaded(assetManager);
-        level = new ModelInstance(RobotUtils.cleanModel(assetManager.get("levels/" + levelModelName)));
+            structure.assetsLoaded(assetMultiplexer);
+        level = new ModelInstance(RobotUtils.cleanModel(assetMultiplexer.get("levels/" + levelModelName)));
         level.transform.setTranslation(xSize / 2f, -levelHeight, zSize / 2f);
-        robot = new Robot(new ModelInstance(RobotUtils.cleanModel(assetManager.get("robot.g3db"))), engine,
+        robot = new Robot(new ModelInstance(RobotUtils.cleanModel(assetMultiplexer.get("robot.g3db"))), engine,
                 viewport, this);
-        background = assetManager.get("levels/" + backgroundName);
+        background = assetMultiplexer.get("levels/" + backgroundName);
     }
 
     @Override

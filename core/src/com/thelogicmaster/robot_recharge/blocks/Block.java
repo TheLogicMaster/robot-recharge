@@ -72,23 +72,23 @@ public class Block implements Renderable3D, Disposable, AssetConsumer {
     }
 
     @Override
-    public void loadAssets(AssetMultiplexer assetManager) {
+    public void loadAssets(AssetMultiplexer assetMultiplexer) {
         if (asset == null)
             return;
         if (modeled) // Ternary compressed version causes GWT compilation issue
-            assetManager.load("blocks/" + asset, Model.class);
+            assetMultiplexer.load("blocks/" + asset, Model.class);
         else
-            assetManager.load("blocks/" + asset, Texture.class);
+            assetMultiplexer.load("blocks/" + asset, Texture.class);
     }
 
     @Override
-    public void assetsLoaded(AssetMultiplexer assetManager) {
+    public void assetsLoaded(AssetMultiplexer assetMultiplexer) {
         if (asset == null)
             return;
         if (modeled)
-            model = new ModelInstance(assetManager.<Model>get("blocks/" + asset));
+            model = new ModelInstance(assetMultiplexer.<Model>get("blocks/" + asset));
         else {
-            modelSource = RobotUtils.createCubeModel(assetManager.get("blocks/" + asset));
+            modelSource = RobotUtils.createCubeModel(assetMultiplexer.get("blocks/" + asset));
             model = new ModelInstance(modelSource);
         }
         for (Material mat : new Array.ArrayIterator<>(model.materials)) {
