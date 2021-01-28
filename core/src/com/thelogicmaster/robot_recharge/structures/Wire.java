@@ -14,7 +14,6 @@ import com.badlogic.gdx.math.Quaternion;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.BoundingBox;
 import com.badlogic.gdx.utils.Array;
-import com.thelogicmaster.robot_recharge.AssetMultiplexer;
 import com.thelogicmaster.robot_recharge.Level;
 import lombok.Getter;
 import lombok.Setter;
@@ -34,7 +33,7 @@ public class Wire extends Structure {
     private transient ModelInstance model;
     private transient Pixmap pixmap;
 
-    // Todo: Fix the vertex translation to avoid hard-coding extensions, if possible.
+    // Todo: Fix the vertex translation to avoid hard-coding wire extensions, if possible.
     //  Probably translate both start and end vertices around the center
     @Override
     public void generate(Level level) {
@@ -82,16 +81,6 @@ public class Wire extends Structure {
     public void render(ModelBatch modelBatch, DecalBatch decalBatch, Environment environment, float delta) {
         super.render(modelBatch, decalBatch, environment, delta);
         modelBatch.render(model, environment);
-    }
-
-    @Override
-    public void loadAssets(AssetMultiplexer assetMultiplexer) {
-
-    }
-
-    @Override
-    public void assetsLoaded(AssetMultiplexer assetMultiplexer) {
-
     }
 
     @Override
