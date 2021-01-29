@@ -11,17 +11,17 @@ A programming game where the goal is to guide a robot through various levels usi
 - Robotic Text to Speech for code debugging
 - Android Rewarded ads for level solutions
 
-## Screenshots
-<img src="media/screenshot1.png?raw=true" height="336" width="598">
-<img src="media/screenshot2.png?raw=true" height="336" width="598">
-<img src="media/screenshot3.png?raw=true" height="336" width="598">
-
 ## Links
 [Web Demo](https://thelogicmaster.github.io/robot-recharge/)
 
 [![Get it on Google Play](https://badgen.net/badge/icon/googleplay?icon=googleplay&label)](https://play.google.com/store/apps/details?id=com.thelogicmaster.robot_recharge)
 
 [GameJolt Page](https://gamejolt.com/games/robot-recharge/570956)
+
+## Screenshots
+<img src="media/screenshot1.png?raw=true" height="336" width="598">
+<img src="media/screenshot2.png?raw=true" height="336" width="598">
+<img src="media/screenshot3.png?raw=true" height="336" width="598">
 
 ## Technical Info
 ### Utilized Libraries

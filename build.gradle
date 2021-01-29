@@ -1,193 +1,44 @@
 buildscript {
-
-    repositories {
-        mavenLocal()
-        mavenCentral()
-        maven { url "https://plugins.gradle.org/m2/" }
-        maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
-        jcenter()
-        google()
-        maven { url "https://chaquo.com/maven" }
-    }
-    dependencies {
-        classpath 'org.wisepersist:gwt-gradle-plugin:1.0.13'
-        classpath 'org.gretty:gretty:3.0.2'
-        classpath 'com.android.tools.build:gradle:3.4.3'
-        classpath 'com.mobidevelop.robovm:robovm-gradle-plugin:2.3.11'
-        classpath 'io.github.fvarrui:javapackager:1.4.1'
-        classpath 'com.chaquo.python:gradle:9.0.0'
-    }
+	repositories {
+		mavenLocal()
+		mavenCentral()
+		google()
+		maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
+		jcenter()
+		maven { url "https://chaquo.com/maven" }
+	}
+	dependencies {
+		classpath "org.wisepersist:gwt-gradle-plugin:$gwtPluginVersion"
+		classpath "com.android.tools.build:gradle:$androidPluginVersion"
+		classpath "com.mobidevelop.robovm:robovm-gradle-plugin:$robovmVersion"
+		classpath 'io.github.fvarrui:javapackager:1.4.1'
+		classpath 'com.chaquo.python:gradle:9.0.0'
+	}
 }
 
 allprojects {
-    apply plugin: "eclipse"
-
-    version = '1.0'
-    ext {
-        appName = "robot-recharge"
-        gdxVersion = '1.9.12'
-        roboVMVersion = '2.3.11'
-        box2DLightsVersion = '1.5'
-        ashleyVersion = '1.7.3'
-        aiVersion = '1.8.2'
-        gltfVersion = 'master-SNAPSHOT'
-        freetypeGwtVersion = '1.9.10.1'
-        gamesvcsVersion = '1.0.2'
-    }
-
-    repositories {
-        mavenLocal()
-        mavenCentral()
-        jcenter()
-        google()
-        maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
-        maven { url "https://oss.sonatype.org/content/repositories/releases/" }
-        maven { url 'https://jitpack.io' }
-    }
+	apply plugin: 'eclipse'
+	apply plugin: 'idea'
 }
 
-project(":desktop") {
-    apply plugin: "java-library"
-    apply plugin: 'io.github.fvarrui.javapackager.plugin'
-
-    dependencies {
-        implementation project(":core")
-        implementation project(":java")
-        api "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
-        api "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
-        api "com.badlogicgames.gdx:gdx-bullet-platform:$gdxVersion:natives-desktop"
-        api "com.badlogicgames.gdx:gdx-tools:$gdxVersion"
-        api "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-desktop"
-        api "de.golfgl.gdxgamesvcs:gdx-gamesvcs-core-gamejolt:1.0.2"
-        implementation 'io.webfolder:duktape4j:1.2.1'
-        implementation 'org.python:jython-slim:2.7.2'
-        implementation group: 'de.dfki.mary', name: 'voice-cmu-slt-hsmm', version: '5.2'
-        implementation "de.golfgl.gdxgamesvcs:gdx-gamesvcs-core-gamejolt:$gamesvcsVersion"
-    }
+configure(subprojects - project(':android')) {
+	apply plugin: 'java-library'
+	sourceCompatibility = 8.0
+	compileJava {
+		options.incremental = true
+	}
 }
 
-project(":android") {
-    apply plugin: "com.android.application"
-
-    configurations { natives }
-
-    dependencies {
-        implementation project(":core")
-        implementation project(":java")
-        api "com.badlogicgames.gdx:gdx-backend-android:$gdxVersion"
-        natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-armeabi"
-        natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-armeabi-v7a"
-        natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-arm64-v8a"
-        natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-x86"
-        natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-x86_64"
-        api "com.badlogicgames.gdx:gdx-bullet:$gdxVersion"
-        natives "com.badlogicgames.gdx:gdx-bullet-platform:$gdxVersion:natives-armeabi"
-        natives "com.badlogicgames.gdx:gdx-bullet-platform:$gdxVersion:natives-armeabi-v7a"
-        natives "com.badlogicgames.gdx:gdx-bullet-platform:$gdxVersion:natives-arm64-v8a"
-        natives "com.badlogicgames.gdx:gdx-bullet-platform:$gdxVersion:natives-x86"
-        natives "com.badlogicgames.gdx:gdx-bullet-platform:$gdxVersion:natives-x86_64"
-        api "com.badlogicgames.gdx:gdx-ai:$aiVersion"
-        api "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
-        natives "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-armeabi"
-        natives "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-armeabi-v7a"
-        natives "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-arm64-v8a"
-        natives "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-x86"
-        natives "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-x86_64"
-        api "de.golfgl.gdxgamesvcs:gdx-gamesvcs-android-gpgs:1.0.2"
-        implementation 'org.apache.commons:commons-text:1.6'
-        implementation 'com.squareup.duktape:duktape-android:1.3.0'
-        implementation 'com.marytts.android:marylib:1.0.1'
-        implementation "de.golfgl.gdxgamesvcs:gdx-gamesvcs-android-gpgs:$gamesvcsVersion"
-        implementation 'com.google.android.gms:play-services-ads:19.6.0'
-        implementation "com.google.android.gms:play-services-games:21.0.0"
-        implementation "com.badlogicgames.gdxpay:gdx-pay-android-googlebilling:1.3.1"
-    }
+subprojects {
+	version = '0.1'
+	ext.appName = 'robot-recharge'
+	repositories {
+		mavenLocal()
+		mavenCentral()
+		maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
+		maven { url 'https://jitpack.io' }
+		jcenter()
+	}
 }
 
-project(":ios") {
-    apply plugin: "java-library"
-    apply plugin: "robovm"
-
-    dependencies {
-        implementation project(":core")
-        implementation project(":java")
-        api "com.mobidevelop.robovm:robovm-rt:$roboVMVersion"
-        api "com.mobidevelop.robovm:robovm-cocoatouch:$roboVMVersion"
-        api "com.badlogicgames.gdx:gdx-backend-robovm:$gdxVersion"
-        api "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-ios"
-        api "com.badlogicgames.gdx:gdx-bullet-platform:$gdxVersion:natives-ios"
-        api "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-ios"
-        api "de.golfgl.gdxgamesvcs:gdx-gamesvcs-ios-gamecenter:1.0.2"
-        implementation group: 'de.dfki.mary', name: 'voice-cmu-slt-hsmm', version: '5.2'
-        implementation "de.golfgl.gdxgamesvcs:gdx-gamesvcs-ios-gamecenter:$gamesvcsVersion"
-
-    }
-}
-
-project(":html") {
-    apply plugin: "java-library"
-    apply plugin: "gwt"
-    apply plugin: "war"
-    apply plugin: "org.gretty"
-
-    dependencies {
-        implementation project(":core")
-        api "com.badlogicgames.gdx:gdx-backend-gwt:$gdxVersion"
-        api "com.badlogicgames.gdx:gdx:$gdxVersion:sources"
-        api "com.badlogicgames.gdx:gdx-backend-gwt:$gdxVersion:sources"
-        api "com.badlogicgames.gdx:gdx-ai:$aiVersion:sources"
-        api "de.golfgl.gdxgamesvcs:gdx-gamesvcs-core:1.0.2:sources"
-        api "de.golfgl.gdxgamesvcs:gdx-gamesvcs-core-gamejolt:1.0.2:sources"
-        api "com.github.czyzby:gdx-kiwi:1.9.1.9.6:sources"
-        api "de.tomgrill.gdxdialogs:gdx-dialogs-html:1.2.5"
-        api "de.tomgrill.gdxdialogs:gdx-dialogs-html:1.2.5:sources"
-        api "de.tomgrill.gdxdialogs:gdx-dialogs-core:1.2.5:sources"
-        api "net.dermetfan.libgdx-utils:libgdx-utils:0.13.4:sources"
-        api "com.kotcrab.vis:vis-ui:1.4.8:sources"
-        implementation 'com.github.raeleus.TenPatch:tenpatch:5.0.0:sources'
-        implementation 'com.github.raeleus:stripe:master-SNAPSHOT:sources'
-        implementation "com.github.intrigus.gdx-freetype-gwt:gdx-freetype-gwt:$freetypeGwtVersion"
-        implementation "com.github.intrigus.gdx-freetype-gwt:gdx-freetype-gwt:$freetypeGwtVersion:sources"
-        api "com.github.mgsx-dev.gdx-gltf:gltf:$gltfVersion:sources"
-        implementation "de.golfgl.gdxgamesvcs:gdx-gamesvcs-core:$gamesvcsVersion:sources"
-        implementation "de.golfgl.gdxgamesvcs:gdx-gamesvcs-core-gamejolt:$gamesvcsVersion"
-        implementation "de.golfgl.gdxgamesvcs:gdx-gamesvcs-core-gamejolt:$gamesvcsVersion:sources"
-    }
-}
-
-project(":core") {
-    apply plugin: "java-library"
-
-    dependencies {
-        api "com.badlogicgames.gdx:gdx:$gdxVersion"
-        api "com.badlogicgames.gdx:gdx-bullet:$gdxVersion"
-        api "com.badlogicgames.gdx:gdx-ai:$aiVersion"
-        api "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
-        api "com.kotcrab.vis:vis-ui:1.4.8"
-        // Not compatible with LibGDX 1.9.12 GWT
-        //api "net.dermetfan.libgdx-utils:libgdx-utils:0.13.4"
-        //api "com.github.czyzby:gdx-kiwi:1.9.1.9.11-SNAPSHOT"
-        api "de.golfgl.gdxgamesvcs:gdx-gamesvcs-core:1.0.2"
-        implementation 'com.github.raeleus.TenPatch:tenpatch:5.0.0'
-        api "com.github.mgsx-dev.gdx-gltf:gltf:$gltfVersion"
-        implementation 'com.github.raeleus:stripe:master-SNAPSHOT'
-        implementation group: 'org.luaj', name: 'luaj-jse', version: '3.0.1'
-        implementation group: 'com.caucho', name: 'quercus', version: '4.0.45'
-        api "com.rafaskoberg.gdx:typing-label:1.2.0"
-        implementation "de.golfgl.gdxgamesvcs:gdx-gamesvcs-core:$gamesvcsVersion"
-        compileOnly 'org.projectlombok:lombok:1.18.16'
-        annotationProcessor 'org.projectlombok:lombok:1.18.16'
-    }
-}
-
-project(":java") {
-    apply plugin: "java-library"
-
-    dependencies {
-        implementation project(":core")
-        implementation group: 'org.luaj', name: 'luaj-jse', version: '3.0.1'
-        implementation group: 'com.caucho', name: 'quercus', version: '4.0.45'
-        compileOnly 'org.projectlombok:lombok:1.18.16'
-        annotationProcessor 'org.projectlombok:lombok:1.18.16'
-    }
-}
+eclipse.project.name = 'robot-recharge' + '-parent'

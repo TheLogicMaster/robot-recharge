@@ -1,50 +1,45 @@
 <!doctype html>
 <html>
-       <head>
-              <title>robot-recharge</title>
-              <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-              <meta id="gameViewport" name="viewport" content="width=device-width initial-scale=1">
-              <link href="styles.css" rel="stylesheet" type="text/css">
-       </head>
+<head>
+	<title>Robot Recharge</title>
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+	<meta id="gameViewport" name="viewport" content="width=device-width initial-scale=1">
+	<link href="styles.css" rel="stylesheet" type="text/css">
+</head>
 
-       <body oncontextmenu="return false;">
-              <!--<a class="superdev" href="javascript:%7B%20window.__gwt_bookmarklet_params%20%3D%20%7B'server_url'%3A'http%3A%2F%2Flocalhost%3A9876%2F'%7D%3B%20var%20s%20%3D%20document.createElement('script')%3B%20s.src%20%3D%20'http%3A%2F%2Flocalhost%3A9876%2Fdev_mode_on.js'%3B%20void(document.getElementsByTagName('head')%5B0%5D.appendChild(s))%3B%7D">&#8635;</a>-->
-              <div id="blocklyDiv" style="position: absolute; display: none;"></div>
-              <div align="center" id="embed-html"></div>
+<body oncontextmenu="return false;">
+<a class="superdev" href="javascript:%7B%20window.__gwt_bookmarklet_params%20%3D%20%7B'server_url'%3A'http%3A%2F%2Flocalhost%3A9876%2F'%7D%3B%20var%20s%20%3D%20document.createElement('script')%3B%20s.src%20%3D%20'http%3A%2F%2Flocalhost%3A9876%2Fdev_mode_on.js'%3B%20void(document.getElementsByTagName('head')%5B0%5D.appendChild(s))%3B%7D">&#8635;</a>
+<div id="blocklyDiv" style="position: absolute; display: none;"></div>
+<div align="center" id="embed-html"></div>
+<script src="blockly/blockly.js"></script>
+<script src="blockly/javascript.js"></script>
+<script src="blockly/blocks.js"></script>
+<script src="blockly/msg/js/en.js"></script>
+<script src="blockly/toolbox.js"></script>
+<script type="text/javascript" src="html/html.nocache.js"></script>
+<script type="text/javascript">
+	var workspace = Blockly.inject('blocklyDiv', {
+		media: 'blockly/media/',
+		toolbox: BLOCKLY_TOOLBOX_XML['standard'],
+		zoom: {controls: true}
+	});
+	window.workspace = workspace;
+</script>
+</body>
 
-              <script src="blockly/blockly.js"></script>
-              <script src="blockly/javascript.js"></script>
-              <!--<script src="assets/blockly/lua.js"></script>
-              <script src="assets/blockly/php.js"></script>
-              <script src="assets/blockly/python.js"></script>-->
-              <script src="blockly/blocks.js"></script>
-              <!-- TODO: Select msg file based on locale. -->
-              <script src="blockly/msg/js/en.js"></script>
-              <script src="blockly/toolbox.js"></script>
-              <script type="text/javascript" src="html/html.nocache.js"></script>
+<script>
+function handleMouseDown(evt) {
+	evt.preventDefault();
+	evt.stopPropagation();
+	window.focus();
+}
 
-              <script type="text/javascript">
-                     var workspace = Blockly.inject('blocklyDiv', {
-                            media: 'blockly/media/',
-                            toolbox: BLOCKLY_TOOLBOX_XML['standard'],
-                            zoom: {controls: true}
-                     });
-                     window.workspace = workspace;
-              </script>
-       </body>
+function handleMouseUp(evt) {
+	evt.preventDefault();
+	evt.stopPropagation();
+}
+document.getElementById('embed-html').addEventListener('mousedown', handleMouseDown, false);
+document.getElementById('embed-html').addEventListener('mouseup', handleMouseUp, false);
 
-       <script>
-              function handleMouseDown(evt) {
-                evt.preventDefault();
-                evt.stopPropagation();
-                window.focus();
-              }
-
-              function handleMouseUp(evt) {
-                evt.preventDefault();
-                evt.stopPropagation();
-              }
-              document.getElementById('embed-html').addEventListener('mousedown', handleMouseDown, false);
-              document.getElementById('embed-html').addEventListener('mouseup', handleMouseUp, false);
-       </script>
+</script>
 </html>

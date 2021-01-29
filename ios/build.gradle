@@ -1,10 +1,9 @@
-sourceSets.main.java.srcDirs = ["src/"]
+apply plugin: 'robovm'
 
-sourceCompatibility = '1.8'
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 
 ext {
-    mainClassName = "com.thelogicmaster.robot_recharge.IOSLauncher"
+	mainClassName = "com.thelogicmaster.robot_recharge.ios.IOSLauncher"
 }
 
 launchIPhoneSimulator.dependsOn build
@@ -12,8 +11,17 @@ launchIPadSimulator.dependsOn build
 launchIOSDevice.dependsOn build
 createIPA.dependsOn build
 
-robovm {
-    archs = "thumbv7:arm64"
+eclipse.project {
+	name = appName + "-ios"
+	natures 'org.robovm.eclipse.RoboVMNature'
 }
 
-eclipse.project.name = appName + "-ios"
+dependencies {
+	implementation project(':core')
+	implementation "com.mobidevelop.robovm:robovm-rt:$robovmVersion"
+	implementation "com.mobidevelop.robovm:robovm-cocoatouch:$robovmVersion"
+	implementation "com.badlogicgames.gdx:gdx-backend-robovm:$gdxVersion"
+	implementation "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-ios"
+	implementation "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-ios"
+	implementation "de.golfgl.gdxgamesvcs:gdx-gamesvcs-ios-gamecenter:$gamesvcsVersion"
+}

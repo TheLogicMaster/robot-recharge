@@ -1,6 +1,20 @@
-sourceCompatibility = 1.8
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
+eclipse.project.name = appName + '-core'
 
-sourceSets.main.java.srcDirs = ["src/"]
-
-eclipse.project.name = appName + "-core"
+dependencies {
+	api "com.badlogicgames.gdx:gdx:$gdxVersion"
+	api "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
+	api "com.rafaskoberg.gdx:typing-label:$typingLabelVersion"
+	api "com.github.tommyettinger:regexodus:$regExodusVersion"
+	api "com.crashinvaders.vfx:gdx-vfx-core:$gdxVfxCoreVersion"
+	api "com.github.raeleus.TenPatch:tenpatch:$tenPatchVersion"
+	api "com.github.tommyettinger:formic:$formicVersion"
+	api "com.crashinvaders.vfx:gdx-vfx-effects:$gdxVfxEffectsVersion"
+	api "com.kotcrab.vis:vis-ui:$visUiVersion"
+	api "com.github.tommyettinger:libgdx-utils:$utilsVersion"
+	api "com.github.crykn.guacamole:core:$guacamoleVersion"
+	api "com.github.crykn.guacamole:gdx:$guacamoleVersion"
+	implementation "de.golfgl.gdxgamesvcs:gdx-gamesvcs-core:$gamesvcsVersion"
+	compileOnly 'org.projectlombok:lombok:1.18.16'
+	annotationProcessor 'org.projectlombok:lombok:1.18.16'
+}

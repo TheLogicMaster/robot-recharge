@@ -1,146 +1,136 @@
 plugins {
-    id 'de.fuerstenau.buildconfig' version '1.1.8'
+	id 'de.fuerstenau.buildconfig' version '1.1.8'
 }
-apply plugin: 'idea'
+apply plugin: 'application'
+apply plugin: 'io.github.fvarrui.javapackager.plugin'
 
 import io.github.fvarrui.javapackager.gradle.PackageTask
 
-sourceCompatibility = 1.8
-sourceSets.main.java.srcDirs = [ "src/" ]
-sourceSets.main.resources.srcDirs = ["../assets"]
-
-project.ext.mainClassName = "com.thelogicmaster.robot_recharge.desktop.DesktopLauncher"
-project.ext.assetsDir = new File("../assets")
+sourceSets.main.resources.srcDirs += [ rootProject.file('assets').path ]
+mainClassName = 'com.thelogicmaster.robot_recharge.desktop.DesktopLauncher'
+eclipse.project.name = appName + '-desktop'
+sourceCompatibility = 11.0
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+	implementation fileTree(dir: 'libs', include: ['*.jar'])
+	implementation project(':core')
+	implementation project(":java")
+	implementation "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
+	implementation "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
+	implementation "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-desktop"
+	implementation "com.github.crykn.guacamole:gdx-desktop:$guacamoleVersion"
+	implementation 'io.webfolder:duktape4j:1.2.1'
+	implementation 'org.python:jython-slim:2.7.2'
+	implementation group: 'de.dfki.mary', name: 'voice-cmu-slt-hsmm', version: '5.2'
+	implementation "de.golfgl.gdxgamesvcs:gdx-gamesvcs-core-gamejolt:$gamesvcsVersion"
+
 }
 
 Properties properties = new Properties()
 properties.load(project.rootProject.file('local.properties').newDataInputStream())
 
 buildConfig {
-    version = project.version
-    clsName = 'BuildConfig'
-    packageName = 'com.thelogicmaster.robot_recharge'
-    buildConfigField 'String', 'GAME_JOLT_KEY', properties.getProperty('gameJoltKey')
+	version = project.version
+	clsName = 'BuildConfig'
+	packageName = 'com.thelogicmaster.robot_recharge'
+	buildConfigField 'String', 'GAME_JOLT_KEY', properties.getProperty('gameJoltKey')
 }
 
-task run(dependsOn: classes, type: JavaExec) {
-    main = project.mainClassName
-    classpath = sourceSets.main.runtimeClasspath
-    standardInput = System.in
-    workingDir = project.assetsDir
-    ignoreExitValue = true
-}
-
-task debug(dependsOn: classes, type: JavaExec) {
-    main = project.mainClassName
-    classpath = sourceSets.main.runtimeClasspath
-    standardInput = System.in
-    workingDir = project.assetsDir
-    ignoreExitValue = true
-    debug = true
-}
-
-task dist(type: Jar) {
-    manifest {
-        attributes 'Main-Class': project.mainClassName
-    }
-    dependsOn configurations.runtimeClasspath
-    from {
-        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
-    }
-    with jar
+jar {
+	archiveBaseName = appName
+	dependsOn configurations.runtimeClasspath
+	from { configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) } } 
+	manifest {
+		attributes 'Main-Class': project.mainClassName
+	}
+	doLast {
+		file(archivePath).setExecutable(true, false)
+	}
 }
 
 task distBlocks(type: Jar) {
-    manifest {
-        attributes 'Main-Class': "com.thelogicmaster.robot_recharge.desktop.JCEFDesktopLauncher"
-    }
-    dependsOn configurations.runtimeClasspath
-    from {
-        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
-    }
-    with jar
+	manifest {
+		attributes 'Main-Class': "com.thelogicmaster.robot_recharge.desktop.JCEFDesktopLauncher"
+	}
+	with jar
+}
+
+run {
+	ignoreExitValue = true
 }
 
 javapackager {
-    mainClass = "com.thelogicmaster.robot_recharge.desktop.JCEFDesktopLauncher"
-    name = 'RobotRecharge'
-    bundleJre = true
-    generateInstaller = false
-    administratorRequired = false
-    vmArgs = ['-Djava.library.path=./jcef']
+	mainClass = "com.thelogicmaster.robot_recharge.desktop.JCEFDesktopLauncher"
+	name = 'RobotRecharge'
+	bundleJre = true
+	generateInstaller = false
+	administratorRequired = false
+	vmArgs = ['-Djava.library.path=./jcef']
 
-    linuxConfig {
-        pngFile = new File(project.rootDir.path + '/assets/icon32.png')
-    }
+	linuxConfig {
+		pngFile = new File(project.rootDir.path + '/assets/icon32.png')
+	}
 
-    winConfig {
-        icoFile = new File(project.projectDir.path + '/icon.ico')
-        companyName = 'TheLogicMaster'
-    }
+	winConfig {
+		icoFile = new File(project.projectDir.path + '/icon.ico')
+		companyName = 'TheLogicMaster'
+	}
 
-    macConfig {
+	macConfig {
 
-    }
+	}
 }
 
 task packageMacGHActions(type: PackageTask, dependsOn: build) {
-    jrePath = new File(System.getProperty("user.dir") + '/jre_mac')
-    platform = 'mac'
-    vmArgs = ['-Djava.library.path=../Java']
+	jrePath = new File(System.getProperty("user.dir") + '/jre_mac')
+	platform = 'mac'
+	vmArgs = ['-Djava.library.path=../Java']
 }
 
 // Put Mac JCEF app Contents directory contents into <project>/Libraries/mac64/jcef
 task packageMac(type: PackageTask, dependsOn: build) {
-    platform = 'mac'
-    vmArgs = ['-Djava.library.path=../Java']
-    doLast {
-        // Ensure app manifest file isn't overwritten
-        delete {
-            delete project.rootDir.path + '/Libraries/jcef/Info.plist'
-        }
+	platform = 'mac'
+	vmArgs = ['-Djava.library.path=../Java']
+	doLast {
+		// Ensure app manifest file isn't overwritten
+		delete {
+			delete project.rootDir.path + '/Libraries/jcef/Info.plist'
+		}
 
-        // Inject JCEF dependencies
-        copy {
-            from project.rootDir.path + '/Libraries/jcef/mac64'
-            into project.buildDir.path + '/RobotRecharge/RobotRecharge.app/Contents'
-        }
-    }
+		// Inject JCEF dependencies
+		copy {
+			from project.rootDir.path + '/Libraries/jcef/mac64'
+			into project.buildDir.path + '/RobotRecharge/RobotRecharge.app/Contents'
+		}
+	}
 }
 
 task packageWindowsGHActions(type: PackageTask, dependsOn: build) {
-    jrePath = new File(System.getProperty("user.dir") + '/jre_windows')
-    platform = 'windows'
+	jrePath = new File(System.getProperty("user.dir") + '/jre_windows')
+	platform = 'windows'
 }
 
 task packageWindows(type: PackageTask, dependsOn: build) {
-    jrePath = new File(project.rootDir.path + '/Libraries/jre/win64')
-    platform = 'windows'
-    doLast {
-        project.exec {
-            commandLine('cp', '-r', project.rootDir.path + '/Libraries/jcef/win64/', project.buildDir.path + '/RobotRecharge/jcef')
-        }
-    }
+	jrePath = new File(project.rootDir.path + '/Libraries/jre/win64')
+	platform = 'windows'
+	doLast {
+		project.exec {
+			commandLine('cp', '-r', project.rootDir.path + '/Libraries/jcef/win64/', project.buildDir.path + '/RobotRecharge/jcef')
+		}
+	}
 }
 
 task packageLinuxGHActions(type: PackageTask, dependsOn: build) {
-    jrePath = new File(System.getProperty("user.dir") + '/jre_linux')
-    platform = 'linux'
+	jrePath = new File(System.getProperty("user.dir") + '/jre_linux')
+	platform = 'linux'
 }
 
 task packageLinux(type: PackageTask, dependsOn: build) {
-    jrePath = new File('/opt/jdk1.8.0_251/jre/')
-    platform = 'linux'
-    doLast {
-        project.exec {
-            commandLine('cp', '-r', project.rootDir.path + '/Libraries/jcef/linux64/', project.buildDir.path + '/RobotRecharge/jcef')
-        }
-    }
+	jrePath = new File('/opt/jdk1.8.0_251/jre/')
+	platform = 'linux'
+	doLast {
+		project.exec {
+			commandLine('cp', '-r', project.rootDir.path + '/Libraries/jcef/linux64/', project.buildDir.path + '/RobotRecharge/jcef')
+		}
+	}
 }
-
-dist.dependsOn classes
-
-eclipse.project.name = appName + "-desktop"
