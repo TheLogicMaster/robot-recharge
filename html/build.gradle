@@ -42,10 +42,12 @@ gwt {
 configurations { lom }
 
 dependencies {
+	implementation fileTree(dir: 'libs', include: ['*.jar'])
 	implementation project(':core')
+
 	implementation "com.badlogicgames.gdx:gdx:$gdxVersion:sources"
-	implementation "com.badlogicgames.gdx:gdx-backend-gwt:$gdxVersion"
-	implementation "com.badlogicgames.gdx:gdx-backend-gwt:$gdxVersion:sources"
+	//implementation "com.badlogicgames.gdx:gdx-backend-gwt:$gdxVersion"
+	//implementation "com.badlogicgames.gdx:gdx-backend-gwt:$gdxVersion:sources"
 	implementation "com.rafaskoberg.gdx:typing-label:$typingLabelVersion:sources"
 	implementation "com.github.tommyettinger:regexodus:$regExodusVersion:sources"
 	implementation "com.crashinvaders.vfx:gdx-vfx-core:$gdxVfxCoreVersion:sources"

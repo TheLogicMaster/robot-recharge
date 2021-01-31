@@ -24,6 +24,14 @@
 	<extend-configuration-property name="gdx.reflect.exclude" value="com.badlogic.gdx.math.GridPoint2"/>
 	<extend-configuration-property name="gdx.reflect.exclude" value="com.badlogic.gdx.math.GeometryUtils"/>
 
+	<extend-configuration-property name="gdx.reflect.exclude" value="com.kotcrab.vis.ui.widget.VisCheckBox"/>
+	<extend-configuration-property name="gdx.reflect.exclude" value="com.kotcrab.vis.ui.widget.LinkLabel"/>
+	<extend-configuration-property name="gdx.reflect.exclude" value="com.kotcrab.vis.ui.widget.VisProgressBar"/>
+	<extend-configuration-property name="gdx.reflect.exclude" value="com.kotcrab.vis.ui.widget.VisLabel"/>
+	<extend-configuration-property name="gdx.reflect.exclude" value="com.kotcrab.vis.ui.widget.VisList"/>
+	<extend-configuration-property name="gdx.reflect.exclude" value="com.kotcrab.vis.ui.widget.VisImage"/>
+	<extend-configuration-property name="gdx.reflect.exclude" value="com.kotcrab.vis.ui.widget.VisRadioButton"/>
+
 	<extend-configuration-property name="gdx.reflect.include" value="com.badlogic.gdx.utils.IntArray"/>
 	<extend-configuration-property name="gdx.reflect.include" value="com.badlogic.gdx.graphics.g3d.Attribute"/>
 </module>

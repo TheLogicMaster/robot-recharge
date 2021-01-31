@@ -25,87 +25,21 @@ public class JavaScriptRobotController implements RobotController {
     private String code;
 
     static {
-        // Todo: Replace with reading a file and replacing constants with regex
-        ScriptInjector.fromString("" +
-                "let delay = m => new Promise(r => setTimeout(r, m));\n" +
-
-                "async function delayCheck(duration) {\n" +
-                "   let time = duration;\n" +
-                "   let isPaused = false;\n" +
-                "   while (time > 0) {\n" +
-                "       await delay($wnd.Robot.isFast() ? 10 : 20);\n" +
-                "       if ($wnd.Robot.isStopped())\n" +
-                "           return true;\n" +
-                "       if (!$wnd.Robot.isPaused()) {\n" +
-                "           if (!$wnd.Robot.isWaiting())\n" +
-                "               time -= 20;\n" +
-                "       } else if (!isPaused)\n" +
-                "           $wnd.Robot.onPause();\n" +
-                "       isPaused = $wnd.Robot.isPaused();\n" +
-                "   }\n" +
-                "}\n" +
-
-                "async function move(distance) {\n" +
-                "   $wnd.Robot.incrementCalls();\n" +
-                "   $wnd.Robot.loopAnimation('Armature|MoveForward');\n" +
-                "   for (let i = 0; i < Math.abs(distance); i++) {\n" +
-                "       if (await delayCheck(1))\n" +
-                "           return true;\n" +
-                "       if ($wnd.Robot.checkFloor(distance)) {\n" +
-                "           $wnd.Robot.playAnimationSpeed('Armature|Ledge', 0.3);\n" +
-                "           await delayCheck(1500);\n" +
-                "           return;\n" +
-                "       }\n" +
-                "       if ($wnd.Robot.checkCrash(distance)) {\n" +
-                "           $wnd.Robot.playAnimationSpeed('Armature|Crash', 1);\n" +
-                "           await delayCheck(100);\n" +
-                "           $wnd.Robot.onCrash(distance);\n" +
-                "           await delayCheck(500);\n" +
-                "           return;\n" +
-                "       }\n" +
-                "       let time = 1 / " + Robot.speed + ";\n" +
-                "       while (time > 0) {\n" +
-                "           $wnd.Robot.subMove(distance);\n" +
-                "           if (await delayCheck(20))\n" +
-                "               return true;\n" +
-                "           time -= 0.02;\n" +
-                "       }\n" +
-                "       $wnd.Robot.move(distance);\n" +
-                "   }\n" +
-                "   $wnd.Robot.stopAnimation();\n" +
-                "}\n" +
-
-                "async function turn(distance) {\n" +
-                "   $wnd.Robot.incrementCalls();\n" +
-                "   for (let i = 0; i < Math.abs(distance); i++) {\n" +
-                "       let time = 90 / " + Robot.rotationSpeed + ";\n" +
-                "       while (time > 0) {\n" +
-                "           $wnd.Robot.subTurn(distance);\n" +
-                "           if (await delayCheck(20))\n" +
-                "               return true;\n" +
-                "           time -= 0.02;\n" +
-                "       }\n" +
-                "       $wnd.Robot.turn(distance);\n" +
-                "   }\n" +
-                "}\n" +
-
-                "async function sleep(duration) {\n" +
-                "   $wnd.Robot.incrementCalls();\n" +
-                "   await delayCheck(duration * 1000);\n" +
-                "}\n"
-        ).inject();
+        ScriptInjector.fromUrl("RobotController.js").inject();
     }
 
     public JavaScriptRobotController(Robot robot, RobotExecutionListener listener) {
         JavaScriptRobotController.robot = robot;
         JavaScriptRobotController.listener = listener;
         code = "";
-        inject();
+        inject(Robot.speed, Robot.rotationSpeed);
     }
 
-    private native void inject() /*-{
+    private native void inject(float speed, float rotationSpeed) /*-{
         var that = this;
         $wnd.Robot = new Object();
+        $wnd.Robot.speed = speed;
+        $wnd.Robot.rotationSpeed = rotationSpeed;
         $wnd.Robot.speak = $entry(that.@com.thelogicmaster.robot_recharge.gwt.JavaScriptRobotController::speak(Ljava/lang/String;));
         $wnd.Robot.interact = $entry(that.@com.thelogicmaster.robot_recharge.gwt.JavaScriptRobotController::interact());
         $wnd.Robot.move = $entry(that.@com.thelogicmaster.robot_recharge.gwt.JavaScriptRobotController::move(I));
@@ -139,7 +73,7 @@ public class JavaScriptRobotController implements RobotController {
         stopped = false;
         calls = 0;
         waiting = false;
-        // Todo: Catch syntax errors somehow, possibly using eval around the whole thing
+        resetSyntaxError();
         ScriptInjector.fromString("" +
                 "$wnd._watchdog = 0;\n" +
                 "(async function(){\n" +
@@ -151,8 +85,19 @@ public class JavaScriptRobotController implements RobotController {
                 "       $wnd.Robot.onDone();\n" +
                 "}).catch(e => {\n" +
                 "   $wnd.Robot.onError(e.toString());\n" +
-                "});\n").inject();
+                "});\n" +
+                "$wnd.syntaxCheck = false;\n").inject();
+        if (checkSyntaxError())
+            onError("Syntax Error");
     }
+
+    private static native void resetSyntaxError()/*-{
+        $wnd.syntaxCheck = true;
+    }-*/;
+
+    private static native boolean checkSyntaxError()/*-{
+        return $wnd.syntaxCheck;
+    }-*/;
 
     public void move(int distance) {
         Position target = robot.getBlockPos().cpy().add(robot.getDirection().getVector().cpy().scl(Math.signum(distance)));

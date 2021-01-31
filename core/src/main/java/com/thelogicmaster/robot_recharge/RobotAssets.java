@@ -72,11 +72,13 @@ public class RobotAssets implements Disposable {
         RobotUtils.padDrawable(skin.getDrawable("accentPanel"), 10);
         RobotUtils.padDrawable(skin.getDrawable("windowPanel"), 20);
 
+        // Todo: Replace VisDialog components with generic ones to reduce reflection cache
         if (!VisUI.isLoaded())
-            VisUI.load(VisUI.SkinScale.X2);
+            VisUI.load(skin);
 
         setTheme(json.fromJson(Theme.class, Gdx.files.internal("theme/default.json")));
 
+        //noinspection unchecked
         levelInfo = json.fromJson(Array.class, LevelInfo.class, Gdx.files.internal("levels.json"));
 
         assets.load("menuNavigate.wav", Sound.class);

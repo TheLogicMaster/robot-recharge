@@ -301,6 +301,12 @@
 		"fileChooserViewModeListWidthSize": 150
 	}
 },
+"com.kotcrab.vis.ui.widget.VisTextButton$VisTextButtonStyle": {
+	"default": {
+		"up": "buttonTen",
+		"font": "menuFont"
+	}
+},
 "com.kotcrab.vis.ui.widget.Separator$SeparatorStyle": {
 	"default": {
 		"thickness": 4

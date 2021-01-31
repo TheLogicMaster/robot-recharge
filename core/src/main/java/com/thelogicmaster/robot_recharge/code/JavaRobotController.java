@@ -1,11 +1,10 @@
-package com.thelogicmaster.robot_recharge;
+package com.thelogicmaster.robot_recharge.code;
 
 import com.badlogic.gdx.math.Quaternion;
 import com.badlogic.gdx.math.Vector3;
+import com.thelogicmaster.robot_recharge.*;
 import com.thelogicmaster.robot_recharge.blocks.Block;
 import com.thelogicmaster.robot_recharge.blocks.Interactable;
-import com.thelogicmaster.robot_recharge.code.CodeEngine;
-import com.thelogicmaster.robot_recharge.code.ExecutionListener;
 
 @SuppressWarnings("BusyWait")
 public class JavaRobotController implements RobotController, ExecutionListener, IRobot {

@@ -1,8 +1,9 @@
-package com.thelogicmaster.robot_recharge;
+package com.thelogicmaster.robot_recharge.code;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.BooleanArray;
 import com.badlogic.gdx.utils.IntArray;
+import com.thelogicmaster.robot_recharge.CodeEditorUtils;
 import lombok.val;
 
 import java.util.regex.Pattern;

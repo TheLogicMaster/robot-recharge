@@ -1,5 +1,6 @@
 package com.thelogicmaster.robot_recharge.desktop;
 
+import com.badlogic.gdx.Files;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.lwjgl.LwjglAWTCanvas;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
@@ -7,7 +8,11 @@ import com.badlogic.gdx.utils.Array;
 import com.thelogicmaster.robot_recharge.*;
 import com.thelogicmaster.robot_recharge.Robot;
 import com.thelogicmaster.robot_recharge.code.CodeEngine;
+import com.thelogicmaster.robot_recharge.code.JavaCodeEditorUtils;
+import com.thelogicmaster.robot_recharge.code.JavaRobotController;
 import com.thelogicmaster.robot_recharge.code.Language;
+import com.thelogicmaster.robot_recharge.code.LuaEngine;
+import com.thelogicmaster.robot_recharge.code.PhpEngine;
 import org.cef.CefApp;
 import org.cef.handler.CefAppHandlerAdapter;
 
@@ -43,6 +48,8 @@ public class JCEFDesktopLauncher implements PlatformUtils {
         blocklyEditor = new DesktopBlocklyEditor();
         LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
         config.allowSoftwareMode = true;
+        for (int size : new int[] { 128, 64, 32, 16 })
+            config.addIcon("icons/icon" + size + ".png", Files.FileType.Internal);
         final DesktopGameServices desktopGameServices = new DesktopGameServices();
         HashMap<Language, CodeEngine> engines = new HashMap<>();
         engines.put(Language.JavaScript, new DesktopJavaScriptEngine());
@@ -50,17 +57,14 @@ public class JCEFDesktopLauncher implements PlatformUtils {
         engines.put(Language.Lua, new LuaEngine());
         engines.put(Language.PHP, new PhpEngine());
         lwjglAWTCanvas = new LwjglAWTCanvas(new RobotRecharge(engines, blocklyEditor, this,
-                new DesktopTTSEngine(), desktopGameServices, new JavaCodeEditorUtils(), System.getenv().get("DEBUG") != null), config) {
+                new DesktopTTSEngine(), desktopGameServices, new JavaCodeEditorUtils(), BuildConfig.DEBUG), config) {
             // Graceful exit
             @Override
             public void exit() {
-                postRunnable(new Runnable() {
-                    @Override
-                    public void run() {
-                        CefApp.getInstance().dispose();
-                        stop();
-                        exitDelayed();
-                    }
+                postRunnable(() -> {
+                    CefApp.getInstance().dispose();
+                    stop();
+                    exitDelayed();
                 });
             }
 
@@ -82,12 +86,7 @@ public class JCEFDesktopLauncher implements PlatformUtils {
     }
 
     private void exitDelayed() {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                System.exit(0);
-            }
-        }).start();
+        new Thread(() -> System.exit(0)).start();
     }
 
     private JFrame createFrame() {
@@ -158,11 +157,6 @@ public class JCEFDesktopLauncher implements PlatformUtils {
             return;
         }
 
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                new JCEFDesktopLauncher();
-            }
-        });
+        SwingUtilities.invokeLater(JCEFDesktopLauncher::new);
     }
 }

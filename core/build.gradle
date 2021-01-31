@@ -15,6 +15,8 @@ dependencies {
 	api "com.github.crykn.guacamole:core:$guacamoleVersion"
 	api "com.github.crykn.guacamole:gdx:$guacamoleVersion"
 	implementation "de.golfgl.gdxgamesvcs:gdx-gamesvcs-core:$gamesvcsVersion"
+	implementation group: 'org.luaj', name: 'luaj-jse', version: '3.0.1'
+	implementation group: 'com.caucho', name: 'quercus', version: '4.0.45'
 	compileOnly 'org.projectlombok:lombok:1.18.16'
 	annotationProcessor 'org.projectlombok:lombok:1.18.16'
 }

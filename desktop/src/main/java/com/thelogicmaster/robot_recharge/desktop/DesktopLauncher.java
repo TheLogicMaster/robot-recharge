@@ -8,7 +8,11 @@ import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.badlogic.gdx.utils.Array;
 import com.thelogicmaster.robot_recharge.*;
 import com.thelogicmaster.robot_recharge.code.CodeEngine;
+import com.thelogicmaster.robot_recharge.code.JavaCodeEditorUtils;
+import com.thelogicmaster.robot_recharge.code.JavaRobotController;
 import com.thelogicmaster.robot_recharge.code.Language;
+import com.thelogicmaster.robot_recharge.code.LuaEngine;
+import com.thelogicmaster.robot_recharge.code.PhpEngine;
 
 import java.util.HashMap;
 
@@ -16,8 +20,8 @@ public class DesktopLauncher {
 	public static void main(String[] args) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 		config.title = "robot-recharge";
-		config.width = 640;
-		config.height = 480;
+		config.width = 980;
+		config.height = 540;
 		config.allowSoftwareMode = true;
 		// This prevents a confusing error that would appear after exiting normally.
 		config.forceExit = false;
@@ -33,7 +37,7 @@ public class DesktopLauncher {
 		});
 
 		for (int size : new int[] { 128, 64, 32, 16 })
-			config.addIcon("icon" + size + ".png", FileType.Internal);
+			config.addIcon("icons/icon" + size + ".png", FileType.Internal);
 
 		new LwjglApplication(new RobotRecharge(engines, null, new PlatformUtils() {
 			@Override
@@ -63,6 +67,6 @@ public class DesktopLauncher {
 			public RobotController createRobotController(Robot robot, RobotExecutionListener listener, CodeEngine engine) {
 				return new JavaRobotController(robot, listener, engine);
 			}
-		}, new DesktopTTSEngine(), new DesktopGameServices(), new JavaCodeEditorUtils(), System.getenv().containsKey("DEBUG")), config);
+		}, new DesktopTTSEngine(), new DesktopGameServices(), new JavaCodeEditorUtils(), BuildConfig.DEBUG), config);
 	}
 }

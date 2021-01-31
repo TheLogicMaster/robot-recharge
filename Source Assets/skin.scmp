@@ -3,7 +3,7 @@ atlasData: {
 	atlasCurrent: true
 	drawables: [
 		{
-			file: "/home/justin/Programming/robot-recharge/Assets/skin_data/uncheckedBox.png"
+			file: "/home/justin/Programming/robot-recharge/Source Assets/skin_data/uncheckedBox.png"
 			bgColor: {
 				r: 1
 				g: 1
@@ -22,7 +22,7 @@ atlasData: {
 			hidden: false
 		}
 		{
-			file: "/home/justin/Programming/robot-recharge/Assets/skin_data/checkedBox.png"
+			file: "/home/justin/Programming/robot-recharge/Source Assets/skin_data/checkedBox.png"
 			bgColor: {
 				r: 1
 				g: 1
@@ -41,7 +41,7 @@ atlasData: {
 			hidden: false
 		}
 		{
-			file: "/home/justin/Programming/robot-recharge/Assets/skin_data/catalog.png"
+			file: "/home/justin/Programming/robot-recharge/Source Assets/skin_data/catalog.png"
 			bgColor: {
 				r: 1
 				g: 1
@@ -60,7 +60,7 @@ atlasData: {
 			hidden: false
 		}
 		{
-			file: "/home/justin/Programming/robot-recharge/Assets/skin_data/selection.png"
+			file: "/home/justin/Programming/robot-recharge/Source Assets/skin_data/selection.png"
 			bgColor: {
 				r: 0
 				g: 0
@@ -79,7 +79,7 @@ atlasData: {
 			hidden: false
 		}
 		{
-			file: "/home/justin/Programming/robot-recharge/Assets/skin_data/buttonPressed.png"
+			file: "/home/justin/Programming/robot-recharge/Source Assets/skin_data/buttonPressed.png"
 			bgColor: {
 				r: 1
 				g: 1
@@ -98,7 +98,7 @@ atlasData: {
 			hidden: false
 		}
 		{
-			file: "/home/justin/Programming/robot-recharge/Assets/skin_data/button.png"
+			file: "/home/justin/Programming/robot-recharge/Source Assets/skin_data/button.png"
 			bgColor: {
 				r: 1
 				g: 1
@@ -117,7 +117,7 @@ atlasData: {
 			hidden: false
 		}
 		{
-			file: "/home/justin/Programming/robot-recharge/Assets/skin_data/window.png"
+			file: "/home/justin/Programming/robot-recharge/Source Assets/skin_data/window.png"
 			bgColor: {
 				r: 1
 				g: 1
@@ -136,7 +136,7 @@ atlasData: {
 			hidden: false
 		}
 		{
-			file: "/home/justin/Programming/robot-recharge/Assets/skin_data/progressBar.png"
+			file: "/home/justin/Programming/robot-recharge/Source Assets/skin_data/progressBar.png"
 			bgColor: {
 				r: 0
 				g: 0
@@ -155,7 +155,7 @@ atlasData: {
 			hidden: false
 		}
 		{
-			file: "/home/justin/Programming/robot-recharge/Assets/skin_data/progressBack.png"
+			file: "/home/justin/Programming/robot-recharge/Source Assets/skin_data/progressBack.png"
 			bgColor: {
 				r: 1
 				g: 1
@@ -174,7 +174,7 @@ atlasData: {
 			hidden: false
 		}
 		{
-			file: "/home/justin/Programming/robot-recharge/Assets/skin_data/titleMenu.png"
+			file: "/home/justin/Programming/robot-recharge/Source Assets/skin_data/titleMenu.png"
 			bgColor: {
 				r: 1
 				g: 1
@@ -193,7 +193,7 @@ atlasData: {
 			hidden: false
 		}
 		{
-			file: "/home/justin/Programming/robot-recharge/Assets/skin_data/programmingDisabledIcon.png"
+			file: "/home/justin/Programming/robot-recharge/Source Assets/skin_data/programmingDisabledIcon.png"
 			bgColor: {
 				r: 1
 				g: 1
@@ -212,7 +212,7 @@ atlasData: {
 			hidden: false
 		}
 		{
-			file: "/home/justin/Programming/robot-recharge/Assets/skin_data/editorSidebar.png"
+			file: "/home/justin/Programming/robot-recharge/Source Assets/skin_data/editorSidebar.png"
 			bgColor: {
 				r: 1
 				g: 1
@@ -231,7 +231,7 @@ atlasData: {
 			hidden: false
 		}
 		{
-			file: "/home/justin/Programming/robot-recharge/Assets/skin_data/backIcon.png"
+			file: "/home/justin/Programming/robot-recharge/Source Assets/skin_data/backIcon.png"
 			bgColor: {
 				r: 1
 				g: 1
@@ -250,7 +250,7 @@ atlasData: {
 			hidden: false
 		}
 		{
-			file: "/home/justin/Programming/robot-recharge/Assets/skin_data/downloadIcon.png"
+			file: "/home/justin/Programming/robot-recharge/Source Assets/skin_data/downloadIcon.png"
 			bgColor: {
 				r: 1
 				g: 1
@@ -269,7 +269,7 @@ atlasData: {
 			hidden: false
 		}
 		{
-			file: "/home/justin/Programming/robot-recharge/Assets/skin_data/playDisabledIcon.png"
+			file: "/home/justin/Programming/robot-recharge/Source Assets/skin_data/playDisabledIcon.png"
 			bgColor: {
 				r: 1
 				g: 1
@@ -288,7 +288,7 @@ atlasData: {
 			hidden: false
 		}
 		{
-			file: "/home/justin/Programming/robot-recharge/Assets/skin_data/pauseDisabledIcon.png"
+			file: "/home/justin/Programming/robot-recharge/Source Assets/skin_data/pauseDisabledIcon.png"
 			bgColor: {
 				r: 1
 				g: 1
@@ -307,7 +307,7 @@ atlasData: {
 			hidden: false
 		}
 		{
-			file: "/home/justin/Programming/robot-recharge/Assets/skin_data/fastForwardCheckedIcon.png"
+			file: "/home/justin/Programming/robot-recharge/Source Assets/skin_data/fastForwardCheckedIcon.png"
 			bgColor: {
 				r: 1
 				g: 1
@@ -326,7 +326,7 @@ atlasData: {
 			hidden: false
 		}
 		{
-			file: "/home/justin/Programming/robot-recharge/Assets/skin_data/programmingIcon.png"
+			file: "/home/justin/Programming/robot-recharge/Source Assets/skin_data/programmingIcon.png"
 			bgColor: {
 				r: 1
 				g: 1
@@ -345,7 +345,7 @@ atlasData: {
 			hidden: false
 		}
 		{
-			file: "/home/justin/Programming/robot-recharge/Assets/skin_data/playIcon.png"
+			file: "/home/justin/Programming/robot-recharge/Source Assets/skin_data/playIcon.png"
 			bgColor: {
 				r: 1
 				g: 1
@@ -364,7 +364,7 @@ atlasData: {
 			hidden: false
 		}
 		{
-			file: "/home/justin/Programming/robot-recharge/Assets/skin_data/pauseIcon.png"
+			file: "/home/justin/Programming/robot-recharge/Source Assets/skin_data/pauseIcon.png"
 			bgColor: {
 				r: 1
 				g: 1
@@ -383,7 +383,7 @@ atlasData: {
 			hidden: false
 		}
 		{
-			file: "/home/justin/Programming/robot-recharge/Assets/skin_data/rewindIcon.png"
+			file: "/home/justin/Programming/robot-recharge/Source Assets/skin_data/rewindIcon.png"
 			bgColor: {
 				r: 1
 				g: 1
@@ -402,7 +402,7 @@ atlasData: {
 			hidden: false
 		}
 		{
-			file: "/home/justin/Programming/robot-recharge/Assets/skin_data/fastForwardIcon.png"
+			file: "/home/justin/Programming/robot-recharge/Source Assets/skin_data/fastForwardIcon.png"
 			bgColor: {
 				r: 1
 				g: 1
@@ -421,7 +421,7 @@ atlasData: {
 			hidden: false
 		}
 		{
-			file: "/home/justin/Programming/robot-recharge/Assets/skin_data/settingsIcon.png"
+			file: "/home/justin/Programming/robot-recharge/Source Assets/skin_data/settingsIcon.png"
 			bgColor: {
 				r: 1
 				g: 1
@@ -440,7 +440,7 @@ atlasData: {
 			hidden: false
 		}
 		{
-			file: "/home/justin/Programming/robot-recharge/Assets/skin_data/window.png"
+			file: "/home/justin/Programming/robot-recharge/Source Assets/skin_data/window.png"
 			bgColor: {
 				r: 1
 				g: 1
@@ -487,7 +487,7 @@ atlasData: {
 			hidden: false
 		}
 		{
-			file: "/home/justin/Programming/robot-recharge/Assets/skin_data/button.png"
+			file: "/home/justin/Programming/robot-recharge/Source Assets/skin_data/button.png"
 			bgColor: {
 				r: 1
 				g: 1
@@ -534,7 +534,7 @@ atlasData: {
 			hidden: false
 		}
 		{
-			file: "/home/justin/Programming/robot-recharge/Assets/skin_data/buttonPressed.png"
+			file: "/home/justin/Programming/robot-recharge/Source Assets/skin_data/buttonPressed.png"
 			bgColor: {
 				r: 1
 				g: 1
@@ -581,7 +581,7 @@ atlasData: {
 			hidden: false
 		}
 		{
-			file: "/home/justin/Programming/robot-recharge/Assets/skin_data/buttonDisabled.png"
+			file: "/home/justin/Programming/robot-recharge/Source Assets/skin_data/buttonDisabled.png"
 			bgColor: {
 				r: 1
 				g: 1
@@ -600,7 +600,7 @@ atlasData: {
 			hidden: false
 		}
 		{
-			file: "/home/justin/Programming/robot-recharge/Assets/skin_data/buttonDisabled.png"
+			file: "/home/justin/Programming/robot-recharge/Source Assets/skin_data/buttonDisabled.png"
 			bgColor: {
 				r: 1
 				g: 1
@@ -647,7 +647,7 @@ atlasData: {
 			hidden: false
 		}
 		{
-			file: "/home/justin/Programming/robot-recharge/Assets/skin_data/progressBar.png"
+			file: "/home/justin/Programming/robot-recharge/Source Assets/skin_data/progressBar.png"
 			bgColor: {
 				r: 0
 				g: 0
@@ -694,7 +694,7 @@ atlasData: {
 			hidden: false
 		}
 		{
-			file: "/home/justin/Programming/robot-recharge/Assets/skin_data/progressBack.png"
+			file: "/home/justin/Programming/robot-recharge/Source Assets/skin_data/progressBack.png"
 			bgColor: {
 				r: 1
 				g: 1
@@ -741,7 +741,7 @@ atlasData: {
 			hidden: false
 		}
 		{
-			file: "/home/justin/Programming/robot-recharge/Assets/skin_data/closeIcon.png"
+			file: "/home/justin/Programming/robot-recharge/Source Assets/skin_data/closeIcon.png"
 			bgColor: {
 				r: 1
 				g: 1
@@ -760,7 +760,7 @@ atlasData: {
 			hidden: false
 		}
 		{
-			file: "/home/justin/Programming/robot-recharge/Assets/skin_data/robotDialog.png"
+			file: "/home/justin/Programming/robot-recharge/Source Assets/skin_data/robotDialog.png"
 			bgColor: {
 				r: 1
 				g: 1
@@ -779,7 +779,7 @@ atlasData: {
 			hidden: false
 		}
 		{
-			file: "/home/justin/Programming/robot-recharge/Assets/skin_data/robotDialog.png"
+			file: "/home/justin/Programming/robot-recharge/Source Assets/skin_data/robotDialog.png"
 			bgColor: {
 				r: 1
 				g: 1
@@ -826,7 +826,7 @@ atlasData: {
 			hidden: false
 		}
 		{
-			file: "/home/justin/Programming/robot-recharge/Assets/skin_data/googleSignOut.png"
+			file: "/home/justin/Programming/robot-recharge/Source Assets/skin_data/googleSignOut.png"
 			bgColor: {
 				r: 1
 				g: 1
@@ -845,7 +845,7 @@ atlasData: {
 			hidden: false
 		}
 		{
-			file: "/home/justin/Programming/robot-recharge/Assets/skin_data/googleSignIn.png"
+			file: "/home/justin/Programming/robot-recharge/Source Assets/skin_data/googleSignIn.png"
 			bgColor: {
 				r: 1
 				g: 1
@@ -864,7 +864,7 @@ atlasData: {
 			hidden: false
 		}
 		{
-			file: "/home/justin/Programming/robot-recharge/Assets/skin_data/cloudSave.png"
+			file: "/home/justin/Programming/robot-recharge/Source Assets/skin_data/cloudSave.png"
 			bgColor: {
 				r: 1
 				g: 1
@@ -883,7 +883,7 @@ atlasData: {
 			hidden: false
 		}
 		{
-			file: "/home/justin/Programming/robot-recharge/Assets/skin_data/cloudSave.png"
+			file: "/home/justin/Programming/robot-recharge/Source Assets/skin_data/cloudSave.png"
 			bgColor: {
 				r: 1
 				g: 1
@@ -907,7 +907,7 @@ atlasData: {
 			hidden: false
 		}
 		{
-			file: "/home/justin/Programming/robot-recharge/Assets/skin_data/tintablePanel.png"
+			file: "/home/justin/Programming/robot-recharge/Source Assets/skin_data/tintablePanel.png"
 			bgColor: {
 				r: 1
 				g: 1
@@ -926,7 +926,7 @@ atlasData: {
 			hidden: false
 		}
 		{
-			file: "/home/justin/Programming/robot-recharge/Assets/skin_data/tintableCursor.png"
+			file: "/home/justin/Programming/robot-recharge/Source Assets/skin_data/tintableCursor.png"
 			bgColor: {
 				r: 0
 				g: 0
@@ -945,7 +945,7 @@ atlasData: {
 			hidden: false
 		}
 		{
-			file: "/home/justin/Programming/robot-recharge/Assets/skin_data/tintableCursor.png"
+			file: "/home/justin/Programming/robot-recharge/Source Assets/skin_data/tintableCursor.png"
 			bgColor: {
 				r: 0
 				g: 0
@@ -964,7 +964,7 @@ atlasData: {
 			hidden: false
 		}
 		{
-			file: "/home/justin/Programming/robot-recharge/Assets/skin_data/tintablePanel.png"
+			file: "/home/justin/Programming/robot-recharge/Source Assets/skin_data/tintablePanel.png"
 			bgColor: {
 				r: 1
 				g: 1
@@ -1011,7 +1011,7 @@ atlasData: {
 			hidden: false
 		}
 		{
-			file: "/home/justin/Programming/robot-recharge/Assets/skin_data/tintablePanel.png"
+			file: "/home/justin/Programming/robot-recharge/Source Assets/skin_data/tintablePanel.png"
 			bgColor: {
 				r: 1
 				g: 1
@@ -1058,7 +1058,7 @@ atlasData: {
 			hidden: false
 		}
 		{
-			file: "/home/justin/Programming/robot-recharge/Assets/skin_data/tintablePanel.png"
+			file: "/home/justin/Programming/robot-recharge/Source Assets/skin_data/tintablePanel.png"
 			bgColor: {
 				r: 1
 				g: 1
@@ -1105,7 +1105,7 @@ atlasData: {
 			hidden: false
 		}
 		{
-			file: "/home/justin/Programming/robot-recharge/Assets/skin_data/tintablePanel.png"
+			file: "/home/justin/Programming/robot-recharge/Source Assets/skin_data/tintablePanel.png"
 			bgColor: {
 				r: 1
 				g: 1
@@ -6715,7 +6715,7 @@ jsonData: {
 						{
 							name: up
 							type: DRAWABLE
-							value: null
+							value: buttonTen
 						}
 						{
 							name: over
@@ -6730,7 +6730,7 @@ jsonData: {
 						{
 							name: font
 							type: FONT
-							value: null
+							value: menuFont
 						}
 						{
 							name: fontColor
@@ -10010,7 +10010,7 @@ preferences: {
 	}
 	last-import-export-path: {
 		class: java.lang.String
-		value: "/home/justin/Programming/robot-recharge/android/assets/skin.json"
+		value: "/home/justin/Programming/robot-recharge/assets/skin.json"
 	}
 	resources-relative: {
 		class: java.lang.Boolean
@@ -10021,7 +10021,7 @@ preferences: {
 		value: 30
 	}
 }
-saveFile: "/home/justin/Programming/robot-recharge/Assets/skin.scmp"
+saveFile: "/home/justin/Programming/robot-recharge/Source Assets/skin.scmp"
 version: 41
 sceneComposer: null
 }
