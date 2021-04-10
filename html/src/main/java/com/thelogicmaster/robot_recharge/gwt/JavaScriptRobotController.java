@@ -8,7 +8,7 @@ import com.thelogicmaster.robot_recharge.*;
 import com.thelogicmaster.robot_recharge.blocks.Block;
 import com.thelogicmaster.robot_recharge.blocks.Interactable;
 
-@SuppressWarnings("unused")
+@SuppressWarnings({"unused", "LibGDXStaticResource"})
 public class JavaScriptRobotController implements RobotController {
     // Static fields to circumvent weird js context issue or something
 

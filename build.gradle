@@ -42,3 +42,19 @@ subprojects {
 }
 
 eclipse.project.name = 'robot-recharge' + '-parent'
+
+task buildBlockly(type: Exec) {
+	workingDir 'blockly'
+	commandLine 'npm', 'run', 'build'
+}
+
+task updateBlockly(type: Copy) {
+	dependsOn buildBlockly
+	from ('blockly') {
+		include '*_compressed.js'
+		exclude 'dart_compressed.js'
+	}
+	//from "blockly/javascript_compressed.js", "blockly/php_compressed.js", "blockly/lua_compressed.js", "blockly/python_compressed.js", "blockly/blockly_compressed.js", "blockly/blocks_compressed.js"
+	into "assets/blockly"
+	rename '(.+)_compressed\\.js', '$1.js'
+}

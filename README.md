@@ -69,6 +69,8 @@ Blockly and text-to-speech aren't supported at present.
 
 For GameJolt cloud support, a `gameJoltKey` from GameJolt needs to be set in the `local.properties` file.
 
+To build and copy Blockly, run the `updateBlockly` task.
+
 ## Todo
 - Debug/step through mode
 - Tab to double space functionality in editor
