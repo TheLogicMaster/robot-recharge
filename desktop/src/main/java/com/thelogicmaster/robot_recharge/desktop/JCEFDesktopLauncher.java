@@ -14,6 +14,7 @@ import com.thelogicmaster.robot_recharge.code.JavaRobotController;
 import com.thelogicmaster.robot_recharge.code.Language;
 import com.thelogicmaster.robot_recharge.code.LuaEngine;
 import com.thelogicmaster.robot_recharge.code.PhpEngine;
+import com.thelogicmaster.robot_recharge.code.RubyEngine;
 import org.cef.CefApp;
 import org.cef.handler.CefAppHandlerAdapter;
 
@@ -58,6 +59,7 @@ public class JCEFDesktopLauncher implements PlatformUtils {
         engines.put(Language.Lua, new LuaEngine());
         engines.put(Language.PHP, new PhpEngine());
         engines.put(Language.Basic, new BasicEngine());
+        engines.put(Language.Ruby, new RubyEngine());
         lwjglAWTCanvas = new LwjglAWTCanvas(new RobotRecharge(engines, blocklyEditor, this,
                 new DesktopTTSEngine(), desktopGameServices, new JavaCodeEditorUtils(), BuildConfig.DEBUG), config) {
             // Graceful exit

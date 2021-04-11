@@ -33,6 +33,8 @@ public class Wire extends Structure {
     private transient ModelInstance model;
     private transient Pixmap pixmap;
 
+    // Todo: Bug where resetting level expands wire
+
     // Todo: Fix the vertex translation to avoid hard-coding wire extensions, if possible.
     //  Probably translate both start and end vertices around the center
     @Override

@@ -16,7 +16,7 @@ public class PhpEngine implements CodeEngine {
     }
 
     @Override
-    public Thread run(final IRobot robot, final String code, final ExecutionListener listener) {
+    public ExecutionInstance run(final IRobot robot, final String code, final ExecutionListener listener) {
         PhpEngine.robot = robot;
         Thread thread = new Thread(() -> {
             try {
@@ -37,6 +37,6 @@ public class PhpEngine implements CodeEngine {
             }
         });
         thread.start();
-        return thread;
+        return new ExecutionInstance(thread);
     }
 }

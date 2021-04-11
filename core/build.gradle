@@ -17,6 +17,11 @@ dependencies {
 	implementation "de.golfgl.gdxgamesvcs:gdx-gamesvcs-core:$gamesvcsVersion"
 	implementation group: 'org.luaj', name: 'luaj-jse', version: '3.0.1'
 	implementation group: 'com.caucho', name: 'quercus', version: '4.0.45'
+
+	// 9000 Versions have compatibility issues with Android, see: https://github.com/jruby/jruby/issues/4004
+	//noinspection GradleDependency
+	implementation group: 'org.jruby', name: 'jruby-complete', version: '1.7.27'
+
 	compileOnly 'org.projectlombok:lombok:1.18.16'
 	annotationProcessor 'org.projectlombok:lombok:1.18.16'
 }

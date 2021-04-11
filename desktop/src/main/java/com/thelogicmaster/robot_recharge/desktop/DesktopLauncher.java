@@ -14,6 +14,7 @@ import com.thelogicmaster.robot_recharge.code.JavaRobotController;
 import com.thelogicmaster.robot_recharge.code.Language;
 import com.thelogicmaster.robot_recharge.code.LuaEngine;
 import com.thelogicmaster.robot_recharge.code.PhpEngine;
+import com.thelogicmaster.robot_recharge.code.RubyEngine;
 
 import java.util.HashMap;
 
@@ -32,6 +33,7 @@ public class DesktopLauncher {
 		engines.put(Language.Lua, new LuaEngine());
 		engines.put(Language.PHP, new PhpEngine());
 		engines.put(Language.Basic, new BasicEngine());
+		engines.put(Language.Ruby, new RubyEngine());
 		final Array<WindowMode> windowModes = new Array<>(new WindowMode[]{
 				WindowMode.Windowed,
 				WindowMode.Fullscreen,

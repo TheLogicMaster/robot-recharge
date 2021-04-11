@@ -3,12 +3,13 @@ package com.thelogicmaster.robot_recharge;
 import com.badlogic.gdx.Gdx;
 import com.squareup.duktape.Duktape;
 import com.thelogicmaster.robot_recharge.code.CodeEngine;
+import com.thelogicmaster.robot_recharge.code.ExecutionInstance;
 import com.thelogicmaster.robot_recharge.code.ExecutionListener;
 
 public class AndroidJavaScriptEngine implements CodeEngine {
 
     @Override
-    public Thread run(final IRobot robot, final String code, final ExecutionListener listener) {
+    public ExecutionInstance run(final IRobot robot, final String code, final ExecutionListener listener) {
         Thread thread = new Thread(() -> {
             try (Duktape duktape = Duktape.create()) {
                 duktape.set("Robot", IRobot.class, robot);
@@ -24,6 +25,6 @@ public class AndroidJavaScriptEngine implements CodeEngine {
             }
         });
         thread.start();
-        return thread;
+        return new ExecutionInstance(thread);
     }
 }

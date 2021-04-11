@@ -12,7 +12,7 @@ public class JavaRobotController implements RobotController, ExecutionListener, 
     private volatile boolean running; // Code is currently running
     private volatile boolean waiting; // Waiting for something in the level like an elevator
     private final Object lock = new Object();
-    private volatile Thread thread;
+    private volatile ExecutionInstance executionInstance;
     private final CodeEngine engine;
     private final RobotExecutionListener listener;
     private final Robot robot;
@@ -127,6 +127,7 @@ public class JavaRobotController implements RobotController, ExecutionListener, 
     @Override
     public void speak(String message) {
         incrementCalls();
+        // Todo: Causes freeze when called in infinite loop
         robot.textToSpeech(message);
     }
 
@@ -153,12 +154,12 @@ public class JavaRobotController implements RobotController, ExecutionListener, 
     @Override
     public void start() {
         running = true;
-        if (thread != null) {
+        if (executionInstance != null) {
             if (!waiting)
                 unlockThread();
         } else {
             calls = 0;
-            thread = engine.run(this, code, this);
+            executionInstance = engine.run(this, code, this);
             waiting = false;
         }
     }
@@ -189,15 +190,14 @@ public class JavaRobotController implements RobotController, ExecutionListener, 
 
     @Override
     public void stop() {
-        if (thread != null) {
-            thread.interrupt();
-            thread = null;
-        }
+        if (executionInstance != null)
+            executionInstance.stop();
+        executionInstance = null;
     }
 
     private void reset() {
         running = false;
-        thread = null;
+        executionInstance = null;
     }
 
     @Override

@@ -117,7 +117,7 @@ public class BasicEngine implements CodeEngine {
 	private IRobot robot;
 
 	@Override
-	public Thread run (IRobot robot, String code, ExecutionListener listener) {
+	public ExecutionInstance run (IRobot robot, String code, ExecutionListener listener) {
 		this.robot = robot;
 
 		Thread thread = new Thread(() -> {
@@ -134,7 +134,7 @@ public class BasicEngine implements CodeEngine {
 			}
 		});
 		thread.start();
-		return thread;
+		return new ExecutionInstance(thread);
 	}
 
 	// Tokenizing (lexing) -----------------------------------------------------

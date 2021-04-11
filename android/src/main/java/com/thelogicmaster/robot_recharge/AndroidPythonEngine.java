@@ -7,6 +7,7 @@ import com.chaquo.python.PyObject;
 import com.chaquo.python.Python;
 import com.chaquo.python.android.AndroidPlatform;
 import com.thelogicmaster.robot_recharge.code.CodeEngine;
+import com.thelogicmaster.robot_recharge.code.ExecutionInstance;
 import com.thelogicmaster.robot_recharge.code.ExecutionListener;
 
 public class AndroidPythonEngine implements CodeEngine {
@@ -19,7 +20,7 @@ public class AndroidPythonEngine implements CodeEngine {
     }
 
     @Override
-    public Thread run(final IRobot robot, final String code, final ExecutionListener listener) {
+    public ExecutionInstance run(final IRobot robot, final String code, final ExecutionListener listener) {
         AndroidPythonEngine.robot = robot;
         Thread thread = new Thread(() -> {
             try {
@@ -37,6 +38,6 @@ public class AndroidPythonEngine implements CodeEngine {
             }
         });
         thread.start();
-        return thread;
+        return new ExecutionInstance(thread);
     }
 }

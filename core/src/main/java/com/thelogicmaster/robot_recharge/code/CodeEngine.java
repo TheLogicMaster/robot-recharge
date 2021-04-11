@@ -7,5 +7,5 @@ import com.thelogicmaster.robot_recharge.IRobot;
  */
 public interface CodeEngine {
 
-    Thread run(IRobot robot, String code, ExecutionListener listener);
+    ExecutionInstance run(IRobot robot, String code, ExecutionListener listener);
 }
