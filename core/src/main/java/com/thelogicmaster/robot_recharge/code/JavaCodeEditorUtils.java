@@ -46,6 +46,8 @@ public class JavaCodeEditorUtils implements CodeEditorUtils {
 
     @Override
     public void findBlockComments(String text, String commentStart, String commentEnd, IntArray blockComments) {
+        if (commentStart == null)
+            return;
         val matcher = Pattern.compile(commentStart + "(\\s|\\S)*?" + commentEnd).matcher(text);
         while (matcher.find()) {
             blockComments.add(matcher.start());

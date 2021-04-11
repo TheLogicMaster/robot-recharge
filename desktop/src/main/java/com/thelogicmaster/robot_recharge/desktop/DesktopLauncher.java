@@ -7,6 +7,7 @@ import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.badlogic.gdx.utils.Array;
 import com.thelogicmaster.robot_recharge.*;
+import com.thelogicmaster.robot_recharge.code.BasicEngine;
 import com.thelogicmaster.robot_recharge.code.CodeEngine;
 import com.thelogicmaster.robot_recharge.code.JavaCodeEditorUtils;
 import com.thelogicmaster.robot_recharge.code.JavaRobotController;
@@ -30,6 +31,7 @@ public class DesktopLauncher {
 		engines.put(Language.Python, new DesktopPythonEngine());
 		engines.put(Language.Lua, new LuaEngine());
 		engines.put(Language.PHP, new PhpEngine());
+		engines.put(Language.Basic, new BasicEngine());
 		final Array<WindowMode> windowModes = new Array<>(new WindowMode[]{
 				WindowMode.Windowed,
 				WindowMode.Fullscreen,

@@ -10,6 +10,7 @@ import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 import com.badlogic.gdx.utils.Array;
 import com.thelogicmaster.robot_recharge.RobotRecharge;
+import com.thelogicmaster.robot_recharge.code.BasicEngine;
 import com.thelogicmaster.robot_recharge.code.CodeEngine;
 import com.thelogicmaster.robot_recharge.code.JavaCodeEditorUtils;
 import com.thelogicmaster.robot_recharge.code.JavaRobotController;
@@ -35,6 +36,7 @@ public class AndroidLauncher extends AndroidApplication {
 		engines.put(Language.Python, new AndroidPythonEngine(this));
 		engines.put(Language.Lua, new LuaEngine());
 		engines.put(Language.PHP, new PhpEngine());
+		engines.put(Language.Basic, new BasicEngine());
 		gameServices = new AndroidGameServices();
 		gameServices.initialize(this, true);
 		final Array<WindowMode> windowModes = new Array<>();

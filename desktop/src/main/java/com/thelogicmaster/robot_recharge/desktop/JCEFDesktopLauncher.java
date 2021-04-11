@@ -7,6 +7,7 @@ import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.badlogic.gdx.utils.Array;
 import com.thelogicmaster.robot_recharge.*;
 import com.thelogicmaster.robot_recharge.Robot;
+import com.thelogicmaster.robot_recharge.code.BasicEngine;
 import com.thelogicmaster.robot_recharge.code.CodeEngine;
 import com.thelogicmaster.robot_recharge.code.JavaCodeEditorUtils;
 import com.thelogicmaster.robot_recharge.code.JavaRobotController;
@@ -56,6 +57,7 @@ public class JCEFDesktopLauncher implements PlatformUtils {
         engines.put(Language.Python, new DesktopPythonEngine());
         engines.put(Language.Lua, new LuaEngine());
         engines.put(Language.PHP, new PhpEngine());
+        engines.put(Language.Basic, new BasicEngine());
         lwjglAWTCanvas = new LwjglAWTCanvas(new RobotRecharge(engines, blocklyEditor, this,
                 new DesktopTTSEngine(), desktopGameServices, new JavaCodeEditorUtils(), BuildConfig.DEBUG), config) {
             // Graceful exit
