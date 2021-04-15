@@ -6,7 +6,7 @@
   levelModel: level.g3db
   startDirection: NORTH
   startPosition: {}
-  background: background0.png
+  background: level1
   structures: [
     {
       class: BlockStructure
@@ -29,6 +29,14 @@
           class: PressurePlate
           asset: test.png
           id: plate
+          animations: [
+            {
+              material: box
+              atlas: blocks/anim.atlas
+              animation: test
+              speed: 1f
+            }
+          ]
         }
         teleporter: {
           class: Teleporter

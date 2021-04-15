@@ -23,6 +23,7 @@ import com.thelogicmaster.robot_recharge.code.CodeEngine;
 import com.thelogicmaster.robot_recharge.code.Solution;
 import com.thelogicmaster.robot_recharge.objectives.Objective;
 import com.thelogicmaster.robot_recharge.structures.Structure;
+import com.thelogicmaster.robot_recharge.ui.ScrollingBackground;
 
 public class Level implements Disposable, Renderable3D, AssetConsumer, RobotExecutionListener {
 
@@ -45,7 +46,7 @@ public class Level implements Disposable, Renderable3D, AssetConsumer, RobotExec
     private final boolean useBlocks;
     private final CodeEngine engine;
     private final Viewport viewport;
-    private Texture background;
+    private ScrollingBackground background;
     private Block[][][] blocks;
     private ModelInstance level, grid;
     private Model gridModel;
@@ -89,8 +90,8 @@ public class Level implements Disposable, Renderable3D, AssetConsumer, RobotExec
         return solutions;
     }
 
-    public void drawBackground(SpriteBatch batch) {
-        batch.draw(background, 0, 0, viewport.getWorldWidth(), viewport.getWorldHeight());
+    public void drawBackground(SpriteBatch batch, float delta) {
+        background.draw(batch, delta);
     }
 
     public void showGrid(boolean shown) {
@@ -332,7 +333,6 @@ public class Level implements Disposable, Renderable3D, AssetConsumer, RobotExec
             structure.loadAssets(assetMultiplexer);
         assetMultiplexer.load("levels/" + levelModelName, Model.class);
         assetMultiplexer.load("robot.g3db", Model.class);
-        assetMultiplexer.load("levels/" + backgroundName, Texture.class);
     }
 
     @Override
@@ -343,7 +343,7 @@ public class Level implements Disposable, Renderable3D, AssetConsumer, RobotExec
         level.transform.setTranslation(xSize / 2f, -levelHeight, zSize / 2f);
         robot = new Robot(new ModelInstance(RobotUtils.cleanModel(assetMultiplexer.get("robot.g3db"))), engine,
                 viewport, this);
-        background = assetMultiplexer.get("levels/" + backgroundName);
+        background = new ScrollingBackground("levels/" + backgroundName);
     }
 
     @Override

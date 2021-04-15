@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.g3d.utils.CameraInputController;
 import com.badlogic.gdx.math.Quaternion;
 import com.badlogic.gdx.math.Vector3;
 
-public class OrbitalCameraController extends CameraInputController {
+public class CameraController extends CameraInputController {
 
     public float minAngle = 10;
     public float maxAngle = 90;
@@ -17,7 +17,7 @@ public class OrbitalCameraController extends CameraInputController {
 
     private boolean disabled;
 
-    public OrbitalCameraController(Camera camera) {
+    public CameraController (Camera camera) {
         super(camera);
     }
 
@@ -35,7 +35,7 @@ public class OrbitalCameraController extends CameraInputController {
     @Override
     public boolean zoom(float amount) {
         if (disabled)
-            return true;
+            return false;
         float constrained;
         float distance = camera.position.dst(target);
         if (amount < 0)
@@ -48,14 +48,14 @@ public class OrbitalCameraController extends CameraInputController {
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer) {
         if (disabled)
-            return true;
+            return false;
         return super.touchDragged(screenX, screenY, pointer);
     }
 
     @Override
     protected boolean process(float deltaX, float deltaY, int button) {
         if (disabled)
-            return true;
+            return false;
         if (button == rotateButton) {
             tempVector1.set(camera.direction).crs(camera.up).y = 0f;
             tempVector1.nor();

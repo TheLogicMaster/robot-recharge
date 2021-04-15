@@ -39,7 +39,7 @@ public class GameScreen extends RobotScreen implements LevelExecutionListener {
     private final EditorSidebar editorSidebar;
     private final GameControlPanel controlPanel;
     private final PerspectiveCamera cam;
-    private final OrbitalCameraController controller;
+    private final CameraController controller;
     private final Viewport viewport;
     private final LevelSave levelSave;
     private final LevelIntroDialog objectivesDialog;
@@ -76,7 +76,7 @@ public class GameScreen extends RobotScreen implements LevelExecutionListener {
         cam.position.z = 20;
         cam.near = 1;
         cam.far = 3000;
-        controller = new OrbitalCameraController(cam);
+        controller = new CameraController(cam);
         controller.target = new Vector3(15, 0, 15);
         cam.lookAt(controller.target);
         cam.update();
@@ -108,7 +108,7 @@ public class GameScreen extends RobotScreen implements LevelExecutionListener {
         // Todo: Create display for progressive objectives like Energy and Actions
 
         // Create settings menu
-        menu = new GameMenu(skin, new GameMenu.GameMenuListener() {
+        menu = new GameMenu(new GameMenu.GameMenuListener() {
             @Override
             public void onExit() {
                 dispose();
@@ -126,16 +126,14 @@ public class GameScreen extends RobotScreen implements LevelExecutionListener {
 
             @Override
             public void onObjectives() {
-                objectivesDialog.setVisible(true);
+                objectivesDialog.show(stage);
             }
 
             @Override
             public void onSolutions() {
-                solutionsDialog.setVisible(true);
+                solutionsDialog.show(stage);
             }
         });
-        menu.setBounds(uiViewport.getWorldWidth() / 2 - 500, uiViewport.getWorldHeight() / 2 - 250, 1000, 500);
-        stage.addActor(menu);
 
         // Create main control panel
         controlPanel = new GameControlPanel(skin, new GameControlPanel.ControlPanelListener() {
@@ -172,7 +170,7 @@ public class GameScreen extends RobotScreen implements LevelExecutionListener {
 
             @Override
             public void onSettings() {
-                menu.setVisible(true);
+                menu.show(stage);
                 level.pause();
                 controller.setDisabled(true);
             }
@@ -242,23 +240,17 @@ public class GameScreen extends RobotScreen implements LevelExecutionListener {
         stage.addActor(catalog);
 
         // Create intro dialog
-        objectivesDialog = new LevelIntroDialog(skin, levelSave.getLevel(), level.getObjectives(), levelSave.isUsingBlocks(),
+        objectivesDialog = new LevelIntroDialog(levelSave.getLevel(), level.getObjectives(), levelSave.isUsingBlocks(),
                 () -> controller.setDisabled(false)
         );
-        objectivesDialog.setBounds(uiViewport.getWorldWidth() / 2 - 500, uiViewport.getWorldHeight() / 2 - 200, 1000, 400);
-        stage.addActor(objectivesDialog);
 
         // Level Fail Dialog
-        levelIncompleteDialog = new LevelIncompleteDialog(skin, level.getObjectives(), levelSave.isUsingBlocks());
-        levelIncompleteDialog.setBounds(uiViewport.getWorldWidth() / 2 - 500, uiViewport.getWorldHeight() / 2 - 200, 1000, 400);
-        stage.addActor(levelIncompleteDialog);
+        levelIncompleteDialog = new LevelIncompleteDialog(level.getObjectives(), levelSave.isUsingBlocks());
 
         // Level Completion Dialog
-        levelCompleteDialog = new LevelCompleteDialog(skin, levelSave, this::dispose);
-        levelCompleteDialog.setBounds(uiViewport.getWorldWidth() / 2 - 500, uiViewport.getWorldHeight() / 2 - 200, 1000, 400);
-        stage.addActor(levelCompleteDialog);
+        levelCompleteDialog = new LevelCompleteDialog(levelSave, this::dispose);
 
-        solutionsDialog = new SolutionsDialog(skin, level.getSolutions(), new SolutionsDialog.SolutionsListener() {
+        solutionsDialog = new SolutionsDialog(level.getSolutions(), new SolutionsDialog.SolutionsListener() {
             @Override
             public void onClose() {
                 controller.setDisabled(false);
@@ -279,8 +271,6 @@ public class GameScreen extends RobotScreen implements LevelExecutionListener {
                 }
             }
         });
-        stage.addActor(solutionsDialog);
-        solutionsDialog.setBounds(uiViewport.getWorldWidth() / 2 - 500, uiViewport.getWorldHeight() / 2 - 200, 1000, 400);
     }
 
     @Override
@@ -305,7 +295,7 @@ public class GameScreen extends RobotScreen implements LevelExecutionListener {
         if (RobotRecharge.ttsEngine != null)
             RobotRecharge.ttsEngine.init();
 
-        objectivesDialog.setVisible(true);
+        objectivesDialog.show(stage);
     }
 
     @Override
@@ -331,7 +321,7 @@ public class GameScreen extends RobotScreen implements LevelExecutionListener {
 
         // Draw background
         spriteBatch.begin();
-        level.drawBackground(spriteBatch);
+        level.drawBackground(spriteBatch, delta);
         spriteBatch.end();
 
         // Draw level
@@ -368,7 +358,7 @@ public class GameScreen extends RobotScreen implements LevelExecutionListener {
     @Override
     public void onLevelIncomplete(Array<Objective> failed) {
         controlPanel.disablePlay();
-        levelIncompleteDialog.show(failed);
+        levelIncompleteDialog.show(stage, failed);
     }
 
     @Override
@@ -380,7 +370,7 @@ public class GameScreen extends RobotScreen implements LevelExecutionListener {
     @Override
     public void onLevelComplete(float completionTime, int length, int calls) {
         controlPanel.disablePlay();
-        levelCompleteDialog.show(completionTime, length, calls);
+        levelCompleteDialog.show(stage, completionTime, length, calls);
         RobotRecharge.prefs.unlockLevel(RobotUtils.getLevelIndex(levelSave.getLevel()) + 1);
     }
 

@@ -11,6 +11,7 @@ import com.thelogicmaster.robot_recharge.RobotRecharge;
 import com.thelogicmaster.robot_recharge.RobotUtils;
 import com.thelogicmaster.robot_recharge.WindowMode;
 import com.thelogicmaster.robot_recharge.ui.PaddedTextButton;
+import com.thelogicmaster.robot_recharge.ui.ScrollingBackground;
 
 public class SettingsScreen extends MenuScreen {
 
@@ -20,7 +21,7 @@ public class SettingsScreen extends MenuScreen {
 
     public SettingsScreen(RobotScreen previousScreen) {
         super(previousScreen);
-        setBackground(new Texture("settingsScreen.png"));
+        setBackground(new ScrollingBackground("settingsScreen"));
 
         Table settingsTable = new Table(skin);
         settingsTable.columnDefaults(0).padRight(40).left();

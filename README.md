@@ -39,6 +39,7 @@ A programming game where the goal is to guide a robot through various levels usi
 - [JCEF](https://github.com/chromiumembedded/java-cef) (Desktop embedded browser)
 - [JavaPackager](https://github.com/fvarrui/JavaPackager) (Gradle plugin to package desktop builds)
 - [Jasic](https://github.com/munificent/jasic) (BASIC interpreter base code)
+- [JRuby](https://github.com/jruby/jruby) (Ruby)
 
 ## Building
 ### GitHub Actions

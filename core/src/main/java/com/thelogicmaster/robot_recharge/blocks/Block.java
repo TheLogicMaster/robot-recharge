@@ -17,22 +17,13 @@ import lombok.Setter;
 
 @NoArgsConstructor
 public class Block implements Renderable3D, Disposable, AssetConsumer {
-    @Getter
-    @Setter
-    private Position position;
-    @Getter
-    @Setter
-    private boolean modeled;
-    @Getter
-    @Setter
-    private String asset;
-    @Getter
-    private float transparency;
-    @Getter
-    private Color color;
-    @Getter
-    @Setter
-    private Direction direction = Direction.NORTH;
+    @Getter @Setter private Position position;
+    @Getter @Setter private boolean modeled;
+    @Getter @Setter private String asset;
+    @Getter @Setter private Array<ModelTextureAnimation> animations;
+    @Getter private float transparency;
+    @Getter private Color color;
+    @Getter @Setter private Direction direction = Direction.NORTH;
 
     protected transient ModelInstance model;
     protected transient Model modelSource;
@@ -54,8 +45,17 @@ public class Block implements Renderable3D, Disposable, AssetConsumer {
         modeled = block.modeled;
         asset = block.asset;
         transparency = block.transparency;
-        if (block.model != null)
+        if (block.model != null) {
             model = new ModelInstance(block.model);
+            if (block.animations != null) {
+                animations = new Array<>();
+                for (ModelTextureAnimation animation: block.animations) {
+                    ModelTextureAnimation modelAnimation = new ModelTextureAnimation(animation);
+                    modelAnimation.setup(model);
+                    animations.add(modelAnimation);
+                }
+            }
+        }
         color = block.color;
         direction = block.direction;
     }
@@ -81,6 +81,9 @@ public class Block implements Renderable3D, Disposable, AssetConsumer {
             assetMultiplexer.load("blocks/" + asset, Model.class);
         else
             assetMultiplexer.load("blocks/" + asset, Texture.class);
+        if (animations != null)
+            for (ModelTextureAnimation animation: animations)
+                animation.loadAssets(assetMultiplexer);
     }
 
     @Override
@@ -99,6 +102,11 @@ public class Block implements Renderable3D, Disposable, AssetConsumer {
             if (transparency > 0f)
                 mat.set(new BlendingAttribute(1f - transparency));
         }
+        if (animations != null)
+            for (ModelTextureAnimation animation: animations) {
+                animation.assetsLoaded(assetMultiplexer);
+                animation.setup(model);
+            }
     }
 
     public void setTransparency(float transparency) {
@@ -118,6 +126,9 @@ public class Block implements Renderable3D, Disposable, AssetConsumer {
     @Override
     public void render(ModelBatch modelBatch, DecalBatch decalBatch, Environment environment, float delta) {
         if (model != null) {
+            if (animations != null)
+                for (ModelTextureAnimation animation: animations)
+                    animation.update();
             model.transform.set(position.toVector(tempVec3).add(Constants.blockOffset), rotation);
             modelBatch.render(model, environment);
         }

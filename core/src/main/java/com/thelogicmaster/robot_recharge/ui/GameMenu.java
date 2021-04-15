@@ -4,7 +4,6 @@ import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.kotcrab.vis.ui.util.dialog.Dialogs;
@@ -17,23 +16,23 @@ public class GameMenu extends RobotDialog {
     private boolean unlockedSolution;
     private final GameMenuListener listener;
 
-    public GameMenu(Skin skin, final GameMenuListener listener) {
-        super("Menu", skin);
+    public GameMenu(final GameMenuListener listener) {
+        super("Menu");
         this.listener = listener;
 
-        final CheckBox gridCheckbox = new CheckBox("Show Grid", skin);
+        final CheckBox gridCheckbox = new CheckBox("Show Grid", getSkin());
         add(gridCheckbox).padBottom(20).fillX().row();
 
-        TextButton objectivesButton = new PaddedTextButton("View Objectives", skin);
+        TextButton objectivesButton = new PaddedTextButton("View Objectives", getSkin());
         add(objectivesButton).padBottom(20).fillX().row();
 
-        TextButton solutionsButton = new PaddedTextButton("View Solutions", skin);
+        TextButton solutionsButton = new PaddedTextButton("View Solutions", getSkin());
         add(solutionsButton).padBottom(20).fillX().row();
 
-        TextButton exitButton = new PaddedTextButton("Exit to Main Menu", skin);
+        TextButton exitButton = new PaddedTextButton("Exit to Main Menu", getSkin());
         add(exitButton).padBottom(30).fillX().row();
 
-        TextButton closeButton = new PaddedTextButton("Close", skin);
+        TextButton closeButton = new PaddedTextButton("Close", getSkin());
         add(closeButton).expandY().bottom();
 
         gridCheckbox.addListener(new ChangeListener() {
@@ -47,7 +46,7 @@ public class GameMenu extends RobotDialog {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 RobotUtils.playNavigationSound();
-                setVisible(false);
+                hide();
                 listener.onObjectives();
             }
         });
@@ -90,7 +89,7 @@ public class GameMenu extends RobotDialog {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 RobotUtils.playNavigationSound();
-                setVisible(false);
+                hide();
                 listener.onClose();
             }
         });
@@ -99,7 +98,7 @@ public class GameMenu extends RobotDialog {
     }
 
     private void showSolution() {
-        setVisible(false);
+        hide();
         listener.onSolutions();
     }
 

@@ -13,6 +13,7 @@ import com.badlogic.gdx.graphics.g3d.Attribute;
 import com.badlogic.gdx.graphics.g3d.Material;
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.attributes.*;
+import com.badlogic.gdx.graphics.g3d.utils.MeshPartBuilder;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
@@ -75,33 +76,24 @@ public class RobotUtils {
         ModelBuilder builder = new ModelBuilder();
         int attr = VertexAttributes.Usage.Position | VertexAttributes.Usage.Normal | VertexAttributes.Usage.TextureCoordinates;
         Array<Attribute> attributes = new Array<>(new Attribute[]{new BlendingAttribute(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA),
-                IntAttribute.createCullFace(GL20.GL_NONE), new DepthTestAttribute(false)});
+                IntAttribute.createCullFace(GL20.GL_NONE), new DepthTestAttribute(true)});
         TextureRegion[] textureRegions = TextureRegion.split(texture, texture.getHeight(), texture.getHeight())[0];
         builder.begin();
-        Material material = new Material(attributes);
-        material.set(TextureAttribute.createDiffuse(textureRegions[0]));
-        builder.part("box", GL20.GL_TRIANGLES, attr, material)
-                .rect(-0.5f, 0.5f, -0.5f, -0.5f, 0.5f, 0.5f, 0.5f, 0.5f, 0.5f, 0.5f, 0.5f, -0.5f, 0f, 1f, 0f);
-        material = new Material(attributes);
-        material.set(TextureAttribute.createDiffuse(textureRegions[1]));
-        builder.part("box", GL20.GL_TRIANGLES, attr, material)
-                .rect(-0.5f, -0.5f, 0.5f, -0.5f, -0.5f, -0.5f, 0.5f, -0.5f, -0.5f, 0.5f, -0.5f, 0.5f, 0f, -1f, 0f);
-        material = new Material(attributes);
-        material.set(TextureAttribute.createDiffuse(textureRegions[2]));
-        builder.part("box", GL20.GL_TRIANGLES, attr, material)
-                .rect(0.5f, -0.5f, 0.5f, 0.5f, -0.5f, -0.5f, 0.5f, 0.5f, -0.5f, 0.5f, 0.5f, 0.5f, 1f, 0f, 0f);
-        material = new Material(attributes);
-        material.set(TextureAttribute.createDiffuse(textureRegions[3]));
-        builder.part("box", GL20.GL_TRIANGLES, attr, material)
-                .rect(-0.5f, -0.5f, 0.5f, 0.5f, -0.5f, 0.5f, 0.5f, 0.5f, 0.5f, -0.5f, 0.5f, 0.5f, 0f, 0f, 1f);
-        material = new Material(attributes);
-        material.set(TextureAttribute.createDiffuse(textureRegions[4]));
-        builder.part("box", GL20.GL_TRIANGLES, attr, material)
-                .rect(-0.5f, -0.5f, -0.5f, -0.5f, -0.5f, 0.5f, -0.5f, 0.5f, 0.5f, -0.5f, 0.5f, -0.5f, -1f, 0f, 0f);
-        material = new Material(attributes);
-        material.set(TextureAttribute.createDiffuse(textureRegions[5]));
-        builder.part("box", GL20.GL_TRIANGLES, attr, material)
-                .rect(0.5f, -0.5f, -0.5f, -0.5f, -0.5f, -0.5f, -0.5f, 0.5f, -0.5f, 0.5f, 0.5f, -0.5f, 0f, 0f, -1f);
+        Material material = new Material("box", attributes);
+        material.set(TextureAttribute.createDiffuse(texture));
+        MeshPartBuilder box = builder.part("box", GL20.GL_TRIANGLES, attr, material);
+        box.setUVRange(textureRegions[0]);
+        box.rect(-0.5f, 0.5f, -0.5f, -0.5f, 0.5f, 0.5f, 0.5f, 0.5f, 0.5f, 0.5f, 0.5f, -0.5f, 0f, 1f, 0f);
+        box.setUVRange(textureRegions[1]);
+        box.rect(-0.5f, -0.5f, 0.5f, -0.5f, -0.5f, -0.5f, 0.5f, -0.5f, -0.5f, 0.5f, -0.5f, 0.5f, 0f, -1f, 0f);
+        box.setUVRange(textureRegions[2]);
+        box.rect(0.5f, -0.5f, 0.5f, 0.5f, -0.5f, -0.5f, 0.5f, 0.5f, -0.5f, 0.5f, 0.5f, 0.5f, 1f, 0f, 0f);
+        box.setUVRange(textureRegions[3]);
+        box.rect(-0.5f, -0.5f, 0.5f, 0.5f, -0.5f, 0.5f, 0.5f, 0.5f, 0.5f, -0.5f, 0.5f, 0.5f, 0f, 0f, 1f);
+        box.setUVRange(textureRegions[4]);
+        box.rect(-0.5f, -0.5f, -0.5f, -0.5f, -0.5f, 0.5f, -0.5f, 0.5f, 0.5f, -0.5f, 0.5f, -0.5f, -1f, 0f, 0f);
+        box.setUVRange(textureRegions[5]);
+        box.rect(0.5f, -0.5f, -0.5f, -0.5f, -0.5f, -0.5f, -0.5f, 0.5f, -0.5f, 0.5f, 0.5f, -0.5f, 0f, 0f, -1f);
         return builder.end();
     }
 

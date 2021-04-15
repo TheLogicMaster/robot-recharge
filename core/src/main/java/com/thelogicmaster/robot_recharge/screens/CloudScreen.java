@@ -25,7 +25,7 @@ public class CloudScreen extends MenuScreen {
         super(previousScreen);
 
         Table cloudTable = new Table(skin);
-        cloudTable.setBackground("windowTen");
+        cloudTable.setBackground("secondaryPanel");
         cloudTable.setBounds(uiViewport.getWorldWidth() / 2 - 700, uiViewport.getWorldHeight() / 2 - 400, 1400, 800);
         cloudTable.pad(30);
 
@@ -66,7 +66,7 @@ public class CloudScreen extends MenuScreen {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 if (RobotUtils.usesGameJolt())
-                    loginDialog.setVisible(true);
+                    loginDialog.show(stage);
                 else
                     RobotRecharge.gameServices.logIn();
             }
@@ -81,9 +81,7 @@ public class CloudScreen extends MenuScreen {
 
         stage.addActor(cloudTable);
 
-        loginDialog = new GameJoltLoginDialog(skin);
-        loginDialog.setBounds(uiViewport.getWorldWidth() / 2 - 500, uiViewport.getWorldHeight() / 2 - 200, 1000, 400);
-        stage.addActor(loginDialog);
+        loginDialog = new GameJoltLoginDialog();
     }
 
     @Override

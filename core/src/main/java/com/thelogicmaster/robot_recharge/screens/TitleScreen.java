@@ -10,6 +10,7 @@ import com.thelogicmaster.robot_recharge.RobotRecharge;
 import com.thelogicmaster.robot_recharge.RobotUtils;
 import com.thelogicmaster.robot_recharge.ui.IterativeStack;
 import com.thelogicmaster.robot_recharge.ui.PaddedTextButton;
+import com.thelogicmaster.robot_recharge.ui.ScrollingBackground;
 
 public class TitleScreen extends RobotScreen {
 
@@ -20,7 +21,7 @@ public class TitleScreen extends RobotScreen {
     private final IterativeStack googleSignInStack;
 
     public TitleScreen() {
-        setBackground(new Texture("titleScreen.png"));
+        setBackground(new ScrollingBackground("titleScreen"));
         levelScreen = new LevelScreen(this);
         settingsScreen = new SettingsScreen(this);
         tutorialsScreen = new TutorialsScreen(this);
@@ -122,6 +123,7 @@ public class TitleScreen extends RobotScreen {
     @Override
     public void render(float delta) {
         super.render(delta);
+
         if (googleSignInStack != null)
             googleSignInStack.show(RobotRecharge.gameServices.isSessionActive() ? 1 : 0);
     }

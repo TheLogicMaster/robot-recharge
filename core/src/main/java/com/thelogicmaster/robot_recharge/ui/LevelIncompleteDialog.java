@@ -2,6 +2,7 @@ package com.thelogicmaster.robot_recharge.ui;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -16,20 +17,20 @@ public class LevelIncompleteDialog extends RobotDialog {
     private final Array<Label> labels = new Array<>();
     private final boolean useBlocks;
 
-    public LevelIncompleteDialog(Skin skin, Array<Objective> objectives, boolean useBlocks) {
-        super("Incomplete Objectives", skin);
+    public LevelIncompleteDialog(Array<Objective> objectives, boolean useBlocks) {
+        super("Incomplete Objectives");
 
         this.useBlocks = useBlocks;
 
-        Table table = new Table(skin);
+        Table table = new Table(getSkin());
         table.setBackground("windowTen");
         for (Objective objective : objectives) {
-            Label label = new Label(objective.getDescription(useBlocks), skin, "small");
+            Label label = new Label(objective.getDescription(useBlocks), getSkin(), "small");
             table.add(label).row();
             labels.add(label);
         }
         add(table).row();
-        TextButton closeButton = new PaddedTextButton("Close", skin);
+        TextButton closeButton = new PaddedTextButton("Close", getSkin());
         add(closeButton).expand().right().bottom();
 
         closeButton.addListener(new ChangeListener() {
@@ -41,8 +42,9 @@ public class LevelIncompleteDialog extends RobotDialog {
         });
     }
 
-    public void show(Array<Objective> failed) {
-        setVisible(true);
+    public void show(Stage stage, Array<Objective> failed) {
+        show(stage);
+
         for (Label label : labels) {
             boolean fail = false;
             for (Objective objective : failed) {

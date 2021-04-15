@@ -33,10 +33,6 @@ public class Wire extends Structure {
     private transient ModelInstance model;
     private transient Pixmap pixmap;
 
-    // Todo: Bug where resetting level expands wire
-
-    // Todo: Fix the vertex translation to avoid hard-coding wire extensions, if possible.
-    //  Probably translate both start and end vertices around the center
     @Override
     public void generate(Level level) {
         super.generate(level);
@@ -51,7 +47,7 @@ public class Wire extends Structure {
         for (int i = 0; i < path.size - 1; i++) {
             var direction = path.get(i + 1).cpy().sub(path.get(i)).nor();
             var rotation = new Quaternion().setFromCross(Vector3.Y, direction);
-            var start = path.get(i);
+            var start = path.get(i).cpy();
 
             // Just a bit of "magic" to ensure the corners meet
             if (i != 0 && ((previousDirection.x > 0 && direction.z < 0) || (previousDirection.x > 0 && direction.y < 0)

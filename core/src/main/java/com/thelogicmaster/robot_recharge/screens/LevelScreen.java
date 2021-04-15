@@ -13,9 +13,11 @@ import com.thelogicmaster.robot_recharge.LevelSave;
 import com.thelogicmaster.robot_recharge.RobotRecharge;
 import com.thelogicmaster.robot_recharge.RobotUtils;
 import com.thelogicmaster.robot_recharge.code.Language;
+import com.thelogicmaster.robot_recharge.ui.ConfirmationDialog;
 import com.thelogicmaster.robot_recharge.ui.IterativeStack;
 import com.thelogicmaster.robot_recharge.ui.LanguageSelect;
 import com.thelogicmaster.robot_recharge.ui.PaddedTextButton;
+import com.thelogicmaster.robot_recharge.ui.ScrollingBackground;
 
 public class LevelScreen extends MenuScreen {
 
@@ -25,7 +27,7 @@ public class LevelScreen extends MenuScreen {
 
     public LevelScreen(RobotScreen previousScreen) {
         super(previousScreen);
-        setBackground(new Texture("levelScreen.png"));
+        setBackground(new ScrollingBackground("levelScreen"));
 
         final Array<LevelInfo> levels = RobotRecharge.assets.levelInfo;
 
@@ -100,27 +102,22 @@ public class LevelScreen extends MenuScreen {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 RobotUtils.playNavigationSound();
-                OptionDialogAdapter adapter = new OptionDialogAdapter() {
+
+                ConfirmationDialog.ConfirmationListener listener = new ConfirmationDialog.ConfirmationAdaptor(){
                     @Override
-                    public void yes() {
-                        RobotUtils.playNavigationSound();
+                    public void onConfirm () {
                         LevelSave save = new LevelSave(blocksCheckbox.isChecked(), "", selected.getName(), languageSelect.getSelected());
                         RobotRecharge.instance.setScreen(new GameScreen(save));
                         RobotRecharge.assets.titleMusic.stop();
                     }
-
-                    @Override
-                    public void cancel() {
-                        RobotUtils.playNavigationSound();
-                    }
                 };
+
                 if (RobotRecharge.prefs.hasLevelSave(selected.getName())) {
-                    Dialogs.showOptionDialog(stage, "Overwrite Existing Save?", "" +
-                                    "Are you sure you want to create a new game? This will \n" +
-                                    "overwrite your existing save for this level.",
-                            Dialogs.OptionDialogType.YES_CANCEL, adapter).setMovable(false);
+                    new ConfirmationDialog("Overwrite Existing Save?", ""
+                        + "Are you sure you want to create a new game? This will \n" +
+                        "overwrite your existing save for this level.", listener, true).show(stage);
                 } else
-                    adapter.yes();
+                    listener.onConfirm();
             }
         });
         resumeButton.addListener(new ChangeListener() {

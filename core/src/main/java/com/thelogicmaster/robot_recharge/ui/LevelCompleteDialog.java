@@ -1,8 +1,8 @@
 package com.thelogicmaster.robot_recharge.ui;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
@@ -18,19 +18,19 @@ public class LevelCompleteDialog extends RobotDialog {
     private final Label completionTime, completionLength, completionCalls;
     private final boolean useBlocks;
 
-    public LevelCompleteDialog(Skin skin, final LevelSave level, final LevelCompleteListener listener) {
-        super("Level Complete", skin);
+    public LevelCompleteDialog(final LevelSave level, final LevelCompleteListener listener) {
+        super("Level Complete");
         useBlocks = level.isUsingBlocks();
 
-        add(completionTime = new Label("", skin, "small")).left().row();
-        add(completionLength = new Label("", skin, "small")).left().row();
-        add(completionCalls = new Label("", skin, "small")).left().row();
+        add(completionTime = new Label("", getSkin(), "small")).left().row();
+        add(completionLength = new Label("", getSkin(), "small")).left().row();
+        add(completionCalls = new Label("", getSkin(), "small")).left().row();
 
-        TextButton closeButton = new PaddedTextButton("Close", skin);
-        Table buttonTable = new Table(skin);
+        TextButton closeButton = new PaddedTextButton("Close", getSkin());
+        Table buttonTable = new Table(getSkin());
         buttonTable.add(closeButton).expandX().left();
 
-        TextButton exitButton = new PaddedTextButton("Exit", skin);
+        TextButton exitButton = new PaddedTextButton("Exit", getSkin());
         buttonTable.add(exitButton).expandX();
 
         Array<LevelInfo> levels = RobotRecharge.assets.levelInfo;
@@ -41,7 +41,7 @@ public class LevelCompleteDialog extends RobotDialog {
                 break;
             }
         final String next = index >= levels.size || index == -1 ? null : levels.get(index).getName();
-        TextButton nextButton = new PaddedTextButton("Next Level", skin);
+        TextButton nextButton = new PaddedTextButton("Next Level", getSkin());
         nextButton.setDisabled(next == null);
         buttonTable.add(nextButton).expandX().right();
         add(buttonTable).bottom().expand().fillX();
@@ -71,8 +71,9 @@ public class LevelCompleteDialog extends RobotDialog {
         });
     }
 
-    public void show(float completionTime, int length, int calls) {
-        setVisible(true);
+    public void show(Stage stage, float completionTime, int length, int calls) {
+        show(stage);
+
         this.completionTime.setText("Completion Time: " + ((int) completionTime) + " seconds");
         this.completionLength.setText("Robot " + (useBlocks ? "Blocks: " : "References: ") + length);
         this.completionCalls.setText("Robot Function Calls: " + calls);

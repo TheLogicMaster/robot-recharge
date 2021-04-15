@@ -16,6 +16,7 @@ import com.thelogicmaster.robot_recharge.AssetMultiplexer;
 import com.thelogicmaster.robot_recharge.Pair;
 import com.thelogicmaster.robot_recharge.RobotRecharge;
 import com.thelogicmaster.robot_recharge.RobotUtils;
+import com.thelogicmaster.robot_recharge.ui.ScrollingBackground;
 
 import java.util.ArrayList;
 
@@ -33,6 +34,7 @@ public abstract class RobotScreen implements Screen {
     private final GlyphLayout debugLayout;
     private boolean loaded;
     private Texture background;
+    private ScrollingBackground scrollingBackground;
 
     public RobotScreen() {
         skin = RobotRecharge.assets.skin;
@@ -61,6 +63,10 @@ public abstract class RobotScreen implements Screen {
 
     protected final void setBackground(Texture background) {
         this.background = background;
+    }
+
+    protected final void setBackground(ScrollingBackground scrollingBackground) {
+        this.scrollingBackground = scrollingBackground;
     }
 
     protected void doneLoading() {
@@ -103,11 +109,13 @@ public abstract class RobotScreen implements Screen {
             }
         }
 
-        if (background != null) {
-            spriteBatch.begin();
+        spriteBatch.begin();
+        if (background != null)
             spriteBatch.draw(background, 0, 0, uiViewport.getWorldWidth(), uiViewport.getWorldHeight());
-            spriteBatch.end();
-        }
+        if (scrollingBackground != null)
+            scrollingBackground.draw(spriteBatch, delta);
+        spriteBatch.end();
+
         draw(delta);
     }
 

@@ -6,7 +6,7 @@
   levelModel: level.g3db
   startDirection: NORTH
   startPosition: {}
-  background: background1.png
+  background: level2
   structures: [
     {
       class: BlockStructure
