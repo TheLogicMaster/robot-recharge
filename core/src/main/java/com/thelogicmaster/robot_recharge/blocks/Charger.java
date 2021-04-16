@@ -1,6 +1,7 @@
 package com.thelogicmaster.robot_recharge.blocks;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.thelogicmaster.robot_recharge.*;
 import lombok.NoArgsConstructor;
 
@@ -21,12 +22,21 @@ public class Charger extends Block {
     }
 
     @Override
+    public void assetsLoaded (AssetMultiplexer assetMultiplexer) {
+        super.assetsLoaded(assetMultiplexer);
+
+        model.getMaterial("base").set(new ColorAttribute(ColorAttribute.AmbientLight, Color.RED));
+    }
+
+    @Override
     public void setup(final Level level) {
         super.setup(level);
         level.addRobotListener(new RobotListenerAdaptor() {
             @Override
             public void onRobotMove(Robot robot) {
                 if (robot.getBlockPos().equals(getPosition())) {
+                    if (animations != null && animations.size > 0)
+                        animations.get(0).setSpeed(animations.get(0).getSpeed() / 3);
                     level.emitLevelEvent(new LevelEvent(Charger.this, "charger", "charge"));
                     level.completeLevel();
                 }

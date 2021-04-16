@@ -1,11 +1,13 @@
 package com.thelogicmaster.robot_recharge.blocks;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g3d.*;
 import com.badlogic.gdx.graphics.g3d.attributes.BlendingAttribute;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.decals.DecalBatch;
+import com.badlogic.gdx.graphics.g3d.utils.AnimationController;
 import com.badlogic.gdx.math.Quaternion;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
@@ -19,8 +21,9 @@ import lombok.Setter;
 public class Block implements Renderable3D, Disposable, AssetConsumer {
     @Getter @Setter private Position position;
     @Getter @Setter private boolean modeled;
+    @Getter @Setter private boolean clean;
     @Getter @Setter private String asset;
-    @Getter @Setter private Array<ModelTextureAnimation> animations;
+    @Getter @Setter protected Array<ModelTextureAnimation> animations;
     @Getter private float transparency;
     @Getter private Color color;
     @Getter @Setter private Direction direction = Direction.NORTH;
@@ -29,6 +32,7 @@ public class Block implements Renderable3D, Disposable, AssetConsumer {
     protected transient Model modelSource;
     protected transient Level level;
     protected transient Quaternion rotation;
+    protected transient AnimationController controller;
     private final transient Vector3 tempVec3 = new Vector3();
 
     public Block(Position position, Direction direction, boolean modeled, String asset, float transparency, Color color) {
@@ -44,9 +48,11 @@ public class Block implements Renderable3D, Disposable, AssetConsumer {
         position = block.position;
         modeled = block.modeled;
         asset = block.asset;
+        clean = block.clean;
         transparency = block.transparency;
         if (block.model != null) {
             model = new ModelInstance(block.model);
+            controller = new AnimationController(model);
             if (block.animations != null) {
                 animations = new Array<>();
                 for (ModelTextureAnimation animation: block.animations) {
@@ -90,12 +96,14 @@ public class Block implements Renderable3D, Disposable, AssetConsumer {
     public void assetsLoaded(AssetMultiplexer assetMultiplexer) {
         if (asset == null)
             return;
-        if (modeled)
-            model = new ModelInstance(assetMultiplexer.<Model>get("blocks/" + asset));
-        else {
+        if (modeled) {
+            Model source = assetMultiplexer.get("blocks/" + asset);
+            model = new ModelInstance(clean ? RobotUtils.cleanModel(source) : source);
+        } else {
             modelSource = RobotUtils.createCubeModel(assetMultiplexer.get("blocks/" + asset));
             model = new ModelInstance(modelSource);
         }
+        controller = new AnimationController(model);
         for (Material mat : new Array.ArrayIterator<>(model.materials)) {
             if (color != null)
                 mat.set(ColorAttribute.createDiffuse(color));
@@ -125,6 +133,8 @@ public class Block implements Renderable3D, Disposable, AssetConsumer {
 
     @Override
     public void render(ModelBatch modelBatch, DecalBatch decalBatch, Environment environment, float delta) {
+        if (controller != null)
+            controller.update(delta);
         if (model != null) {
             if (animations != null)
                 for (ModelTextureAnimation animation: animations)

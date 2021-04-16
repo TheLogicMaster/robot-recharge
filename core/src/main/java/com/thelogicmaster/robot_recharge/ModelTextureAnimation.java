@@ -21,7 +21,7 @@ public class ModelTextureAnimation implements AssetConsumer {
 	@Getter @Setter private String material;
 	@Getter @Setter private String atlas;
 	@Getter @Setter private String animation;
-	@Getter @Setter private float speed;
+	@Getter private float speed;
 
 	private transient Animation<TextureRegion> animationInstance;
 	private transient TextureAttribute textureAttribute;
@@ -52,7 +52,14 @@ public class ModelTextureAnimation implements AssetConsumer {
 			return;
 		}
 		textureAttribute = materialInstance.get(TextureAttribute.class, TextureAttribute.Diffuse);
-		Gdx.app.error("ModelTextureAnimation", "Failed to get texture attribute");
+		if (textureAttribute == null)
+			Gdx.app.error("ModelTextureAnimation", "Failed to get texture attribute");
+	}
+
+	public void setSpeed (float speed) {
+		this.speed = speed;
+		if (animationInstance != null)
+			animationInstance.setFrameDuration(speed);
 	}
 
 	public void update() {

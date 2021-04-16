@@ -27,16 +27,10 @@
         }
         plate: {
           class: PressurePlate
-          asset: test.png
+          modeled: true
+          clean: true
+          asset: pressurePlate.g3db
           id: plate
-          animations: [
-            {
-              material: box
-              atlas: blocks/anim.atlas
-              animation: test
-              speed: 1f
-            }
-          ]
         }
         teleporter: {
           class: Teleporter
@@ -48,7 +42,16 @@
         }
         charger: {
           class: Charger
-          asset: test.png
+          modeled: true
+          asset: charger.g3db
+          animations: [
+            {
+              material: base
+              atlas: blocks/charger.atlas
+              animation: charger
+              speed: 0.02f
+            }
+          ]
         }
       }
       blocks: [
@@ -91,17 +94,14 @@
       path: [
         {
           x: 3.5
-          y: 0
           z: 4
         }
         {
           x: 3.5
-          y: 0
           z: 5.5
         }
         {
           x: 2
-          y: 0
           z: 5.5
         }
       ]

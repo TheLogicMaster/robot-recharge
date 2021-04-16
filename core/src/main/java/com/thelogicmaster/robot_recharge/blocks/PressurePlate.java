@@ -39,10 +39,13 @@ public class PressurePlate extends Block {
             public void onRobotMove(Robot robot) {
                 if (id == null)
                     return;
-                if (robot.getBlockPos().equals(getPosition()))
+                if (robot.getBlockPos().equals(getPosition())) {
                     level.emitLevelEvent(new LevelEvent(PressurePlate.this, id, "on"));
-                else if (robot.getBlockPos().cpy().add(robot.getDirection(), -1).equals(getPosition()))
+                    controller.animate("Plate|Press", 0.2f);
+                } else if (robot.getBlockPos().cpy().add(robot.getDirection(), -1).equals(getPosition())) {
                     level.emitLevelEvent(new LevelEvent(PressurePlate.this, id, "off"));
+                    controller.animate("Plate|Reset", 0.2f);
+                }
             }
         });
     }
