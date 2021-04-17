@@ -17,13 +17,15 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+// Todo: Better animation system
 @NoArgsConstructor
 public class Block implements Renderable3D, Disposable, AssetConsumer {
     @Getter @Setter private Position position;
     @Getter @Setter private boolean modeled;
     @Getter @Setter private boolean clean;
     @Getter @Setter private String asset;
-    @Getter @Setter protected Array<ModelTextureAnimation> animations;
+    @Getter @Setter protected Array<ModelTextureAnimation> textureAnimations;
+    @Getter @Setter private String animation;
     @Getter private float transparency;
     @Getter private Color color;
     @Getter @Setter private Direction direction = Direction.NORTH;
@@ -50,15 +52,18 @@ public class Block implements Renderable3D, Disposable, AssetConsumer {
         asset = block.asset;
         clean = block.clean;
         transparency = block.transparency;
+        animation = block.animation;
         if (block.model != null) {
             model = new ModelInstance(block.model);
             controller = new AnimationController(model);
-            if (block.animations != null) {
-                animations = new Array<>();
-                for (ModelTextureAnimation animation: block.animations) {
+            if (animation != null)
+                controller.setAnimation(animation, -1);
+            if (block.textureAnimations != null) {
+                textureAnimations = new Array<>();
+                for (ModelTextureAnimation animation: block.textureAnimations) {
                     ModelTextureAnimation modelAnimation = new ModelTextureAnimation(animation);
                     modelAnimation.setup(model);
-                    animations.add(modelAnimation);
+                    textureAnimations.add(modelAnimation);
                 }
             }
         }
@@ -71,6 +76,7 @@ public class Block implements Renderable3D, Disposable, AssetConsumer {
     }
 
     public void setup(Level level) {
+        // Todo: Reset animations
         this.level = level;
         rotation = direction.getQuaternion().cpy();
     }
@@ -87,8 +93,8 @@ public class Block implements Renderable3D, Disposable, AssetConsumer {
             assetMultiplexer.load("blocks/" + asset, Model.class);
         else
             assetMultiplexer.load("blocks/" + asset, Texture.class);
-        if (animations != null)
-            for (ModelTextureAnimation animation: animations)
+        if (textureAnimations != null)
+            for (ModelTextureAnimation animation: textureAnimations)
                 animation.loadAssets(assetMultiplexer);
     }
 
@@ -104,14 +110,16 @@ public class Block implements Renderable3D, Disposable, AssetConsumer {
             model = new ModelInstance(modelSource);
         }
         controller = new AnimationController(model);
+        if (animation != null)
+            controller.setAnimation(animation, -1);
         for (Material mat : new Array.ArrayIterator<>(model.materials)) {
             if (color != null)
                 mat.set(ColorAttribute.createDiffuse(color));
             if (transparency > 0f)
                 mat.set(new BlendingAttribute(1f - transparency));
         }
-        if (animations != null)
-            for (ModelTextureAnimation animation: animations) {
+        if (textureAnimations != null)
+            for (ModelTextureAnimation animation: textureAnimations) {
                 animation.assetsLoaded(assetMultiplexer);
                 animation.setup(model);
             }
@@ -134,10 +142,10 @@ public class Block implements Renderable3D, Disposable, AssetConsumer {
     @Override
     public void render(ModelBatch modelBatch, DecalBatch decalBatch, Environment environment, float delta) {
         if (controller != null)
-            controller.update(delta);
+            controller.update(Gdx.graphics.getDeltaTime());
         if (model != null) {
-            if (animations != null)
-                for (ModelTextureAnimation animation: animations)
+            if (textureAnimations != null)
+                for (ModelTextureAnimation animation: textureAnimations)
                     animation.update();
             model.transform.set(position.toVector(tempVec3).add(Constants.blockOffset), rotation);
             modelBatch.render(model, environment);

@@ -38,13 +38,16 @@
             z: 3
           }
           face: NORTH
-          asset: test.png
+          modeled: true
+          clean: true
+          asset: teleporter.g3db
+          animation: Teleporter|Spin
         }
         charger: {
           class: Charger
           modeled: true
           asset: charger.g3db
-          animations: [
+          textureAnimations: [
             {
               material: base
               atlas: blocks/charger.atlas

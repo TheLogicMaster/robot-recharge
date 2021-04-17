@@ -35,8 +35,8 @@ public class Charger extends Block {
             @Override
             public void onRobotMove(Robot robot) {
                 if (robot.getBlockPos().equals(getPosition())) {
-                    if (animations != null && animations.size > 0)
-                        animations.get(0).setSpeed(animations.get(0).getSpeed() / 3);
+                    if (textureAnimations != null && textureAnimations.size > 0)
+                        textureAnimations.get(0).setSpeed(textureAnimations.get(0).getSpeed() / 3);
                     level.emitLevelEvent(new LevelEvent(Charger.this, "charger", "charge"));
                     level.completeLevel();
                 }
