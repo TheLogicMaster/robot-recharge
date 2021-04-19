@@ -67,9 +67,15 @@ public class Robot implements Disposable, Renderable3D {
     }
 
     public void setPosition(Position position) {
+        setPosition(position, false);
+    }
+
+    public void setPosition(Position position, boolean silent) {
         this.blockPos = position;
         this.blockPos.toVector(this.position);
-        level.onRobotMove();
+
+        if (!silent)
+            level.onRobotMove();
     }
 
     public void setCode(String code) {

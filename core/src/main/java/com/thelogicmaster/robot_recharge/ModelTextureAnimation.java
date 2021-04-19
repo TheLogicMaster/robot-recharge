@@ -21,7 +21,7 @@ public class ModelTextureAnimation implements AssetConsumer {
 	@Getter @Setter private String material;
 	@Getter @Setter private String atlas;
 	@Getter @Setter private String animation;
-	@Getter private float speed;
+	@Getter @Setter private float speed;
 
 	private transient Animation<TextureRegion> animationInstance;
 	private transient TextureAttribute textureAttribute;
@@ -42,28 +42,24 @@ public class ModelTextureAnimation implements AssetConsumer {
 
 	@Override
 	public void assetsLoaded (AssetMultiplexer assetMultiplexer) {
-		animationInstance = new Animation<>(speed, assetMultiplexer.<TextureAtlas>get(atlas).findRegions(animation), Animation.PlayMode.LOOP);
+		animationInstance = new Animation<>(1, assetMultiplexer.<TextureAtlas>get(atlas).findRegions(animation), Animation.PlayMode.LOOP);
 	}
 
-	public void setup(ModelInstance instance) {
+	public ModelTextureAnimation setup(ModelInstance instance) {
 		Material materialInstance = instance.getMaterial(material);
 		if (materialInstance == null) {
 			Gdx.app.error("ModelTextureAnimation", "Failed to load material: " + material);
-			return;
+			return this;
 		}
 		textureAttribute = materialInstance.get(TextureAttribute.class, TextureAttribute.Diffuse);
 		if (textureAttribute == null)
 			Gdx.app.error("ModelTextureAnimation", "Failed to get texture attribute");
-	}
 
-	public void setSpeed (float speed) {
-		this.speed = speed;
-		if (animationInstance != null)
-			animationInstance.setFrameDuration(speed);
+		return this;
 	}
 
 	public void update() {
-		time += Gdx.graphics.getDeltaTime();
+		time += Gdx.graphics.getDeltaTime() * speed;
 		if (textureAttribute != null)
 			textureAttribute.set(animationInstance.getKeyFrame(time));
 	}

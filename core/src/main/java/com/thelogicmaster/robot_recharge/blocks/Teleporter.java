@@ -16,6 +16,7 @@ public class Teleporter extends Block {
 
     private Position target;
     private Direction face;
+    private boolean pair;
 
     @Getter(AccessLevel.NONE)
     @Setter(AccessLevel.NONE)
@@ -33,6 +34,7 @@ public class Teleporter extends Block {
         effectIn = block.effectIn.copy();
         effectOut = block.effectOut.copy();
         face = block.face;
+        pair = block.pair;
     }
 
     @Override
@@ -47,11 +49,11 @@ public class Teleporter extends Block {
             @Override
             public void onRobotMove(Robot robot) {
                 if (robot.getBlockPos().equals(getPosition())) {
-                    robot.setPosition(target.cpy());
+                    robot.setPosition(target.cpy(), pair);
                     if (face != null)
                         robot.setDirection(face);
-                    level.playParticleEffect(effectIn, getPosition().toVector(new Vector3()).add(Constants.blockOffset));
-                    level.playParticleEffect(effectOut, target.toVector(new Vector3()).add(Constants.blockOffset));
+                    level.playParticleEffect(effectIn, getPosition().toVector().add(Constants.blockOffset));
+                    level.playParticleEffect(effectOut, target.toVector().add(Constants.blockOffset));
                 }
             }
         });
@@ -65,6 +67,7 @@ public class Teleporter extends Block {
     @Override
     public void loadAssets(AssetMultiplexer assetMultiplexer) {
         super.loadAssets(assetMultiplexer);
+
         assetMultiplexer.load("teleportOut.pfx", ParticleEffect.class);
         assetMultiplexer.load("teleportIn.pfx", ParticleEffect.class);
     }
@@ -72,6 +75,7 @@ public class Teleporter extends Block {
     @Override
     public void assetsLoaded(AssetMultiplexer assetMultiplexer) {
         super.assetsLoaded(assetMultiplexer);
+
         effectIn = assetMultiplexer.get("teleportIn.pfx");
         effectOut = assetMultiplexer.get("teleportOut.pfx");
     }

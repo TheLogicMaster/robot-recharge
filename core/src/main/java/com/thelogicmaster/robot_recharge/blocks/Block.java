@@ -18,7 +18,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 // Todo: Better animation system
-// Todo: Unified initialization function
 @NoArgsConstructor
 public class Block implements Renderable3D, Disposable, AssetConsumer {
     @Getter @Setter private Position position;
@@ -54,22 +53,17 @@ public class Block implements Renderable3D, Disposable, AssetConsumer {
         clean = block.clean;
         transparency = block.transparency;
         animation = block.animation;
-        if (block.model != null) {
-            model = new ModelInstance(block.model);
-            controller = new AnimationController(model);
-            if (animation != null)
-                controller.setAnimation(animation, -1);
-            if (block.textureAnimations != null) {
-                textureAnimations = new Array<>();
-                for (ModelTextureAnimation animation: block.textureAnimations) {
-                    ModelTextureAnimation modelAnimation = new ModelTextureAnimation(animation);
-                    modelAnimation.setup(model);
-                    textureAnimations.add(modelAnimation);
-                }
-            }
-        }
         color = block.color;
         direction = block.direction;
+
+        if (block.model != null) {
+            model = new ModelInstance(block.model);
+            if (block.textureAnimations != null) {
+                textureAnimations = new Array<>();
+                for (ModelTextureAnimation animation: block.textureAnimations)
+                    textureAnimations.add(new ModelTextureAnimation(animation).setup(model));
+            }
+        }
     }
 
     public Block copy() {
@@ -77,9 +71,19 @@ public class Block implements Renderable3D, Disposable, AssetConsumer {
     }
 
     public void setup(Level level) {
-        // Todo: Reset animations
         this.level = level;
         rotation = direction.getQuaternion().cpy();
+
+        if (model != null) {
+            controller = new AnimationController(model);
+            if (animation != null)
+                controller.setAnimation(animation, -1);
+        }
+
+        if (color != null)
+            setColor(color);
+        if (transparency > 0f)
+            setTransparency(transparency);
     }
 
     public boolean isSolid() {
@@ -90,10 +94,12 @@ public class Block implements Renderable3D, Disposable, AssetConsumer {
     public void loadAssets(AssetMultiplexer assetMultiplexer) {
         if (asset == null)
             return;
+
         if (modeled) // Ternary compressed version causes GWT compilation issue
             assetMultiplexer.load("blocks/" + asset, Model.class);
         else
             assetMultiplexer.load("blocks/" + asset, Texture.class);
+
         if (textureAnimations != null)
             for (ModelTextureAnimation animation: textureAnimations)
                 animation.loadAssets(assetMultiplexer);
@@ -103,6 +109,7 @@ public class Block implements Renderable3D, Disposable, AssetConsumer {
     public void assetsLoaded(AssetMultiplexer assetMultiplexer) {
         if (asset == null)
             return;
+
         if (modeled) {
             Model source = assetMultiplexer.get("blocks/" + asset);
             model = new ModelInstance(clean ? RobotUtils.cleanModel(source) : source);
@@ -110,13 +117,7 @@ public class Block implements Renderable3D, Disposable, AssetConsumer {
             modelSource = RobotUtils.createCubeModel(assetMultiplexer.get("blocks/" + asset));
             model = new ModelInstance(modelSource);
         }
-        controller = new AnimationController(model);
-        if (animation != null)
-            controller.setAnimation(animation, -1);
-        if (color != null)
-            setColor(color);
-        if (transparency > 0f)
-            setTransparency(transparency);
+
         if (textureAnimations != null)
             for (ModelTextureAnimation animation: textureAnimations) {
                 animation.assetsLoaded(assetMultiplexer);
@@ -126,6 +127,7 @@ public class Block implements Renderable3D, Disposable, AssetConsumer {
 
     public void setTransparency(float transparency) {
         this.transparency = transparency;
+
         if (model != null)
             for (Material mat : new Array.ArrayIterator<>(model.materials))
                 mat.set(new BlendingAttribute(1f - transparency));
@@ -133,6 +135,7 @@ public class Block implements Renderable3D, Disposable, AssetConsumer {
 
     public void setColor(Color color) {
         this.color = color;
+
         if (model != null)
             for (Material mat : new Array.ArrayIterator<>(model.materials))
                 mat.set(ColorAttribute.createDiffuse(color));
@@ -142,10 +145,12 @@ public class Block implements Renderable3D, Disposable, AssetConsumer {
     public void render(ModelBatch modelBatch, DecalBatch decalBatch, Environment environment, float delta) {
         if (controller != null)
             controller.update(Gdx.graphics.getDeltaTime());
+
         if (model != null) {
             if (textureAnimations != null)
                 for (ModelTextureAnimation animation: textureAnimations)
                     animation.update();
+
             model.transform.set(position.toVector(tempVec3).add(Constants.blockOffset), rotation);
             modelBatch.render(model, environment);
         }

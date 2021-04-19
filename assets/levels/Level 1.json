@@ -43,6 +43,12 @@
           asset: teleporter.g3db
           animation: Teleporter|Spin
         }
+        target: {
+          modeled: true
+          clean: true
+          asset: teleporter.g3db
+          animation: Teleporter|Spin
+        }
         charger: {
           class: Charger
           modeled: true
@@ -52,7 +58,7 @@
               material: base
               atlas: blocks/charger.atlas
               animation: charger
-              speed: 0.02f
+              speed: 50
             }
           ]
         }
@@ -76,6 +82,12 @@
           block: teleporter
           position: {
             x: 3
+          }
+        }
+        {
+          block: target
+          position: {
+            z: 3
           }
         }
         {

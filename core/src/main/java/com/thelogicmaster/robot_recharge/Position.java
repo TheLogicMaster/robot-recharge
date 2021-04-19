@@ -25,6 +25,10 @@ public class Position {
         return vector.set(x, y, z);
     }
 
+    public Vector3 toVector() {
+        return toVector(new Vector3());
+    }
+
     public Position set(Position position) {
         x = position.x;
         y = position.y;
