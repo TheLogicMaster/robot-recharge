@@ -53,8 +53,8 @@ public class RobotUtils {
      */
     public static Model cleanModel(Model model) {
         for (Material mat : new Array.ArrayIterator<>(model.materials)) {
-            mat.set(new BlendingAttribute(1));
             mat.remove(ColorAttribute.Emissive);
+            mat.remove(BlendingAttribute.Type);
         }
         return model;
     }
@@ -74,14 +74,11 @@ public class RobotUtils {
 
     public static Model createCubeModel(Texture texture) {
         ModelBuilder builder = new ModelBuilder();
-        int attr = VertexAttributes.Usage.Position | VertexAttributes.Usage.Normal | VertexAttributes.Usage.TextureCoordinates;
-        Array<Attribute> attributes = new Array<>(new Attribute[]{new BlendingAttribute(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA),
-                IntAttribute.createCullFace(GL20.GL_NONE), new DepthTestAttribute(true)});
         TextureRegion[] textureRegions = TextureRegion.split(texture, texture.getHeight(), texture.getHeight())[0];
         builder.begin();
-        Material material = new Material("box", attributes);
+        Material material = new Material("box");
         material.set(TextureAttribute.createDiffuse(texture));
-        MeshPartBuilder box = builder.part("box", GL20.GL_TRIANGLES, attr, material);
+        MeshPartBuilder box = builder.part("box", GL20.GL_TRIANGLES, VertexAttributes.Usage.Position | VertexAttributes.Usage.Normal | VertexAttributes.Usage.TextureCoordinates, material);
         box.setUVRange(textureRegions[0]);
         box.rect(-0.5f, 0.5f, -0.5f, -0.5f, 0.5f, 0.5f, 0.5f, 0.5f, 0.5f, 0.5f, 0.5f, -0.5f, 0f, 1f, 0f);
         box.setUVRange(textureRegions[1]);

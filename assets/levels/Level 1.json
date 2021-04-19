@@ -14,7 +14,7 @@
       templates: {
         trigger: {
           class: Trigger
-          asset: test.png
+          asset: trigger.png
           name: trigger
           color: {
             r: 1

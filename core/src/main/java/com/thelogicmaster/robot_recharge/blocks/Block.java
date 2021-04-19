@@ -18,6 +18,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 // Todo: Better animation system
+// Todo: Unified initialization function
 @NoArgsConstructor
 public class Block implements Renderable3D, Disposable, AssetConsumer {
     @Getter @Setter private Position position;
@@ -112,12 +113,10 @@ public class Block implements Renderable3D, Disposable, AssetConsumer {
         controller = new AnimationController(model);
         if (animation != null)
             controller.setAnimation(animation, -1);
-        for (Material mat : new Array.ArrayIterator<>(model.materials)) {
-            if (color != null)
-                mat.set(ColorAttribute.createDiffuse(color));
-            if (transparency > 0f)
-                mat.set(new BlendingAttribute(1f - transparency));
-        }
+        if (color != null)
+            setColor(color);
+        if (transparency > 0f)
+            setTransparency(transparency);
         if (textureAnimations != null)
             for (ModelTextureAnimation animation: textureAnimations) {
                 animation.assetsLoaded(assetMultiplexer);

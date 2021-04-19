@@ -31,9 +31,9 @@ import java.util.HashMap;
 public class JCEFDesktopLauncher implements PlatformUtils {
 
     private final JFrame jFrame;
-    private final LwjglAWTCanvas lwjglAWTCanvas;
     private final DesktopBlocklyEditor blocklyEditor;
-    final Array<WindowMode> windowModes;
+    private final Array<WindowMode> windowModes;
+    private final LwjglAWTCanvas lwjglAWTCanvas;
 
     private JCEFDesktopLauncher() {
         CefApp.addAppHandler(new CefAppHandlerAdapter(null) {
@@ -60,11 +60,11 @@ public class JCEFDesktopLauncher implements PlatformUtils {
         engines.put(Language.PHP, new PhpEngine());
         engines.put(Language.Basic, new BasicEngine());
         engines.put(Language.Ruby, new RubyEngine());
-        lwjglAWTCanvas = new LwjglAWTCanvas(new RobotRecharge(engines, blocklyEditor, this,
-                new DesktopTTSEngine(), desktopGameServices, new JavaCodeEditorUtils(), BuildConfig.DEBUG), config) {
+        // Graceful exit
+        lwjglAWTCanvas = new LwjglAWTCanvas(new RobotRecharge(engines, blocklyEditor, this, new DesktopTTSEngine(), desktopGameServices, new JavaCodeEditorUtils(), BuildConfig.DEBUG), config) {
             // Graceful exit
             @Override
-            public void exit() {
+            public void exit () {
                 postRunnable(() -> {
                     CefApp.getInstance().dispose();
                     stop();
@@ -73,7 +73,7 @@ public class JCEFDesktopLauncher implements PlatformUtils {
             }
 
             @Override
-            protected void exception(Throwable ex) {
+            protected void exception (Throwable ex) {
                 CefApp.getInstance().dispose();
                 super.exception(ex);
                 exitDelayed();
@@ -82,9 +82,11 @@ public class JCEFDesktopLauncher implements PlatformUtils {
         blocklyEditor.setup();
 
         jFrame = createFrame();
-        jFrame.getContentPane().setPreferredSize(new Dimension(960, 540));
         jFrame.add(blocklyEditor.getEditor());
         jFrame.add(lwjglAWTCanvas.getCanvas());
+        jFrame.pack(); // Pack to calculate insets
+        Insets insets = jFrame.getInsets();
+        jFrame.setPreferredSize(new Dimension(1920 + insets.left + insets.right, 1080 + insets.top + insets.bottom));
         jFrame.pack();
         jFrame.setVisible(true);
     }
@@ -123,7 +125,8 @@ public class JCEFDesktopLauncher implements PlatformUtils {
             @Override
             public void componentResized(ComponentEvent componentEvent) {
                 Dimension size = frame.getSize();
-                lwjglAWTCanvas.getCanvas().setSize(size.width, size.height - 37); // Fix for bottom getting cut off
+                Insets insets = frame.getInsets();
+                lwjglAWTCanvas.getCanvas().setSize(size.width - insets.left - insets.right, size.height - insets.top - insets.bottom);
             }
         });
         return frame;
@@ -155,6 +158,9 @@ public class JCEFDesktopLauncher implements PlatformUtils {
     }
 
     public static void main(String[] args) {
+        // Disable display scaling
+        System.setProperty("sun.java2d.uiScale", "1.0");
+
         // Todo: Move to initial loading screen to prevent initial startup delay
         if (!CefApp.startup(args)) {
             System.out.println("Startup initialization failed!");

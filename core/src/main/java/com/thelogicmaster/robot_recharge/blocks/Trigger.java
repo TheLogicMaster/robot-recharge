@@ -32,11 +32,18 @@ public class Trigger extends Block {
         oneShot = block.oneShot;
         triggeredColor = block.triggeredColor;
         name = block.name;
+        setTransparency(0);
     }
 
     @Override
     public Trigger copy() {
         return new Trigger(this);
+    }
+
+    @Override
+    public void assetsLoaded (AssetMultiplexer assetMultiplexer) {
+        super.assetsLoaded(assetMultiplexer);
+        setTransparency(0);
     }
 
     @Override

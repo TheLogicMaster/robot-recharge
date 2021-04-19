@@ -22,8 +22,8 @@ public class DesktopLauncher {
 	public static void main(String[] args) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 		config.title = "robot-recharge";
-		config.width = 980;
-		config.height = 540;
+		config.width = 1920;
+		config.height = 1080;
 		config.allowSoftwareMode = true;
 		// This prevents a confusing error that would appear after exiting normally.
 		config.forceExit = false;
@@ -49,7 +49,7 @@ public class DesktopLauncher {
 				switch (windowMode) {
 					case Windowed:
 						Gdx.graphics.setUndecorated(false);
-						Gdx.graphics.setWindowedMode(960, 540);
+						Gdx.graphics.setWindowedMode(1920, 1080);
 						break;
 					case Fullscreen:
 						Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode());
