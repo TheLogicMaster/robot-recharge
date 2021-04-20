@@ -38,7 +38,8 @@ public class TitleScreen extends RobotScreen {
         TextButton settingsButton = new PaddedTextButton("Settings", skin, "large");
         table.add(settingsButton).padBottom(120).fillX().row();
         TextButton exitButton = new PaddedTextButton("Quit Game", skin, "large");
-        table.add(exitButton);
+        if (Gdx.app.getType() != Application.ApplicationType.WebGL)
+            table.add(exitButton);
         stage.addActor(table);
 
         ImageButton cloudButton = new ImageButton(skin, "cloudSave");

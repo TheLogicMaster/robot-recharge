@@ -7,14 +7,14 @@ import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.badlogic.gdx.utils.Array;
 import com.thelogicmaster.robot_recharge.*;
-import com.thelogicmaster.robot_recharge.code.BasicEngine;
+import com.thelogicmaster.robot_recharge.BasicEngine;
 import com.thelogicmaster.robot_recharge.code.CodeEngine;
-import com.thelogicmaster.robot_recharge.code.JavaCodeEditorUtils;
-import com.thelogicmaster.robot_recharge.code.JavaRobotController;
+import com.thelogicmaster.robot_recharge.JavaCodeEditorUtils;
+import com.thelogicmaster.robot_recharge.JavaRobotController;
 import com.thelogicmaster.robot_recharge.code.Language;
-import com.thelogicmaster.robot_recharge.code.LuaEngine;
-import com.thelogicmaster.robot_recharge.code.PhpEngine;
-import com.thelogicmaster.robot_recharge.code.RubyEngine;
+import com.thelogicmaster.robot_recharge.LuaEngine;
+import com.thelogicmaster.robot_recharge.PhpEngine;
+import com.thelogicmaster.robot_recharge.RubyEngine;
 
 import java.util.HashMap;
 

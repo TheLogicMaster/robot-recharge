@@ -1,20 +1,12 @@
-package com.thelogicmaster.robot_recharge.code;
+package com.thelogicmaster.robot_recharge;
 
 import com.badlogic.gdx.Gdx;
-import com.thelogicmaster.robot_recharge.IRobot;
+import com.thelogicmaster.robot_recharge.code.CodeEngine;
+import com.thelogicmaster.robot_recharge.code.ExecutionListener;
 import org.jruby.Ruby;
-import org.jruby.RubyClass;
 import org.jruby.RubyInstanceConfig;
-import org.jruby.RubyObject;
 import org.jruby.javasupport.JavaEmbedUtils;
 import org.jruby.javasupport.JavaUtil;
-import org.luaj.vm2.Globals;
-import org.luaj.vm2.LuaError;
-import org.luaj.vm2.LuaValue;
-import org.luaj.vm2.lib.jse.CoerceJavaToLua;
-import org.luaj.vm2.lib.jse.JsePlatform;
-
-import java.util.Collections;
 
 public class RubyEngine implements CodeEngine {
 
@@ -44,7 +36,7 @@ public class RubyEngine implements CodeEngine {
         thread.start();
         return new ExecutionInstance(thread) {
             @Override
-            protected void stop () {
+            public void stop () {
                 super.stop();
 
                 ruby.tearDown();

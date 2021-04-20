@@ -1,5 +1,6 @@
 package com.thelogicmaster.robot_recharge.ui;
 
+import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
@@ -21,13 +22,18 @@ public class ScrollingBackground {
 
 		foreground = new Texture(image + "-fg.png");
 		background = new Texture(Gdx.files.internal(image + "-bg.png"), true);
-		background.setFilter(Texture.TextureFilter.MipMapLinearNearest, Texture.TextureFilter.Linear);
-		background.setWrap(Texture.TextureWrap.MirroredRepeat, Texture.TextureWrap.MirroredRepeat);
+
+		if (Gdx.app.getType() != Application.ApplicationType.WebGL) {
+			background.setFilter(Texture.TextureFilter.MipMapLinearNearest, Texture.TextureFilter.Linear);
+			background.setWrap(Texture.TextureWrap.MirroredRepeat, Texture.TextureWrap.MirroredRepeat);
+		}
 	}
 
 	public void draw (Batch batch, float delta) {
-		position += speed * delta;
-		position %= 1920 * 4;
+		if (Gdx.app.getType() != Application.ApplicationType.WebGL) {
+			position += speed * delta;
+			position %= 1920 * 4;
+		}
 
 		batch.draw(background, 0, 0, (int)position, 0, 1920, 1080);
 		batch.draw(foreground, 0, 0);

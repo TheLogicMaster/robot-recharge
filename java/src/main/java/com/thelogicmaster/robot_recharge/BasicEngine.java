@@ -21,10 +21,11 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package com.thelogicmaster.robot_recharge.code;
+package com.thelogicmaster.robot_recharge;
 
 import com.badlogic.gdx.Gdx;
-import com.thelogicmaster.robot_recharge.IRobot;
+import com.thelogicmaster.robot_recharge.code.CodeEngine;
+import com.thelogicmaster.robot_recharge.code.ExecutionListener;
 
 import java.util.*;
 

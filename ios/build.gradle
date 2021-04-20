@@ -18,6 +18,7 @@ eclipse.project {
 
 dependencies {
 	implementation project(':core')
+	implementation project(':java')
 	implementation "com.mobidevelop.robovm:robovm-rt:$robovmVersion"
 	implementation "com.mobidevelop.robovm:robovm-cocoatouch:$robovmVersion"
 	implementation "com.badlogicgames.gdx:gdx-backend-robovm:$gdxVersion"

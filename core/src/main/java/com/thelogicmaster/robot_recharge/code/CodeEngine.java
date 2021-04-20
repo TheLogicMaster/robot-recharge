@@ -3,9 +3,9 @@ package com.thelogicmaster.robot_recharge.code;
 import com.thelogicmaster.robot_recharge.IRobot;
 
 /**
- * A generic interface to a JavaScript running engine
+ * A generic interface to a code running engine
  */
 public interface CodeEngine {
 
-    ExecutionInstance run(IRobot robot, String code, ExecutionListener listener);
+    IExecutionInstance run(IRobot robot, String code, ExecutionListener listener);
 }

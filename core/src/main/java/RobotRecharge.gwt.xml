@@ -11,6 +11,7 @@
 	<extend-configuration-property name="gdx.reflect.include" value="com.thelogicmaster.robot_recharge.BlockPlaceholder"/>
 	<extend-configuration-property name="gdx.reflect.include" value="com.thelogicmaster.robot_recharge.LevelData"/>
 	<extend-configuration-property name="gdx.reflect.include" value="com.thelogicmaster.robot_recharge.LevelSave"/>
+	<extend-configuration-property name="gdx.reflect.include" value="com.thelogicmaster.robot_recharge.ModelTextureAnimation"/>
 	<extend-configuration-property name="gdx.reflect.include" value="com.thelogicmaster.robot_recharge.code.Command"/>
 	<extend-configuration-property name="gdx.reflect.include" value="com.thelogicmaster.robot_recharge.code.Solution"/>
 	<extend-configuration-property name="gdx.reflect.include" value="com.thelogicmaster.robot_recharge.code.Language"/>

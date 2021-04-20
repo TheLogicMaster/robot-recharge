@@ -1,4 +1,4 @@
-package com.thelogicmaster.robot_recharge.code;
+package com.thelogicmaster.robot_recharge;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.BooleanArray;

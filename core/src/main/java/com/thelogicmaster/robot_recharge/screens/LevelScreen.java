@@ -1,5 +1,6 @@
 package com.thelogicmaster.robot_recharge.screens;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
@@ -123,13 +124,17 @@ public class LevelScreen extends MenuScreen {
         resumeButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                RobotUtils.playNavigationSound();
-                LevelSave save = RobotRecharge.prefs.getLevelSave(selected.getName());
-                if (RobotRecharge.blocksEditor == null && save.isUsingBlocks()) {
-                    Dialogs.showErrorDialog(stage, "This save was created using Blockly, which isn't available");
-                    return;
+                try {
+                    RobotUtils.playNavigationSound();
+                    LevelSave save = RobotRecharge.prefs.getLevelSave(selected.getName());
+                    if (RobotRecharge.blocksEditor == null && save.isUsingBlocks()) {
+                        Dialogs.showErrorDialog(stage, "This save was created using Blockly, which isn't available");
+                        return;
+                    }
+                    RobotRecharge.instance.setScreen(new GameScreen(save));
+                } catch (Exception e) {
+                    Gdx.app.error("Error", "button", e);
                 }
-                RobotRecharge.instance.setScreen(new GameScreen(save));
             }
         });
     }

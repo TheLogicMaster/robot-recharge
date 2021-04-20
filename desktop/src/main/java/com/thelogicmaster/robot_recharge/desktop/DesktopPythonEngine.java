@@ -3,7 +3,7 @@ package com.thelogicmaster.robot_recharge.desktop;
 import com.badlogic.gdx.Gdx;
 import com.thelogicmaster.robot_recharge.IRobot;
 import com.thelogicmaster.robot_recharge.code.CodeEngine;
-import com.thelogicmaster.robot_recharge.code.ExecutionInstance;
+import com.thelogicmaster.robot_recharge.ExecutionInstance;
 import com.thelogicmaster.robot_recharge.code.ExecutionListener;
 import org.python.core.PyException;
 import org.python.util.PythonInterpreter;
@@ -33,7 +33,7 @@ public class DesktopPythonEngine implements CodeEngine {
         thread.start();
         return new ExecutionInstance(thread) {
             @Override
-            protected void stop () {
+            public void stop () {
                 super.stop();
 
                 python.close();

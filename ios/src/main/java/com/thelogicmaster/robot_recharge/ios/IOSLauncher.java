@@ -6,11 +6,11 @@ import com.badlogic.gdx.backends.iosrobovm.IOSApplicationConfiguration;
 import com.badlogic.gdx.utils.Array;
 import com.thelogicmaster.robot_recharge.*;
 import com.thelogicmaster.robot_recharge.code.CodeEngine;
-import com.thelogicmaster.robot_recharge.code.JavaCodeEditorUtils;
-import com.thelogicmaster.robot_recharge.code.JavaRobotController;
+import com.thelogicmaster.robot_recharge.JavaCodeEditorUtils;
+import com.thelogicmaster.robot_recharge.JavaRobotController;
 import com.thelogicmaster.robot_recharge.code.Language;
-import com.thelogicmaster.robot_recharge.code.LuaEngine;
-import com.thelogicmaster.robot_recharge.code.PhpEngine;
+import com.thelogicmaster.robot_recharge.LuaEngine;
+import com.thelogicmaster.robot_recharge.PhpEngine;
 import org.robovm.apple.foundation.NSAutoreleasePool;
 import org.robovm.apple.uikit.UIApplication;
 

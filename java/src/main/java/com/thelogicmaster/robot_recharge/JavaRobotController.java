@@ -1,18 +1,21 @@
-package com.thelogicmaster.robot_recharge.code;
+package com.thelogicmaster.robot_recharge;
 
 import com.badlogic.gdx.math.Quaternion;
 import com.badlogic.gdx.math.Vector3;
-import com.thelogicmaster.robot_recharge.*;
 import com.thelogicmaster.robot_recharge.blocks.Block;
 import com.thelogicmaster.robot_recharge.blocks.Interactable;
+import com.thelogicmaster.robot_recharge.code.CodeEngine;
+import com.thelogicmaster.robot_recharge.code.ExecutionListener;
+import com.thelogicmaster.robot_recharge.code.IExecutionInstance;
 
+// Todo: Move Threaded classes to dedicated Java module for GWT compilation purposes
 @SuppressWarnings("BusyWait")
 public class JavaRobotController implements RobotController, ExecutionListener, IRobot {
 
     private volatile boolean running; // Code is currently running
     private volatile boolean waiting; // Waiting for something in the level like an elevator
     private final Object lock = new Object();
-    private volatile ExecutionInstance executionInstance;
+    private volatile IExecutionInstance executionInstance;
     private final CodeEngine engine;
     private final RobotExecutionListener listener;
     private final Robot robot;
