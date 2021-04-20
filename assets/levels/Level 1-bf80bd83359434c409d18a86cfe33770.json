@@ -1,0 +1,153 @@
+{
+  xSize: 30
+  ySize: 1
+  zSize: 30
+  levelHeight: 30
+  levelModel: level.g3db
+  startDirection: NORTH
+  startPosition: {}
+  background: level1
+  structures: [
+    {
+      class: BlockStructure
+      position: {}
+      templates: {
+        trigger: {
+          class: Trigger
+          asset: trigger.png
+          name: trigger
+          color: {
+            r: 1
+            a: 0.7
+          }
+          triggeredColor: {
+            g: 1
+            a: 0.7
+          }
+        }
+        plate: {
+          class: PressurePlate
+          modeled: true
+          clean: true
+          asset: pressurePlate.g3db
+          id: plate
+        }
+        teleporter: {
+          class: Teleporter
+          target: {
+            z: 3
+          }
+          face: NORTH
+          modeled: true
+          clean: true
+          asset: teleporter.g3db
+          animation: Teleporter|Spin
+        }
+        target: {
+          modeled: true
+          clean: true
+          asset: teleporter.g3db
+          animation: Teleporter|Spin
+        }
+        charger: {
+          class: Charger
+          modeled: true
+          asset: charger.g3db
+          textureAnimations: [
+            {
+              material: base
+              atlas: blocks/charger.atlas
+              animation: charger
+              speed: 50
+            }
+          ]
+        }
+      }
+      blocks: [
+        {
+          block: plate
+          position: {
+            z: 3
+            x: 3
+          }
+        }
+        {
+          block: trigger
+          position: {
+            z: 3
+            x: 4
+          }
+        }
+        {
+          block: teleporter
+          position: {
+            x: 3
+          }
+        }
+        {
+          block: target
+          position: {
+            z: 3
+          }
+        }
+        {
+          block: charger
+          position: {
+            x: 6
+            z: 3
+          }
+        }
+      ]
+    }
+    {
+      class: Wire
+      id: plate
+      color: {
+        r: 0.5
+        a: 1
+      }
+      path: [
+        {
+          x: 3.5
+          z: 4
+        }
+        {
+          x: 3.5
+          z: 5.5
+        }
+        {
+          x: 2
+          z: 5.5
+        }
+      ]
+    }
+  ]
+  objectives: [
+    {
+      class: EventsObjective
+      events: [
+        "trigger:trigger"
+      ]
+      description: Trigger the trigger block
+    }
+    {
+      class: EventsObjective
+      events: [
+        "charger:charge"
+      ]
+      description: Reach the charger
+    }
+  ]
+  solutions: [
+    {
+      description: Level 1 Solution
+      blocks: "<xml xmlns=\"https://developers.google.com/blockly/xml\"><block type=\"robot_move\" id=\"`rUuur}M7)k|y.3zE@g+\" x=\"119\" y=\"131\"><value name=\"DISTANCE\"><shadow type=\"math_number\" id=\"XkZOj{ieVk3AdRT6$jo?\"><field name=\"NUM\">10</field></shadow></value></block></xml>"
+      code: {
+        JavaScript: "Robot.move(10);"
+        Python: "Robot.move(10)"
+        PHP: "$Robot->move(10);"
+        Lua: "Robot:move(10)"
+      }
+    }
+  ]
+}

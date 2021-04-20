@@ -1,0 +1,34 @@
+[
+  {
+    name: move
+    args: [
+      distance
+    ]
+    description: Moves the robot 'distance' meters forward
+    example: move 1
+  }
+  {
+    name: turn
+    args: [
+      distance
+    ]
+    description: Turns the robot 'distance' times clockwise
+    example: turn 1
+  }
+  {
+    name: sleep
+    args: [
+      duration
+    ]
+    description: Waits 'duration' seconds
+    example: sleep 1
+  }
+  {
+    name: speak
+    args: [
+      text
+    ]
+    description: Speaks 'text'
+    example: speak "Hello"
+  }
+]
