@@ -18,7 +18,11 @@ dependencies {
 	implementation "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
 	implementation "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
 	implementation "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-desktop"
-	implementation "com.github.crykn.guacamole:gdx-desktop:$guacamoleVersion"
+
+	// Causes OpenAL issue, probably depends on Lwjgl3
+	//implementation "com.github.crykn.guacamole:gdx:$guacamoleVersion"
+	//implementation "com.github.crykn.guacamole:gdx-desktop:$guacamoleVersion"
+
 	implementation 'io.webfolder:duktape4j:1.2.1'
 	implementation 'org.python:jython-slim:2.7.2'
 	implementation group: 'de.dfki.mary', name: 'voice-cmu-slt-hsmm', version: '5.2'
@@ -38,14 +42,19 @@ buildConfig {
 }
 
 jar {
-	archiveBaseName = appName
+	archiveBaseName.set(appName)
 	dependsOn configurations.runtimeClasspath
 	from { configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) } } 
 	manifest {
 		attributes 'Main-Class': project.mainClassName
 	}
 	doLast {
-		file(archivePath).setExecutable(true, false)
+		file(archiveFile).setExecutable(true, false)
+	}
+	// these "exclude" lines remove some unnecessary duplicate files in the output JAR.
+	exclude('META-INF/INDEX.LIST', 'META-INF/*.SF', 'META-INF/*.DSA', 'META-INF/*.RSA')
+	dependencies {
+		exclude('META-INF/INDEX.LIST', 'META-INF/maven/**')
 	}
 }
 
@@ -86,6 +95,13 @@ task packageMacGHActions(type: PackageTask, dependsOn: build) {
 	jrePath = new File(System.getProperty("user.dir") + '/jre_mac')
 	platform = 'mac'
 	vmArgs = ['-Djava.library.path=../Java']
+
+	doLast {
+		copy {
+			from project.rootDir.path + '/desktop/natives/mac64/'
+			into project.buildDir.path + '/RobotRecharge/RobotRecharge.app/Contents'
+		}
+	}
 }
 
 // Put Mac JCEF app Contents directory contents into <project>/Libraries/mac64/jcef
@@ -103,12 +119,24 @@ task packageMac(type: PackageTask, dependsOn: build) {
 			from project.rootDir.path + '/Libraries/jcef/mac64'
 			into project.buildDir.path + '/RobotRecharge/RobotRecharge.app/Contents'
 		}
+
+		copy {
+			from project.rootDir.path + '/desktop/natives/mac64/'
+			into project.buildDir.path + '/RobotRecharge/RobotRecharge.app/Contents'
+		}
 	}
 }
 
 task packageWindowsGHActions(type: PackageTask, dependsOn: build) {
 	jrePath = new File(System.getProperty("user.dir") + '/jre_windows')
 	platform = 'windows'
+
+	doLast {
+		copy {
+			from project.rootDir.path + '/desktop/natives/win64/'
+			into project.buildDir.path + '/RobotRecharge/'
+		}
+	}
 }
 
 task packageWindows(type: PackageTask, dependsOn: build) {
@@ -118,20 +146,37 @@ task packageWindows(type: PackageTask, dependsOn: build) {
 		project.exec {
 			commandLine('cp', '-r', project.rootDir.path + '/Libraries/jcef/win64/', project.buildDir.path + '/RobotRecharge/jcef')
 		}
+
+		copy {
+			from project.rootDir.path + '/desktop/natives/win64/'
+			into project.buildDir.path + '/RobotRecharge/'
+		}
 	}
 }
 
 task packageLinuxGHActions(type: PackageTask, dependsOn: build) {
 	jrePath = new File(System.getProperty("user.dir") + '/jre_linux')
 	platform = 'linux'
+
+	doLast {
+		copy {
+			from project.rootDir.path + '/desktop/natives/linux64/'
+			into project.buildDir.path + '/RobotRecharge/'
+		}
+	}
 }
 
 task packageLinux(type: PackageTask, dependsOn: build) {
-	jrePath = new File('/opt/jdk1.8.0_251/jre/')
+	jrePath = new File(project.rootDir.path + '/Libraries/jre/linux64')
 	platform = 'linux'
 	doLast {
 		project.exec {
 			commandLine('cp', '-r', project.rootDir.path + '/Libraries/jcef/linux64/', project.buildDir.path + '/RobotRecharge/jcef')
+		}
+
+		copy {
+			from project.rootDir.path + '/desktop/natives/linux64/'
+			into project.buildDir.path + '/RobotRecharge/'
 		}
 	}
 }

@@ -41,6 +41,17 @@ A programming game where the goal is to guide a robot through various levels usi
 - [Jasic](https://github.com/munificent/jasic) (BASIC interpreter base code)
 - [JRuby](https://github.com/jruby/jruby) (Ruby)
 
+## Todo
+- Debug/step through mode
+- Tab to double space functionality in editor
+- Make the UI not terrible
+- Mobile HTML custom keyboard (Or not if it's not worth it and just disable code editor on mobile browsers)
+- Code testing (JS code transformations, for instance)
+- Level editor
+- Trim HTML reflection cache of unused components like most of VisUI
+- Prevent Firefox '/' quick search functionality
+- Robot customization
+
 ## Building
 ### GitHub Actions
 The github actions workflow for the project builds and packages the releases for each platform, in addition to deploying
@@ -55,7 +66,8 @@ neccesary to comment out parts of `settings.gradle` and `build.gradle` at the pr
 For the Desktop module, the respective [JCEF library](https://github.com/jcefbuild/jcefbuild/releases) for your platform is required at
 `<project>/Libraries/jcef/<linux64|win64|mac64>` if you intend to use the Google Blockly functionality. To run without 
 Blockly support, simply run the `desktop:run` gradle task. To run with Blockly, the `JCEFDesktopLauncher` class needs to
-be run specifically with the VM option: `-Djava.library.path=<project>/Libraries/jcef/<platform>/`. To package the 
+be run specifically with the VM option: 
+`-Djava.library.path=<project>/Libraries/jcef/<platform>/:<project>/desktop/natives/<platform>`. To package the 
 desktop project, a JRE is needed at `<project>/Libraries/jre/<platform>` or the `jrePath` values need to be changed in
 `<project>/desktop/build.gradle` tasks, and not setting it should use the system default.
 
@@ -71,15 +83,11 @@ Blockly and text-to-speech aren't supported at present.
 
 For GameJolt cloud support, a `gameJoltKey` from GameJolt needs to be set in the `local.properties` file.
 
+### Updating Blockly
 To build and copy Blockly, run the `updateBlockly` task.
 
-## Todo
-- Debug/step through mode
-- Tab to double space functionality in editor
-- Make the UI not terrible
-- Mobile HTML custom keyboard (Or not if it's not worth it and just disable code editor on mobile browsers)
-- Code testing (JS code transformations, for instance)
-- Level editor
-- Trim HTML reflection cache of unused components like most of VisUI
-- Prevent Firefox '/' quick search functionality
-- Robot customization
+### Updating JCEF
+To update to a new JCEF release, download the platform assets from [jcefbuild](https://github.com/jcefbuild/jcefbuild/releases). 
+The 6 native platform JARs in the release archives need to have their native libraries extracted to the `desktop/natives` 
+directory with the existing format. The `desktop/libs` directory should have its contents updated from one of the new platform 
+release archives. The `Libraries/jcef` directory needs to be updated using the archive `bin/lib` directories.

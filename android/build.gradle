@@ -79,17 +79,15 @@ repositories {
 configurations { natives }
 
 dependencies {
-	coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.0.10'
+	coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.1.5'
 	implementation project(':core')
 	implementation project(':java')
 	implementation "com.badlogicgames.gdx:gdx-backend-android:$gdxVersion"
 
-	natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-armeabi"
 	natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-armeabi-v7a"
 	natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-arm64-v8a"
 	natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-x86"
 	natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-x86_64"
-	natives "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-armeabi"
 	natives "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-armeabi-v7a"
 	natives "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-arm64-v8a"
 	natives "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-x86"
@@ -99,7 +97,7 @@ dependencies {
 	implementation 'com.marytts.android:marylib:1.0.1'
 	implementation "de.golfgl.gdxgamesvcs:gdx-gamesvcs-android-gpgs:$gamesvcsVersion"
 	implementation "de.golfgl.gdxgamesvcs:gdx-gamesvcs-core-gamejolt:$gamesvcsVersion"
-	implementation 'com.google.android.gms:play-services-ads:19.6.0'
+	implementation 'com.google.android.gms:play-services-ads:19.6.0' // Breaking changes in 20.0.0, so some work to redo
 	implementation "com.google.android.gms:play-services-games:21.0.0"
 	implementation "com.badlogicgames.gdxpay:gdx-pay-android-googlebilling:1.3.1"
 }
@@ -109,7 +107,6 @@ dependencies {
 // so they get packed with the APK.
 task copyAndroidNatives() {
 	doFirst {
-		file("libs/armeabi/").mkdirs()
 		file("libs/armeabi-v7a/").mkdirs()
 		file("libs/arm64-v8a/").mkdirs()
 		file("libs/x86_64/").mkdirs()
@@ -119,7 +116,6 @@ task copyAndroidNatives() {
     	    def outputDir = null
     	    if(jar.name.endsWith("natives-arm64-v8a.jar")) outputDir = file("libs/arm64-v8a")
     	    if(jar.name.endsWith("natives-armeabi-v7a.jar")) outputDir = file("libs/armeabi-v7a")
-    	    if(jar.name.endsWith("natives-armeabi.jar")) outputDir = file("libs/armeabi")
     	    if(jar.name.endsWith("natives-x86_64.jar")) outputDir = file("libs/x86_64")
     	    if(jar.name.endsWith("natives-x86.jar")) outputDir = file("libs/x86")
     	    if(outputDir != null) {
