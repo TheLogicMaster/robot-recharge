@@ -37,7 +37,7 @@ public class LuaEngine implements CodeEngine {
         return new ExecutionInstance(thread);
     }
 
-    private class Watchdog extends DebugLib {
+    private static class Watchdog extends DebugLib {
 
         @Override
         @SneakyThrows

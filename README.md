@@ -2,7 +2,7 @@
 A programming game where the goal is to guide a robot through various levels using programmatic controls.
 
 ## Features
-- Multi-language programming support (PHP, Python, JavaScript, Lua, and Google Blockly) 
+- Multi-language programming support (PHP, Python, JavaScript, Lua, Ruby, BASIC, and Google Blockly) 
 - Custom code editor
 - Cloud Saves
 - Tutorial Levels
@@ -31,26 +31,26 @@ A programming game where the goal is to guide a robot through various levels usi
 - [Chaquopy](https://chaquo.com/chaquopy) (Android Python)
 - [LuaJ](https://github.com/luaj/luaj) (Lua)
 - [Quercus](https://www.caucho.com/resin-3.1/doc/quercus.xtp) (PHP)
-- [Duktape Android](https://github.com/cashapp/duktape-android) (Android JavaScript)
-- [duktape4j](https://github.com/webfolderio/duktape4j) (Desktop JavaScript)
+- [Duktape Android](https://github.com/TheLogicMaster/duktape-android) (Android JavaScript)
+- [duktape4j](https://github.com/TheLogicMaster/duktape4j) (Desktop JavaScript)
+- [Jasic](https://github.com/munificent/jasic) (BASIC interpreter base code)
+- [JRuby](https://github.com/jruby/jruby) (Ruby)
 - [MaryTTS](https://github.com/marytts/marytts) (Desktop text to speech)
 - [Android MaryTTS](https://github.com/AndroidMaryTTS/AndroidMaryTTS) (Android text to speech)
 - [Project Lombok](https://projectlombok.org/) (Boilerplate generation)
 - [JCEF](https://github.com/chromiumembedded/java-cef) (Desktop embedded browser)
 - [JavaPackager](https://github.com/fvarrui/JavaPackager) (Gradle plugin to package desktop builds)
-- [Jasic](https://github.com/munificent/jasic) (BASIC interpreter base code)
-- [JRuby](https://github.com/jruby/jruby) (Ruby)
 
 ## Todo
 - Debug/step through mode
-- Tab to double space functionality in editor
+- Tab to double-space functionality in editor
 - Make the UI not terrible
 - Mobile HTML custom keyboard (Or not if it's not worth it and just disable code editor on mobile browsers)
 - Code testing (JS code transformations, for instance)
 - Level editor
-- Trim HTML reflection cache of unused components like most of VisUI
 - Prevent Firefox '/' quick search functionality
 - Robot customization
+- Android separate execution process using synchronous AIDL. Would provide a sandbox and the ability to interrupt infinite loops. 
 
 ## Building
 ### GitHub Actions
@@ -60,7 +60,7 @@ the web demo to the gh-pages branch, and the Android application to the Google P
 ### Building From Source
 Building the project requires several external libraries depending on which modules you want to build. Regardless of
 which platform you are building, the Android SDK is required to compile to project. To build without it, it would be
-neccesary to comment out parts of `settings.gradle` and `build.gradle` at the project root. To enable debug mode 
+necessary to comment out parts of `settings.gradle` and `build.gradle` at the project root. To enable debug mode 
 (mostly logging) for the entire project, add `debug=true` to a `local.properties` file at the root for the project. 
 
 For the Desktop module, the respective [JCEF library](https://github.com/jcefbuild/jcefbuild/releases) for your platform is required at

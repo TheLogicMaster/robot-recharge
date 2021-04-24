@@ -20,10 +20,14 @@ public class PhpEngine implements CodeEngine {
     public ExecutionInstance run(final IRobot robot, final String code, final ExecutionListener listener) {
         PhpEngine.robot = robot;
         Thread thread = new Thread(() -> {
+            QuercusEngine engine = new QuercusEngine();
             try {
-                QuercusEngine engine = new QuercusEngine();
                 engine.init();
-                engine.execute("<?php\nimport com.thelogicmaster.robot_recharge.code.PhpEngine;\n$Robot=PhpEngine::getRobot();\n" + code + "\n?>");
+                engine.execute("<?php\n"
+                    + "import com.thelogicmaster.robot_recharge.PhpEngine;\n"
+                    + "$Robot=PhpEngine::getRobot();\n"
+                    + code + "\n"
+                    + "?>");
                 listener.onExecutionFinish();
             } catch (QuercusException e) {
                 if (e.getCause() instanceof InterruptedException) {
@@ -35,6 +39,8 @@ public class PhpEngine implements CodeEngine {
             } catch (IOException e) {
                 Gdx.app.error("PHP", "IO", e);
                 listener.onExecutionError(e.getMessage());
+            } finally {
+                engine.getQuercus().close();
             }
         });
         thread.start();

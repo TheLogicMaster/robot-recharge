@@ -1,5 +1,6 @@
 package com.thelogicmaster.robot_recharge;
 
+import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.thelogicmaster.robot_recharge.code.IExecutionInstance;
 import lombok.AllArgsConstructor;
@@ -21,8 +22,9 @@ public class ExecutionInstance implements IExecutionInstance {
 			try {
 				Thread.sleep(100);
 				if (thread.isAlive()) {
-					thread.stop();
-					Gdx.app.error("ExecutionInstance", "Had to kill thread, this is bad");
+					if (Gdx.app.getType() != Application.ApplicationType.Android)
+						thread.stop();
+					Gdx.app.error("ExecutionInstance", "Failed to interrupt thread, this is real bad");
 				}
 			} catch (InterruptedException ignored) {}
 		}).start();

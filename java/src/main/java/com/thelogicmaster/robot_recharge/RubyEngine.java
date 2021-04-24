@@ -12,16 +12,15 @@ public class RubyEngine implements CodeEngine {
 
     @Override
     public ExecutionInstance run(final IRobot robot, final String code, final ExecutionListener listener) {
-        RubyInstanceConfig config = new RubyInstanceConfig();
-        config.setCompileMode(RubyInstanceConfig.CompileMode.OFF);
-        Ruby ruby = Ruby.newInstance(config);
         Thread thread = new Thread(() -> {
+            RubyInstanceConfig config = new RubyInstanceConfig();
+            config.setCompileMode(RubyInstanceConfig.CompileMode.OFF);
+            Ruby ruby = Ruby.newInstance(config);
             ruby.defineGlobalConstant("Robot", JavaUtil.convertJavaToRuby(ruby, robot));
             try {
                 ruby.evalScriptlet(code);
                 JavaEmbedUtils.terminate(ruby);
                 listener.onExecutionFinish();
-                ruby.tearDown();
             } catch (Exception e) {
                 //noinspection ConstantConditions
                 if (e instanceof InterruptedException) {
@@ -30,17 +29,11 @@ public class RubyEngine implements CodeEngine {
                 }
                 Gdx.app.error("Ruby", e.toString());
                 listener.onExecutionError(e.getMessage());
+            } finally {
                 ruby.tearDown();
             }
         });
         thread.start();
-        return new ExecutionInstance(thread) {
-            @Override
-            public void stop () {
-                super.stop();
-
-                ruby.tearDown();
-            }
-        };
+        return new ExecutionInstance(thread);
     }
 }

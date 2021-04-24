@@ -12,32 +12,31 @@ public class DesktopJavaScriptEngine implements CodeEngine {
     @Override
     public ExecutionInstance run(final IRobot robot, final String code, final ExecutionListener listener) {
         Duktape duktape = Duktape.create();
-        Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    duktape.set("Robot", IRobot.class, robot);
-                    duktape.evaluate(code);
-                    listener.onExecutionFinish();
-                    duktape.close();
-                } catch (Exception e) {
-                    duktape.close();
-                    if (e instanceof InterruptedException) {
-                        listener.onExecutionInterrupted();
-                        return;
-                    }
-                    Gdx.app.error("Duktape", e.toString());
-                    listener.onExecutionError(e.getMessage());
+        Thread thread = new Thread(() -> {
+            try {
+                duktape.set("Robot", IRobot.class, robot);
+                duktape.evaluate(code);
+                listener.onExecutionFinish();
+            } catch (Exception e) {
+                //noinspection ConstantConditions
+                if (e instanceof InterruptedException ||
+                    (e.getMessage() != null && e.getMessage().contains("RangeError: execution timeout"))) {
+                    listener.onExecutionInterrupted();
+                    return;
                 }
+                Gdx.app.error("Duktape", e.toString());
+                listener.onExecutionError(e.getMessage());
+            } finally {
+                duktape.close();
             }
         });
         thread.start();
         return new ExecutionInstance(thread) {
             @Override
             public void stop () {
+                thread.interrupt();
+                duktape.interrupt();
                 super.stop();
-
-                duktape.close();
             }
         };
     }

@@ -23,7 +23,7 @@ dependencies {
 	//implementation "com.github.crykn.guacamole:gdx:$guacamoleVersion"
 	//implementation "com.github.crykn.guacamole:gdx-desktop:$guacamoleVersion"
 
-	implementation 'io.webfolder:duktape4j:1.2.1'
+	//implementation 'io.webfolder:duktape4j:1.2.1'
 	implementation 'org.python:jython-slim:2.7.2'
 	implementation group: 'de.dfki.mary', name: 'voice-cmu-slt-hsmm', version: '5.2'
 	implementation "de.golfgl.gdxgamesvcs:gdx-gamesvcs-core-gamejolt:$gamesvcsVersion"
