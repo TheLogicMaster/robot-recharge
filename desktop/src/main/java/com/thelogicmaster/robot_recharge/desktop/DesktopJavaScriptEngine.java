@@ -10,6 +10,10 @@ import io.webfolder.ducktape4j.Duktape;
 public class DesktopJavaScriptEngine implements CodeEngine {
 
     @Override
+    public void initialize () {
+    }
+
+    @Override
     public ExecutionInstance run(final IRobot robot, final String code, final ExecutionListener listener) {
         Duktape duktape = Duktape.create();
         Thread thread = new Thread(() -> {

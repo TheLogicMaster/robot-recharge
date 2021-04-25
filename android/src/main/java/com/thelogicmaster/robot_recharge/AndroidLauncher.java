@@ -25,13 +25,17 @@ public class AndroidLauncher extends AndroidApplication {
 		AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
 		config.useImmersiveMode = true;
 		AndroidBlocklyEditor editor = new AndroidBlocklyEditor(getContext());
+
 		HashMap<Language, CodeEngine> engines = new HashMap<>();
+		// Same process engines
 		engines.put(Language.JavaScript, new AndroidJavaScriptEngine());
-		engines.put(Language.Python, new AndroidPythonEngine(this));
 		engines.put(Language.Lua, new LuaEngine());
-		engines.put(Language.PHP, new PhpEngine());
 		engines.put(Language.Basic, new BasicEngine());
-		engines.put(Language.Ruby, new RubyEngine());
+		//engines.put(Language.PHP, new PhpEngine()); // Todo: Did this ever even work for android? If so, fix it, otherwise look into JPHP
+		// Separate process engines
+		engines.put(Language.Python, new RemoteEngine(this, Language.Python));
+		engines.put(Language.Ruby, new RemoteEngine(this, Language.Ruby));
+
 		gameServices = new AndroidGameServices();
 		gameServices.initialize(this, true);
 		final Array<WindowMode> windowModes = new Array<>();

@@ -6,7 +6,7 @@ import com.badlogic.gdx.utils.Array;
 
 public class RobotPreferences {
 
-    public final Preferences preferences;
+    private final Preferences preferences;
 
     public RobotPreferences() {
         preferences = Gdx.app.getPreferences("RobotRecharge");
@@ -79,6 +79,15 @@ public class RobotPreferences {
 
     public void setEffectsVolume(float volume) {
         preferences.putFloat("effectsVolume", volume);
+        preferences.flush();
+    }
+
+    public float getTTSVolume() {
+        return getFloatOrWriteDefault("ttsVolume", 1f);
+    }
+
+    public void setTTSVolume(float volume) {
+        preferences.putFloat("ttsVolume", volume);
         preferences.flush();
     }
 

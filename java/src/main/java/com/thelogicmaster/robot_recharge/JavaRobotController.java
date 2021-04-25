@@ -43,12 +43,13 @@ public class JavaRobotController implements RobotController, ExecutionListener, 
         calls++;
     }
 
-    @Override
     public void setCode(String code) {
         this.code = code;
     }
 
     private void ensureRunning() throws InterruptedException {
+        if (executionInstance == null)
+            throw new InterruptedException();
         if (running && !waiting)
             return;
         if (!running)

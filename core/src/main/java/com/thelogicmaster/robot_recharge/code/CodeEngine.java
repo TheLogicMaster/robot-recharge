@@ -8,4 +8,6 @@ import com.thelogicmaster.robot_recharge.IRobot;
 public interface CodeEngine {
 
     IExecutionInstance run(IRobot robot, String code, ExecutionListener listener);
+
+    void initialize();
 }

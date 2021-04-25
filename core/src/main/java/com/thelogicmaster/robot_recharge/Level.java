@@ -342,6 +342,7 @@ public class Level implements Disposable, Renderable3D, AssetConsumer, RobotExec
         level.transform.setTranslation(xSize / 2f, -levelHeight, zSize / 2f);
         robot = new Robot(new ModelInstance(RobotUtils.cleanModel(assetMultiplexer.get("robot.g3db"))), engine,
                 viewport, this);
+        engine.initialize();
         background = new ScrollingBackground("levels/" + backgroundName);
     }
 
@@ -370,10 +371,12 @@ public class Level implements Disposable, Renderable3D, AssetConsumer, RobotExec
 
     @Override
     public void dispose() {
-        for (Structure structure : structures)
+        for (Structure structure : new Array.ArrayIterator<>(structures))
             structure.dispose();
         gridModel.dispose();
         robot.dispose();
+        if (engine instanceof Disposable)
+            ((Disposable)engine).dispose();
     }
 
     @Override

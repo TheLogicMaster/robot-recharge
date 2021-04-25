@@ -15,6 +15,10 @@ import org.luaj.vm2.lib.jse.JsePlatform;
 public class LuaEngine implements CodeEngine {
 
     @Override
+    public void initialize () {
+    }
+
+    @Override
     public ExecutionInstance run(final IRobot robot, final String code, final ExecutionListener listener) {
         Thread thread = new Thread(() -> {
             Globals globals = JsePlatform.standardGlobals();

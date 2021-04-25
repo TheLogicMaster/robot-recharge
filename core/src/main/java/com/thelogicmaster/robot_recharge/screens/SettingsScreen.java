@@ -31,6 +31,7 @@ public class SettingsScreen extends MenuScreen {
         settingsTable.pad(30);
         settingsTable.add(new Label("Settings", skin, "large")).padBottom(30).growX().expandY().top().colspan(3).row();
 
+        // Todo: Create function for creating preference sliders
         settingsTable.add(new Label("Music Volume", skin)).padBottom(10);
         final Slider musicSlider = new Slider(0, 100, 1, false, skin);
         musicSlider.setVisualPercent(RobotRecharge.prefs.getMusicVolume());
@@ -59,6 +60,20 @@ public class SettingsScreen extends MenuScreen {
         });
         settingsTable.add(effectsSlider).padBottom(10).padRight(20).left();
         settingsTable.add(effectsPercent).padBottom(10).minWidth(50).row();
+
+        settingsTable.add(new Label("Text to Speech Volume", skin)).padBottom(10);
+        final Slider ttsSlider = new Slider(0, 100, 1, false, skin);
+        ttsSlider.setVisualPercent(RobotRecharge.prefs.getTTSVolume());
+        final Label ttsPercent = new Label(((int) ttsSlider.getValue()) + "%", skin, "small");
+        ttsSlider.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                RobotRecharge.prefs.setTTSVolume(ttsSlider.getVisualPercent());
+                ttsPercent.setText((int) ttsSlider.getValue() + "%");
+            }
+        });
+        settingsTable.add(ttsSlider).padBottom(10).padRight(20).left();
+        settingsTable.add(ttsPercent).padBottom(10).minWidth(50).row();
 
         // Todo: Dedicated purchases screen
         if (Gdx.app.getType() == Application.ApplicationType.Android) {

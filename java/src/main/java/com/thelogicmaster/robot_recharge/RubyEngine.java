@@ -11,6 +11,10 @@ import org.jruby.javasupport.JavaUtil;
 public class RubyEngine implements CodeEngine {
 
     @Override
+    public void initialize () {
+    }
+
+    @Override
     public ExecutionInstance run(final IRobot robot, final String code, final ExecutionListener listener) {
         Thread thread = new Thread(() -> {
             RubyInstanceConfig config = new RubyInstanceConfig();

@@ -11,6 +11,10 @@ import org.python.util.PythonInterpreter;
 public class DesktopPythonEngine implements CodeEngine {
 
     @Override
+    public void initialize () {
+    }
+
+    @Override
     public ExecutionInstance run(final IRobot robot, final String code, final ExecutionListener listener) {
         PythonInterpreter python = new PythonInterpreter();
         Thread thread = new Thread(() -> {

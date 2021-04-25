@@ -14,16 +14,4 @@ public interface IRobot {
     void speak(String message);
 
     void interact();
-
-    void start();
-
-    void stop();
-
-    void pause();
-
-    void setFastForward(boolean fastForward);
-
-    void setCode(String code);
-
-    boolean isRunning();
 }

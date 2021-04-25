@@ -292,7 +292,7 @@ public class GameScreen extends RobotScreen implements LevelExecutionListener {
 
         resetLevel();
 
-        if (RobotRecharge.ttsEngine != null)
+        if (RobotRecharge.ttsEngine != null && RobotRecharge.prefs.getTTSVolume() > 0)
             RobotRecharge.ttsEngine.init();
 
         objectivesDialog.show(stage);

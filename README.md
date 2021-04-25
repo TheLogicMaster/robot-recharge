@@ -50,7 +50,7 @@ A programming game where the goal is to guide a robot through various levels usi
 - Level editor
 - Prevent Firefox '/' quick search functionality
 - Robot customization
-- Android separate execution process using synchronous AIDL. Would provide a sandbox and the ability to interrupt infinite loops. 
+- Make Robot.move(int) return distance traveled
 
 ## Building
 ### GitHub Actions

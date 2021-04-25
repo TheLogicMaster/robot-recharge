@@ -36,7 +36,6 @@ public class GameControlPanel extends Table {
         rightTable.add(settingsButton).right().padLeft(10);
         add(rightTable).grow();
 
-
         programButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {

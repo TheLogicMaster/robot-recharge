@@ -31,6 +31,11 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+
+        <service
+                android:name=".RemoteExecutionService"
+                android:exported="false"
+                android:process=":execution_process"/>
     </application>
 
 </manifest>

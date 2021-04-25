@@ -12,8 +12,14 @@ import com.thelogicmaster.robot_recharge.code.ExecutionListener;
 public class AndroidPythonEngine implements CodeEngine {
 
     public static IRobot robot;
+    private final Context context;
 
     public AndroidPythonEngine(Context context) {
+        this.context = context;
+    }
+
+    @Override
+    public void initialize () {
         if (!Python.isStarted())
             Python.start(new AndroidPlatform(context));
     }

@@ -118,6 +118,10 @@ public class BasicEngine implements CodeEngine {
 	private IRobot robot;
 
 	@Override
+	public void initialize () {
+	}
+
+	@Override
 	public ExecutionInstance run (IRobot robot, String code, ExecutionListener listener) {
 		this.robot = robot;
 
