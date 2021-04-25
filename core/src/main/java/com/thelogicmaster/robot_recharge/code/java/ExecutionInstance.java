@@ -1,4 +1,4 @@
-package com.thelogicmaster.robot_recharge;
+package com.thelogicmaster.robot_recharge.code.java;
 
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;

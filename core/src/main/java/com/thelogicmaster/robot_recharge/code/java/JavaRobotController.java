@@ -1,7 +1,13 @@
-package com.thelogicmaster.robot_recharge;
+package com.thelogicmaster.robot_recharge.code.java;
 
 import com.badlogic.gdx.math.Quaternion;
 import com.badlogic.gdx.math.Vector3;
+import com.thelogicmaster.robot_recharge.Direction;
+import com.thelogicmaster.robot_recharge.IRobot;
+import com.thelogicmaster.robot_recharge.Position;
+import com.thelogicmaster.robot_recharge.Robot;
+import com.thelogicmaster.robot_recharge.RobotController;
+import com.thelogicmaster.robot_recharge.RobotExecutionListener;
 import com.thelogicmaster.robot_recharge.blocks.Block;
 import com.thelogicmaster.robot_recharge.blocks.Interactable;
 import com.thelogicmaster.robot_recharge.code.CodeEngine;

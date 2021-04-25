@@ -1,8 +1,9 @@
-package com.thelogicmaster.robot_recharge;
+package com.thelogicmaster.robot_recharge.code.java;
 
 import com.badlogic.gdx.Gdx;
 import com.caucho.quercus.QuercusEngine;
 import com.caucho.quercus.QuercusException;
+import com.thelogicmaster.robot_recharge.IRobot;
 import com.thelogicmaster.robot_recharge.code.CodeEngine;
 import com.thelogicmaster.robot_recharge.code.ExecutionListener;
 
@@ -28,7 +29,7 @@ public class PhpEngine implements CodeEngine {
             try {
                 engine.init();
                 engine.execute("<?php\n"
-                    + "import com.thelogicmaster.robot_recharge.PhpEngine;\n"
+                    + "import com.thelogicmaster.robot_recharge.code.java.PhpEngine;\n"
                     + "$Robot=PhpEngine::getRobot();\n"
                     + code + "\n"
                     + "?>");

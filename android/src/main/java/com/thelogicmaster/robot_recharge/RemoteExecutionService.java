@@ -4,7 +4,6 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
 import android.os.RemoteException;
-import android.util.Log;
 import androidx.annotation.Nullable;
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.ApplicationListener;
@@ -22,6 +21,11 @@ import com.thelogicmaster.robot_recharge.code.CodeEngine;
 import com.thelogicmaster.robot_recharge.code.ExecutionListener;
 import com.thelogicmaster.robot_recharge.code.IExecutionInstance;
 import com.thelogicmaster.robot_recharge.code.Language;
+import com.thelogicmaster.robot_recharge.code.java.BasicEngine;
+import com.thelogicmaster.robot_recharge.code.java.ExecutionInstance;
+import com.thelogicmaster.robot_recharge.code.java.LuaEngine;
+import com.thelogicmaster.robot_recharge.code.java.PhpEngine;
+import com.thelogicmaster.robot_recharge.code.java.RubyEngine;
 
 public class RemoteExecutionService extends Service {
 	private volatile String error;

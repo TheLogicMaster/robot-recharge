@@ -1,1 +1,3 @@
-- Massive Code Editor improvements
+- Infinite loop protection using a separate process
+- More supported languages
+- Many graphical improvements

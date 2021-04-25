@@ -11,6 +11,10 @@ import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 import com.badlogic.gdx.utils.Array;
 import com.thelogicmaster.robot_recharge.code.CodeEngine;
 import com.thelogicmaster.robot_recharge.code.Language;
+import com.thelogicmaster.robot_recharge.code.java.BasicEngine;
+import com.thelogicmaster.robot_recharge.code.java.JavaCodeEditorUtils;
+import com.thelogicmaster.robot_recharge.code.java.JavaRobotController;
+import com.thelogicmaster.robot_recharge.code.java.LuaEngine;
 
 import java.util.HashMap;
 

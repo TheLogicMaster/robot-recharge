@@ -14,7 +14,6 @@ sourceCompatibility = 11.0
 dependencies {
 	implementation fileTree(dir: 'libs', include: ['*.jar'])
 	implementation project(':core')
-	implementation project(':java')
 	implementation "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
 	implementation "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
 	implementation "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-desktop"
@@ -23,7 +22,7 @@ dependencies {
 	//implementation "com.github.crykn.guacamole:gdx:$guacamoleVersion"
 	//implementation "com.github.crykn.guacamole:gdx-desktop:$guacamoleVersion"
 
-	//implementation 'io.webfolder:duktape4j:1.2.1'
+	//implementation 'io.webfolder:duktape4j:1.2.1' // Using custom fork
 	implementation 'org.python:jython-slim:2.7.2'
 	implementation group: 'de.dfki.mary', name: 'voice-cmu-slt-hsmm', version: '5.2'
 	implementation "de.golfgl.gdxgamesvcs:gdx-gamesvcs-core-gamejolt:$gamesvcsVersion"

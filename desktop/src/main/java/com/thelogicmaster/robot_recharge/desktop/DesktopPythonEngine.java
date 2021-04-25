@@ -3,7 +3,7 @@ package com.thelogicmaster.robot_recharge.desktop;
 import com.badlogic.gdx.Gdx;
 import com.thelogicmaster.robot_recharge.IRobot;
 import com.thelogicmaster.robot_recharge.code.CodeEngine;
-import com.thelogicmaster.robot_recharge.ExecutionInstance;
+import com.thelogicmaster.robot_recharge.code.java.ExecutionInstance;
 import com.thelogicmaster.robot_recharge.code.ExecutionListener;
 import org.python.core.PyException;
 import org.python.util.PythonInterpreter;
